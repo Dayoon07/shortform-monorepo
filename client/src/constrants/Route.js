@@ -1,0 +1,17 @@
+export const ROUTE = {
+    HOMEPAGE: "/",
+    SEARCH: (q) => `/search?q=${encodeURIComponent(q)}`,
+    LOGOUT: "/logout",
+    PROFILE: (mention) => `/@${mention}`,
+    PROFILE_VIDEO: (mention, videoLoc) => `/@${mention}/video/${videoLoc}`,
+    PROFILE_POST: (mention) => `/@${mention}/post`,
+    PROFILE_POST_DETAIL: (mention, communityUuid) => `/@${mention}/post/${communityUuid}`,
+    PROFILE_SWIPE_VIDEO: (mention, videoLoc) => `/@${mention}/swipe/video/${videoLoc}`,
+    STUDIO_UPLOAD: "/studio/upload",
+    STUDIO_POST_WRITE: "/studio/post/write",
+    FOLLOWING: "/following",
+    EXPLORE: "/explore",
+    LIKES: "/likes",
+    LOGINPLZ: "/loginplz",
+    HASHTAG: (videoTag) => `/hashtag/${videoTag}`,
+};
