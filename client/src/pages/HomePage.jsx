@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import VideoGrid from "../components/video/VideoGrid";
 import { getVideoAll } from "../services/VideoService";
 
 export default function HomePage() {
@@ -14,12 +15,6 @@ export default function HomePage() {
     }, []);
 
     return (
-        <div>
-            {videos.map(video => (
-                <div key={video.id} className="w-[100px] h-[100px] shadow-md text-black">
-                    {video.videoTitle}
-                </div>
-            ))}
-        </div>
+        <VideoGrid videos={videos} key={videos.map(e => e.id)} />
     );
 }
