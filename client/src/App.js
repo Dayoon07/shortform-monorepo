@@ -2,18 +2,18 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SideBar from "./components/common/SideBar";
-import AppBar from "./components/common/AppBar";
 import BottomNavBar from "./components/common/BottomNavBar";
-
 import { ROUTE } from "./constrants/Route";
+import "./App.css";
+import { AppBar } from "./components/common/AppBar";
 
 export default function App() {
     return (
         <BrowserRouter basename={process.env.PUBLIC_URL}>
             <div>
                 <AppBar />
-                <SideBar />
-                <div>
+                <div className="flex">
+                    <SideBar />
                     <Routes>
                         <Route path={ROUTE.HOMEPAGE} element={<HomePage />} />
                         {/* <Route path="/search" element={<SearchPage />} />
