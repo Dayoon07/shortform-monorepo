@@ -2,8 +2,8 @@ import { useState } from "react";
 import Modal from "./Modal";
 import ProfileImageUpload from "./ProfileImageUpload";
 import SignupForm from "./SignupForm";
-import { signupUser } from "../../services/authService";
-import { showToast } from "../../utils/toast";
+import { signup } from "../../../features/user/api/userService";
+import { showToast } from "../../../shared/utils/toast";
 
 export default function SignupModal({ onClose }) {
   const [step, setStep] = useState(1);
@@ -37,7 +37,7 @@ export default function SignupModal({ onClose }) {
     data.append('profileImage', profileImg);
 
     try {
-      const response = await signupUser(data);
+      const response = await signup(data);
 
       if (response.ok) {
         showToast('회원가입이<br/>완료되었습니다.');

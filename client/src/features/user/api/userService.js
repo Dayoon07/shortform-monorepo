@@ -1,14 +1,7 @@
-import { API_LIST } from "../constrants/ApiList";
-import { REST_API_SERVER } from "../constrants/ApiServer";
+import { API_LIST } from "../../../shared/constants/ApiList";
+import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 
-export async function signup(email, username, password, profileImage) {
-    const formData = new FormData();
-
-    formData.append("email", email);
-    formData.append("email", username);
-    formData.append("email", password);
-    formData.append("email", profileImage);
-
+export async function signup(formData) {
     try {
         const response = await fetch(`${REST_API_SERVER}/${API_LIST.USER.SIGNUP}`, {
             method: "POST",

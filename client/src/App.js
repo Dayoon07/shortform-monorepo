@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import SideBar from "./components/common/SideBar";
-import BottomNavBar from "./components/common/BottomNavBar";
-import { ROUTE } from "./constrants/Route";
+import HomePage from "./pages/HomePage/HomePage";
+import { AppBar } from "./components/common/AppBar/AppBar";
+import SideBar from "./components/common/SideBar/SideBar";
+import BottomNavBar from "./components/common/BottomNavBar/BottomNavBar";
+import { ROUTE } from "./shared/constants/Route";
 import "./App.css";
-import { AppBar } from "./components/common/AppBar";
 
 export default function App() {
     return (
@@ -13,7 +13,7 @@ export default function App() {
             <div>
                 <AppBar />
                 <div className="flex">
-                    <SideBar />
+                    <SideBar user={localStorage.getItem("user")} />
                     <Routes>
                         <Route path={ROUTE.HOMEPAGE} element={<HomePage />} />
                         {/* <Route path="/search" element={<SearchPage />} />

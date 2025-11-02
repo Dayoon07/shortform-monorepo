@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from "./Modal";
-import { loginUser } from "../../services/authService";
+import { login } from "../../../features/user/api/userService";
 
 export default function LoginModal({ onClose }) {
   const [username, setUsername] = useState('');
@@ -17,7 +17,7 @@ export default function LoginModal({ onClose }) {
 
     setIsLoading(true);
     try {
-      const data = await loginUser(username, password);
+      const data = await login(username, password);
       
       if (data.success) {
         window.location.href = `/?login=success&message=${encodeURIComponent(data.message)}`;

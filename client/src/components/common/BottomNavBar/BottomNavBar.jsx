@@ -1,10 +1,10 @@
-import { ROUTE } from "../../constrants/Route";
-import { HomePageIcon, ExplorePageIcon, UploadPageIcon, FollowingPageIcon } from "../icon/icon";
+import { ROUTE } from "../../../shared/constants/Route";
+import { HomePageIcon, ExplorePageIcon, UploadPageIcon, FollowingPageIcon } from "../../icon/icon";
 import { LogInIcon } from "lucide-react";
-import { REST_API_SERVER } from "../../constrants/ApiServer";
+import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useUser } from "../../hooks/useUsers";
+import { useUser } from "../../../features/user/hooks/useUsers";
 
 export default function BottomNavBar() {
     const { user } = useUser();

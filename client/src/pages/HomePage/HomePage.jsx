@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import VideoGrid from "../components/video/VideoGrid";
-import { getVideoAll } from "../services/videoService";
+import VideoGrid from "../../components/video/VideoGrid";
+import { getVideoAll } from "../../features/video/api/videoService";
 
 export default function HomePage() {
     const [videos, setVideos] = useState([]);

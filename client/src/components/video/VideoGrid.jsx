@@ -1,6 +1,6 @@
 import { useEffect, useRef, memo } from "react";
 import { Link } from "react-router-dom";
-import { REST_API_SERVER } from "../../constrants/ApiServer";
+import { REST_API_SERVER } from "../../shared/constants/ApiServer";
 
 // ---------------------
 // Hover & Lazy Play Hook
