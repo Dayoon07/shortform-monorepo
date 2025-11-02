@@ -3,15 +3,15 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import { SearchIcon, UploadPageIcon, LikePageIcon } from '../../icon/icon';
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
-import { useSearchWord } from "../../../shared/hooks/useSearchWord";
-import { useUser } from '../../../features/user/hooks/useUsers';
 import { CommunityPageIcon } from '../../icon/icon';
+import { useUser } from '../../../shared/context/UserContext';
+import { useSearch } from '../../../shared/hooks/useSearch';
 
 export function AppBar() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false);
-    const searchWord = useSearchWord();
     const user = useUser();
+    const [searchWord, setSearchWord] = useSearch();
 
     const handleLogout = async () => {
         await fetch('/logout', { method: 'POST' });

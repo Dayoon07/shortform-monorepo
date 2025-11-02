@@ -1,18 +1,5 @@
-import { useEffect, useState } from "react";
-import VideoGrid from "../../components/video/VideoGrid";
-import { getVideoAll } from "../../features/video/api/videoService";
+import VideoList from "../../widgets/video/VideoList";
 
 export default function HomePage() {
-    const [videos, setVideos] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getVideoAll();
-            if (data) setVideos(data);
-        };
-        
-        fetchData();
-    }, []);
-
-    return <VideoGrid videos={videos} key={videos.map(e => e.id)} />
+    return <VideoList />
 }

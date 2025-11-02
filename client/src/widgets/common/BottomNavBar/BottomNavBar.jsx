@@ -3,7 +3,6 @@ import { HomePageIcon, ExplorePageIcon, UploadPageIcon, FollowingPageIcon } from
 import { LogInIcon } from "lucide-react";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { useUser } from "../../../features/user/hooks/useUsers";
 
 export default function BottomNavBar() {

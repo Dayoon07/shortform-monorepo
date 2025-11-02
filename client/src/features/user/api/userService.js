@@ -3,7 +3,7 @@ import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 
 export async function signup(formData) {
     try {
-        const response = await fetch(`${REST_API_SERVER}/${API_LIST.USER.SIGNUP}`, {
+        const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.SIGNUP}`, {
             method: "POST",
             body: formData
         });
@@ -43,7 +43,7 @@ export async function login(username, password) {
         //         'Authorization': 'Bearer ' + token
         //     }
         // })
-        const response = await fetch(`${REST_API_SERVER}/${API_LIST.USER.LOGIN}`, {
+        const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGIN}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -58,11 +58,31 @@ export async function login(username, password) {
 
         if (response.ok && data.success) {
             localStorage.setItem("user", JSON.stringify(data.user));
+            return data;
         } else {
             alert(`로그인 실패: ${data.message || "사용자명 또는 비밀번호가 올바르지 않습니다."}`);
         }
     } catch (error) {
         console.error("로그인 요청 오류:", error);
         alert("로그인 중 오류가 발생했습니다.");
+    } finally {
+        window.location.reload();
+    }
+}
+
+export async function logout() {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGOUT}`, {
+            method: "POST"
+        });
+        if (res.ok) {
+            localStorage.clear();
+            window.location.href = window.location.origin;
+            return {
+                message: "로그아웃 되었습니다."
+            }
+        }
+    } catch (error) {
+        console.log(error);
     }
 }

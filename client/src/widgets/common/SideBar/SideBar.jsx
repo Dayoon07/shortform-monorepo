@@ -5,11 +5,17 @@ import Navigation from "./Navigation";
 import AuthButtons from "./AuthButtons";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
+import { ROUTE } from "../../../shared/constants/Route";
+import { logout } from "../../../features/user/api/userService";
+import { useUser } from "../../../shared/context/UserContext";
+import { useSearch } from "../../../shared/hooks/useSearch";
 
-export default function SideBar({ user, searchWord }) {
+export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
     const navigate = useNavigate();
+    const { user, setUser } = useUser();
+    const [searchWord, setSearchWord] = useSearch();
 
     const handleSearch = (query) => {
         if (query.trim()) {
@@ -18,15 +24,15 @@ export default function SideBar({ user, searchWord }) {
     };
 
     const handleLogout = async () => {
-        await fetch('/logout', { method: 'POST' });
-        window.location.href = '/';
+        await logout();
+        setUser(null); // 꼭 추가
     };
 
     return (
         <>
             <aside className="max-md:hidden w-64 bg-black/50 backdrop-blur-sm flex flex-col px-3 py-6 space-y-4">
                 <h1 className="text-3xl font-bold bg-gradient-to-t from-pink-500 to-sky-500 bg-clip-text text-transparent pl-2">
-                    <Link to="/">FlipFlop</Link>
+                    <Link to={ROUTE.HOMEPAGE}>FlipFlop</Link>
                 </h1>
 
                 <SearchBar 
