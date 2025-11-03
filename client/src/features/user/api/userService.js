@@ -1,5 +1,6 @@
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { showSuccessToast } from "../../../shared/utils/toast";
 
 export async function signup(formData) {
     try {
@@ -78,9 +79,7 @@ export async function logout() {
         if (res.ok) {
             localStorage.clear();
             window.location.href = window.location.origin;
-            return {
-                message: "로그아웃 되었습니다."
-            }
+            showSuccessToast("로그아웃 되었습니다.");
         }
     } catch (error) {
         console.log(error);
