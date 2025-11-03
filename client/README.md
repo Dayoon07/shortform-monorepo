@@ -1,67 +1,97 @@
 # shortform-client
 
+### Feature-Sliced Design (FSD) 아키텍처
+
+#### 프로젝트 아키텍처 개요
+FSD(Feature-Sliced Design)는 프론트엔드 애플리케이션을 **기능(feature) 중심**으로 구조화하는 현대적인 아키텍처 패턴입니다. 
+이 프로젝트는 FSD의 핵심 원칙을 따라 **확장 가능하고 유지보수가 용이한** 구조로 설계되었습니다.
+
+#### 핵심 설계 원칙
+
+1. **단방향 의존성 흐름**
+   - `shared` ← `features` ← `widgets` ← `pages` ← `app`
+   - 하위 레이어는 상위 레이어를 참조할 수 없어 의존성 순환 방지
+
+2. **도메인 주도 설계 (Domain-Driven)**
+   - 비즈니스 도메인(user, video 등)을 중심으로 코드 구조화
+   - 각 도메인은 독립적으로 개발 및 테스트 가능
+
+3. **관심사의 분리 (Separation of Concerns)**
+   - API 로직, UI 컴포넌트, 비즈니스 로직이 명확히 분리
+   - 각 파일은 단일 책임 원칙(SRP) 준수
+
+#### 디렉토리 구조
 ```
 src/
-├── features/           # 도메인별 비즈니스 로직
-│   ├── user/
-│   │   ├── api/       # API 호출
-│   │   └── hooks/     # 커스텀 훅
-│   └── video/
-│       ├── api/
-│       ├── components/
-│       └── hooks/
+├── app/                    # 애플리케이션 진입점 및 전역 설정
+│   ├── App.js             # 라우터, Provider 등 최상위 설정
+│   └── App.css            # 전역 스타일
 │
-├── widgets/           # 복합 UI 컴포넌트 (여러 feature 조합)
-│   ├── common/
-│   │   ├── AppBar/
-│   │   ├── SideBar/
-│   │   └── BottomNavBar/
-│   ├── icon/
-│   └── video/
+├── pages/                  # 라우트별 페이지 컴포넌트
+│   └── HomePage/          # 각 페이지는 widgets를 조합하여 구성
+│       └── HomePage.jsx
 │
-├── pages/             # 라우트별 페이지
-│   └── HomePage/
+├── widgets/               # 복합 UI 블록 (비즈니스 로직 포함)
+│   ├── common/            # 공통 위젯
+│   │   ├── AppBar/       # 상단 네비게이션 바
+│   │   ├── SideBar/      # 사이드 메뉴 (로그인/회원가입 포함)
+│   │   └── BottomNavBar/ # 모바일 하단 네비게이션
+│   ├── video/            # 비디오 관련 위젯
+│   │   └── VideoList.jsx # 비디오 목록 컨테이너
+│   └── icon/             # 아이콘 컴포넌트 모음
 │
-└── shared/            # 공통 유틸리티
-    ├── constants/     # 상수
-    ├── context/       # React Context
-    ├── hooks/         # 공통 훅
-    └── utils/         # 유틸 함수
+├── features/              # 비즈니스 기능 단위
+│   ├── user/             # 사용자 도메인
+│   │   ├── api/          # 사용자 API (로그인, 회원가입, 로그아웃)
+│   │   │   ├── userService.js
+│   │   │   └── validationService.js
+│   │   └── hooks/        # 사용자 관련 커스텀 훅
+│   │       └── useUsers.js
+│   │
+│   └── video/            # 비디오 도메인
+│       ├── api/          # 비디오 API
+│       │   └── videoService.js
+│       ├── components/   # 비디오 UI 컴포넌트
+│       │   ├── VideoCard.jsx      # 개별 비디오 카드
+│       │   └── VideoGrid.jsx      # 비디오 그리드 레이아웃
+│       └── hooks/        # 비디오 관련 커스텀 훅
+│           └── useLazyHoverVideo.js
+│
+└── shared/                # 공통 재사용 코드
+    ├── constants/         # 상수 정의
+    │   ├── ApiList.js    # API 엔드포인트 목록
+    │   ├── ApiServer.js  # 서버 설정
+    │   └── Route.js      # 라우트 경로
+    ├── context/          # React Context
+    │   └── UserContext.jsx
+    ├── hooks/            # 공통 커스텀 훅
+    │   └── useSearch.js
+    └── utils/            # 유틸리티 함수
+        ├── toast.jsx
+        └── showMessage.jsx
 ```
-<!-- 리액트 프로젝트에서 **FSD (Feature-Sliced Design)** 아키텍처는 애플리케이션을 기능(feature) 중심으로 나누고, 명확한 규칙을 통해 코드의 응집도를 높이고 유지보수성을 향상시킵니다. 
 
-전형적인 FSD 아키텍처의 구조 예시는 다음과 같습니다.
-```
-/src
-├── app/               # 애플리케이션 전역 설정 (라우팅, 테마, 스토어 프로바이더 등)
-├── processes/         # 복잡한 다중 기능 비즈니스 흐름 (예: 인증 플로우)
-├── pages/             # 라우팅에 매핑되는 최상위 페이지 컴포넌트
-├── widgets/           # 여러 features/entities를 조합한 복합 UI 블록 (예: 헤더, 푸터, 사이드바)
-├── features/          # 사용자 상호작용 및 특정 비즈니스 로직 (예: 로그인 기능, 장바구니 추가)
-├── entities/          # 비즈니스 도메인 모델 및 로직 (예: 사용자, 제품, 게시물)
-└── shared/            # 애플리케이션 전반에서 재사용되는 공통 코드 (UI 키트, 유틸리티, API 클라이언트 등)
-```
+#### 레이어별 역할
 
-### FSD 주요 구성 요소 (레이어) 
-FSD는 위와 같은 **레이어(Layer)** f로 구성되며, 각 레이어는 특정 역할을 담당합니다. 레이어 간의 의존성은 **하위 레이어는 상위 레이어를 알 수 없으며, 상위 레이어만 하위 레이어를 참조할 수 있다는 단방향 규칙을 따릅니다.** 
-- app/: 애플리케이션의 진입점 및 전역 설정을 처리합니다.
-- processes/: 여러 features를 포함하는 복잡한 사용자 흐름을 관리합니다 (선택 사항이며 초기에는 생략 가능).
-- pages/: 라우터와 연결되는 페이지 컴포넌트를 정의하며, 주로 widgets나 features, entities를 조합합니다.
-- widgets/: 여러 엔티티나 피처를 조합하여 재사용 가능한 큰 UI 블록을 만듭니다.
-- features/: 독립적인 사용자 기능(예: 검색 바, 사용자 프로필 수정)을 캡슐화합니다.
-- entities/: 핵심 비즈니스 도메인(예: User, Product)의 데이터 구조, 타입, 관련 로직을 정의합니다.
-- shared/: UI 컴포넌트 (ui/), 헬퍼 함수 (lib/), 상수 (const/), API 클라이언트 등 가장 범용적인 코드를 포함합니다.
+| 레이어 | 역할 | 예시 |
+|--------|------|------|
+| **app** | 앱 초기화, 라우팅, 전역 Provider | `App.js`, `App.css` |
+| **pages** | 라우트별 페이지, widgets 조합 | `HomePage` |
+| **widgets** | 독립적인 UI 블록, 여러 features 조합 | `SideBar`, `VideoList` |
+| **features** | 비즈니스 기능 단위, 도메인 로직 | `user`, `video` |
+| **shared** | 전역 공통 코드, 순수 함수 | `constants`, `utils`, `hooks` |
 
-### 각 레이어 내의 구조 (슬라이스 및 세그먼트) 
-각 레이어는 **슬라이스(Slice)** 라는 기능/도메인 단위의 폴더로 나뉘며, 각 슬라이스는 다시 **세그먼트(Segment)** 로 세분화됩니다.
+#### 주요 이점
 
-예를 들어, entities/user 슬라이스의 구조는 다음과 같을 수 있습니다. 
-```
-/src/entities/user/
-├── ui/         # User 관련 React 컴포넌트 (예: UserAvatar.tsx)
-├── model/      # 상태 관리, 커스텀 훅 (예: useUserModel.ts)
-├── api/        # 서버 통신 로직 (예: userApi.ts)
-├── lib/        # 유틸리티 함수
-└── index.ts    # Public API (외부에서 이 슬라이스로 접근할 수 있는 유일한 경로)
-```
-이 구조를 통해 코드가 기능별로 응집되고, 불필요한 의존성을 방지하여 대규모 애플리케이션의 유지보수성과 확장성을 크게 향상시킬 수 있습니다.  -->
+**확장성**: 새로운 기능 추가 시 기존 코드 영향 최소화  
+**유지보수성**: 도메인별 응집도 높고 결합도 낮은 구조  
+**테스트 용이성**: 각 레이어가 독립적으로 테스트 가능  
+**협업 효율성**: 명확한 구조로 팀원 간 코드 이해도 향상  
+**재사용성**: shared 레이어를 통한 코드 중복 최소화
+
+#### 개발 규칙
+
+- 상위 레이어는 하위 레이어만 import 가능 (역방향 참조 금지)
+- 같은 레이어 내에서는 서로 참조 불가 (features 간 독립성 유지)
+- 공통 로직은 반드시 `shared`로 추출
+- 각 feature는 `api/`, `components/`, `hooks/` 구조 유지

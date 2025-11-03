@@ -7,6 +7,6 @@ export async function validateUsername(username) {
 }
 
 export async function validateEmail(email) {
-    const response = await fetch(`/api/user/chk/mail?mail=${email}`);
+    const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.CHK_EMAIL(email)}`);
     return await response.json();
 }

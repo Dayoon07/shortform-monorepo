@@ -5,7 +5,7 @@ export function useLazyHoverVideo(videos) {
     const videoRefs = useRef([]);
 
     useEffect(() => {
-        if (!videos.length) return;
+        if (!Array.isArray(videos) || videos.length === 0) return;
 
         const observer = new IntersectionObserver(
             (entries) => {

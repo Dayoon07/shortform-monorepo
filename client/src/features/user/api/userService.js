@@ -9,7 +9,7 @@ export async function signup(formData) {
         });
 
         if (response.ok) {
-            const data = await response.json();
+            const data = await response.text();
             return { data: data };
         } else {
             const message = await response.text();

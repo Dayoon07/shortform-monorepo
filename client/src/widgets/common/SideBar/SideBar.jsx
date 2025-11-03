@@ -15,7 +15,7 @@ export default function SideBar() {
     const [showSignupModal, setShowSignupModal] = useState(false);
     const navigate = useNavigate();
     const { user, setUser } = useUser();
-    const [searchWord, setSearchWord] = useSearch();
+    const [searchWord] = useSearch();
 
     const handleSearch = (query) => {
         if (query.trim()) {
@@ -25,7 +25,7 @@ export default function SideBar() {
 
     const handleLogout = async () => {
         await logout();
-        setUser(null); // 꼭 추가
+        setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
     };
 
     return (

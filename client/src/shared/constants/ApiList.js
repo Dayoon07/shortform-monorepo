@@ -7,6 +7,7 @@ export const API_LIST = {
         CHK_EMAIL: (email) => `/api/user/chk/mail?mail=${email}`
     },
     VIDEO: {
-        ALL: "/api/video/all"
-    }
+        ALL: "/api/video/all",
+    },
+    SEARCH: (query, mention) => `/api/search?q=${query}&mention=${mention}`
 };

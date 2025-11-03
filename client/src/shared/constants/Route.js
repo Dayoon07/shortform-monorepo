@@ -7,10 +7,9 @@ export const ROUTE = {
 
     /** 
      * 검색 페이지 경로
-     * @param {string} q - 검색어 (URL 인코딩됨)
-     * @example ROUTE.SEARCH("고양이") => "/search?q=%EA%B3%A0%EC%96%91%EC%9D%B4"
+     * @example "/search"
      */
-    SEARCH: (q) => `/search?q=${encodeURIComponent(q)}`,
+    SEARCH: "/search",
 
     /** 
      * 로그아웃 요청 경로
@@ -99,3 +98,12 @@ export const ROUTE = {
      */
     HASHTAG: (videoTag) => `/hashtag/${videoTag}`,
 };
+
+export const PATTERN_ROUTE = {
+    PROFILE: "/:mention*",
+    PROFILE_VIDEO: "/:mention*/video/:videoLoc",
+    PROFILE_POST: "/:mention*/post",
+    PROFILE_POST_DETAIL: "/:mention*/post/:communityUuid",
+    PROFILE_SWIPE_VIDEO: "/:mention*/swipe/video/:videoLoc",
+    HASHTAG: "/hashtag*/:videoTag"
+}

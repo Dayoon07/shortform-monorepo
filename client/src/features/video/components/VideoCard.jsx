@@ -1,12 +1,13 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { ROUTE } from "../../../shared/constants/Route";
 
 export const VideoCard = memo(({ video, index, videoRefs }) => {
     return (
         <div>
             <Link
-                to={`${REST_API_SERVER}/@${video.uploader.mention}/swipe/video/${video.videoLoc}`}
+                to={`${REST_API_SERVER}${ROUTE.PROFILE_SWIPE_VIDEO(video.mention, video.videoLoc)}`}
                 className="relative group cursor-pointer video-card"
             >
                 <div className="relative aspect-[9/16] bg-gray-900 rounded-lg overflow-hidden">
@@ -39,16 +40,16 @@ export const VideoCard = memo(({ video, index, videoRefs }) => {
 
             <div className="mt-2 px-1">
                 <Link
-                    to={`/@${video.uploader.mention}`}
+                    to={ROUTE.PROFILE(video.mention)}
                     className="block flex items-center space-x-2 mb-1"
                 >
                     <img
-                        src={REST_API_SERVER + video.uploader.profileImgSrc}
+                        src={`${REST_API_SERVER}${video.profileImgSrc}`}
                         className="w-8 h-8 rounded-full object-cover"
                         alt="프로필"
                     />
                     <span className="text-white text-md font-semibold truncate">
-                        {video.uploader.username}
+                        {video.uploaderUsername}
                     </span>
                 </Link>
 
@@ -59,7 +60,7 @@ export const VideoCard = memo(({ video, index, videoRefs }) => {
                 </p>
 
                 <span className="text-gray-400 text-sm">
-                    조회수 {video.videoViews.toLocaleString()}
+                    조회수 {video.videoViews.toLocaleString() === '0' ? '없음' : video.videoViews.toLocaleString()}
                 </span>
             </div>
         </div>
