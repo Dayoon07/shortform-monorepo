@@ -13,7 +13,6 @@ export default function AppBar() {
     const { user } = useUser();
     const dropdownRef = useRef(null);
 
-    // 드롭다운 외부 클릭 감지
     useEffect(() => {
         function handleClickOutside(event) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -67,7 +66,7 @@ export default function AppBar() {
                                     >
                                         <img 
                                             src={`${REST_API_SERVER}${user.profileImgSrc}`} 
-                                            alt="" 
+                                            alt="..." 
                                             className="w-[26px] h-[26px] p-0.5 object-cover rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500" 
                                         />
                                         내 채널 보기

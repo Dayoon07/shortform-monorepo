@@ -94,4 +94,6 @@ src/
 - 상위 레이어는 하위 레이어만 import 가능 (역방향 참조 금지)
 - 같은 레이어 내에서는 서로 참조 불가 (features 간 독립성 유지)
 - 공통 로직은 반드시 `shared`로 추출
-- 각 feature는 `api/`, `components/`, `hooks/` 구조 유지
+- 각 feature는 `api/`, `components/`, `hooks/` 구조 유지 (components/ui 폴더는 괜찮음)
+
+

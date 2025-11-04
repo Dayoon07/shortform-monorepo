@@ -6,7 +6,7 @@ export async function searchVideoLogic(query) {
     const mention = user?.mention ?? ""; // optional chaining + null 병합 연산자
 
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.SEARCH(query, mention)}`);
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.SEARCH.SEARCH(query, mention)}`);
         if (res.ok) {
             return await res.json();
         }

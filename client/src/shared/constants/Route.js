@@ -100,10 +100,14 @@ export const ROUTE = {
 };
 
 export const PATTERN_ROUTE = {
-    PROFILE: "/:mention*",
-    PROFILE_VIDEO: "/:mention*/video/:videoLoc",
-    PROFILE_POST: "/:mention*/post",
-    PROFILE_POST_DETAIL: "/:mention*/post/:communityUuid",
-    PROFILE_SWIPE_VIDEO: "/:mention*/swipe/video/:videoLoc",
-    HASHTAG: "/hashtag*/:videoTag"
+    /**
+     * 프로필 페이지 경로
+     * @param {string} mention (예: @user-cf5ee914-8677-45...)
+     */
+    PROFILE: "/:mention",
+    PROFILE_VIDEO: "/:mention/video/:videoLoc",
+    PROFILE_POST: "/:mention*post",
+    PROFILE_POST_DETAIL: "/:mention/post/:communityUuid",
+    PROFILE_SWIPE_VIDEO: "/:mention/swipe/video/:videoLoc",
+    HASHTAG: "/hashtag/:videoTag"
 }
