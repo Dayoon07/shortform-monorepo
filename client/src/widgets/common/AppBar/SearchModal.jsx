@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { SearchModalBackButton, SearchModalCloseButton } from '../../icon/icon';
 
 export default function SearchModal({ user, onClose }) {
     const [searchHistory, setSearchHistory] = useState([]);
@@ -31,7 +32,7 @@ export default function SearchModal({ user, onClose }) {
     const handleSearch = (e) => {
         e.preventDefault();
         if (!searchQuery.trim()) return;
-        navigate(ROUTE.SEARCH(searchQuery));
+        navigate(`${ROUTE.SEARCH}?q=${searchQuery}`);
         onClose();
     };
 
@@ -51,16 +52,15 @@ export default function SearchModal({ user, onClose }) {
     return (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100]" onClick={onClose}>
             <div className="bg-black/90 backdrop-blur-sm border-b border-white/30 px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                {/* 헤더 */}
+
                 <div className="flex items-center py-2">
-                    <BackButton onClick={onClose} />
+                    <SearchModalBackButton onClick={onClose} />
                     <form onSubmit={handleSearch} className="relative w-full">
                         <SearchInput value={searchQuery} setValue={setSearchQuery} />
                     </form>
-                    <CloseButton onClick={onClose} />
+                    <SearchModalCloseButton onClick={onClose} />
                 </div>
 
-                {/* 내용 */}
                 {user ? (
                     searchHistory.length > 0 ? (
                         <SearchHistoryList
@@ -75,27 +75,9 @@ export default function SearchModal({ user, onClose }) {
                 ) : (
                     <LoginPrompt onClose={onClose} />
                 )}
+                
             </div>
         </div>
-    );
-}
-
-/* 🔹 UI Subcomponents */
-function BackButton({ onClick }) {
-    return (
-        <svg onClick={onClick} className="w-8 h-8 text-white cursor-pointer mr-2 hover:opacity-70" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 20 20">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-        </svg>
-    );
-}
-
-function CloseButton({ onClick }) {
-    return (
-        <svg onClick={onClick} className="w-7 h-7 text-white cursor-pointer ml-2 hover:opacity-70" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-        </svg>
     );
 }
 
@@ -114,7 +96,8 @@ function SearchInput({ value, setValue }) {
                 placeholder="검색"
                 maxLength={100}
                 autoFocus
-                className="w-full pl-10 pr-3 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/25"
+                className="w-full pl-10 pr-3 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white 
+                    placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/25"
             />
         </>
     );

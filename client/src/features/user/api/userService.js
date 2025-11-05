@@ -59,6 +59,8 @@ export async function login(username, password) {
 
         if (response.ok && data.success) {
             localStorage.setItem("user", JSON.stringify(data.user));
+            window.location.href = window.location.origin;
+            showSuccessToast("로그인 되었습니다.");
             return data;
         } else {
             alert(`로그인 실패: ${data.message || "사용자명 또는 비밀번호가 올바르지 않습니다."}`);
@@ -66,8 +68,6 @@ export async function login(username, password) {
     } catch (error) {
         console.error("로그인 요청 오류:", error);
         alert("로그인 중 오류가 발생했습니다.");
-    } finally {
-        window.location.reload();
     }
 }
 

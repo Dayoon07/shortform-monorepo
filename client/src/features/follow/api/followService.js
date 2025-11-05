@@ -1,9 +1,9 @@
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { API_LIST } from "../../../shared/constants/ApiList";
 
-export async function followToggle(mention) {
+export async function toggleFollow(mention) {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_TOGGLE}`, {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.TOGGLE_FOLLOW}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ mention })
@@ -15,13 +15,14 @@ export async function followToggle(mention) {
             console.log(await res.json());
         }
     } catch (error) {
+        console.error(error);
         console.log(error);
     }
 }
 
 // 설명: 토글 방식의 팔로우 기능 만들어 놓은 거 잊어먹어서
 //       밑에 있는 팔로우/언팔 각각 따로 함수 만들어 놓고 주석 처리 한겁니다. 
-//       toggleFollow 함수 쓰세요
+//       주석 처리 한 거 사용하지 말고 toggleFollow 함수 사용하세요
 // export async function followUser(mention) {
 //     try {
 //         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW}`, {
@@ -52,11 +53,7 @@ export async function followToggle(mention) {
 
 export async function checkFollowStatus(mention) {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS}`, {
-            method: "GET",
-            headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ mention })
-        });
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(mention)}`);
         if (!res.ok) return false;
         const data = await res.json();
         console.log(data);
@@ -67,9 +64,45 @@ export async function checkFollowStatus(mention) {
     }
 }
 
+export async function getFollowStatus(mention) {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(mention)}`);
+        if (!res.ok) throw new Error("에러남!!! " + await res.json());
 
+        const data = await res.json();
+        console.log(data);
+        return { data }
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
 
+export async function getFollowerList(id) {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.USER_FOLLOWER_LIST(id)}`);
+        if (!res.ok) throw new Error("에러남!!!");
+        const data = await res.json();
+        console.log(data);
+        return { data };
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
 
+export async function getFollowingList(id) {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.USER_FOLLOWING_LIST(id)}`);
+        if (!res.ok) throw new Error("에러남!!!");
+        const data = await res.json();
+        console.log(data);
+        return { data };
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
 
 
 

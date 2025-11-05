@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { X, Plus } from "lucide-react";
 
-export default function FollowButton({ isFollowing: initialFollowing, onFollow, onUnfollow, userId }) {
+export default function FollowButton({ isFollowing: initialFollowing, onFollow, onUnfollow, mention }) {
     const [following, setFollowing] = useState(initialFollowing);
     const [loading, setLoading] = useState(false);
     
@@ -9,14 +9,14 @@ export default function FollowButton({ isFollowing: initialFollowing, onFollow, 
         setLoading(true);
         try {
             if (following) {
-                await onUnfollow?.(userId);
+                await onUnfollow?.(mention);
                 setFollowing(false);
             } else {
-                await onFollow?.(userId);
+                await onFollow?.(mention);
                 setFollowing(true);
             }
         } catch (error) {
-            console.error('Follow action failed:', error);
+            console.error('팔로우 실패:', error);
         } finally {
             setLoading(false);
         }

@@ -29,7 +29,7 @@ const NAV_ITEMS = [
         stroke: true
     },
     {
-        to: FollowingPageIcon,
+        to: ROUTE.FOLLOWING,
         label: "팔로잉",
         icon: FollowingPageIcon,
         viewBox: "0 0 48 48"

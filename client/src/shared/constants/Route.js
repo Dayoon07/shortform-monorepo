@@ -100,14 +100,54 @@ export const ROUTE = {
 };
 
 export const PATTERN_ROUTE = {
-    /**
-     * 프로필 페이지 경로
-     * @param {string} mention (예: @user-cf5ee914-8677-45...)
+    /** 
+     * 프로필 페이지 경로 패턴  
+     * - 특정 사용자의 프로필 페이지 매칭용
+     * @param {string} mention - 사용자 아이디 (예: "@yoon")
+     * @example "/:mention" => "/@yoon"
      */
     PROFILE: "/:mention",
+
+    /** 
+     * 특정 사용자의 비디오 상세 페이지 경로 패턴  
+     * - 사용자 프로필 내 개별 비디오 상세 페이지 매칭용
+     * @param {string} mention - 사용자 아이디
+     * @param {string} videoLoc - 비디오 식별자
+     * @example "/:mention/video/:videoLoc" => "/@yoon/video/abc123"
+     */
     PROFILE_VIDEO: "/:mention/video/:videoLoc",
-    PROFILE_POST: "/:mention*post",
+
+    /** 
+     * 특정 사용자의 게시물 목록 페이지 경로 패턴  
+     * - 프로필 내 게시물 탭 (post 목록) 매칭용
+     * @param {string} mention - 사용자 아이디
+     * @example "/:mention/post" => "/@yoon/post"
+     */
+    PROFILE_POST: "/:mention/post",
+
+    /** 
+     * 특정 사용자의 게시물 상세 페이지 경로 패턴  
+     * - 개별 커뮤니티 게시물 상세 페이지 매칭용
+     * @param {string} mention - 사용자 아이디
+     * @param {string} communityUuid - 게시물 고유 식별자(UUID)
+     * @example "/:mention/post/:communityUuid" => "/@yoon/post/abcd-efgh"
+     */
     PROFILE_POST_DETAIL: "/:mention/post/:communityUuid",
+
+    /** 
+     * 프로필 내 스와이프 비디오 상세 페이지 경로 패턴  
+     * - 스와이프 UI 기반의 비디오 상세 보기 매칭용
+     * @param {string} mention - 사용자 아이디
+     * @param {string} videoLoc - 비디오 식별자
+     * @example "/:mention/swipe/video/:videoLoc" => "/@yoon/swipe/video/abc123"
+     */
     PROFILE_SWIPE_VIDEO: "/:mention/swipe/video/:videoLoc",
-    HASHTAG: "/hashtag/:videoTag"
-}
+
+    /** 
+     * 해시태그 페이지 경로 패턴  
+     * - 특정 해시태그를 기반으로 한 콘텐츠 목록 페이지 매칭용
+     * @param {string} videoTag - 해시태그 문자열 (예: "funny")
+     * @example "/hashtag/:videoTag" => "/hashtag/funny"
+     */
+    HASHTAG: "/hashtag/:videoTag",
+};

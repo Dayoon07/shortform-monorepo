@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUser } from "../../shared/context/UserContext";
 import { getProfileByMention, getProfileVideos, getProfilePosts } from "../../features/profile/api/profileService";
-import { checkFollowStatus, followToggle } from "../../features/follow/api/followService";
+import { checkFollowStatus, toggleFollow } from "../../features/follow/api/followService";
 import { VideoCard } from "../../features/video/components/VideoCard";
 import ProfileHeader from "../../features/profile/components/ui/ProfileHeader";
 import PostCard from "../../features/post/components/ui/PostCard";
@@ -56,9 +56,9 @@ export default function ProfilePage() {
         fetchData();
     }, [cleanMention, user, isOwnProfile]);
     
-    const handleFollow = async (userId) => {
+    const handleFollow = async (mention) => {
         try {
-            await followToggle(userId);
+            await toggleFollow(mention);
             setIsFollowing(true);
             showSuccessToast('팔로우했습니다.');
         } catch (error) {
@@ -66,9 +66,9 @@ export default function ProfilePage() {
         }
     };
     
-    const handleUnfollow = async (userId) => {
+    const handleUnfollow = async (mention) => {
         try {
-            await followToggle(userId);
+            await toggleFollow(mention);
             setIsFollowing(false);
             showSuccessToast('언팔로우했습니다.');
         } catch (error) {
@@ -128,7 +128,7 @@ export default function ProfilePage() {
                             isFollowing={isFollowing}
                             onFollow={handleFollow}
                             onUnfollow={handleUnfollow}
-                            userId={profile.mention}
+                            mention={profile.mention}
                         />
                     </div>
                 )}

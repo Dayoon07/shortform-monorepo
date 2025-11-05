@@ -139,3 +139,21 @@ export const CancelIcon = () => {
         </svg>
     );
 }
+
+export function SearchModalBackButton({ onClick }) {
+    return (
+        <svg onClick={onClick} className="w-8 h-8 text-white cursor-pointer mr-2 hover:opacity-70" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 20 20">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+        </svg>
+    );
+}
+
+export function SearchModalCloseButton({ onClick }) {
+    return (
+        <svg onClick={onClick} className="w-7 h-7 text-white cursor-pointer ml-2 hover:opacity-70" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+        </svg>
+    );
+}
