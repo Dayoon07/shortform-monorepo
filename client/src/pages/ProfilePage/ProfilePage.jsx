@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../shared/context/UserContext";
 import { getProfileByMention, getProfileVideos, getProfilePosts } from "../../features/profile/api/profileService";
 import { checkFollowStatus, toggleFollow } from "../../features/follow/api/followService";
@@ -9,6 +9,7 @@ import PostCard from "../../features/post/components/ui/PostCard";
 import FollowButton from "../../features/follow/components/ui/FollowButton";
 import ProfileInfoModal from "../../widgets/profile/ProfileInfoModal";
 import { showSuccessToast, showErrorToast } from "../../shared/utils/toast";
+import { ROUTE } from "../../shared/constants/Route";
 
 export default function ProfilePage() {
     const { mention } = useParams();
@@ -16,14 +17,44 @@ export default function ProfilePage() {
     const [profile, setProfile] = useState(null);
     const [videos, setVideos] = useState([]);
     const [posts, setPosts] = useState([]);
-    const [activeTab, setActiveTab] = useState('videos');
     const [loading, setLoading] = useState(true);
     const [isFollowing, setIsFollowing] = useState(false);
     const [showInfoModal, setShowInfoModal] = useState(false);
     
     const cleanMention = mention?.replace('@', '');
     const isOwnProfile = user?.mention === cleanMention;
+
+    const navigate = useNavigate();
     
+    const handleFollow = async (mention) => {
+        try {
+            await toggleFollow(mention);
+            setIsFollowing(true);
+            showSuccessToast('팔로우했습니다.');
+        } catch (error) {
+            showErrorToast('팔로우에 실패했습니다.');
+        }
+    };
+    
+    const handleUnfollow = async (mention) => {
+        try {
+            await toggleFollow(mention);
+            setIsFollowing(false);
+            showSuccessToast('언팔로우했습니다.');
+        } catch (error) {
+            showErrorToast('언팔로우에 실패했습니다.');
+        }
+    };
+    
+    const handleShare = async (uuid) => {
+        try {
+            await navigator.clipboard.writeText(`${window.location.origin}/@${cleanMention}/post/${uuid}`);
+            showSuccessToast('링크가 복사되었습니다!');
+        } catch (error) {
+            showErrorToast('링크 복사에 실패했습니다.');
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             if (!cleanMention) return;
@@ -55,35 +86,6 @@ export default function ProfilePage() {
         
         fetchData();
     }, [cleanMention, user, isOwnProfile]);
-    
-    const handleFollow = async (mention) => {
-        try {
-            await toggleFollow(mention);
-            setIsFollowing(true);
-            showSuccessToast('팔로우했습니다.');
-        } catch (error) {
-            showErrorToast('팔로우에 실패했습니다.');
-        }
-    };
-    
-    const handleUnfollow = async (mention) => {
-        try {
-            await toggleFollow(mention);
-            setIsFollowing(false);
-            showSuccessToast('언팔로우했습니다.');
-        } catch (error) {
-            showErrorToast('언팔로우에 실패했습니다.');
-        }
-    };
-    
-    const handleShare = async (uuid) => {
-        try {
-            await navigator.clipboard.writeText(`${window.location.origin}/@${cleanMention}/post/${uuid}`);
-            showSuccessToast('링크가 복사되었습니다!');
-        } catch (error) {
-            showErrorToast('링크 복사에 실패했습니다.');
-        }
-    };
     
     if (loading) {
         return (
@@ -133,32 +135,34 @@ export default function ProfilePage() {
                     </div>
                 )}
                 
-                {/* 탭 */}
                 <div className="flex border-b border-gray-800 sticky top-0 bg-black z-10">
                     <button
-                        onClick={() => setActiveTab('videos')}
-                        className={`flex-1 py-3 font-semibold border-b-2 transition ${
-                            activeTab === 'videos' 
-                                ? 'border-white text-white' 
-                                : 'border-transparent text-gray-400 hover:text-white'
-                        }`}
+                        onClick={() => navigate(ROUTE.PROFILE(mention))}
+                        className="flex-1 py-3 font-semibold border-b-2 transition border-white text-white"
                     >
                         동영상
                     </button>
                     <button
-                        onClick={() => setActiveTab('posts')}
-                        className={`flex-1 py-3 font-semibold border-b-2 transition ${
-                            activeTab === 'posts' 
-                                ? 'border-white text-white' 
-                                : 'border-transparent text-gray-400 hover:text-white'
-                        }`}
+                        onClick={() => navigate(ROUTE.PROFILE_POST(cleanMention))}
+                        className="flex-1 py-3 font-semibold border-b-2 transition border-transparent text-gray-400 hover:text-white"
                     >
                         게시글
                     </button>
                 </div>
+
+                {videos.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 pb-20">
+                        {videos.map((video, index) => (
+                            <VideoCard key={video.id || index} video={video} index={index} videoRefs={{ current: [] }} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-20">
+                        <p className="text-gray-400">동영상이 없습니다</p>
+                    </div>
+                )}
                 
-                {/* 컨텐츠 */}
-                <div className="p-4">
+                {/* <div className="p-4">
                     {activeTab === 'videos' ? (
                         videos.length > 0 ? (
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 pb-20">
@@ -190,7 +194,7 @@ export default function ProfilePage() {
                             </div>
                         )
                     )}
-                </div>
+                </div> */}
             </div>
             
             <ProfileInfoModal 

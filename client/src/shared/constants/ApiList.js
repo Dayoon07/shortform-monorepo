@@ -31,6 +31,7 @@ export const API_LIST = {
         USER_FOLLOWING_LIST: (id) => `/api/follow/user/following/list?id=${id}`,
     },
     POST: {
-        USER_POST: (mention) => `/api/user/info/${mention}/post`
+        ALL: "/api/community/all",
+        USER_POST: (mention) => `/api/user/post/info?mention=${mention}`
     }
 };
