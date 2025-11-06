@@ -8,8 +8,11 @@ export async function searchVideo(query) {
             const data = await res.json();
             console.log(data);
             return { data: data }
+        } else {
+            return { data: [] }
         }
     } catch (error) {
         console.log(error);
+        return error;
     }
 }

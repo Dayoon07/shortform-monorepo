@@ -10,7 +10,7 @@ import SearchModal from './SearchModal';
 export default function AppBar() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false);
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -23,11 +23,16 @@ export default function AppBar() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showDropdown]);
 
-    const handleLogout = async () => await logout();
+    const handleLogout = async () => {
+        await logout();
+        setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
+    }
 
     return (
         <>
-            <nav className="sticky top-0 left-0 bg-black/90 backdrop-blur-sm border-b border-gray-800 md:px-4 px-3 md:py-2 py-1 md:hidden z-[41] flex justify-between items-center">
+            <nav className="sticky top-0 left-0 bg-black/90 backdrop-blur-sm border-b border-gray-800 
+                md:px-4 px-3 md:py-2 py-1 md:hidden z-[41] flex justify-between items-center"
+            >
                 <h1 className="md:text-3xl text-2xl font-bold bg-gradient-to-t from-pink-500 to-sky-500 bg-clip-text text-transparent pl-2">
                     <Link to={ROUTE.HOMEPAGE}>FlipFlop</Link>
                 </h1>
@@ -59,15 +64,12 @@ export default function AppBar() {
 
                             {showDropdown && (
                                 <div className="absolute right-0 top-14 bg-black border border-gray-700 rounded-md z-[91] w-[180px] text-left shadow-lg">
-                                    <Link 
-                                        to={ROUTE.PROFILE(user.mention)} 
-                                        className="block w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 flex items-center transition-colors"
+                                    <Link to={ROUTE.PROFILE(user.mention)} className="block w-full px-4 py-2 text-gray-300 hover:text-white 
+                                        hover:bg-gray-700/50 flex items-center transition-colors"
                                         onClick={() => setShowDropdown(false)}
                                     >
-                                        <img 
-                                            src={`${REST_API_SERVER}${user.profileImgSrc}`} 
-                                            alt="..." 
-                                            className="w-[26px] h-[26px] p-0.5 object-cover rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500" 
+                                        <img src={`${REST_API_SERVER}${user.profileImgSrc}`} alt="..." className="w-[26px] h-[26px] p-0.5 object-cover 
+                                            rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500" 
                                         />
                                         내 채널 보기
                                     </Link>
@@ -92,9 +94,8 @@ export default function AppBar() {
                             )}
                         </div>
                     ) : (
-                        <Link 
-                            to={ROUTE.LOGINPLZ}
-                            className="px-4 py-2 bg-gradient-to-r from-pink-500 to-sky-500 rounded-full text-white font-semibold hover:opacity-80 transition-opacity text-sm"
+                        <Link to={ROUTE.LOGINPLZ} className="px-4 py-2 bg-gradient-to-r from-pink-500 to-sky-500 rounded-full text-white 
+                            font-semibold hover:opacity-80 transition-opacity text-sm"
                         >
                             로그인
                         </Link>

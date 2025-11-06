@@ -1,49 +1,25 @@
-import { useEffect, useState } from "react";
 import FollowerList from "../../widgets/follow/FollowerList";
-import { useFollowers } from "../../features/follow/hooks/useFollowers";
-import { Link } from "react-router-dom";
-import { ROUTE } from "../../shared/constants/Route";
+import { useFollow } from "../../features/follow/hooks/useFollow";
 import { useUser } from "../../shared/context/UserContext";
+import { Loading } from "../../shared/components/Loading";
+import { Error } from "../../shared/components/Error";
+import { useNavigate } from "react-router-dom";
 
- export default function FollowerPage() {
+export default function FollowingPage() {
     const { user } = useUser();
-    const [userId, setUserId] = useState(null);
-    const { followers, loading, error, handleToggleFollow } = useFollowers(user.id);
-
-    useEffect(() => {
-        if (user && user.id) setUserId(user.id);
-    }, []);
+    const { followers, loading, error, handleToggleFollow } = useFollow(user.id);
+    const navigate = useNavigate();
 
     if (!user.id) {
-        return (
-        <div className="flex items-center justify-center min-h-screen bg-black">
-            <div className="text-center">
-                <p className="text-white text-xl mb-4">로그인이 필요합니다</p>
-                <Link to={ROUTE.LOGINPLZ} className="text-blue-400 hover:text-blue-300">
-                    로그인하러 가기
-                </Link>
-            </div>
-        </div>
-        );
+        navigate("/loginplz");
     }
 
     if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-black">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
-        );
+        return <Loading />
     }
 
     if (error) {
-        return (
-        <div className="flex items-center justify-center min-h-screen bg-black">
-            <div className="text-center">
-                <p className="text-red-500 text-xl mb-4">오류가 발생했습니다</p>
-                <p className="text-gray-400">{error}</p>
-            </div>
-        </div>
-        );
+        return <Error />
     }
 
     return (

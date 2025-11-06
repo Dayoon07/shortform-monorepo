@@ -1,16 +1,11 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ROUTE } from "../../..//shared/constants/Route";
+import { ROUTE } from "../../../shared/constants/Route";
 
-export const FollowerCard = ({ follower, onToggleFollow }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
+export const FollowingCard = ({ follower, onToggleFollow }) => {
     return (
         <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center justify-center
             hover:bg-gray-700/60 transition-all duration-300 border border-gray-700/50 hover:border-gray-600/50
             min-h-[280px] max-w-[300px] mx-auto w-full hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/10"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
             <Link to={ROUTE.PROFILE(follower.mention)} className="mb-4 group">
                 <div className="relative">
@@ -32,7 +27,7 @@ export const FollowerCard = ({ follower, onToggleFollow }) => {
                 </p>
             </Link>
 
-            <button type="button" onClick={() => onToggleFollow(follower.mention)} className="bg-gray-600/80 hover:bg-red-500 px-4 md:px-6 
+            <button type="button" onClick={async () => onToggleFollow(follower.mention)} className="bg-gray-600/80 hover:bg-red-500 px-4 md:px-6 
                 py-2 md:py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 w-full 
                     max-w-[160px] hover:shadow-lg hover:scale-105 text-sm md:text-base border border-gray-500/30 hover:border-red-400/50"
             >

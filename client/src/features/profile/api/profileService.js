@@ -22,14 +22,3 @@ export async function getProfileVideos(mention) {
         return [];
     }
 }
-
-export async function getProfilePosts(mention) {
-    try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.POST.USER_POST(mention)}`);
-        if (!res.ok) throw new Error('해당 게시물을 찾을 수 없습니다.');
-        return await res.json();
-    } catch (error) {
-        console.error('게시물 수신 실패:', error);
-        return [];
-    }
-}

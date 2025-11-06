@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getVideoAll } from "../../features/video/api/videoService";
 import { VideoGrid } from "../../features/video/components/VideoGrid";
+import { Loading } from "../../shared/components/Loading";
+import { TryAgain } from "../../shared/components/TryAgain";
 
 export default function VideoList() {
     const [videos, setVideos] = useState([]);
@@ -27,30 +29,11 @@ export default function VideoList() {
     }, []);
 
     if (loading) {
-        return (
-            <div className="flex items-center justify-center h-96">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-                    <p className="text-gray-400">로딩 중...</p>
-                </div>
-            </div>
-        );
+        return <Loading />
     }
 
     if (error) {
-        return (
-            <div className="flex items-center justify-center h-96">
-                <div className="text-center">
-                    <p className="text-red-400 mb-4">{error}</p>
-                    <button 
-                        onClick={() => window.location.reload()}
-                        className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
-                    >
-                        다시 시도
-                    </button>
-                </div>
-            </div>
-        );
+        return <TryAgain />
     }
 
     return <VideoGrid videos={videos} />;

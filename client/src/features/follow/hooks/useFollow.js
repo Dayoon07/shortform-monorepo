@@ -1,25 +1,26 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toggleFollow, getFollowerList } from "../api/followService";
 import { showToast } from "../../../shared/utils/FollowShowToast";
 
-export const useFollowers = (userId) => {
+export const useFollow = (userId) => {
     const [followers, setFollowers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const loadFollowers = async () => {
-            try {
-                setLoading(true);
-                const data = await getFollowerList(userId);
-                setFollowers(data);
-                setError(null);
-            } catch (err) {
-                setError(err.message);
-                showToast('팔로워 목록을 불러오는데 실패했습니다', 'error');
-            } finally {
-                setLoading(false);
-            }
-        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const loadFollowers = useCallback(async () => {
+        try {
+            setLoading(true);
+            const data = await getFollowerList(userId);
+            setFollowers(data || []);
+            setError(null);
+        } catch (err) {
+            setError(err.message);
+            showToast('팔로워 목록을 불러오는데 실패했습니다', 'error');
+        } finally {
+            setLoading(false);
+        }
+    });
 
     const handleToggleFollow = async (mention) => {
         try {
@@ -39,7 +40,7 @@ export const useFollowers = (userId) => {
 
     useEffect(() => {
         if (userId) loadFollowers();
-    }, [userId]);
+    }, [loadFollowers, userId]);
 
     return { followers, loading, error, handleToggleFollow };
 };

@@ -3,15 +3,17 @@ import { Lock } from "lucide-react";
 import { useUser } from "../../shared/context/UserContext";
 import LoginModal from "../../features/user/components/LoginModal";
 import SignupModal from "../../features/user/components/SignupModal";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPlz() {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
     const { user } = useUser();
+    const navigate = useNavigate();
 
     // 이미 로그인된 경우 홈으로 리다이렉트
     if (user) {
-        window.location.href = '/';
+        navigate("/");
         return null;
     }
 
