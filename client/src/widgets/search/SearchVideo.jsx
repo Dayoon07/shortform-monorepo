@@ -9,7 +9,7 @@ export default function SearchVideo({ searchValue }) {
 
     useEffect(() => {
         const search = async () => {
-            const mention = user?.mention ?? "";
+            const mention = user.mention ? user.mention : null;
             const a = await searchVideoLogic(searchValue, mention);
             setVideos(a);
         };

@@ -6,7 +6,7 @@ export const API_LIST = {
         LOGOUT: "/api/user/logout",
         CHK_USERNAME: (username) => `/api/user/chk/username?username=${username}`,
         CHK_EMAIL: (email) => `/api/user/chk/mail?mail=${email}`,
-        UPDATE: "/api/user/update",
+        EDIT: "/api/user/update",
         USER_INFO: (mention) => `/api/user/info/${mention}`
     },
     VIDEO: {

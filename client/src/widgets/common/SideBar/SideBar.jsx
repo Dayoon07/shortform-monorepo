@@ -13,13 +13,13 @@ import { useSearch } from "../../../shared/hooks/useSearch";
 export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
-    const navigate = useNavigate();
-    const { user, setUser } = useUser();
     const [searchWord] = useSearch();
+    const { user, setUser } = useUser();
+    const navigate = useNavigate();
 
     const handleSearch = (query) => {
         if (query.trim()) {
-            navigate(`/search?q=${encodeURIComponent(query)}`);
+            navigate(ROUTE.SEARCH(encodeURIComponent(query)));
         }
     };
 

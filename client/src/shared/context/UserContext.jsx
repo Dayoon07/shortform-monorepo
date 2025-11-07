@@ -8,7 +8,7 @@ export function UserProvider({ children }) {
             const saved = localStorage.getItem("user");
             return saved ? JSON.parse(saved) : null;
         } catch (error) {
-            console.error('Failed to parse user data:', error);
+            console.error('사용자 정보 JSON 파싱 실패:', error);
             localStorage.removeItem("user");
             return null;
         }
@@ -33,7 +33,7 @@ export function UserProvider({ children }) {
             try {
                 localStorage.setItem("user", JSON.stringify(user));
             } catch (error) {
-                console.error('Failed to save user data:', error);
+                console.error('사용자 정보 저장 실패:', error);
             }
         } else {
             localStorage.removeItem("user");

@@ -7,7 +7,6 @@ export const ROUTE = {
 
     /** 
      * 검색 페이지 경로
-     * @example "/search"
      */
     SEARCH: "/search",
 

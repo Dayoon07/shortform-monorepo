@@ -1,25 +1,24 @@
 import { EmptyState } from "../../features/follow/components/EmptyState";
 import { FollowingCard } from "../../features/follow/components/FollowingCard";
 
-const FollowerList = ({ followers, onToggleFollow }) => {
-    // followers를 배열로 안전하게 변환
-    // const followerArray = Array.isArray(followers) ? followers : [];
+const FollowingList = ({ followings, onToggleFollow }) => {
+    const followingsArr = Array.isArray(followings) ? followings : [];
     
-    if (followers.length === 0) return <EmptyState />;
+    if (followingsArr.length === 0) return <EmptyState />;
     
     return (
         <div>
             <div className="mb-8">
-                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">팔로워</h1>
+                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">팔로잉</h1>
                 <p className="text-gray-400 text-sm md:text-base">
-                    현재 <span className="text-blue-400 font-semibold">{followers.length}</span>명의 팔로워가 있습니다.
+                    현재 <span className="text-blue-400 font-semibold">{followingsArr.length}</span>명을 팔로잉하고 있습니다
                 </p>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
-                {followers.map((follower) => (
+                {followingsArr.map((follower) => (
                     <FollowingCard
                         key={follower.id || follower.mention}
-                        follower={follower}
+                        followingUser={follower}
                         onToggleFollow={onToggleFollow}
                     />
                 ))}
@@ -28,4 +27,4 @@ const FollowerList = ({ followers, onToggleFollow }) => {
     );
 };
 
-export default FollowerList;
+export default FollowingList;

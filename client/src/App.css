@@ -9,7 +9,7 @@
 }
 
 /* 스크롤바 커스터마이징 */
-main::-webkit-scrollbar {
+/* main::-webkit-scrollbar {
     width: 6px;
     z-index: 60;
 }
@@ -21,6 +21,22 @@ main::-webkit-scrollbar-thumb {
     border-radius: 3px;
 }
 main::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+} */
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 6px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.5);
 }
 

@@ -8,9 +8,5 @@ export default function ProfilePostPage() {
     console.log(mention);
     console.log(user);
 
-    return (
-        <>
-            현재 세션에 로그인한 유저: {user.username}
-        </>
-    );
+    return <></>
 }

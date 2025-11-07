@@ -77,12 +77,45 @@ export async function logout() {
             method: "POST"
         });
         if (res.ok) {
-            console.log(await res.text());
+            const data1 = await res.text();
+            const data2 = await res.json();
+            console.log(data1);
+            console.log(data2);
             localStorage.clear();
             setTimeout(() => window.location.href = window.location.origin, 1000);
-            showSuccessToast(await res.text());
+            showSuccessToast("로그아웃 되었습니다");
         }
     } catch (error) {
         console.log(error);
+    }
+}
+
+export async function userInfoEdit(username, mail, mention, bio, profileImg, currentProfileImgSrc) {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.EDIT}`, {
+            method: "POST",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({
+                username: username,
+                mail: mail,
+                mention: mention,
+                bio: bio,
+                profileImg: profileImg,
+                currentProfileImgSrc: currentProfileImgSrc
+            })
+        });
+
+        if (!res.ok) throw new Error(`에러: ${res}`);
+
+        const data = await res.json();
+        console.log(data);
+        return {
+            status: data.success,
+            message: data.message,
+            profileImgPath: data.profileImgPath,
+            data: data.user
+        }
+    } catch (error) {
+        console.error(error);
     }
 }

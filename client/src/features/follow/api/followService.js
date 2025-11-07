@@ -52,18 +52,20 @@ export async function toggleFollow(mention) {
 //     }
 // }
 
-export async function checkFollowStatus(mention) {
-    try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(mention)}`);
-        if (!res.ok) return false;
-        const data = await res.json();
-        console.log(data);
-        return data.isFollowing;
-    } catch (error) {
-        console.error('Check follow status error:', error);
-        return false;
-    }
-}
+// 이거 만들어 이것도 만들어 놓고 나중에 새로 함수 만들어서 버렸습니다.
+// 아래에 있는 getFollowStatus() 함수 사용
+// export async function checkFollowStatus(mention) {
+//     try {
+//         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(mention)}`);
+//         if (!res.ok) return false;
+//         const data = await res.json();
+//         console.log(data);
+//         return data.isFollowing;
+//     } catch (error) {
+//         console.error('Check follow status error:', error);
+//         return false;
+//     }
+// }
 
 export async function getFollowStatus(mention) {
     try {
@@ -98,7 +100,7 @@ export async function getFollowingList(id) {
         if (!res.ok) throw new Error("에러남!!!");
         const data = await res.json();
         console.log(data);
-        return { data };
+        return data;
     } catch (error) {
         console.error(error);
         return false;

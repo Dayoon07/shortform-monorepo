@@ -4,9 +4,7 @@ export default function ProfileHeader({ profile, isOwnProfile, onShowInfo }) {
     return (
         <div className="flex flex-col sm:flex-row sm:space-x-6 mb-4 p-6 sm:items-center">
             <div className="max-sm:flex max-sm:justify-center mb-4 sm:mb-0">
-                <img 
-                    src={`${REST_API_SERVER}${profile.profileImgSrc}`}
-                    alt="프로필" 
+                <img src={`${REST_API_SERVER}${profile.profileImgSrc}`}alt="프로필" 
                     className="w-32 h-32 md:w-44 md:h-44 rounded-full object-cover p-1 bg-gradient-to-r from-pink-500 to-sky-500" 
                 />
             </div>
@@ -16,10 +14,7 @@ export default function ProfileHeader({ profile, isOwnProfile, onShowInfo }) {
                     <h1 className="text-3xl font-semibold">{profile.username}</h1>
                     <div className="flex space-x-4 max-sm:justify-center mt-1">
                         <small className="font-semibold">@{profile.mention}</small>
-                        <small 
-                            className="text-gray-400 hover:underline cursor-pointer" 
-                            onClick={onShowInfo}
-                        >
+                        <small className="text-gray-400 hover:underline cursor-pointer" onClick={onShowInfo}>
                             더보기
                         </small>
                     </div>
