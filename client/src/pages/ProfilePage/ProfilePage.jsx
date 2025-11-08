@@ -33,7 +33,7 @@ export default function ProfilePage() {
     if (!profile) return <NotFoundProfile />;
     
     return (
-        <main className="flex-1 overflow-y-auto bg-black text-white min-h-screen">
+        <main className="flex-1 overflow-y-auto bg-black text-white">
             <div className="max-w-6xl mx-auto">
                 <ProfileHeader 
                     profile={profile}
@@ -67,7 +67,7 @@ export default function ProfilePage() {
                     )
                 )}
 
-                <div className="flex border-b border-gray-800 sticky top-0 bg-black z-10">
+                <div className="flex border-b border-gray-800 sticky top-0 bg-black z-10 p-2">
                     <button onClick={() => navigate(ROUTE.PROFILE(cleanMention))}
                         className="flex-1 py-3 font-semibold border-b-2 transition border-white text-white"
                     >

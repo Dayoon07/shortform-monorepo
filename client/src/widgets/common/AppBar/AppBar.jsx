@@ -7,12 +7,14 @@ import { useUser } from '../../../shared/context/UserContext';
 import { logout } from "../../../features/user/api/userService";
 import SearchModal from './SearchModal';
 import { LogOut } from 'lucide-react';
+import { useClickSound } from '../../../shared/hooks/useClickSound';
 
 export default function AppBar() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const { user, setUser } = useUser();
     const dropdownRef = useRef(null);
+    const handlePlayClickSound = useClickSound("/mp3/click.mp3");
     const dropdownItem = `block w-full px-4 py-2 text-gray-300 
         hover:text-white hover:bg-gray-700/50 z-[91] 
         flex items-center space-x-2
@@ -46,7 +48,10 @@ export default function AppBar() {
 
                 <div className="flex justify-around items-center gap-2">
                     <button
-                        onClick={() => setShowSearchModal(true)}
+                        onClick={() => {
+                            setShowSearchModal(true);
+                            handlePlayClickSound();
+                        }}
                         className="nav-btn flex items-center space-x-3 p-3 hover:bg-gray-800/50 rounded-xl transition-colors group"
                         aria-label="검색"
                     >

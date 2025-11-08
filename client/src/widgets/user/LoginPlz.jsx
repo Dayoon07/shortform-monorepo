@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Lock } from "lucide-react";
 import { useUser } from "../../shared/context/UserContext";
 import LoginModal from "../../features/user/components/LoginModal";
@@ -12,10 +12,9 @@ export default function LoginPlz() {
     const navigate = useNavigate();
 
     // 이미 로그인된 경우 홈으로 리다이렉트
-    if (user) {
-        navigate("/");
-        return null;
-    }
+    useEffect(() => {
+        if (user) navigate("/");
+    }, [user, navigate]);
 
     return (
         <div className="mx-auto">
@@ -39,16 +38,16 @@ export default function LoginPlz() {
                         <button
                             onClick={() => setShowSignupModal(true)}
                             className="px-6 py-3 border-2 border-gray-600 text-gray-300 bg-gray-900/50 
-                                     rounded-full hover:border-gray-500 hover:bg-gray-800 
-                                     transition-all duration-200 font-medium"
+                                rounded-full hover:border-gray-500 hover:bg-gray-800 
+                                transition-all duration-200 font-medium"
                         >
                             회원가입
                         </button>
                         <button
                             onClick={() => setShowLoginModal(true)}
                             className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-500 
-                                     hover:from-pink-600 hover:to-sky-600 text-white rounded-full 
-                                     transition-all duration-200 font-medium shadow-lg"
+                                hover:from-pink-600 hover:to-sky-600 text-white rounded-full 
+                                transition-all duration-200 font-medium shadow-lg"
                         >
                             로그인
                         </button>

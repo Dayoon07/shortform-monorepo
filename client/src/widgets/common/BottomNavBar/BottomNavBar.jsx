@@ -4,10 +4,12 @@ import { ROUTE } from "../../../shared/constants/Route";
 import { HomePageIcon, ExplorePageIcon, FollowingPageIcon, FancyUploadPageIcon } from "../../icon/icon";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { useUser } from "../../../shared/context/UserContext";
+import { useClickSound } from "../../../shared/hooks/useClickSound";
 
 export default function BottomNavBar() {
     const { user } = useUser();
     const location = useLocation();
+    const handlePlayClickSound = useClickSound("/mp3/click.mp3");
 
     // 현재 경로가 활성 상태인지 확인
     const isActive = (path) => {
@@ -60,6 +62,7 @@ export default function BottomNavBar() {
                             `}
                             aria-label={item.label}
                             aria-current={active ? 'page' : undefined}
+                            onClick={handlePlayClickSound}
                         >
                             <Icon />
                         </Link>
@@ -74,6 +77,7 @@ export default function BottomNavBar() {
                         className={`nav-item p-3 flex flex-col items-center gap-1 transition-colors ${
                             isActive(ROUTE.PROFILE(user.mention)) ? 'text-white' : 'text-gray-400'
                         }`}
+                        onClick={handlePlayClickSound}
                         aria-current={isActive(ROUTE.PROFILE(user.mention)) ? 'page' : undefined}
                     >
                         <div className={`w-6 h-6 rounded-full overflow-hidden ${isActive(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-white' : ''}`}>
@@ -94,6 +98,7 @@ export default function BottomNavBar() {
                             isActive(ROUTE.LOGINPLZ) ? 'text-white' : 'text-gray-400'
                         }`}
                         aria-label="로그인"
+                        onClick={handlePlayClickSound}
                     >
                         <LogIn className="w-6 h-6" />
                     </Link>

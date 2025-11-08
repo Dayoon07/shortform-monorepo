@@ -78,9 +78,9 @@ export async function logout() {
         });
         if (res.ok) {
             const data1 = await res.text();
-            const data2 = await res.json();
+            // const data2 = await res.json();
             console.log(data1);
-            console.log(data2);
+            // console.log(data2);
             localStorage.clear();
             setTimeout(() => window.location.href = window.location.origin, 1000);
             showSuccessToast("로그아웃 되었습니다");

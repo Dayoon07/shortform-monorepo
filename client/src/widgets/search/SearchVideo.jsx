@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { searchVideoLogic } from "../../features/search/api/SearchService";
+import { searchVideoLogic } from "../../features/search/api/searchService";
 import { CommonVideoGrid } from "../../shared/components/CommonVideoGrid";
 import { useUser } from "../../shared/context/UserContext";
 
