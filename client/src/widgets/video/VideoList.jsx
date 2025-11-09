@@ -28,13 +28,8 @@ export default function VideoList() {
         fetchData();
     }, []);
 
-    if (loading) {
-        return <Loading />
-    }
-
-    if (error) {
-        return <TryAgain />
-    }
+    if (loading) return <Loading />
+    if (error) return <TryAgain />
 
     return <VideoGrid videos={videos} />;
 }

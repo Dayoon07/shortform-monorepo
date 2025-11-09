@@ -16,6 +16,9 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import FollowingPage from "./pages/FollowingPage/FollowingPage";
 import ProfilePostPage from "./pages/ProfilePostPage/ProfilePostPage";
+import SwipeVideoPage from "./pages/SwipeVideoPage/SwipeVideoPage";
+import ExplorePage from "./pages/ExplorePage/ExplorePage";
+import UploadPage from "./pages/UploadPage/UploadPage";
 
 export default function App() {
     return (
@@ -31,10 +34,11 @@ export default function App() {
                                 <Route path={ROUTE.LOGINPLZ} element={<LoginPlzPage />} />
                                 <Route path={ROUTE.SEARCH} element={<SearchPage />} />
                                 <Route path={ROUTE.FOLLOWING} element={<FollowingPage />} />
-                                {/* <Route path={ROUTE.EXPLORE} element={<ExplorePage />} />
-                                <Route path={ROUTE.LIKES} element={<LikesPage />} />
+                                <Route path={ROUTE.EXPLORE} element={<ExplorePage />} />
+                                {/* <Route path={ROUTE.LIKES} element={<LikesPage />} /> */}
                                 <Route path={ROUTE.STUDIO_UPLOAD} element={<UploadPage />} />
-                                <Route path={ROUTE.STUDIO_POST_WRITE} element={<PostWritePage />} /> */}
+                                {/* <Route path={ROUTE.STUDIO_POST_WRITE} element={<PostWritePage />} /> */}
+                                <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO} element={<SwipeVideoPage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE} element={<ProfilePage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE_POST} element={<ProfilePostPage />} />
                             </Routes>

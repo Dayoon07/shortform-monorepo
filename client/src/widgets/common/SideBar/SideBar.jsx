@@ -9,6 +9,7 @@ import { ROUTE } from "../../../shared/constants/Route";
 import { logout } from "../../../features/user/api/userService";
 import { useUser } from "../../../shared/context/UserContext";
 import { useSearch } from "../../../shared/hooks/useSearch";
+import { showSuccessToast } from "../../../shared/utils/toast";
 
 export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState(false);
@@ -26,6 +27,8 @@ export default function SideBar() {
     const handleLogout = async () => {
         await logout();
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
+        showSuccessToast("로그아웃 되었습니다.");
+        navigate("/");
     };
 
     return (

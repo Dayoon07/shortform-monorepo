@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import { SearchIcon, UploadPageIcon, LikePageIcon, CommunityPageIcon } from '../../icon/icon';
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
@@ -8,6 +8,7 @@ import { logout } from "../../../features/user/api/userService";
 import SearchModal from './SearchModal';
 import { LogOut } from 'lucide-react';
 import { useClickSound } from '../../../shared/hooks/useClickSound';
+import { showSuccessToast } from '../../../shared/utils/toast';
 
 export default function AppBar() {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -15,6 +16,7 @@ export default function AppBar() {
     const { user, setUser } = useUser();
     const dropdownRef = useRef(null);
     const handlePlayClickSound = useClickSound("/mp3/click.mp3");
+    const navigate = useNavigate();
     const dropdownItem = `block w-full px-4 py-2 text-gray-300 
         hover:text-white hover:bg-gray-700/50 z-[91] 
         flex items-center space-x-2
@@ -37,6 +39,8 @@ export default function AppBar() {
     const handleLogout = async () => {
         await logout();
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
+        navigate("/");
+        showSuccessToast("로그아웃 되었습니다.");
     }
 
     return (

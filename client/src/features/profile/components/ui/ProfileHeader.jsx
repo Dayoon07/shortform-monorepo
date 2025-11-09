@@ -1,6 +1,22 @@
+import { useState } from "react";
 import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
+import FollowButton from "../../../follow/components/ui/FollowButton";
+import { useUser } from "../../../../shared/context/UserContext";
+import { useProfile } from "../../hooks/useProfile";
+import ProfileEditFormModal from "../../../../widgets/profile/ProfileEditFormModal";
+import { useParams } from "react-router-dom";
 
-export default function ProfileHeader({ profile, isOwnProfile, onShowInfo }) {
+export default function ProfileHeader({ profile, onShowInfo }) {
+    const [profileEditModal, setProfileEditModal] = useState(false);
+    const { mention } =  useParams();
+    const { user } = useUser();
+
+    const {
+        isFollowing,
+        isOwnProfile,
+        handleToggleFollow
+    } = useProfile(mention, user);
+        
     return (
         <div className="flex flex-col sm:flex-row sm:space-x-6 mb-4 p-6 sm:items-center">
             <div className="max-sm:flex max-sm:justify-center mb-4 sm:mb-0">
@@ -40,6 +56,35 @@ export default function ProfileHeader({ profile, isOwnProfile, onShowInfo }) {
                         {profile.bio.length > 21 ? profile.bio.substring(0, 20) + '...' : profile.bio}
                     </p>
                 )}
+
+                {/* 
+                    조건 
+                    - 현재 로그인한 유저이면서 프로필의 정보가 현재 유저의 정보와 다르면 팔로우 버튼
+                */}
+                {user && (
+                    !isOwnProfile ? (
+                        <FollowButton
+                            isFollowing={isFollowing}
+                            onFollow={handleToggleFollow}
+                            onUnfollow={handleToggleFollow}
+                            mention={profile.mention}
+                        />
+                    ) : (
+                        // {/* 프로필 편집 버튼 (본인 프로필일 때만 화면에 출력) */}
+                        <button className="bg-gradient-to-r from-pink-500 to-sky-500 hover:from-pink-600 hover:to-sky-600 px-8 py-2 rounded-md" 
+                            type="button" id="user-profile-edit-btn" onClick={() => setProfileEditModal(true)}
+                        >
+                            프로필 편집
+                        </button>
+                    )
+                )}
+
+                {/* 프로필 정보 수정 */}
+                <ProfileEditFormModal 
+                    profile={profile} 
+                    isOpen={profileEditModal}
+                    onClose={() => setProfileEditModal(false)}
+                />
             </div>
         </div>
     );

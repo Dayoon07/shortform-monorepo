@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { editUserProfile } from "../../features/profile/api/profileService";
+import { useUser } from "../../shared/context/UserContext";
 
 export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
     const [previewImg, setPreviewImg] = useState(profile?.profileImgSrc || '');
+    const [selectedFile, setSelectedFile] = useState(null); // 추가됨
+    const { user } = useUser();
+
     const [formData, setFormData] = useState({
         username: profile?.username || '',
         mail: profile?.mail || '',
@@ -12,6 +17,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            setSelectedFile(file); // 파일 저장
             const reader = new FileReader();
             reader.onloadend = () => setPreviewImg(reader.result);
             reader.readAsDataURL(file);
@@ -20,20 +26,38 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = () => {
-        console.log('저장할 데이터:', formData);
-        alert('프로필이 저장되었습니다!');
-        onClose();
+    const handleSubmit = async () => {
+        try {
+            console.log(user.id);
+            const data = await editUserProfile(
+                formData.username,
+                formData.mail,
+                formData.mention,
+                formData.bio,
+                selectedFile,
+                profile?.profileImgSrc,
+                user.id
+            );
+
+            console.log("프로필 업데이트 완료:", data);
+            alert("프로필이 저장되었습니다!");
+
+            // 로컬 스토리지 갱신 (백엔드에서 새 유저 정보 반환하므로)
+            if (data.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+            }
+
+            onClose();
+        } catch (error) {
+            console.error("업데이트 실패:", error);
+            alert("프로필 수정 중 오류가 발생했습니다.");
+        }
     };
 
     const handleClose = () => {
-        // 폼 데이터 초기화
         setFormData({
             username: profile?.username || '',
             mail: profile?.mail || '',
@@ -41,6 +65,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
             bio: profile?.bio || ''
         });
         setPreviewImg(profile?.profileImgSrc || '');
+        setSelectedFile(null);
         onClose();
     };
 
@@ -50,58 +75,107 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-full mx-4">
                 <h2 className="text-xl font-bold mb-4 text-black">프로필 수정</h2>
-                
+
                 <div className="space-y-4 text-black">
+                    {/* 프로필 이미지 */}
                     <div>
                         <label className="block text-sm font-medium mb-2">프로필 이미지</label>
                         <div className="flex items-center space-x-4">
-                            <img src={previewImg} alt="프로필 미리보기" className="w-16 h-16 rounded-full object-cover border" />
-                            <input type="file" accept="image/*" onChange={handleImageChange} className="text-sm text-gray-500 file:mr-4 
-                                file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 
-                                file:text-blue-700 hover:file:bg-blue-100"
+                            <img
+                                src={previewImg}
+                                alt="프로필 미리보기"
+                                className="w-16 h-16 rounded-full object-cover border"
+                            />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+                                    file:rounded-full file:border-0 file:text-sm file:font-semibold 
+                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                             />
                         </div>
                     </div>
 
+                    {/* 이름 */}
                     <div>
                         <label htmlFor="username" className="block text-sm font-medium mb-2">사용자명</label>
-                        <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required 
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
+                    {/* 이메일 */}
                     <div>
                         <label htmlFor="mail" className="block text-sm font-medium mb-2">이메일</label>
-                        <input type="email" id="mail" name="mail" value={formData.mail} onChange={handleInputChange} required 
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        <input
+                            type="email"
+                            id="mail"
+                            name="mail"
+                            value={formData.mail}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
+                    {/* 멘션 */}
                     <div>
                         <label htmlFor="mention" className="block text-sm font-medium mb-2">사용자 멘션</label>
                         <div className="flex">
-                            <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">@</span>
-                            <input type="text" id="mention" name="mention" value={formData.mention} onChange={handleInputChange} required 
-                                className="flex-1 px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                            <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 
+                                border-gray-300 bg-gray-50 text-gray-500 text-sm">@</span>
+                            <input
+                                type="text"
+                                id="mention"
+                                name="mention"
+                                value={formData.mention}
+                                onChange={handleInputChange}
+                                required
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-r-md 
+                                    focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
                     </div>
 
+                    {/* 자기소개 */}
                     <div>
                         <label htmlFor="bio" className="block text-sm font-medium mb-2">자기소개</label>
-                        <textarea id="bio" name="bio" rows="4" placeholder="자신을 소개해주세요..." value={formData.bio} onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        <textarea
+                            id="bio"
+                            name="bio"
+                            rows="4"
+                            placeholder="자신을 소개해주세요..."
+                            value={formData.bio}
+                            onChange={handleInputChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
+                    {/* 버튼 */}
                     <div className="flex space-x-3 pt-4">
-                        <button onClick={handleSubmit} className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md bg-gradient-to-r 
-                            from-pink-500 to-sky-500 hover:from-pink-600 hover:to-sky-600"
+                        <button
+                            onClick={handleSubmit}
+                            className="flex-1 px-4 py-2 text-white rounded-md 
+                                bg-gradient-to-r from-pink-500 to-sky-500 
+                                hover:from-pink-600 hover:to-sky-600"
                         >
                             저장
                         </button>
-                        <button onClick={handleClose} className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 
-                            focus:outline-none focus:ring-2 focus:ring-gray-500"
+                        <button
+                            onClick={handleClose}
+                            className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-md 
+                                hover:bg-gray-600 focus:outline-none focus:ring-2 
+                                focus:ring-gray-500"
                         >
                             취소
                         </button>

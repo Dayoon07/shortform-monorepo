@@ -59,7 +59,7 @@ export async function login(username, password) {
 
         if (response.ok && data.success) {
             localStorage.setItem("user", JSON.stringify(data.user));
-            setTimeout(() => window.location.href = window.location.origin, 1000);
+            // setTimeout(() => window.location.href = window.location.origin, 1000);
             showSuccessToast("로그인 되었습니다.");
             return data;
         } else {
@@ -82,8 +82,7 @@ export async function logout() {
             console.log(data1);
             // console.log(data2);
             localStorage.clear();
-            setTimeout(() => window.location.href = window.location.origin, 1000);
-            showSuccessToast("로그아웃 되었습니다");
+            // showSuccessToast("로그아웃 되었습니다");
         }
     } catch (error) {
         console.log(error);

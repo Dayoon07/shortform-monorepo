@@ -1,11 +1,16 @@
 import { useState } from "react";
 import Modal from "./Modal";
 import { login } from "../../../features/user/api/userService";
+import { useUser } from "../../../shared/context/UserContext";
+import { useNavigate } from "react-router-dom";
+import { showSuccessToast } from "../../../shared/utils/toast";
 
 export default function LoginModal({ onClose }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const { setUser } = useUser();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,6 +24,10 @@ export default function LoginModal({ onClose }) {
             
             if (data.success === false) {
                 alert(`로그인 실패: ${data.message || '사용자명 또는 비밀번호가 올바르지 않습니다.'}`);
+            } else {
+                setUser(data.user); // Context 업데이트
+                showSuccessToast("로그인 되었습니다.");
+                navigate('/'); // 홈으로 이동 (새로고침 없이)
             }
         } catch (error) {
             console.error('로그인 요청 오류:', error);

@@ -51,7 +51,7 @@ const NAV_ITEMS = [
 
 export default function Navigation({ user }) {
     return (
-        <nav className="flex flex-col space-y-2 w-64">
+        <nav className="flex flex-col space-y-2 w-60">
             {NAV_ITEMS.map((item) => (
                 <NavItem key={item.to} {...item} />
             ))}

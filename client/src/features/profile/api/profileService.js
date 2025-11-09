@@ -22,3 +22,33 @@ export async function getProfileVideos(mention) {
         return [];
     }
 }
+
+export async function editUserProfile(username, mail, mention, bio, profileImg, currentProfileImgSrc, id) {
+    try {
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("mail", mail);
+        formData.append("mention", mention);
+        formData.append("bio", bio);
+        formData.append("id", id);
+        if (profileImg) formData.append("profileImg", profileImg);
+        if (currentProfileImgSrc) formData.append("currentProfileImgSrc", currentProfileImgSrc);
+
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.EDIT}`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!res.ok) {
+            const err = await res.text();
+            throw new Error(`서버 응답 오류: ${err}`);
+        }
+
+        const data = await res.json();
+        console.log("프로필 수정 성공:", data);
+        return data;
+    } catch (error) {
+        console.error("프로필 수정 실패:", error);
+        throw error;
+    }
+}

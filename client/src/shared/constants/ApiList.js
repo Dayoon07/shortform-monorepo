@@ -11,10 +11,14 @@ export const API_LIST = {
     },
     VIDEO: {
         ALL: "/api/video/all",
-        USER_VIDEO: (mention) => `/api/user/info/${mention}/video`
+        USER_VIDEO: (mention) => `/api/user/info/${mention}/video`,
+        RANDOM_VIDEO: "/api/videos/random",
+        FIRST_SWIPE_VIDEO: "/api/video/swipe/find",
+        UPLOAD_VIDEO: "/api/upload/video"
     },
     VIDEO_LIKE: {
-        ALL: "/api/video/like/all"
+        ALL: "/api/video/like/all",
+        TOGGLE_VIDEO_LIKE: "/api/video/like"
     },
     SEARCH: {
         ALL: "/user/search/all",
