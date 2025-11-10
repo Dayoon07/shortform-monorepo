@@ -10,15 +10,20 @@ export const API_LIST = {
         USER_INFO: (mention) => `/api/user/info/${mention}`
     },
     VIDEO: {
+        // 페이징된 비디오 목록 (기본)
         ALL: "/api/video/all",
+        // 전체 비디오 목록 (레거시)
+        ALL_LEGACY: "/api/video/all/legacy",
         USER_VIDEO: (mention) => `/api/user/info/${mention}/video`,
         RANDOM_VIDEO: "/api/videos/random",
-        FIRST_SWIPE_VIDEO: "/api/video/swipe/find",
-        UPLOAD_VIDEO: "/api/upload/video"
+        FIRST_SWIPE_VIDEO: (videoLoc, mention) => `/api/video/swipe/find?videoLoc=${videoLoc}&mention=${mention}`,
+        UPLOAD_VIDEO: "/api/upload/video",
+        SEARCH: (query) => `/api/video/search?q=${query}`
     },
     VIDEO_LIKE: {
         ALL: "/api/video/like/all",
-        TOGGLE_VIDEO_LIKE: "/api/video/like"
+        TOGGLE_VIDEO_LIKE: "/api/video/like",
+        MY_LIKE_VIDEOS: (mention) => `/api/like/video?mention=${mention}`
     },
     SEARCH: {
         ALL: "/user/search/all",

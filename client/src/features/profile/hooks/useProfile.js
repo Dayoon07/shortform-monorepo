@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toggleFollow, getFollowStatus } from "../../follow/api/followService";
 import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
-import { getProfileByMention, getProfileVideos } from "../api/profileService";
+import { getProfileByMention } from "../api/profileService";
 import { getUserPosts } from "../../post/api/postService";
 
 export const useProfile = (mention, currentUser) => {
@@ -28,16 +28,16 @@ export const useProfile = (mention, currentUser) => {
         }
     };
 
-    const fetchProfilePosts = async () => {
-        if (!cleanMention) return;
+    // const fetchProfilePosts = async () => {
+    //     if (!cleanMention) return;
         
-        try {
-            const userPosts = await getUserPosts(cleanMention);
-            setPosts(userPosts || []);
-        } catch (error) {
-            console.error('게시글 불러오기 실패:', error);
-        }
-    };
+    //     try {
+    //         const userPosts = await getUserPosts(cleanMention);
+    //         setPosts(userPosts || []);
+    //     } catch (error) {
+    //         console.error('게시글 불러오기 실패:', error);
+    //     }
+    // };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,14 +45,15 @@ export const useProfile = (mention, currentUser) => {
             
             setLoading(true);
             try {
-                const [profileData, videosData] = await Promise.all([
+                const [profileData, postData] = await Promise.all([
                     getProfileByMention(cleanMention),
-                    getProfileVideos(cleanMention),
+                    getUserPosts(cleanMention)
                 ]);
                 
-                setProfile(profileData);
-                setVideos(videosData);
-                
+                setProfile(profileData.profileInfo);
+                setVideos(profileData.profileVideosInfo);
+                setPosts(postData);
+
                 // 팔로우 상태 확인 (본인 프로필이 아닐 때만)
                 if (currentUser && !isOwnProfile) {
                     const followStatus = await getFollowStatus(cleanMention);
@@ -77,6 +78,6 @@ export const useProfile = (mention, currentUser) => {
         isFollowing,
         isOwnProfile,
         handleToggleFollow,
-        fetchProfilePosts
+        // fetchProfilePosts
     };
 };

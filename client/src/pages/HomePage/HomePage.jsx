@@ -1,5 +1,5 @@
 import VideoList from "../../widgets/video/VideoList";
-const HomePage = () => {
+
+export default function HomePage() {
     return <VideoList />
 }
-export default HomePage;

@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
-import { SearchModalBackButton, SearchModalCloseButton } from '../../icon/icon';
+import { SearchIcon, SearchModalBackButton, SearchModalCloseButton } from '../../icon/icon';
+import { X } from 'lucide-react';
 
 export default function SearchModal({ user, onClose }) {
     const [searchHistory, setSearchHistory] = useState([]);
@@ -34,7 +35,7 @@ export default function SearchModal({ user, onClose }) {
         const trimmedQuery = searchQuery.trim();
         if (!trimmedQuery) return;
         
-        navigate(`/search?q=${trimmedQuery}`);
+        navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(trimmedQuery));
         onClose();
     };
 
@@ -63,24 +64,21 @@ export default function SearchModal({ user, onClose }) {
     }, [fetchSearchHistory]);
 
     useEffect(() => {
-        const handleEscape = (e) => {
-            if (e.key === 'Escape') onClose();
-        };
-        
+        const handleEscape = (e) => e.key === 'Escape' && onClose();
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
     }, [onClose]);
 
     return (
         <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100]" 
+            className="fixed inset-0 bg-black/80 z-[100]" 
             onClick={onClose}
             role="dialog"
             aria-modal="true"
             aria-labelledby="search-modal-title"
         >
             <div 
-                className="bg-black/90 backdrop-blur-sm border-b border-white/30 px-4 py-3" 
+                className="bg-black/90 border-b border-white/30 px-4 py-3" 
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center py-2">
@@ -103,9 +101,7 @@ export default function SearchModal({ user, onClose }) {
                         <SearchHistoryList
                             items={searchHistory}
                             onDelete={deleteSearchWord}
-                            onSelect={(word) => {
-                                navigate(`/search?q=${word}`)
-                            }}
+                            onSelect={(word) => navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(word))}
                         />
                     ) : (
                         <div className="mt-4 text-center py-8">
@@ -128,14 +124,7 @@ function SearchInput({ value, setValue }) {
                 className="absolute top-2.5 left-2.5 p-0 bg-transparent border-none cursor-pointer"
                 aria-label="검색"
             >
-                <svg 
-                    className="w-6 h-6 text-white/80 hover:text-white transition-colors" 
-                    fill="currentColor" 
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5z"/>
-                </svg>
+                <SearchIcon />
             </button>
             <input
                 type="text"
@@ -179,7 +168,7 @@ function SearchHistoryList({ items, onDelete, onSelect }) {
                         onClick={() => onDelete(item.id, item.searchedWord)}
                         aria-label={`"${item.searchedWord}" 검색 기록 삭제`}
                     >
-                        &times;
+                        <X />
                     </button>
                 </div>
             ))}

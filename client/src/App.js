@@ -1,10 +1,6 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import { ROUTE, PATTERN_ROUTE } from "./shared/constants/Route";
 import { UserProvider } from "./shared/context/UserContext";
-
-import "./App.css";
 
 import AppBar from "./widgets/common/AppBar/AppBar";
 import SideBar from "./widgets/common/SideBar/SideBar";
@@ -19,6 +15,9 @@ import ProfilePostPage from "./pages/ProfilePostPage/ProfilePostPage";
 import SwipeVideoPage from "./pages/SwipeVideoPage/SwipeVideoPage";
 import ExplorePage from "./pages/ExplorePage/ExplorePage";
 import UploadPage from "./pages/UploadPage/UploadPage";
+import PostWritePage from "./pages/PostWritePage/PostWritePage";
+import LikesPage from "./pages/LikesPage/LikesPage";
+import "./App.css";
 
 export default function App() {
     return (
@@ -30,14 +29,14 @@ export default function App() {
                         <div className="sm:flex">
                             <SideBar />
                             <Routes>
-                                <Route path={ROUTE.HOMEPAGE} element={<HomePage />} />  {/* 나중에 HomePage 컴포넌트에서 영상 가져올 떄 페이징 처리 구현 */}
+                                <Route path={ROUTE.HOMEPAGE} element={<HomePage />} />
                                 <Route path={ROUTE.LOGINPLZ} element={<LoginPlzPage />} />
                                 <Route path={ROUTE.SEARCH} element={<SearchPage />} />
                                 <Route path={ROUTE.FOLLOWING} element={<FollowingPage />} />
                                 <Route path={ROUTE.EXPLORE} element={<ExplorePage />} />
-                                {/* <Route path={ROUTE.LIKES} element={<LikesPage />} /> */}
                                 <Route path={ROUTE.STUDIO_UPLOAD} element={<UploadPage />} />
-                                {/* <Route path={ROUTE.STUDIO_POST_WRITE} element={<PostWritePage />} /> */}
+                                <Route path={ROUTE.STUDIO_POST_WRITE} element={<PostWritePage />} />
+                                <Route path={ROUTE.LIKES} element={<LikesPage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO} element={<SwipeVideoPage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE} element={<ProfilePage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE_POST} element={<ProfilePostPage />} />

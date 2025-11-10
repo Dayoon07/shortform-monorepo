@@ -6,7 +6,7 @@ import { useProfile } from "../../hooks/useProfile";
 import ProfileEditFormModal from "../../../../widgets/profile/ProfileEditFormModal";
 import { useParams } from "react-router-dom";
 
-export default function ProfileHeader({ profile, onShowInfo }) {
+export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
     const [profileEditModal, setProfileEditModal] = useState(false);
     const { mention } =  useParams();
     const { user } = useUser();
@@ -28,7 +28,7 @@ export default function ProfileHeader({ profile, onShowInfo }) {
             <div className="space-y-2 max-sm:text-center flex-1">
                 <div>
                     <h1 className="text-3xl font-semibold">{profile.username}</h1>
-                    <div className="flex space-x-4 max-sm:justify-center mt-1">
+                    <div className="sm:flex space-x-4 max-sm:justify-center mt-1">
                         <small className="font-semibold">@{profile.mention}</small>
                         <small className="text-gray-400 hover:underline cursor-pointer" onClick={onShowInfo}>
                             더보기
@@ -46,7 +46,7 @@ export default function ProfileHeader({ profile, onShowInfo }) {
                         <span className="text-gray-500 hover:underline cursor-pointer">팔로워</span>
                     </div>
                     <div>
-                        <span className="text-lg font-semibold">{profile.videoCount || 0}</span>{' '}
+                        <span className="text-lg font-semibold">{videoCount || 0}</span>{' '}
                         <span className="text-gray-500">동영상</span>
                     </div>
                 </div>

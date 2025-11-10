@@ -21,7 +21,7 @@ export function showToast(message, options = {}) {
 
     const toast = document.createElement('div');
     toast.innerHTML = message;
-    toast.className = 'custom-toast text-white px-10 py-2 rounded shadow-md z-50 text-center transition-all duration-300';
+    toast.className = 'custom-toast text-white sm:px-10 max-sm:px-5 py-2 rounded shadow-md z-50 text-center transition-all duration-300';
     
     // 배경색 설정  rgb(107, 114, 128) 회색은 나중에 사용할 일이 있으면 그때 수정
     toast.style.backgroundColor = success ? 'rgb(22, 163, 74)' : 'rgb(239, 68, 68)';
@@ -72,3 +72,8 @@ export function showErrorToast(message, duration = 3000) {
 export function showSuccessToast(message, duration = 3000) {
     showToast(message, { success: true, duration });
 }
+
+
+
+
+

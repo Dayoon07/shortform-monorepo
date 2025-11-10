@@ -1,13 +1,13 @@
 import { useLazyHoverVideo } from "../../features/video/hooks/useLazyHoverVideo";
 import { VideoCard } from "../../features/video/components/VideoCard";
 
-export function CommonVideoGrid({ videos }) {
+export function CommonVideoGrid({ videos, message = "비디오가 없습니다" }) {
     const videoRefs = useLazyHoverVideo(videos);
 
     if (!videos || videos.length === 0) {
         return (
             <div className="flex items-center justify-center h-96">
-                <p className="text-gray-400 text-lg">비디오가 없습니다</p>
+                <p className="text-gray-400 text-lg">{message}</p>
             </div>
         );
     }

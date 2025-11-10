@@ -5,7 +5,9 @@ export async function getProfileByMention(mention) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.USER_INFO(mention)}`);
         if (!res.ok) throw new Error("멘션에 해당하는 프로필 사용자를 찾지 못했습니다.");
-        return await res.json();
+        const data = await res.json();
+        // console.log(data);
+        return data;
     } catch (error) {
         console.error('프로필 수신 실패:', error);
         throw error;

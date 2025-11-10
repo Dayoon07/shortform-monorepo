@@ -1,6 +1,6 @@
 import { Calendar, Users, Video, Eye, Heart } from "lucide-react";
 
-export default function ProfileInfoModal({ profile, isOpen, onClose }) {
+export default function ProfileInfoModal({ profile, videoCount, isOpen, onClose }) {
     if (!isOpen) return null;
     
     return (
@@ -34,7 +34,7 @@ export default function ProfileInfoModal({ profile, isOpen, onClose }) {
                             </div>
                             <div className="flex items-center space-x-3">
                                 <Video size={24} className="text-gray-600" />
-                                <span>동영상: {profile.videoCount || 0}개</span>
+                                <span>동영상: {videoCount || 0}개</span>
                             </div>
                             <div className="flex items-center space-x-3">
                                 <Eye size={24} className="text-gray-600" />

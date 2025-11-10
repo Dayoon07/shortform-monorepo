@@ -25,9 +25,9 @@ export default function SideBar() {
     };
 
     const handleLogout = async () => {
-        await logout();
+        const data = await logout();
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
-        showSuccessToast("로그아웃 되었습니다.");
+        showSuccessToast(data);
         navigate("/");
     };
 

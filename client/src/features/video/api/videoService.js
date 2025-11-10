@@ -1,10 +1,52 @@
+// src/features/video/api/videoService.js
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 
 /**
- * 모든 비디오를 가져옵니다
+ * 페이징된 비디오 목록을 가져옵니다
+ * @param {number} page - 페이지 번호 (0부터 시작)
+ * @param {number} size - 페이지당 아이템 수
+ * @returns {Promise<{content: Array, totalPages: number, totalElements: number, last: boolean}>}
+ */
+export async function getVideoPaginated(page = 0, size = 20) {
+    try {
+        const res = await fetch(
+            `${REST_API_SERVER}${API_LIST.VIDEO.ALL}?page=${page}&size=${size}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        
+        // 백엔드가 페이징 정보를 포함하지 않는 경우를 대비한 처리
+        if (Array.isArray(data)) {
+            return {
+                content: data,
+                totalPages: 1,
+                totalElements: data.length,
+                last: true,
+                number: page
+            };
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Failed to fetch videos:', error);
+        throw error;
+    }
+}
+
+/**
+ * 모든 비디오를 가져옵니다 (기존 호환성 유지)
  * @returns {Promise<Array>} 비디오 배열
- * @throws {Error} API 요청 실패시
  */
 export async function getVideoAll() {
     try {
@@ -21,7 +63,6 @@ export async function getVideoAll() {
 
         const data = await res.json();
         
-        // 데이터 유효성 검사
         if (!Array.isArray(data)) {
             console.warn('Expected array but got:', typeof data);
             return [];
@@ -30,14 +71,12 @@ export async function getVideoAll() {
         return data;
     } catch (error) {
         console.error('Failed to fetch videos:', error);
-        throw error; // 에러를 상위로 전파하여 UI에서 처리하도록
+        throw error;
     }
 }
 
 /**
  * 특정 비디오의 상세 정보를 가져옵니다
- * @param {string} videoLoc - 비디오 위치/ID
- * @returns {Promise<Object>} 비디오 상세 정보
  */
 export async function getVideoById(videoLoc) {
     try {

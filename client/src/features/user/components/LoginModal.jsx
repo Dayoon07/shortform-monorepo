@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { login } from "../../user/api/userService";
 import { useUser } from "../../../shared/context/UserContext";
+import { useNavigate } from "react-router-dom";
+import { showSuccessToast } from "../../../shared/utils/toast";
 
 export default function LoginModal({ onClose }) {
     const [username, setUsername] = useState('');
@@ -9,6 +11,7 @@ export default function LoginModal({ onClose }) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const { setUser } = useUser();
+    const navigate = useNavigate();
 
     // ESC 키로 닫기
     useEffect(() => {
@@ -43,7 +46,8 @@ export default function LoginModal({ onClose }) {
             if (data && data.success) {
                 setUser(data.user);
                 onClose();
-                window.location.reload(); // 필요시 리다이렉트
+                showSuccessToast(data.message);
+                navigate("/");
             } else {
                 setError(data?.message || '로그인에 실패했습니다.');
             }

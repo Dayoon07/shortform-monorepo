@@ -28,7 +28,7 @@ export default function UploadPage() {
     useEffect(() => {
         if (!user) {
             navigate(ROUTE.LOGINPLZ);
-        }``
+        }
     }, [user, navigate]);
 
     const handleModalSubmit = async (metadata) => {
@@ -53,7 +53,7 @@ export default function UploadPage() {
 
     return (
         <main className="flex-1 bg-black text-white min-h-screen">
-            <section className="w-full md:h-full md:flex md:flex-col items-center justify-center px-4 py-6">
+            <section className="w-full md:h-full md:flex md:flex-col items-center justify-center px-4 py-6 max-sm:mt-32">
                 <VideoUploadDropzone
                     onFileSelect={handleFileSelect}
                     disabled={fileProgress > 0 && fileProgress < 100}

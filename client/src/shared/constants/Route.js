@@ -10,6 +10,8 @@ export const ROUTE = {
      */
     SEARCH: "/search",
 
+    DYNAMIC_SEARCH_ROUTE: (word) => `/search?q=${word}`,
+
     /** 
      * 로그아웃 요청 경로
      * @example "/logout"

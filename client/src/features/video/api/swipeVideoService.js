@@ -1,12 +1,12 @@
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 
-export async function getRandomVideo(excludeIds = []) {
+export async function getRandomVideo(mention, excludeIds = []) {
     try {
         const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.RANDOM_VIDEO}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ excludeIds: excludeIds })
+            body: JSON.stringify({ excludeIds: excludeIds, mention: mention })
         });
         
         if (!response.ok) throw new Error('영상을 불러올 수 없습니다.');
@@ -21,12 +21,8 @@ export async function getRandomVideo(excludeIds = []) {
 
 export async function getFirstSwipeVideo(videoLoc, mention) {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.FIRST_SWIPE_VIDEO}`, {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.FIRST_SWIPE_VIDEO(videoLoc, mention)}`, {
             method: "POST",
-            body: JSON.stringify({
-                videoLoc: videoLoc,
-                mention: mention
-            })
         });
         if (!res.ok) throw new Error("에러남!!!");
         const data = await res.json();

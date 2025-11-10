@@ -59,8 +59,7 @@ export async function login(username, password) {
 
         if (response.ok && data.success) {
             localStorage.setItem("user", JSON.stringify(data.user));
-            // setTimeout(() => window.location.href = window.location.origin, 1000);
-            showSuccessToast("로그인 되었습니다.");
+            showSuccessToast(data.message);
             return data;
         } else {
             alert(`로그인 실패: ${data.message || "사용자명 또는 비밀번호가 올바르지 않습니다."}`);
@@ -77,12 +76,9 @@ export async function logout() {
             method: "POST"
         });
         if (res.ok) {
-            const data1 = await res.text();
-            // const data2 = await res.json();
-            console.log(data1);
-            // console.log(data2);
+            const logoutText = await res.text();
             localStorage.clear();
-            // showSuccessToast("로그아웃 되었습니다");
+            return logoutText;
         }
     } catch (error) {
         console.log(error);

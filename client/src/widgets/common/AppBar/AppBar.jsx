@@ -37,42 +37,40 @@ export default function AppBar() {
     }, [showDropdown]);
 
     const handleLogout = async () => {
-        await logout();
+        const data = await logout();
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
+        showSuccessToast(data);
         navigate("/");
-        showSuccessToast("로그아웃 되었습니다.");
-    }
+    };
 
     return (
         <>
             <nav className={nav}>
-                <h1 className="md:text-3xl text-2xl font-bold bg-gradient-to-t from-pink-500 to-sky-500 bg-clip-text text-transparent pl-2">
+                <h1 className="md:text-3xl text-2xl font-bold bg-gradient-to-t 
+                    from-pink-500 to-sky-500 bg-clip-text text-transparent pl-2"
+                >
                     <Link to={ROUTE.HOMEPAGE}>FlipFlop</Link>
                 </h1>
 
                 <div className="flex justify-around items-center gap-2">
-                    <button
+                    <button aria-label="검색" 
                         onClick={() => {
                             setShowSearchModal(true);
                             handlePlayClickSound();
                         }}
-                        className="nav-btn flex items-center space-x-3 p-3 hover:bg-gray-800/50 rounded-xl transition-colors group"
-                        aria-label="검색"
+                        className="nav-btn flex items-center space-x-3 p-3 
+                            hover:bg-gray-800/50 rounded-xl transition-colors group"
                     >
                         <SearchIcon />
                     </button>
 
                     {user ? (
                         <div className="relative z-[91]" ref={dropdownRef}>
-                            <button 
-                                onClick={() => setShowDropdown(!showDropdown)}
+                            <button onClick={() => setShowDropdown(!showDropdown)}
                                 className="w-8 h-8 p-0.5 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 hover:opacity-80 transition-opacity"
-                                aria-label="프로필 메뉴"
-                                aria-expanded={showDropdown}
+                                aria-label="프로필 메뉴" aria-expanded={showDropdown}
                             >
-                                <img 
-                                    src={`${REST_API_SERVER}${user.profileImgSrc}`} 
-                                    alt={`${user.username}의 프로필`}
+                                <img src={`${REST_API_SERVER}${user.profileImgSrc}`} alt={`${user.username}의 프로필`}
                                     className="w-full h-full object-cover rounded-full" 
                                 />
                             </button>

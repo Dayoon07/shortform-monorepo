@@ -37,32 +37,33 @@ export default function SwipeVideoPlayer({
             }
         };
 
-        const handleKeyDown = (e) => {
-            const tagName = e.target.tagName.toLowerCase();
-            if (tagName === 'input' || tagName === 'textarea') return;
+        // 위/아래 화살표 키 누르면 스와이프 되지만 현재는 주석 처리
+        // const handleKeyDown = (e) => {
+        //     const tagName = e.target.tagName.toLowerCase();
+        //     if (tagName === 'input' || tagName === 'textarea') return;
 
-            switch(e.key) {
-                case 'ArrowDown':
-                    e.preventDefault();
-                    onSwipe('next');
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault();
-                    onSwipe('prev');
-                    break;
-            }
-        };
+        //     switch(e.key) {
+        //         case 'ArrowDown':
+        //             e.preventDefault();
+        //             onSwipe('next');
+        //             break;
+        //         case 'ArrowUp':
+        //             e.preventDefault();
+        //             onSwipe('prev');
+        //             break;
+        //     }
+        // };
 
         window.addEventListener('touchstart', handleTouchStart);
         window.addEventListener('touchend', handleTouchEnd);
         window.addEventListener('wheel', handleWheel);
-        document.addEventListener('keydown', handleKeyDown);
+        // document.addEventListener('keydown', handleKeyDown);
 
         return () => {
             window.removeEventListener('touchstart', handleTouchStart);
             window.removeEventListener('touchend', handleTouchEnd);
             window.removeEventListener('wheel', handleWheel);
-            document.removeEventListener('keydown', handleKeyDown);
+            // document.removeEventListener('keydown', handleKeyDown);
         };
     }, [onSwipe]);
 
