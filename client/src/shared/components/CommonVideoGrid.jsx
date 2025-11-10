@@ -13,7 +13,7 @@ export function CommonVideoGrid({ videos, message = "비디오가 없습니다" 
     }
 
     return (
-        <div className="md:max-w-5xl md:mx-auto grid md:min-[480px] grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 max-md:pb-[200px] p-2">
+        <div className="md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 max-md:pb-[200px] p-2">
             {videos.map((video, index) => {
                 return (
                     <VideoCard 

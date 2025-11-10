@@ -1,6 +1,6 @@
 export default function ProfilePostList({ posts }) {
     return (
-        <div className="flex flex-col divide-y divide-gray-800">
+        <div className="sm:max-w-6xl sm:mx-auto flex flex-col divide-y divide-gray-800">
             {posts.map((post) => (
                 <div key={post.id} className="p-4">
                     <div className="flex items-center mb-2">

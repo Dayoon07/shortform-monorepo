@@ -7,7 +7,7 @@ export const API_LIST = {
         CHK_USERNAME: (username) => `/api/user/chk/username?username=${username}`,
         CHK_EMAIL: (email) => `/api/user/chk/mail?mail=${email}`,
         EDIT: "/api/user/update",
-        USER_INFO: (mention) => `/api/user/info/${mention}`
+        USER_INFO: (mention) => `/api/user/profile/info?mention=${mention}`
     },
     VIDEO: {
         // 페이징된 비디오 목록 (기본)

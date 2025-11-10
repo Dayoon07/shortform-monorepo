@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { UploadIcon } from '../../../widgets/icon/icon';
+import { useClickSound } from '../../../shared/hooks/useClickSound';
 
 export default function VideoUploadDropzone({ onFileSelect, disabled }) {
     const [isDragging, setIsDragging] = useState(false);
+    const handlePlaySound = useClickSound("/mp3/click.mp3");
 
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -70,6 +72,7 @@ export default function VideoUploadDropzone({ onFileSelect, disabled }) {
                     onClick={(e) => {
                         e.preventDefault();
                         document.getElementById('video-file-input').click();
+                        handlePlaySound();
                     }}
                     disabled={disabled}
                     className="mt-4 px-4 py-2 md:px-6 md:py-2 bg-gradient-to-r from-pink-500 to-sky-500 

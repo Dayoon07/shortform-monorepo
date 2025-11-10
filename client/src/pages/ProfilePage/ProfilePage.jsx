@@ -33,7 +33,7 @@ export default function ProfilePage() {
                 onShowInfo={() => setShowInfoModal(true)}
             />
 
-            <div className="flex border-b border-gray-800 sticky top-0 bg-black z-10">
+            <div className="flex border-b border-gray-800 sticky top-0 bg-black z-10 sm:max-w-6xl sm:mx-auto">
                 <button onClick={() => navigate(ROUTE.PROFILE(cleanMention))}
                     className="px-12 py-3 font-semibold border-b-2 transition border-white text-white max-sm:w-full"
                 >

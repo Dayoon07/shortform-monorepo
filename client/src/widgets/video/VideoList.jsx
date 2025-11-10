@@ -45,7 +45,7 @@ export default function VideoList() {
     if (error && videos.length === 0) return <TryAgain errorMessage={error} />; // 에러 발생
 
     return (
-        <div className="relative">
+        <div className="relative mx-auto">
             <VideoGrid videos={videos} />
             
             {loading && videos.length > 0 && (
