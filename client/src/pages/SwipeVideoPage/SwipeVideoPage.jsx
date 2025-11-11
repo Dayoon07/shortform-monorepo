@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../../shared/context/UserContext';
 import { useSwipeVideo } from '../../features/video/hooks/useSwipeVideo';
@@ -18,6 +18,9 @@ export default function SwipeVideoPage() {
     const [showCommentModal, setShowCommentModal] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
     const [loadError, setLoadError] = useState(null);
+    
+    // ✅ 중복 호출 방지
+    const hasFetched = useRef(false);
 
     const {
         currentVideo,
@@ -31,6 +34,9 @@ export default function SwipeVideoPage() {
     // 초기 비디오 로드
     useEffect(() => {
         const fetchInitialVideo = async () => {
+            // ✅ 이미 호출했으면 중단
+            if (hasFetched.current) return;
+            
             // 로그인 안 했으면 로그인 페이지로
             if (!user) {
                 navigate('/loginplz');
@@ -41,6 +47,9 @@ export default function SwipeVideoPage() {
                 setLoadError('잘못된 접근입니다');
                 return;
             }
+            
+            // ✅ 호출 시작 표시
+            hasFetched.current = true;
             
             try {
                 const data = await getFirstSwipeVideo(videoLoc, user.mention);
@@ -55,6 +64,8 @@ export default function SwipeVideoPage() {
             } catch (error) {
                 console.error('Error fetching initial video:', error);
                 setLoadError('영상을 불러올 수 없습니다');
+                // ✅ 에러 발생 시 다시 시도 가능하도록
+                hasFetched.current = false;
             }
         };
 

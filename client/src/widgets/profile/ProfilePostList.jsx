@@ -1,36 +1,55 @@
+import PostCard from "../../features/post/components/ui/PostCard";
+import { showSuccessToast, showErrorToast } from "../../shared/utils/toast";
+
 export default function ProfilePostList({ posts }) {
+    const handleShare = async (communityUuid) => {
+        const post = posts.find(p => p.communityUuid === communityUuid);
+        if (!post) return;
+
+        const url = `${window.location.origin}/@${post.mention}/post/${communityUuid}`;
+        
+        try {
+            await navigator.clipboard.writeText(url);
+            showSuccessToast('링크가 복사되었습니다');
+        } catch (error) {
+            console.error('링크 복사 실패:', error);
+            showErrorToast("링크 복사에 실패했습니다");
+        }
+    };
+
+    if (!posts || posts.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+                <svg 
+                    className="w-12 h-12 mb-3 text-gray-500"
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                >
+                    <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth="2"
+                        d="M9 13h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z"
+                    />
+                </svg>
+                <h1 className="text-lg font-medium">게시글이 없습니다.</h1>
+            </div>
+        );
+    }
+
     return (
-        <div className="sm:max-w-6xl sm:mx-auto flex flex-col divide-y divide-gray-800">
-            {posts.map((post) => (
-                <div key={post.id} className="p-4">
-                    <div className="flex items-center mb-2">
-                        <img
-                            src={post.profileImgSrc}
-                            alt={post.username}
-                            className="w-10 h-10 rounded-full mr-3"
+        <div className="p-4 md:pl-4 md:pr-20 max-md:pb-40">
+            <div className="space-y-6">
+                {posts.map((post) => (
+                    <div key={post.communityUuid || post.id} className="md:max-w-[600px]">
+                        <PostCard 
+                            post={post}
+                            onShare={handleShare}
                         />
-                        <div>
-                            <p className="font-semibold">{post.username}</p>
-                            <p className="text-gray-400 text-sm">@{post.mention}</p>
-                        </div>
                     </div>
-
-                    <p className="text-white mb-3">{post.communityText}</p>
-
-                    {post.files && (
-                        <img
-                            src={post.files}
-                            alt="post content"
-                            className="rounded-2xl w-full object-cover"
-                        />
-                    )}
-
-                    <div className="flex justify-between mt-3 text-gray-400 text-sm">
-                        <span>❤️ {post.likeCnt}</span>
-                        <span>💬 {post.commentCnt}</span>
-                    </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
 }

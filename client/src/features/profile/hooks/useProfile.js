@@ -28,16 +28,16 @@ export const useProfile = (mention, currentUser) => {
         }
     };
 
-    // const fetchProfilePosts = async () => {
-    //     if (!cleanMention) return;
+    const fetchProfilePosts = async () => {
+        if (!cleanMention) return;
         
-    //     try {
-    //         const userPosts = await getUserPosts(cleanMention);
-    //         setPosts(userPosts || []);
-    //     } catch (error) {
-    //         console.error('게시글 불러오기 실패:', error);
-    //     }
-    // };
+        try {
+            const userPosts = await getUserPosts(cleanMention);
+            setPosts(userPosts || []);
+        } catch (error) {
+            console.error('게시글 불러오기 실패:', error);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -78,6 +78,6 @@ export const useProfile = (mention, currentUser) => {
         isFollowing,
         isOwnProfile,
         handleToggleFollow,
-        // fetchProfilePosts
+        fetchProfilePosts
     };
 };

@@ -18,7 +18,8 @@ export const API_LIST = {
         RANDOM_VIDEO: "/api/videos/random",
         FIRST_SWIPE_VIDEO: (videoLoc, mention) => `/api/video/swipe/find?videoLoc=${videoLoc}&mention=${mention}`,
         UPLOAD_VIDEO: "/api/upload/video",
-        SEARCH: (query) => `/api/video/search?q=${query}`
+        SEARCH: (query) => `/api/video/search?q=${query}`,
+        TAG: (tag) => `/api/hashtag?videoTag=${tag}`
     },
     VIDEO_LIKE: {
         ALL: "/api/video/like/all",
@@ -26,7 +27,7 @@ export const API_LIST = {
         MY_LIKE_VIDEOS: (mention) => `/api/like/video?mention=${mention}`
     },
     SEARCH: {
-        ALL: "/user/search/all",
+        ALL: "/api/user/search/all",
         SEARCH: (query, mention) => `/api/search?q=${query}&mention=${mention}`,
         SEARCH_LIST: (id) => `/api/user/search/list?id=${id}`,
         SEARCH_WORD_DELETE: "/api/search/list/delete"
@@ -41,6 +42,8 @@ export const API_LIST = {
     },
     POST: {
         ALL: "/api/community/all",
-        USER_POST: (mention) => `/api/user/post/info?mention=${mention}`
+        USER_POST: (mention) => `/api/user/post/info?mention=${mention}`,
+        CREATE_POST: "/api/post/write",
+        TOGGLE_POST_LIKE: (communityUuid) => `/api/post/like?communityUuid=${communityUuid}`
     }
 };

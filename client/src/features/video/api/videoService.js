@@ -92,3 +92,41 @@ export async function getVideoById(videoLoc) {
         throw error;
     }
 }
+
+export async function getTagVideoList(tag) {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.TAG(tag)}`);
+        if (!res.ok) throw new Error("에러남!!!");
+        const data = await res.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

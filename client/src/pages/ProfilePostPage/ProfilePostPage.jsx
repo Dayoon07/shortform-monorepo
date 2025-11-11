@@ -16,6 +16,8 @@ export default function ProfilePage() {
     const navigate = useNavigate();
     const cleanMention = mention?.replace('@', '');
 
+    // posts 도메인을 다른 도메인으로 분리 예정
+    // videos, profile, loading 이것만
     const {
         profile,
         videos,
@@ -61,7 +63,6 @@ export default function ProfilePage() {
                 isOpen={showInfoModal}
                 onClose={() => setShowInfoModal(false)}
             />
-
         </main>
     );
 }

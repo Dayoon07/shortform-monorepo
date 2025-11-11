@@ -17,6 +17,7 @@ import ExplorePage from "./pages/ExplorePage/ExplorePage";
 import UploadPage from "./pages/UploadPage/UploadPage";
 import PostWritePage from "./pages/PostWritePage/PostWritePage";
 import LikesPage from "./pages/LikesPage/LikesPage";
+import TagVideoPage from "./pages/TagVideoPage/TagVideoPage";
 import "./App.css";
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
                                 <Route path={ROUTE.SEARCH} element={<SearchPage />} />
                                 <Route path={ROUTE.FOLLOWING} element={<FollowingPage />} />
                                 <Route path={ROUTE.EXPLORE} element={<ExplorePage />} />
+                                <Route path={PATTERN_ROUTE.HASHTAG} element={<TagVideoPage />} />
                                 <Route path={ROUTE.STUDIO_UPLOAD} element={<UploadPage />} />
                                 <Route path={ROUTE.STUDIO_POST_WRITE} element={<PostWritePage />} />
                                 <Route path={ROUTE.LIKES} element={<LikesPage />} />

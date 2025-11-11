@@ -3,7 +3,6 @@ import { FollowingCard } from "../../features/follow/components/FollowingCard";
 
 const FollowingList = ({ followings, onToggleFollow }) => {
     const followingsArr = Array.isArray(followings) ? followings : [];
-    
     if (followingsArr.length === 0) return <EmptyState />;
     
     return (

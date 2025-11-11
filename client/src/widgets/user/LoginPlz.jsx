@@ -26,25 +26,23 @@ export default function LoginPlz() {
                         </div>
                     </div>
 
-                    <h1 className="text-3xl font-semibold text-white mb-4">
+                    <h1 className="text-2xl font-semibold text-white mb-4">
                         로그인이 필요합니다
                     </h1>
                     
-                    <p className="text-gray-400 text-lg mb-8">
+                    <p className="text-gray-400 text-md mb-8">
                         서비스를 이용하려면 먼저 로그인해주세요
                     </p>
 
                     <div className="flex justify-center items-center gap-3">
-                        <button
-                            onClick={() => setShowSignupModal(true)}
+                        <button onClick={() => setShowSignupModal(true)}
                             className="px-6 py-3 border-2 border-gray-600 text-gray-300 bg-gray-900/50 
                                 rounded-full hover:border-gray-500 hover:bg-gray-800 
                                 transition-all duration-200 font-medium"
                         >
                             회원가입
                         </button>
-                        <button
-                            onClick={() => setShowLoginModal(true)}
+                        <button onClick={() => setShowLoginModal(true)}
                             className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-500 
                                 hover:from-pink-600 hover:to-sky-600 text-white rounded-full 
                                 transition-all duration-200 font-medium shadow-lg"

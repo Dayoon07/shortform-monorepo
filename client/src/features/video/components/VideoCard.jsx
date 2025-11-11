@@ -59,7 +59,7 @@ export const VideoCard = memo(({ video, index, videoRefs }) => {
                 </p>
 
                 <span className="text-gray-400 text-sm">
-                    조회수 {video.videoViews.toLocaleString() === '0' ? '없음' : video.videoViews.toLocaleString()}
+                    조회수 {video.videoViews.toLocaleString() === '0' ? '없음' : `${video.videoViews.toLocaleString()}회`}
                 </span>
             </div>
         </div>
