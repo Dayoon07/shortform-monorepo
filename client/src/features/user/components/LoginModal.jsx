@@ -68,7 +68,6 @@ export default function LoginModal({ onClose }) {
                 className="bg-gray-900 rounded-2xl max-w-md w-full mx-4 p-8 shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* 헤더 */}
                 <div className="flex justify-between items-center mb-6">
                     <h3 className="text-2xl font-bold text-white">로그인</h3>
                     <button 
@@ -80,14 +79,12 @@ export default function LoginModal({ onClose }) {
                     </button>
                 </div>
 
-                {/* 에러 메시지 */}
                 {error && (
                     <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-lg">
                         <p className="text-red-400 text-sm">{error}</p>
                     </div>
                 )}
 
-                {/* 폼 */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label htmlFor="login-username" className="block text-sm font-medium text-gray-300 mb-2">
@@ -128,7 +125,6 @@ export default function LoginModal({ onClose }) {
                         />
                     </div>
 
-                    {/* 로그인 버튼 */}
                     <button 
                         type="submit" 
                         className="w-full py-3 rounded-xl font-bold 
@@ -152,7 +148,6 @@ export default function LoginModal({ onClose }) {
                     </button>
                 </form>
 
-                {/* 추가 옵션 */}
                 <div className="mt-6 text-center">
                     <button 
                         onClick={onClose}

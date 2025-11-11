@@ -147,7 +147,6 @@ export default function PostWriteForm() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/* 이미지 업로드 영역 */}
                 <div className="bg-gray-900 rounded-2xl p-6 border border-gray-700">
                     <label className="block text-sm font-semibold text-gray-300 mb-3">
                         이미지 첨부
@@ -184,7 +183,6 @@ export default function PostWriteForm() {
                         onChange={(e) => handleFiles(e.target.files)}
                     />
 
-                    {/* 이미지 미리보기 */}
                     {uploadedImages.length > 0 && (
                         <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4">
                             {uploadedImages.map((file, index) => (
@@ -207,7 +205,6 @@ export default function PostWriteForm() {
                     )}
                 </div>
 
-                {/* 내용 입력 */}
                 <div className="bg-gray-900 rounded-2xl p-6 border border-gray-700">
                     <label className="block text-sm font-semibold text-gray-300 mb-3">
                         내용
@@ -227,7 +224,6 @@ export default function PostWriteForm() {
                     </div>
                 </div>
 
-                {/* 공개 범위 */}
                 <div className="bg-gray-900 rounded-2xl p-6 border border-gray-700">
                     <label className="block text-sm font-semibold text-gray-300 mb-4">
                         공개 범위
@@ -259,14 +255,12 @@ export default function PostWriteForm() {
                     </div>
                 </div>
 
-                {/* 검증 메시지 */}
                 {validationMessage && (
                     <div className="text-sm text-red-400">
                         {validationMessage}
                     </div>
                 )}
 
-                {/* 버튼 */}
                 <div className="flex justify-end space-x-4 pt-6">
                     <button
                         type="button"

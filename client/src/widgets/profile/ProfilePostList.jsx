@@ -21,7 +21,7 @@ export default function ProfilePostList({ posts }) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400">
                 <svg 
-                    className="w-12 h-12 mb-3 text-gray-500"
+                    className="w-16 h-16 mb-4 text-gray-500"
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
@@ -30,26 +30,24 @@ export default function ProfilePostList({ posts }) {
                         strokeLinecap="round" 
                         strokeLinejoin="round" 
                         strokeWidth="2"
-                        d="M9 13h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                 </svg>
-                <h1 className="text-lg font-medium">게시글이 없습니다.</h1>
+                <h2 className="text-xl font-semibold mb-2">게시글이 없습니다</h2>
+                <p className="text-gray-500 text-sm">아직 작성된 게시글이 없어요</p>
             </div>
         );
     }
 
     return (
-        <div className="p-4 md:pl-4 md:pr-20 max-md:pb-40">
-            <div className="space-y-6">
-                {posts.map((post) => (
-                    <div key={post.communityUuid || post.id} className="md:max-w-[600px]">
-                        <PostCard 
-                            post={post}
-                            onShare={handleShare}
-                        />
-                    </div>
-                ))}
-            </div>
+        <div className="w-full sm:max-w-lg pb-24">
+            {posts.map((post) => (
+                <PostCard 
+                    key={post.communityUuid || post.id}
+                    post={post}
+                    onShare={handleShare}
+                />
+            ))}
         </div>
     );
 }

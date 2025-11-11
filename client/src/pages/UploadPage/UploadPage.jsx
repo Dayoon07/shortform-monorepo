@@ -2,17 +2,19 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../shared/context/UserContext';
 import { useVideoUpload } from '../../features/video/hooks/useVideoUpload';
 import VideoUploadDropzone from '../../features/video/components/VideoUploadDropzone';
-import VideoPreview from '../../features/video/components/VideoPreview';
+// import VideoPreview from '../../features/video/components/VideoPreview';
 import UploadProgress from '../../features/video/components/UploadProgress';
 import VideoUploadModal from '../../widgets/video/VideoUploadModal';
 import { ROUTE } from '../../shared/constants/Route';
 import { useEffect } from 'react';
 
+// `주석 처리` = 현재는 불필요한 컴포넌트/코드
+
 export default function UploadPage() {
     const { user } = useUser();
     const navigate = useNavigate();
     const {
-        currentFile,
+        // currentFile,
         previewUrl,
         fileProgress,
         uploadProgress,
@@ -59,16 +61,14 @@ export default function UploadPage() {
                     disabled={fileProgress > 0 && fileProgress < 100}
                 />
 
-                {/* 미리보기 */}
-                {currentFile && !showModal && (
+                {/* {currentFile && !showModal && (
                     <VideoPreview
                         videoUrl={previewUrl}
                         fileName={currentFile.name}
                         fileSize={currentFile.size}
                     />
-                )}
+                )} */}
 
-                {/* 파일 처리 진행률 */}
                 {fileProgress > 0 && fileProgress < 100 && (
                     <div className="w-full max-w-3xl">
                         <UploadProgress
@@ -79,7 +79,6 @@ export default function UploadPage() {
                     </div>
                 )}
 
-                {/* 업로드 가이드 */}
                 <div className="flex flex-col lg:flex-row lg:flex-wrap lg:justify-center lg:gap-8 
                     text-xs md:text-sm text-gray-700 mt-6 space-y-4 lg:space-y-0"
                 >
@@ -106,7 +105,6 @@ export default function UploadPage() {
                 </div>
             </section>
 
-            {/* 메타데이터 입력 모달 */}
             <VideoUploadModal
                 isOpen={showModal}
                 onClose={handleModalClose}

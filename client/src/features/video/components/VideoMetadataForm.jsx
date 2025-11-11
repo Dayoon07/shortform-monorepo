@@ -27,7 +27,6 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            {/* 미리보기 */}
             <div className="flex justify-center">
                 <video 
                     src={previewUrl}
@@ -36,7 +35,6 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                 />
             </div>
 
-            {/* 제목 */}
             <div>
                 <label htmlFor="video-title" className="block text-sm font-medium text-gray-700 mb-2">
                     동영상 제목 <span className="text-red-500">*</span>
@@ -58,7 +56,6 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                 <p className="text-xs text-gray-500 mt-1">최대 100자까지 입력 가능합니다.</p>
             </div>
 
-            {/* 설명 */}
             <div>
                 <label htmlFor="video-description" className="block text-sm font-medium text-gray-700 mb-2">
                     동영상 설명
@@ -79,7 +76,6 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                 <p className="text-xs text-gray-500 mt-1">최대 2000자까지 입력 가능합니다.</p>
             </div>
 
-            {/* 해시태그 */}
             <div>
                 <label htmlFor="video-hashtags" className="block text-sm font-medium text-gray-700 mb-2">
                     해시태그
@@ -99,7 +95,6 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                 <p className="text-xs text-gray-500 mt-1">해시태그는 공백으로 구분합니다.</p>
             </div>
 
-            {/* 시청 권한 */}
             <div>
                 <label htmlFor="video-visibility" className="block text-sm font-medium text-gray-700 mb-2">
                     동영상 시청 권한 <span className="text-red-500">*</span>
@@ -120,7 +115,6 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                 </select>
             </div>
 
-            {/* 댓글 허용 */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                     댓글 작성 허용 <span className="text-red-500">*</span>

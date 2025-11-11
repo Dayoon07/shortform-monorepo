@@ -212,7 +212,6 @@ export default function SignupModal({ onClose }) {
                 className="bg-gray-900 rounded-2xl max-w-md w-full mx-4 p-8 shadow-2xl max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* 헤더 */}
                 <div className="flex justify-between items-center mb-6">
                     <div>
                         <h3 className="text-2xl font-bold text-white">회원가입</h3>
@@ -227,7 +226,6 @@ export default function SignupModal({ onClose }) {
                     </button>
                 </div>
 
-                {/* 에러 메시지 */}
                 {error && (
                     <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-lg flex items-start space-x-2">
                         <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
@@ -235,7 +233,6 @@ export default function SignupModal({ onClose }) {
                     </div>
                 )}
 
-                {/* Step 1: 프로필 이미지 */}
                 {step === 1 && (
                     <div className="space-y-4">
                         <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -286,10 +283,8 @@ export default function SignupModal({ onClose }) {
                     </div>
                 )}
 
-                {/* Step 2: 회원 정보 */}
                 {step === 2 && (
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* 사용자명 */}
                         <div>
                             <label htmlFor="signup-username" className="block text-sm font-medium text-gray-300 mb-2">
                                 사용자명
@@ -320,7 +315,6 @@ export default function SignupModal({ onClose }) {
                             )}
                         </div>
 
-                        {/* 이메일 */}
                         <div>
                             <label htmlFor="signup-email" className="block text-sm font-medium text-gray-300 mb-2">
                                 이메일
@@ -351,7 +345,6 @@ export default function SignupModal({ onClose }) {
                             )}
                         </div>
 
-                        {/* 비밀번호 */}
                         <div>
                             <label htmlFor="signup-password" className="block text-sm font-medium text-gray-300 mb-2">
                                 비밀번호
@@ -370,7 +363,6 @@ export default function SignupModal({ onClose }) {
                             />
                         </div>
 
-                        {/* 비밀번호 확인 */}
                         <div>
                             <label htmlFor="signup-confirm-password" className="block text-sm font-medium text-gray-300 mb-2">
                                 비밀번호 확인
@@ -389,7 +381,6 @@ export default function SignupModal({ onClose }) {
                             />
                         </div>
 
-                        {/* 버튼들 */}
                         <div className="flex space-x-3 pt-4">
                             <button
                                 type="button"

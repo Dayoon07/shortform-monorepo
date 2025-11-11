@@ -1,20 +1,24 @@
 import { useState } from "react";
 import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
-import FollowButton from "../../../follow/components/ui/FollowButton";
 import { useUser } from "../../../../shared/context/UserContext";
 import { useProfile } from "../../hooks/useProfile";
 import ProfileEditFormModal from "../../../../widgets/profile/ProfileEditFormModal";
 import { useParams } from "react-router-dom";
+import ToggleFollowButton from "../../../follow/components/ui/ToggleFollowButton";
 
 export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
     const [profileEditModal, setProfileEditModal] = useState(false);
     const { mention } =  useParams();
     const { user } = useUser();
 
+    /*
+        주석 처리 한 거는 현재는 안 쓰는 
+        데이터를 가져오는 훅이여서 주석 처리함
+    */
     const {
-        isFollowing,
+        // isFollowing,
         isOwnProfile,
-        handleToggleFollow
+        // handleToggleFollow
     } = useProfile(mention, user);
         
     return (
@@ -63,12 +67,13 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
                 */}
                 {user && (
                     !isOwnProfile ? (
-                        <FollowButton
-                            isFollowing={isFollowing}
-                            onFollow={handleToggleFollow}
-                            onUnfollow={handleToggleFollow}
-                            mention={profile.mention}
-                        />
+                        // <FollowButton
+                        //     isFollowing={isFollowing}
+                        //     onFollow={handleToggleFollow}
+                        //     onUnfollow={handleToggleFollow}
+                        //     mention={profile.mention}
+                        // />
+                        <ToggleFollowButton followReqUser={user} followResUser={profile} />
                     ) : (
                         // {/* 프로필 편집 버튼 (본인 프로필일 때만 화면에 출력) */}
                         <button className="bg-gradient-to-r from-pink-500 to-sky-500 hover:from-pink-600 hover:to-sky-600 px-8 py-2 rounded-md" 
@@ -79,7 +84,6 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
                     )
                 )}
 
-                {/* 프로필 정보 수정 */}
                 <ProfileEditFormModal 
                     profile={profile} 
                     isOpen={profileEditModal}

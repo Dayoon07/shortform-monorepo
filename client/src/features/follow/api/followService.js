@@ -21,6 +21,21 @@ export async function toggleFollow(mention) {
     }
 }
 
+export async function upgradeToggleFollow(reqUserMention, resUserMention) {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.UPGRADE_TOGGLE_FOLLOW(reqUserMention, resUserMention)}`, {
+            method: "POST"
+        });
+        if (!res.ok) throw new Error("에러남!!!");
+        const data = await res.json();
+        console.log(data);
+        return { data: data };
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
 // 설명: 토글 방식의 팔로우 기능 만들어 놓은 거 잊어먹어서
 //       밑에 있는 팔로우/언팔 각각 따로 함수 만들어 놓고 주석 처리 한겁니다. 
 //       주석 처리 한 거 사용하지 말고 toggleFollow 함수 사용하세요
@@ -67,9 +82,9 @@ export async function toggleFollow(mention) {
 //     }
 // }
 
-export async function getFollowStatus(mention) {
+export async function getFollowStatus(reqUserMention, resUserMention) {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(mention)}`);
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(reqUserMention, resUserMention)}`);
         if (!res.ok) throw new Error("에러남!!! " + await res.json());
 
         const data = await res.json();

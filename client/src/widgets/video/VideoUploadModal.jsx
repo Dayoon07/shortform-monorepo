@@ -24,7 +24,6 @@ export default function VideoUploadModal({
             onClick={handleBackdropClick}
         >
             <div className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
-                {/* 헤더 */}
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">동영상 정보 입력</h2>
                     {!isUploading && (
@@ -37,7 +36,6 @@ export default function VideoUploadModal({
                     )}
                 </div>
 
-                {/* 업로드 진행 중 */}
                 {isUploading && (
                     <UploadProgress 
                         progress={uploadProgress}
@@ -46,7 +44,6 @@ export default function VideoUploadModal({
                     />
                 )}
 
-                {/* 폼 */}
                 {!isUploading && (
                     <VideoMetadataForm
                         previewUrl={previewUrl}

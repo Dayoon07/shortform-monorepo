@@ -56,7 +56,7 @@ export const useProfile = (mention, currentUser) => {
 
                 // 팔로우 상태 확인 (본인 프로필이 아닐 때만)
                 if (currentUser && !isOwnProfile) {
-                    const followStatus = await getFollowStatus(cleanMention);
+                    const followStatus = await getFollowStatus(cleanMention, mention);
                     setIsFollowing(followStatus);
                 }
             } catch (error) {
@@ -68,7 +68,7 @@ export const useProfile = (mention, currentUser) => {
         };
         
         fetchData();
-    }, [cleanMention, currentUser, isOwnProfile]);
+    }, [cleanMention, currentUser, isOwnProfile, mention]);
 
     return {
         profile, 

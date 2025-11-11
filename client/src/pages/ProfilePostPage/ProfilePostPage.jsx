@@ -9,15 +9,13 @@ import { Loading } from "../../shared/components/Loading";
 import NotFoundProfile from "../../widgets/profile/NotFoundProfile";
 import ProfilePostList from "../../widgets/profile/ProfilePostList";
 
-export default function ProfilePage() {
+export default function ProfilePostPage() {
     const { mention } = useParams();
     const { user } = useUser();
     const [showInfoModal, setShowInfoModal] = useState(false);
     const navigate = useNavigate();
     const cleanMention = mention?.replace('@', '');
 
-    // posts 도메인을 다른 도메인으로 분리 예정
-    // videos, profile, loading 이것만
     const {
         profile,
         videos,
@@ -37,25 +35,29 @@ export default function ProfilePage() {
             />
 
             <div className="flex border-b border-gray-800 sticky top-0 bg-black z-10 sm:max-w-6xl sm:mx-auto">
-                <button onClick={() => navigate(ROUTE.PROFILE(cleanMention))}
+                <button 
+                    onClick={() => navigate(ROUTE.PROFILE(cleanMention))}
                     className="px-12 py-3 font-semibold border-b-2 transition border-transparent text-gray-400 hover:text-white max-sm:w-full"
                 >
                     동영상
                 </button>
-                <button onClick={() => navigate(ROUTE.PROFILE_POST(cleanMention))}
+                <button 
+                    onClick={() => navigate(ROUTE.PROFILE_POST(cleanMention))}
                     className="px-12 py-3 font-semibold border-b-2 transition border-white text-white max-sm:w-full"
                 >
                     게시글
                 </button>
             </div>
 
-            {posts.length > 0 ? (
-                <ProfilePostList posts={posts} />
-            ) : (
-                <div className="text-center py-20">
-                    <p className="text-gray-400">게시물이 없습니다</p>
-                </div>
-            )}
+            <div className="sm:max-w-6xl sm:mx-auto">
+                {posts && posts.length > 0 ? (
+                    <ProfilePostList posts={posts} />
+                ) : (
+                    <div className="text-center py-20">
+                        <p className="text-gray-400">게시물이 없습니다</p>
+                    </div>
+                )}
+            </div>
             
             <ProfileInfoModal 
                 profile={profile}

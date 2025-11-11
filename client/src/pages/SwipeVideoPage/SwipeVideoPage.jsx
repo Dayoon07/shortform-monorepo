@@ -5,6 +5,7 @@ import { useSwipeVideo } from '../../features/video/hooks/useSwipeVideo';
 import SwipeVideoPlayer from '../../widgets/video/SwipeVideoPlayer';
 import { Loading } from '../../shared/components/Loading';
 import { getFirstSwipeVideo } from '../../features/video/api/swipeVideoService';
+import ToGoPage from "../../shared/components/ToGoPage";
 
 export default function SwipeVideoPage() {
     const params = useParams();
@@ -19,7 +20,7 @@ export default function SwipeVideoPage() {
     const [isFollowing, setIsFollowing] = useState(false);
     const [loadError, setLoadError] = useState(null);
     
-    // ✅ 중복 호출 방지
+    // 중복 호출 방지
     const hasFetched = useRef(false);
 
     const {
@@ -34,7 +35,7 @@ export default function SwipeVideoPage() {
     // 초기 비디오 로드
     useEffect(() => {
         const fetchInitialVideo = async () => {
-            // ✅ 이미 호출했으면 중단
+            // 이미 호출했으면 중단
             if (hasFetched.current) return;
             
             // 로그인 안 했으면 로그인 페이지로
@@ -48,7 +49,7 @@ export default function SwipeVideoPage() {
                 return;
             }
             
-            // ✅ 호출 시작 표시
+            // 호출 시작 표시
             hasFetched.current = true;
             
             try {
@@ -64,7 +65,7 @@ export default function SwipeVideoPage() {
             } catch (error) {
                 console.error('Error fetching initial video:', error);
                 setLoadError('영상을 불러올 수 없습니다');
-                // ✅ 에러 발생 시 다시 시도 가능하도록
+                // 에러 발생 시 다시 시도 가능하도록
                 hasFetched.current = false;
             }
         };
@@ -114,31 +115,11 @@ export default function SwipeVideoPage() {
         }
     };
 
-    // 에러 처리
-    if (loadError) {
-        return (
-            <div className="flex-1 flex items-center justify-center bg-black">
-                <div className="text-center text-white px-4">
-                    <p className="text-xl mb-4">{loadError}</p>
-                    <button 
-                        onClick={() => navigate('/')}
-                        className="px-6 py-2 bg-gradient-to-r from-pink-500 to-sky-500 rounded-lg hover:opacity-80"
-                    >
-                        홈으로 돌아가기
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
-    // 초기 로딩
-    if (!initialVideo || !currentVideo) {
-        return <Loading message="영상을 불러오는 중..." />;
-    }
+    if (loadError) return <ToGoPage />      // 에러 처리
+    if (!initialVideo || !currentVideo) return <Loading message="영상을 불러오는 중..." />; // 초기 로딩
 
     return (
         <main className="flex-1 flex items-center justify-center relative bg-black">
-            {/* 비디오 플레이어 */}
             <SwipeVideoPlayer
                 video={currentVideo}
                 user={user}
@@ -148,7 +129,6 @@ export default function SwipeVideoPage() {
                 onSwipe={handleSwipe}
             />
 
-            {/* 로딩 오버레이 */}
             {isLoading && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 pointer-events-none">
                     <div className="flex flex-col items-center space-y-4">
@@ -158,14 +138,12 @@ export default function SwipeVideoPage() {
                 </div>
             )}
 
-            {/* 에러 토스트 */}
             {swipeError && (
                 <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadeIn">
                     {swipeError}
                 </div>
             )}
 
-            {/* 네비게이션 힌트 */}
             <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 text-white text-sm opacity-50 z-40 pointer-events-none">
                 {canGoPrev && (
                     <div className="flex items-center space-x-1">
@@ -183,7 +161,6 @@ export default function SwipeVideoPage() {
                 </div>
             </div>
 
-            {/* 댓글 모달 */}
             {showCommentModal && (
                 <div 
                     className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"

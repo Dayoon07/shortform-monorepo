@@ -77,7 +77,6 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                 <h2 className="text-xl font-bold mb-4 text-black">프로필 수정</h2>
 
                 <div className="space-y-4 text-black">
-                    {/* 프로필 이미지 */}
                     <div>
                         <label className="block text-sm font-medium mb-2">프로필 이미지</label>
                         <div className="flex items-center space-x-4">
@@ -97,7 +96,6 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         </div>
                     </div>
 
-                    {/* 이름 */}
                     <div>
                         <label htmlFor="username" className="block text-sm font-medium mb-2">사용자명</label>
                         <input
@@ -112,7 +110,6 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         />
                     </div>
 
-                    {/* 이메일 */}
                     <div>
                         <label htmlFor="mail" className="block text-sm font-medium mb-2">이메일</label>
                         <input
@@ -127,7 +124,6 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         />
                     </div>
 
-                    {/* 멘션 */}
                     <div>
                         <label htmlFor="mention" className="block text-sm font-medium mb-2">사용자 멘션</label>
                         <div className="flex">
@@ -146,7 +142,6 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         </div>
                     </div>
 
-                    {/* 자기소개 */}
                     <div>
                         <label htmlFor="bio" className="block text-sm font-medium mb-2">자기소개</label>
                         <textarea
@@ -161,7 +156,6 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         />
                     </div>
 
-                    {/* 버튼 */}
                     <div className="flex space-x-3 pt-4">
                         <button
                             onClick={handleSubmit}
