@@ -6,7 +6,7 @@ import { ROUTE } from "../../../shared/constants/Route";
 export const VideoCard = memo(({ video, index, videoRefs }) => {
     return (
         <div>
-            <Link to={`${ROUTE.PROFILE_SWIPE_VIDEO(video.mention, video.videoLoc)}`}
+            <Link to={ROUTE.PROFILE_SWIPE_VIDEO(video.mention, video.videoLoc)}
                 className="relative group cursor-pointer video-card"
             >
                 <div className="relative aspect-[9/16] bg-gray-900 rounded-lg overflow-hidden">

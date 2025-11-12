@@ -5,7 +5,7 @@ import { getVideoPaginated } from '../api/videoService';
 /**
  * 무한 스크롤 방식의 비디오 페이징 훅
  */
-export function useVideoPagination(initialSize = 20) {
+export function useVideoPagination(initialSize = 10) {
     const [videos, setVideos] = useState([]);
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(false);

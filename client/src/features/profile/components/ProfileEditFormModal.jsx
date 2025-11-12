@@ -1,87 +1,34 @@
-import { useState } from "react";
-import { editUserProfile } from "../../features/profile/api/profileService";
-import { useUser } from "../../shared/context/UserContext";
+import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { useProfileEdit } from "../hooks/useProfileEdit";
 
 export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
-    const [previewImg, setPreviewImg] = useState(profile?.profileImgSrc || '');
-    const [selectedFile, setSelectedFile] = useState(null); // 추가됨
-    const { user } = useUser();
-
-    const [formData, setFormData] = useState({
-        username: profile?.username || '',
-        mail: profile?.mail || '',
-        mention: profile?.mention || '',
-        bio: profile?.bio || ''
-    });
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setSelectedFile(file); // 파일 저장
-            const reader = new FileReader();
-            reader.onloadend = () => setPreviewImg(reader.result);
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = async () => {
-        try {
-            console.log(user.id);
-            const data = await editUserProfile(
-                formData.username,
-                formData.mail,
-                formData.mention,
-                formData.bio,
-                selectedFile,
-                profile?.profileImgSrc,
-                user.id
-            );
-
-            console.log("프로필 업데이트 완료:", data);
-            alert("프로필이 저장되었습니다!");
-
-            // 로컬 스토리지 갱신 (백엔드에서 새 유저 정보 반환하므로)
-            if (data.user) {
-                localStorage.setItem("user", JSON.stringify(data.user));
-            }
-
-            onClose();
-        } catch (error) {
-            console.error("업데이트 실패:", error);
-            alert("프로필 수정 중 오류가 발생했습니다.");
-        }
-    };
+    const {
+        previewImg,
+        formData,
+        handleImageChange,
+        handleInputChange,
+        handleSubmit,
+        resetForm
+    } = useProfileEdit(profile, onClose);
 
     const handleClose = () => {
-        setFormData({
-            username: profile?.username || '',
-            mail: profile?.mail || '',
-            mention: profile?.mention || '',
-            bio: profile?.bio || ''
-        });
-        setPreviewImg(profile?.profileImgSrc || '');
-        setSelectedFile(null);
+        resetForm();
         onClose();
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center h-full z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-full mx-4">
-                <h2 className="text-xl font-bold mb-4 text-black">프로필 수정</h2>
+                <h2 className="text-xl font-bold mb-4 text-black text-center">프로필 수정</h2>
 
                 <div className="space-y-4 text-black">
                     <div>
-                        <label className="block text-sm font-medium mb-2">프로필 이미지</label>
+                        <label className="block text-sm font-medium mb-2 text-left">프로필 이미지</label>
                         <div className="flex items-center space-x-4">
                             <img
-                                src={previewImg}
+                                src={`${previewImg !== null ? previewImg : REST_API_SERVER + profile.profileImgSrc}`}
                                 alt="프로필 미리보기"
                                 className="w-16 h-16 rounded-full object-cover border"
                             />
@@ -97,7 +44,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                     </div>
 
                     <div>
-                        <label htmlFor="username" className="block text-sm font-medium mb-2">사용자명</label>
+                        <label htmlFor="username" className="block text-sm font-medium mb-2 text-left">사용자명</label>
                         <input
                             type="text"
                             id="username"
@@ -111,7 +58,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                     </div>
 
                     <div>
-                        <label htmlFor="mail" className="block text-sm font-medium mb-2">이메일</label>
+                        <label htmlFor="mail" className="block text-sm font-medium mb-2 text-left">이메일</label>
                         <input
                             type="email"
                             id="mail"
@@ -125,7 +72,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                     </div>
 
                     <div>
-                        <label htmlFor="mention" className="block text-sm font-medium mb-2">사용자 멘션</label>
+                        <label htmlFor="mention" className="block text-sm font-medium mb-2 text-left">사용자 멘션</label>
                         <div className="flex">
                             <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 
                                 border-gray-300 bg-gray-50 text-gray-500 text-sm">@</span>
@@ -143,7 +90,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                     </div>
 
                     <div>
-                        <label htmlFor="bio" className="block text-sm font-medium mb-2">자기소개</label>
+                        <label htmlFor="bio" className="block text-sm font-medium mb-2 text-left">자기소개</label>
                         <textarea
                             id="bio"
                             name="bio"
@@ -156,7 +103,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         />
                     </div>
 
-                    <div className="flex space-x-3 pt-4">
+                    <div className="flex space-x-3 max-md:pb-20">
                         <button
                             onClick={handleSubmit}
                             className="flex-1 px-4 py-2 text-white rounded-md 

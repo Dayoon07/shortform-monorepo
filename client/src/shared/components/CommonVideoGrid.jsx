@@ -8,12 +8,9 @@ export function CommonVideoGrid({ videos, message = "영상이 없습니다" }) 
         sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 
         2xl:grid-cols-6 gap-2 max-md:pb-[200px] p-2
     `;
+
     if (!videos || videos.length === 0) {
-        return (
-            <div className="flex items-center justify-center h-96">
-                <p className="text-gray-400 text-lg">{message}</p>
-            </div>
-        );
+        return <p className="mx-auto text-gray-400 text-lg mt-32 text-center">{message}</p>
     }
 
     return (

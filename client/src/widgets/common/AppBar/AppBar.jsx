@@ -85,7 +85,7 @@ export default function AppBar() {
                                             className="w-[26px] h-[26px] p-0.5 object-cover 
                                             rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500" 
                                         />
-                                        <span>내 채널 보기</span>
+                                        <span>내 프로필</span>
                                     </Link>
                                     <Link to={ROUTE.STUDIO_UPLOAD} className={dropdownItem} onClick={() => setShowDropdown(false)}>
                                         <UploadPageIcon />

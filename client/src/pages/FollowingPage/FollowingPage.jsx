@@ -24,7 +24,7 @@ export default function FollowingPage() {
     if (error) return <Error />;
 
     return (
-        <div className="bg-black text-white min-h-screen overflow-hidden">
+        <div className="bg-black text-white min-h-screen overflow-hidden w-full">
             <main className="flex-1 overflow-y-auto">
                 <section className="p-4 md:p-6 lg:p-8 pb-48">
                     <FollowingList followings={followings} onToggleFollow={handleToggleFollow} />

@@ -22,7 +22,7 @@ export function VideoActionButtons({ video, user, onCommentClick }) {
             if (data) {
                 setIsLiked(data.isLiked);
                 if (data.totalLikes !== undefined) {
-                    setLikeCount(data.totalLikes);
+                    setLikeCount(data.likeCnt);
                 }
             }
         } catch (error) {
@@ -67,7 +67,7 @@ export function VideoActionButtons({ video, user, onCommentClick }) {
                 >
                     <MessageCircle className="h-7 w-7 text-white" />
                 </button>
-                <span className="text-xs md:text-sm mt-1 text-white">{video.commentCount}</span>
+                <span className="text-xs md:text-sm mt-1 text-white">{video.commentCnt}</span>
             </div>
 
             <div className="flex flex-col items-center group">

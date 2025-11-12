@@ -1,6 +1,6 @@
 export function TryAgain({ errorMessage = "데이터를 불러오는 과정에서 실패했습니다" }) {
     return (
-        <div className="flex items-center justify-center h-96">
+        <div className="mx-auto flex items-center justify-center h-96">
             <div className="text-center">
                 <p className="text-red-400 mb-4">{errorMessage}</p>
                 <button onClick={() => window.location.reload()} 

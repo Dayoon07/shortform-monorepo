@@ -10,8 +10,8 @@ export default function ToGoPage({
         <div className="flex-1 flex items-center justify-center bg-black">
             <div className="text-center text-white px-4">
                 <p className="text-xl mb-4">{errorMessage}</p>
-                <button onClick={() => navigate(navigateRoute)} className="px-6 py-2 bg-gradient-to-r 
-                    from-pink-500 to-sky-500 rounded-lg hover:opacity-80"
+                <button className="px-6 py-2 bg-gradient-to-r from-pink-500 to-sky-500 rounded-lg hover:opacity-80"
+                    onClick={() => navigate(navigateRoute)}
                 >
                     {toGoMessage}
                 </button>

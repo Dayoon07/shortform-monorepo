@@ -13,7 +13,7 @@ export default function VideoList() {
         error, 
         loadMore,
         refresh 
-    } = useVideoPagination(20); // 한 페이지당 20개
+    } = useVideoPagination(10); // 한 페이지당 10개
     
     const observerTarget = useRef(null);
 

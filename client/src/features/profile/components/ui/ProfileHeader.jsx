@@ -2,7 +2,7 @@ import { useState } from "react";
 import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import { useUser } from "../../../../shared/context/UserContext";
 import { useProfile } from "../../hooks/useProfile";
-import ProfileEditFormModal from "../../../../widgets/profile/ProfileEditFormModal";
+import ProfileEditFormModal from "../ProfileEditFormModal";
 import { useParams } from "react-router-dom";
 import ToggleFollowButton from "../../../follow/components/ui/ToggleFollowButton";
 

@@ -10,11 +10,11 @@ import NotFoundProfile from "../../widgets/profile/NotFoundProfile";
 import { CommonVideoGrid } from "../../shared/components/CommonVideoGrid";
 
 export default function ProfilePage() {
-    const { mention } = useParams();
-    const { user } = useUser();
     const [showInfoModal, setShowInfoModal] = useState(false);
     const navigate = useNavigate();
-    const cleanMention = mention?.replace('@', '');
+    const { mention } = useParams();
+    const { user } = useUser();
+    const profileUserCleanMention = mention?.replace('@', '');
 
     const {
         profile,
@@ -33,17 +33,19 @@ export default function ProfilePage() {
                 onShowInfo={() => setShowInfoModal(true)}
             />
 
-            <div className="flex border-b border-gray-800 sticky top-0 bg-black z-10 sm:max-w-6xl sm:mx-auto">
-                <button onClick={() => navigate(ROUTE.PROFILE(cleanMention))}
-                    className="px-12 py-3 font-semibold border-b-2 transition border-white text-white max-sm:w-full"
-                >
-                    동영상
-                </button>
-                <button onClick={() => navigate(ROUTE.PROFILE_POST(cleanMention))}
-                    className="px-12 py-3 font-semibold border-b-2 transition border-transparent text-gray-400 hover:text-white max-sm:w-full"
-                >
-                    게시글
-                </button>
+            <div className="border-b border-gray-800 sticky top-0 bg-black z-10">
+                <div className="flex md:max-w-6xl md:mx-auto">
+                    <button onClick={() => navigate(ROUTE.PROFILE(profileUserCleanMention))}
+                        className="px-12 py-3 font-semibold border-b-2 transition border-white text-white max-md:w-full"
+                    >
+                        동영상
+                    </button>
+                    <button onClick={() => navigate(ROUTE.PROFILE_POST(profileUserCleanMention), { state: { profile: profile } } )}
+                        className="px-12 py-3 font-semibold border-b-2 transition border-transparent text-gray-400 hover:text-white max-md:w-full"
+                    >
+                        게시글
+                    </button>
+                </div>
             </div>
 
             {videos.length > 0 ? (
