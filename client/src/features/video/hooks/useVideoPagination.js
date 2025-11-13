@@ -1,4 +1,3 @@
-// src/features/video/hooks/useVideoPagination.js
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getVideoPaginated } from '../api/videoService';
 
@@ -16,10 +15,6 @@ export function useVideoPagination(initialSize = 10) {
     // 중복 요청 방지
     const isFetchingRef = useRef(false);
 
-    // 초기 데이터 로드
-    useEffect(() => {
-        loadVideos(0, true);
-    }, []);
 
     const loadVideos = useCallback(async (pageNum, isInitial = false) => {
         // 중복 요청 방지
@@ -35,7 +30,8 @@ export function useVideoPagination(initialSize = 10) {
 
         try {
             const data = await getVideoPaginated(pageNum, initialSize);
-            
+            // data.content.map(e => console.log(e));
+
             if (isInitial) {
                 // 초기 로드 시 기존 데이터 교체
                 setVideos(data.content || []);
@@ -55,6 +51,14 @@ export function useVideoPagination(initialSize = 10) {
             isFetchingRef.current = false;
         }
     }, [hasMore, initialSize]);
+
+    // 초기 데이터 로딩
+    // 혹시 몰라서 적어 둡니다.
+    // 의존성 배열에 loadVideos 함수 넣지 마세요. 
+    // 스크롤 할 때 마다 계속 함수 실행시켜서 제외시켰습니다
+    useEffect(() => {
+        loadVideos(0, true);
+    }, []);
 
     // 다음 페이지 로드
     const loadMore = useCallback(() => {

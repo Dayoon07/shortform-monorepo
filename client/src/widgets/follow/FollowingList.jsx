@@ -1,9 +1,19 @@
+import { useState } from "react";
 import { EmptyState } from "../../features/follow/components/EmptyState";
 import { FollowingCard } from "../../features/follow/components/FollowingCard";
 
-const FollowingList = ({ followings, onToggleFollow }) => {
-    const followingsArr = Array.isArray(followings) ? followings : [];
+const FollowingList = ({ followings }) => {
+    // const followingsArr = Array.isArray(followings) ? followings : [];
+    // if (followingsArr.length === 0) return <EmptyState />;
+
+    // followings를 로컬 상태로 복사
+    const [followingsArr, setFollowingsArr] = useState(Array.isArray(followings) ? followings : []);
+
     if (followingsArr.length === 0) return <EmptyState />;
+
+    const handleToggleFollow = (mention) => {
+        setFollowingsArr((prev) => prev.filter((user) => user.mention !== mention));
+    };
     
     return (
         <div>
@@ -18,7 +28,7 @@ const FollowingList = ({ followings, onToggleFollow }) => {
                     <FollowingCard
                         key={follower.id || follower.mention}
                         followingUser={follower}
-                        onToggleFollow={onToggleFollow}
+                        onToggleFollow={handleToggleFollow}
                     />
                 ))}
             </div>

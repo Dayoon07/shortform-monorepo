@@ -26,7 +26,10 @@ export async function upgradeToggleFollow(reqUserMention, resUserMention) {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.UPGRADE_TOGGLE_FOLLOW(reqUserMention, resUserMention)}`, {
             method: "POST"
         });
-        if (!res.ok) throw new Error("에러남!!!");
+        if (!res.ok) {
+            console.error(await res.json());
+            throw new Error("너무 많은 요청으로 요청이 취소 되었습니다");
+        }
         const data = await res.json();
         console.log(data);
         return { data: data };
@@ -88,7 +91,7 @@ export async function getFollowStatus(reqUserMention, resUserMention) {
         if (!res.ok) throw new Error("에러남!!! " + await res.json());
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data.isFollowing);
         return { data }
     } catch (error) {
         console.log(error);

@@ -7,19 +7,18 @@ import { useParams } from "react-router-dom";
 import ToggleFollowButton from "../../../follow/components/ui/ToggleFollowButton";
 
 export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
+    const [profileData, setProfileData] = useState(profile);
     const [profileEditModal, setProfileEditModal] = useState(false);
     const { mention } =  useParams();
     const { user } = useUser();
+    const { isOwnProfile } = useProfile(mention, user);
 
-    /*
-        주석 처리 한 거는 현재는 안 쓰는 
-        데이터를 가져오는 훅이여서 주석 처리함
-    */
-    const {
-        // isFollowing,
-        isOwnProfile,
-        // handleToggleFollow
-    } = useProfile(mention, user);
+    const handleFollowerCountChange = (isFollowing) => {
+        setProfileData((prev) => ({
+            ...prev,
+            followerCount: prev.followerCount + (isFollowing ? 1 : -1),
+        }));
+    };
         
     return (
         <div className="flex flex-col sm:max-w-6xl sm:mx-auto sm:flex-row sm:space-x-6 mb-4 p-6 sm:items-center">
@@ -46,7 +45,7 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
                         <span className="text-gray-500 hover:underline cursor-pointer">팔로잉</span>
                     </div>
                     <div>
-                        <span className="text-lg font-semibold">{profile.followerCount || 0}</span>{' '}
+                        <span className="text-lg font-semibold">{profileData.followerCount || 0}</span>{' '}
                         <span className="text-gray-500 hover:underline cursor-pointer">팔로워</span>
                     </div>
                     <div>
@@ -73,12 +72,17 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
                         //     onUnfollow={handleToggleFollow}
                         //     mention={profile.mention}
                         // />
-                        <ToggleFollowButton followReqUser={user} followResUser={profile} />
+                        <ToggleFollowButton 
+                            followReqUser={user} 
+                            followResUser={profile}
+                            onFollowChange={handleFollowerCountChange}
+                        />
                     ) : (
                         // {/* 프로필 편집 버튼 (본인 프로필일 때만 화면에 출력) */}
-                        <button className="bg-gradient-to-r from-pink-500 to-sky-500 hover:from-pink-600 hover:to-sky-600 px-8 py-2 rounded-md" 
-                            type="button" id="user-profile-edit-btn" onClick={() => setProfileEditModal(true)}
-                        >
+                        <button type="button" onClick={() => setProfileEditModal(true)}
+                            className="inline-block rounded-full bg-neutral-100 px-6 py-2 text-xs font-medium text-neutral-700 
+                            hover:bg-neutral-200 focus:outline-none active:bg-neutral-300 dark:bg-neutral-800 
+                            dark:text-neutral-200 transition font-semibold">
                             프로필 편집
                         </button>
                     )

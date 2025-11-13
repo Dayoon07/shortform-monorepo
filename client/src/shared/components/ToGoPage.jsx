@@ -8,8 +8,8 @@ export default function ToGoPage({
     const navigate = useNavigate();
     return (
         <div className="flex-1 flex items-center justify-center bg-black">
-            <div className="text-center text-white px-4">
-                <p className="text-xl mb-4">{errorMessage}</p>
+            <div className="text-center px-4">
+                <p className="text-xl mb-4 text-gray-400">{errorMessage}</p>
                 <button className="px-6 py-2 bg-gradient-to-r from-pink-500 to-sky-500 rounded-lg hover:opacity-80"
                     onClick={() => navigate(navigateRoute)}
                 >

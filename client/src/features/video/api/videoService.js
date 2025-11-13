@@ -27,15 +27,15 @@ export async function getVideoPaginated(page = 0, size = 20) {
         const data = await res.json();
         
         // 백엔드가 페이징 정보를 포함하지 않는 경우를 대비한 처리
-        if (Array.isArray(data)) {
-            return {
-                content: data,
-                totalPages: 1,
-                totalElements: data.length,
-                last: true,
-                number: page
-            };
-        }
+        // if (Array.isArray(data)) {
+        //     return {
+        //         content: data,
+        //         totalPages: 1,
+        //         totalElements: data.length,
+        //         last: true,
+        //         number: page
+        //     };
+        // }
 
         return data;
     } catch (error) {

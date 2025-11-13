@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { upgradeToggleFollow, getFollowStatus } from "../api/followService";
+import { showErrorToast, showSuccessToast } from "../../../shared/utils/toast";
 
 export const useToggleFollow = (followReqUser, followResUser) => {
     const [isFollowing, setIsFollowing] = useState(false);
@@ -12,7 +13,7 @@ export const useToggleFollow = (followReqUser, followResUser) => {
             if (!followResUser?.mention) return;
             
             try {
-                const result = await getFollowStatus(followResUser.mention);
+                const result = await getFollowStatus(followReqUser.mention, followResUser.mention);
                 if (result && result.data) {
                     setIsFollowing(result.data.isFollowing || false);
                 }
@@ -22,12 +23,13 @@ export const useToggleFollow = (followReqUser, followResUser) => {
         };
 
         fetchFollowStatus();
-    }, [followResUser?.mention]);
+    }, [followReqUser?.mention, followResUser?.mention]);
 
     const toggleFollow = async () => {
         if (!followReqUser?.mention || !followResUser?.mention) {
             setMessageData("사용자 정보가 올바르지 않습니다.");
-            return;
+            showErrorToast("사용자 정보가<br className='md:hidden'/>올바르지 않습니다");
+            return false;
         }
 
         setLoading(true);
@@ -38,15 +40,20 @@ export const useToggleFollow = (followReqUser, followResUser) => {
             if (data.success) {
                 setIsFollowing(prev => !prev);
                 setMessageData(data.message);
+                showSuccessToast(data.message);
+                return data.isFollowing;
             } else {
                 setMessageData(data.message || "팔로우 처리에 실패했습니다.");
+                return data.isFollowing;
             }
         } catch (error) {
             console.error(error);
             setMessageData(`데이터 불러오기 실패: ${error.message}`);
+            showErrorToast(`데이터 불러오기 실패: ${error.message}`);
             throw error;
         } finally {
             setLoading(false);
+            console.log(messageData);
         }
     };
 

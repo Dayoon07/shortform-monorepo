@@ -62,11 +62,11 @@ export async function login(username, password) {
             showSuccessToast(data.message);
             return data;
         } else {
-            alert(`로그인 실패: ${data.message || "사용자명 또는 비밀번호가 올바르지 않습니다."}`);
+            console.log(`로그인 실패: ${data.message || "사용자명 또는 비밀번호가 올바르지 않습니다."}`);
         }
     } catch (error) {
         console.error("로그인 요청 오류:", error);
-        alert("로그인 중 오류가 발생했습니다.");
+        console.log("로그인 중 오류가 발생했습니다.");
     }
 }
 

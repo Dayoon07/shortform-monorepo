@@ -12,8 +12,7 @@ export default function FollowingPage() {
     const { 
         followings, 
         error, 
-        loading, 
-        handleToggleFollow 
+        loading,
     } = useFollow(user?.id);
 
     useEffect(() => {
@@ -27,7 +26,7 @@ export default function FollowingPage() {
         <div className="bg-black text-white min-h-screen overflow-hidden w-full">
             <main className="flex-1 overflow-y-auto">
                 <section className="p-4 md:p-6 lg:p-8 pb-48">
-                    <FollowingList followings={followings} onToggleFollow={handleToggleFollow} />
+                    <FollowingList followings={followings} />
                 </section>
             </main>
         </div>

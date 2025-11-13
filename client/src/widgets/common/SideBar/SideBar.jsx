@@ -20,7 +20,7 @@ export default function SideBar() {
 
     const handleSearch = (query) => {
         if (query.trim()) {
-            navigate(ROUTE.SEARCH(encodeURIComponent(query)));
+            navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(encodeURIComponent(query)));
         }
     };
 

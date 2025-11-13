@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import ProfileImageUpload from "./ProfileImageUpload";
 import SignupForm from "./SignupForm";
 import { signup } from "../../../features/user/api/userService";
-import { showToast } from "../../../shared/utils/toast";
+import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
 
 export default function SignupModal({ onClose }) {
     const [step, setStep] = useState(1);
@@ -23,7 +23,7 @@ export default function SignupModal({ onClose }) {
 
     const goToStep2 = () => {
         if (!profileImg) {
-            alert('프로필 이미지를 업로드해주세요.');
+            showErrorToast("프로필 이미지를 업로드해주세요");
             return;
         }
         setStep(2);
@@ -40,15 +40,15 @@ export default function SignupModal({ onClose }) {
             const response = await signup(data);
 
             if (response.data) {
-                showToast('회원가입이<br/>완료되었습니다.');
+                showSuccessToast("회원가입이<br classname='md:hidden'/>완료되었습니다");
                 resetForm();
                 onClose();
             } else {
                 const message = await response.text();
-                alert('회원가입 실패: ' + message);
+                showErrorToast(`회원가입 실패: ${message}`);
             }
         } catch (error) {
-            alert('에러 발생: ' + error.message);
+            showErrorToast(`에러 발생: ${error.message}`);
         }
     };
 

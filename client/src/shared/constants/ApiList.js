@@ -36,14 +36,10 @@ export const API_LIST = {
         ALL: "/api/user/follow/all",
         FOLLOW: "/api/follow",
         TOGGLE_FOLLOW: "/api/follow/toggle",
-        FOLLOW_STATUS: (reqUserMention, resUserMention) => `
-            /api/follow/status/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}
-        `,
+        FOLLOW_STATUS: (reqUserMention, resUserMention) => `/api/follow/status/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}`,
         USER_FOLLOWER_LIST: (id) => `/api/follow/user/follower/list?id=${id}`,
         USER_FOLLOWING_LIST: (id) => `/api/follow/user/following/list?id=${id}`,
-        UPGRADE_TOGGLE_FOLLOW: (reqUserMention, resUserMention) => `
-            /api/follow/toggle/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}
-        `
+        UPGRADE_TOGGLE_FOLLOW: (reqUserMention, resUserMention) => `/api/follow/toggle/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}`
     },
     POST: {
         ALL: "/api/community/all",

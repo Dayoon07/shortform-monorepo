@@ -40,7 +40,12 @@ export default function ProfilePage() {
                     >
                         동영상
                     </button>
-                    <button onClick={() => navigate(ROUTE.PROFILE_POST(profileUserCleanMention), { state: { profile: profile } } )}
+                    <button
+                        onClick={() => navigate(ROUTE.PROFILE_POST(profileUserCleanMention), {
+                            state: {
+                                profile: profile
+                            }
+                        })}
                         className="px-12 py-3 font-semibold border-b-2 transition border-transparent text-gray-400 hover:text-white max-md:w-full"
                     >
                         게시글

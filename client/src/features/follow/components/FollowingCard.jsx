@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
-import { ROUTE } from "../../../shared/constants/Route";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import ToggleFollowButton from "./ui/ToggleFollowButton";
+import { useUser } from "../../../shared/context/UserContext";
+import { ROUTE } from "../../../shared/constants/Route";
 
 export const FollowingCard = ({ followingUser, onToggleFollow }) => {
+    const { user } = useUser();
     return (
         <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center justify-center
             hover:bg-gray-700/60 transition-all duration-300 border border-gray-700/50 hover:border-gray-600/50
@@ -28,15 +31,13 @@ export const FollowingCard = ({ followingUser, onToggleFollow }) => {
                 </p>
             </Link>
 
-            <button type="button" onClick={async () => onToggleFollow(followingUser.mention)} className="bg-gray-600/80 hover:bg-red-500 px-4 md:px-6 
-                py-2 md:py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 w-full 
-                    max-w-[160px] hover:shadow-lg hover:scale-105 text-sm md:text-base border border-gray-500/30 hover:border-red-400/50"
-            >
-                <span className="whitespace-nowrap">팔로우 취소</span>
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+            <ToggleFollowButton 
+                followReqUser={user}
+                followResUser={followingUser}
+                onFollowChange={(isFollowing) => {
+                    if (!isFollowing) onToggleFollow?.(followingUser.mention);
+                }}
+            />
         </div>
     );
 };

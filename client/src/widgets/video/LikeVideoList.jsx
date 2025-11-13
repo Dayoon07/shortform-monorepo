@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { CommonVideoGrid } from "../../shared/components/CommonVideoGrid";
 import { myLikeVideoList } from "../../features/video/api/videoLikeService";
 import { useUser } from "../../shared/context/UserContext";
+import ToGoPage from "../../shared/components/ToGoPage";
 
 export default function LikeVideoList() {
     const [videos, setVideos] = useState([]);
     const { user } = useUser();
-    
+
     useEffect(() => {
         const likeVideo = async () => {
             try {
@@ -19,6 +20,8 @@ export default function LikeVideoList() {
         }
         likeVideo();
     }, [user?.mention]);
-    
+
+    if (!user || user == null) return <ToGoPage errorMessage="로그인이 필요합니다" />
+
     return <CommonVideoGrid videos={videos} message="좋아요를 누른 영상이 없습니다" />
 }
