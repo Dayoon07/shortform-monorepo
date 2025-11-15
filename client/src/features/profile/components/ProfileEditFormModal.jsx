@@ -28,7 +28,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         <label className="block text-sm font-medium mb-2 text-left">프로필 이미지</label>
                         <div className="flex items-center space-x-4">
                             <img
-                                src={`${previewImg !== null ? previewImg : REST_API_SERVER + profile.profileImgSrc}`}
+                                src={`${previewImg !== null ? REST_API_SERVER + previewImg : REST_API_SERVER + profile.profileImgSrc}`}
                                 alt="프로필 미리보기"
                                 className="w-16 h-16 rounded-full object-cover border"
                             />

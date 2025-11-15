@@ -44,15 +44,14 @@ export function useProfileEdit(profile, onClose) {
                 profile?.profileImgSrc,
                 user.id
             );
-
-            console.log("프로필 업데이트 완료:", data);
-            setUser(null);
-            showSuccessToast("프로필이 저장되었습니다<br/>다시 로그인 해주세요");
             
             if (data.user) {
                 localStorage.setItem("user", JSON.stringify(data.user));
             }
-            
+
+            console.log("프로필 업데이트 완료:", data);
+            setUser(null);
+            showSuccessToast("프로필이 저장되었습니다<br/>다시 로그인 해주세요", 5000);
             navigate("/");
             onClose();
         } catch (error) {

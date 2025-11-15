@@ -1,4 +1,4 @@
-import { Calendar, Users, Video, Eye, Heart } from "lucide-react";
+import { Calendar, Users, Video, Eye, Heart, X } from "lucide-react";
 
 export default function ProfileInfoModal({ profile, videoCount, isOpen, onClose }) {
     if (!isOpen) return null;
@@ -6,10 +6,10 @@ export default function ProfileInfoModal({ profile, videoCount, isOpen, onClose 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={onClose}>
             <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                <div className="flex justify-between items-center px-6 py-4 border-b">
+                <div className="flex justify-between items-center px-6 py-6 border-b">
                     <h2 className="text-xl font-semibold text-black">{profile.username}</h2>
-                    <button onClick={onClose} className="text-black text-4xl pb-2 hover:text-gray-600">
-                        &times;
+                    <button onClick={onClose} className="text-black text-4xl hover:text-gray-600">
+                        <X />
                     </button>
                 </div>
                 

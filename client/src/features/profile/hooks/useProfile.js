@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { toggleFollow, getFollowStatus } from "../../follow/api/followService";
-import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
+import { getFollowStatus, getFollowerList, getFollowingList } from "../../follow/api/followService";
+import { showErrorToast } from "../../../shared/utils/toast";
 import { getProfileByMention } from "../api/profileService";
 import { getUserPosts } from "../../post/api/postService";
 
@@ -10,23 +10,47 @@ export const useProfile = (mention, currentUser) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isFollowing, setIsFollowing] = useState(false);
+    const [followerList, setFollowerList] = useState([]);
+    const [followingList, setFollowingList] = useState([]);
 
     const cleanMention = mention?.replace('@', '');
     const isOwnProfile = currentUser?.mention === cleanMention;
 
-    const handleToggleFollow = async () => {
-        if (!cleanMention) return;
+    // const handleToggleFollow = async () => {
+    //     if (!cleanMention) return;
         
+    //     try {
+    //         const data = await toggleFollow(cleanMention);
+    //         setIsFollowing(prev => !prev);
+    //         showSuccessToast(data);
+    //         return data;
+    //     } catch (error) {
+    //         showErrorToast(isFollowing ? '언팔로우에 실패했습니다.' : '팔로우에 실패했습니다.');
+    //         console.error(error);
+    //     }
+    // };
+
+    const getFollowerListHook = async () => {
         try {
-            const data = await toggleFollow(cleanMention);
-            setIsFollowing(prev => !prev);
-            showSuccessToast(data);
-            return data;
+            const data = await getFollowerList(profile.id);
+            setFollowerList(data || []);
+            console.log(data);
         } catch (error) {
-            showErrorToast(isFollowing ? '언팔로우에 실패했습니다.' : '팔로우에 실패했습니다.');
             console.error(error);
+            throw error;
         }
-    };
+    }
+
+    const getFollowingListHook = async () => {
+        try {
+            const data = await getFollowingList(profile.id);
+            setFollowingList(data || []);
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 
     const fetchProfilePosts = async () => {
         if (!cleanMention) return;
@@ -77,7 +101,11 @@ export const useProfile = (mention, currentUser) => {
         loading, 
         isFollowing,
         isOwnProfile,
-        handleToggleFollow,
-        fetchProfilePosts
+        // handleToggleFollow,
+        followerList,
+        followingList,
+        fetchProfilePosts,
+        getFollowerListHook,
+        getFollowingListHook
     };
 };

@@ -11,10 +11,10 @@ export function VideoPlayer({ video }) {
             videoRef.current.load();
             videoRef.current.play().catch(e => console.log('자동재생 실패:', e));
         }
-    }, [video.id]);
+    }, [video.id, videoRef]);
 
     return (
-        <div className="relative aspect-[9/16] h-[90vh] w-auto max-w-[90vw]">
+        <div className="relative aspect-[9/16] h-[95vh] w-auto max-w-[90vw]">
             <video
                 ref={videoRef}
                 src={`${REST_API_SERVER}${video.videoSrc}`}

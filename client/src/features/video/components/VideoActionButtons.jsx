@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
 import { toggleVideoLike } from '../api/swipeVideoService';
+import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
 
 export function VideoActionButtons({ video, user, onCommentClick }) {
     const [isLiked, setIsLiked] = useState(video.isLiked);
@@ -9,7 +10,7 @@ export function VideoActionButtons({ video, user, onCommentClick }) {
 
     const handleLike = async () => {
         if (!user) {
-            alert('로그인이 필요한 기능입니다.');
+            showErrorToast("로그인이 필요한 기능입니다");
             return;
         }
 
@@ -27,17 +28,17 @@ export function VideoActionButtons({ video, user, onCommentClick }) {
             }
         } catch (error) {
             console.error('좋아요 처리 실패:', error);
-            alert('요청 처리 중 오류가 발생했습니다.');
+            showErrorToast("요청 처리 중 오류가 발생했습니다");
         }
     };
 
     const handleShare = async () => {
         try {
             await navigator.clipboard.writeText(window.location.href);
-            alert('링크가 복사되었습니다!');
+            showSuccessToast("링크가 복사되었습니다");
         } catch (err) {
             console.error('클립보드 복사 실패:', err);
-            alert('링크 복사에 실패했습니다.');
+            showErrorToast("링크 복사에 실패했습니다");
         }
     };
 

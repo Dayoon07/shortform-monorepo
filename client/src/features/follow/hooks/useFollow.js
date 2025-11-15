@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { toggleFollow, getFollowerList, getFollowingList } from "../api/followService";
+import { getFollowerList, getFollowingList } from "../api/followService";
 import { showToast } from "../../../shared/utils/FollowShowToast";
 
 export const useFollow = (userId) => {
@@ -38,22 +38,6 @@ export const useFollow = (userId) => {
         }
     }, [userId]);
 
-    // 팔로우 토글
-    const handleToggleFollow = useCallback(async (mention) => {
-        try {
-            const result = await toggleFollow(mention);
-            if (result.success) {
-                await loadFollowers(); // 목록 새로고침
-                showToast(result.message || "팔로우 상태가 변경되었습니다.");
-            } else {
-                showToast(result.message || "작업에 실패했습니다.", "error");
-            }
-        } catch (err) {
-            showToast("팔로우 변경에 실패했습니다.", "error");
-        }
-    }, [loadFollowers]);
-
-    // userId 바뀔 때마다 자동 로드
     useEffect(() => {
         if (userId) {
             loadFollowers();
@@ -66,7 +50,6 @@ export const useFollow = (userId) => {
         followings,
         loading,
         error,
-        handleToggleFollow,
         reloadFollowers: loadFollowers,
         reloadFollowings: loadFollowings,
     };

@@ -8,10 +8,11 @@ export default function ToggleFollowButton({
     const baseClass = `inline-block rounded-full px-6 py-2 text-xs font-medium font-semibold 
         transition duration-200 disabled:opacity-50 flex items-center space-x-2
     `;
+
     const {
-        isFollowing, 
-        loading, 
-        toggleFollow 
+        isFollowing,    // 초기값 null
+        loading,
+        toggleFollow
     } = useToggleFollow(followReqUser, followResUser);
 
     const handleClick = async () => {
@@ -22,6 +23,13 @@ export default function ToggleFollowButton({
             console.error(error);
         }
     };
+
+    // 👉 서버에서 팔로우 상태 아직 못 받았을 때
+    if (isFollowing === null) {
+        return (
+            <div className="inline-block w-[90px] h-[32px] rounded-full bg-neutral-700/50 animate-pulse" />
+        );
+    }
 
     return (
         <button

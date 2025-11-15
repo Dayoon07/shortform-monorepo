@@ -7,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function FollowingPage() {
-    const { user } = useUser();
     const navigate = useNavigate();
+    const { user } = useUser();
     const { 
         followings, 
         error, 
         loading,
-    } = useFollow(user?.id);
+    } = useFollow(user.id);
 
     useEffect(() => {
         if (!user) navigate("/loginplz");

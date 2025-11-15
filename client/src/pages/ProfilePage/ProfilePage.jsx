@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../shared/context/UserContext";
 import { useProfile } from "../../features/profile/hooks/useProfile";
-import ProfileHeader from "../../features/profile/components/ui/ProfileHeader";
+import ProfileHeader from "../../widgets/profile/ProfileHeader";
 import ProfileInfoModal from "../../widgets/profile/ProfileInfoModal";
 import { ROUTE } from "../../shared/constants/Route";
 import { Loading } from "../../shared/components/Loading";

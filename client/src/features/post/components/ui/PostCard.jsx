@@ -73,7 +73,9 @@ export default function PostCard({ post, onLike, onCommentClick, onShare }) {
             {post.communityText && (
                 <div className="px-4 pb-3">
                     <p className="text-white text-sm whitespace-pre-wrap break-words">
-                        {post.communityText}
+                        {post.communityText.length > 100 
+                            ? `${post.communityText.substring(0, 100)}...` 
+                            : post.communityText}
                     </p>
                 </div>
             )}
