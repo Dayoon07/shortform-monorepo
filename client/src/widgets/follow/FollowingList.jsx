@@ -13,7 +13,10 @@ const FollowingList = ({ followings }) => {
                     현재 <span className="text-blue-400 font-semibold">{followings.length}</span>명을 팔로잉하고 있습니다
                 </p>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
+            <div className="md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
+                sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 
+                max-md:pb-[56px] p-2"
+            >
                 {followings.map((follower) => (
                     <FollowingCard
                         key={follower.id || follower.mention}

@@ -13,6 +13,7 @@ export const VideoCard = memo(({ video, index, videoRefs }) => {
                     <video
                         ref={(el) => (videoRefs.current[index] = el)}
                         data-src={video.videoSrc}
+                        data-preview-img={video.previewImg}
                         playsInline
                         preload="none"
                         className="lazy-video w-full h-full object-cover"

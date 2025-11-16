@@ -1,1 +1,1 @@
-export const REST_API_SERVER = "https://kdy-server.me";
+export const REST_API_SERVER = "http://localhost:9005";

@@ -12,7 +12,7 @@ export default function VideoList() {
         hasMore, 
         error, 
         loadMore,
-        refresh 
+        // refresh 
     } = useVideoPagination(6); // 한 페이지당 6개
     
     const observerTarget = useRef(null);
@@ -75,7 +75,7 @@ export default function VideoList() {
             )}
             
             {/* 비디오가 하나도 없을 때 */}
-            {!loading && videos.length === 0 && (
+            {/* {!loading && videos.length === 0 && (
                 <div className="flex flex-col items-center justify-center h-96">
                     <p className="text-gray-400 text-lg mb-4">비디오가 없습니다</p>
                     <button 
@@ -85,7 +85,7 @@ export default function VideoList() {
                         새로고침
                     </button>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

@@ -7,16 +7,18 @@ export function useLazyHoverVideo(videos) {
     useEffect(() => {
         if (!Array.isArray(videos) || videos.length === 0) return;
 
-        const observer = new IntersectionObserver(
-            (entries) => {
+        const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         const video = entry.target;
 
                         // Lazy load
                         if (video.dataset.src && !video.src) {
+                            // 마우스 커서 호버하면 영상 실행하는 거는 나중에 구현
                             video.src = `${REST_API_SERVER}${video.dataset.src}`;
-                            video.load();
+                            video.poster = `${REST_API_SERVER}${video.dataset.previewImg}`;
+                            // video.load();
+                            video.addEventListener("mouseover", e => e.load());
                         }
 
                         const card = video.closest(".video-card");
@@ -41,7 +43,10 @@ export function useLazyHoverVideo(videos) {
                     }
                 });
             },
-            { rootMargin: "100px", threshold: 0.1 }
+            {
+                rootMargin: "100px",
+                threshold: 0.5
+            }
         );
 
         videoRefs.current.forEach((v) => v && observer.observe(v));
