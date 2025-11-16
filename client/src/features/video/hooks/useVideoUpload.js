@@ -11,6 +11,20 @@ export function useVideoUpload() {
     const [showModal, setShowModal] = useState(false);
     const xhrRef = useRef(null);
 
+    // 초기화 함수
+    const reset = useCallback(() => {
+        setCurrentFile(null);
+        setFileProgress(0);
+        setUploadProgress(0);
+        setIsUploading(false);
+        setShowModal(false);
+        
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+            setPreviewUrl('');
+        }
+    }, [previewUrl]);
+
     // 파일 선택 처리
     const handleFileSelect = useCallback((file) => {
         const validation = validateVideoFile(file);
@@ -76,7 +90,7 @@ export function useVideoUpload() {
         } finally {
             setIsUploading(false);
         }
-    }, [currentFile]);
+    }, [currentFile, reset]);
 
     // 업로드 취소
     const cancelUpload = useCallback(() => {
@@ -84,21 +98,7 @@ export function useVideoUpload() {
             xhrRef.current.abort();
         }
         reset();
-    }, []);
-
-    // 초기화
-    const reset = useCallback(() => {
-        setCurrentFile(null);
-        setFileProgress(0);
-        setUploadProgress(0);
-        setIsUploading(false);
-        setShowModal(false);
-        
-        if (previewUrl) {
-            URL.revokeObjectURL(previewUrl);
-            setPreviewUrl('');
-        }
-    }, [previewUrl]);
+    }, [reset]);
 
     return {
         currentFile,
