@@ -23,7 +23,7 @@ import "./App.css";
 export default function App() {
     return (
         <>
-            <BrowserRouter basename={process.env.PUBLIC_URL}>
+            <BrowserRouter basename="/shortform-client">
                 <UserProvider>
                     <div>
                         <AppBar />
