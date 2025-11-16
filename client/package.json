@@ -1,5 +1,6 @@
 {
   "name": "shortform-client",
+  "homepage": "https://dayoon07.github.io/shortform-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
