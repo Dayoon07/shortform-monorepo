@@ -76,7 +76,7 @@ export default function SwipeVideoPage() {
     // URL 업데이트 (뒤로가기 지원)
     useEffect(() => {
         if (currentVideo?.uploader?.mention && currentVideo?.videoLoc) {
-            const newUrl = `/@${currentVideo.uploader.mention}/swipe/video/${currentVideo.videoLoc}`;
+            const newUrl = `/shortform-client/@${currentVideo.uploader.mention}/swipe/video/${currentVideo.videoLoc}`;
             const currentPath = window.location.pathname;
             
             // URL이 다를 때만 업데이트
