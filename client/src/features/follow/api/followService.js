@@ -105,7 +105,7 @@ export async function getFollowerList(id) {
         if (!res.ok) throw new Error("에러남!!!");
         const data = await res.json();
         console.log(data);
-        return { data };
+        return data;
     } catch (error) {
         console.error(error);
         return false;

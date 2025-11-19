@@ -28,33 +28,36 @@ export const FollowRelationModal = ({
                 </div>
 
                 <ul className="divide-y divide-gray-200 overflow-y-auto flex-1">
-                    {users.map((u) => (
-                        <li key={u.id || u.mention} className="flex items-center justify-between p-4">
-                            <div className="flex items-center space-x-3">
-                                <img src={`${REST_API_SERVER}${u.profileImgSrc}`} alt={u.username}
-                                    className="w-10 h-10 rounded-full object-cover"
-                                />
-                                <div>
-                                    <p className="font-semibold text-black">
-                                        {u.username}
-                                    </p>
-                                    <p className="text-gray-500 text-sm">
-                                        @{u.mention}
-                                    </p>
+                    {users.map((u) => {
+                        console.log(u);
+                        return (
+                            <li key={u.id || u.mention} className="flex items-center justify-between p-4">
+                                <div className="flex items-center space-x-3">
+                                    <img src={`${REST_API_SERVER}${u.profileImgSrc}`} alt={u.username}
+                                        className="w-10 h-10 rounded-full object-cover"
+                                    />
+                                    <div>
+                                        <p className="font-semibold text-black">
+                                            {u.username}
+                                        </p>
+                                        <p className="text-gray-500 text-sm">
+                                            @{u.mention}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <button onClick={() => onToggleFollow(u)} 
-                                className={`text-sm px-4 py-1 rounded-md font-medium border ${
-                                    u.isFollowing
-                                    ? "bg-gray-100 text-black border-gray-300"
-                                    : "bg-blue-500 text-white border-blue-500"
-                                }`}
-                            >
-                                {u.isFollowing ? "Following" : "Follow"}
-                            </button>
-                        </li>
-                    ))}
+                                <button onClick={() => onToggleFollow(u)} 
+                                    className={`text-sm px-4 py-1 rounded-md font-medium border ${
+                                        u.isFollowing
+                                        ? "bg-gray-100 text-black border-gray-300"
+                                        : "bg-blue-500 text-white border-blue-500"
+                                    }`}
+                                >
+                                    {u.isFollowing ? "Following" : "Follow"}
+                                </button>
+                            </li>
+                        )
+                    })}
 
                     {users.length === 0 && (
                         <div className="flex justify-center items-center h-full text-gray-500">

@@ -10,8 +10,6 @@ export const useProfile = (mention, currentUser) => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isFollowing, setIsFollowing] = useState(false);
-    const [followerList, setFollowerList] = useState([]);
-    const [followingList, setFollowingList] = useState([]);
 
     const cleanMention = mention?.replace('@', '');
     const isOwnProfile = currentUser?.mention === cleanMention;
@@ -33,8 +31,7 @@ export const useProfile = (mention, currentUser) => {
     const getFollowerListHook = async () => {
         try {
             const data = await getFollowerList(profile.id);
-            setFollowerList(data || []);
-            console.log(data);
+            return data;            
         } catch (error) {
             console.error(error);
             throw error;
@@ -44,8 +41,7 @@ export const useProfile = (mention, currentUser) => {
     const getFollowingListHook = async () => {
         try {
             const data = await getFollowingList(profile.id);
-            setFollowingList(data || []);
-            console.log(data);
+            return data;
         } catch (error) {
             console.error(error);
             throw error;
@@ -102,8 +98,6 @@ export const useProfile = (mention, currentUser) => {
         isFollowing,
         isOwnProfile,
         // handleToggleFollow,
-        followerList,
-        followingList,
         fetchProfilePosts,
         getFollowerListHook,
         getFollowingListHook

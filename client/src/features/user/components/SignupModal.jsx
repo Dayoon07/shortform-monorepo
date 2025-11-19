@@ -192,7 +192,7 @@ export default function SignupModal({ onClose }) {
             const response = await signup(data);
 
             if (response?.data) {
-                showSuccessToast('회원가입이 완료되었습니다!');
+                showSuccessToast('회원가입이<br className="md:hidden" />완료되었습니다!');
                 onClose();
             }
         } catch (error) {

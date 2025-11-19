@@ -20,8 +20,6 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
 
     const {
         isOwnProfile,
-        followerList,
-        followingList,
         getFollowerListHook,
         getFollowingListHook
     } = useProfile(mention, user);
@@ -36,17 +34,15 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
 
     /** 팔로우 목록(=following) 모달 오픈 */
     const openFollowingModal = async () => {
-        await getFollowingListHook();            // 팔로잉 리스트
         setFollowModalTitle("팔로우");
-        setFollowModalData(followingList);
+        setFollowModalData(await getFollowingListHook());
         setFollowModalOpen(true);
     };
 
     /** 팔로워 목록 모달 오픈 */
     const openFollowerModal = async () => {
-        await getFollowerListHook();            // 팔로워 리스트
         setFollowModalTitle("팔로워");
-        setFollowModalData(followerList);
+        setFollowModalData(await getFollowerListHook());
         setFollowModalOpen(true);
     };
 

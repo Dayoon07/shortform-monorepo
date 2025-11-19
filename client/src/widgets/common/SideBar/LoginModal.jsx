@@ -23,7 +23,7 @@ export default function LoginModal({ onClose }) {
             const data = await login(username, password);
             
             if (data.success === false) {
-                showErrorToast(`로그인 실패: ${data.message || "사용자명 또는 <br classname='md:hidden'/> 비밀번호가 올바르지 않습니다"}`, 5000);
+                showErrorToast(`로그인 실패: ${data.message || "사용자명 또는 <br className='md:hidden'/> 비밀번호가 올바르지 않습니다"}`, 5000);
             } else {
                 setUser(data.user); // Context 업데이트
                 showSuccessToast("로그인 되었습니다");
@@ -33,10 +33,10 @@ export default function LoginModal({ onClose }) {
             console.error("로그인 요청 오류: ", error);
             showErrorToast(`
                 로그인 중 오류가 발생했습니다
-                <br classname='md:hidden'/>
-                <br classname='md:hidden'/>
+                <br className='md:hidden'/>
+                <br className='md:hidden'/>
                 로그인 실패: 사용자명 또는
-                <br classname='md:hidden'/>
+                <br className='md:hidden'/>
                 비밀번호가 올바르지 않습니다    
             `);
         } finally {
