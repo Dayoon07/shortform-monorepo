@@ -108,12 +108,9 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
                                 onFollowChange={handleFollowerCountChange}
                             />
                         ) : (
-                            <button 
-                                type="button" 
-                                onClick={() => setProfileEditModal(true)}
-                                className="inline-block rounded-full bg-neutral-100 px-6 py-2 text-xs font-medium text-neutral-700 
-                                           hover:bg-neutral-200 focus:outline-none active:bg-neutral-300 dark:bg-neutral-800 
-                                           dark:text-neutral-200 transition font-semibold"
+                            <button type="button" onClick={() => setProfileEditModal(true)} className="inline-block rounded-full 
+                                bg-neutral-100 px-6 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-200 focus:outline-none 
+                                active:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-200 transition font-semibold"
                             >
                                 프로필 편집
                             </button>
@@ -133,7 +130,7 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
                 onClose={() => setFollowModalOpen(false)}
                 title={followModalTitle}
                 users={followModalData}
-                onToggleFollow={(user) => console.log("Toggle Follow:", user)}
+                sessionUser={user}
             />
         </>
     );

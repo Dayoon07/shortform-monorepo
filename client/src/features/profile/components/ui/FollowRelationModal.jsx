@@ -1,13 +1,15 @@
 import { X } from "lucide-react";
 import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
+import ToggleFollowButton from "../../../follow/components/ui/ToggleFollowButton";
+import { useUser } from "../../../../shared/context/UserContext";
 
 export const FollowRelationModal = ({
     isOpen,
     onClose,
     title,
-    users = [],
-    onToggleFollow,
+    users = []
 }) => {
+    const { user } = useUser();
     if (!isOpen) return null;
 
     return (
@@ -29,7 +31,6 @@ export const FollowRelationModal = ({
 
                 <ul className="divide-y divide-gray-200 overflow-y-auto flex-1">
                     {users.map((u) => {
-                        console.log(u);
                         return (
                             <li key={u.id || u.mention} className="flex items-center justify-between p-4">
                                 <div className="flex items-center space-x-3">
@@ -46,15 +47,10 @@ export const FollowRelationModal = ({
                                     </div>
                                 </div>
 
-                                <button onClick={() => onToggleFollow(u)} 
-                                    className={`text-sm px-4 py-1 rounded-md font-medium border ${
-                                        u.isFollowing
-                                        ? "bg-gray-100 text-black border-gray-300"
-                                        : "bg-blue-500 text-white border-blue-500"
-                                    }`}
-                                >
-                                    {u.isFollowing ? "Following" : "Follow"}
-                                </button>
+                                <ToggleFollowButton 
+                                    followReqUser={user}
+                                    followResUser={u}
+                                />
                             </li>
                         )
                     })}

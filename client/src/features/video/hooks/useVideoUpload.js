@@ -96,7 +96,7 @@ export function useVideoUpload() {
                 (percent) => setUploadProgress(percent)
             );
 
-            showSuccessToast('동영상이 성공적으로 업로드되었습니다!');
+            showSuccessToast(`동영상이 성공적으로 <br className="md:hidden" /> 업로드되었습니다`);
             reset();
             return result;
         } catch (error) {

@@ -13,7 +13,7 @@
  * formatDate("25/11/06 12:39:28.273176"); // "2025.11.06"
  * formatDate("invalid-date"); // "날짜 없음"
  */
-export const formatDate = (dateString) => {
+export const formatDate = (dateString: string): string => {
     try {
         const date = new Date(dateString);
         if (isNaN(date.getTime())) {
@@ -21,7 +21,7 @@ export const formatDate = (dateString) => {
         }
         
         const now = new Date();
-        const diff = now - date;
+        const diff = now.getTime() - date.getTime();
         const seconds = Math.floor(diff / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);

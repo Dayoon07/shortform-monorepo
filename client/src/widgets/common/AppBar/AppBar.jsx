@@ -9,13 +9,14 @@ import SearchModal from './SearchModal';
 import { LogOut } from 'lucide-react';
 import { useClickSound } from '../../../shared/hooks/useClickSound';
 import { showSuccessToast } from '../../../shared/utils/toast';
+import { clickSound } from '../../../shared/constants/Mp3List';
 
 export default function AppBar() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const { user, setUser } = useUser();
     const dropdownRef = useRef(null);
-    const handlePlayClickSound = useClickSound("/mp3/click.mp3");
+    const handlePlayClickSound = useClickSound(clickSound);
     const navigate = useNavigate();
     const dropdownItem = `block w-full px-4 py-2 text-gray-300 
         hover:text-white hover:bg-gray-700/50 z-[91] 

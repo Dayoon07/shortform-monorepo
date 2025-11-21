@@ -2,14 +2,17 @@ import { useCallback, useEffect, useState } from "react";
 import { getFollowerList, getFollowingList } from "../api/followService";
 import { showToast } from "../../../shared/utils/FollowShowToast";
 
-export const useFollow = (userId) => {
+export const useFollow = (user) => {
+    const userId = user?.id ?? null;
+
     const [followers, setFollowers] = useState([]);
     const [followings, setFollowings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // 팔로워 목록 로드
     const loadFollowers = useCallback(async () => {
+        if (!userId) return;  // 🚨 user 없으면 실행 안 함
+
         setLoading(true);
         try {
             const data = await getFollowerList(userId);
@@ -23,8 +26,9 @@ export const useFollow = (userId) => {
         }
     }, [userId]);
 
-    // 팔로잉 목록 로드
     const loadFollowings = useCallback(async () => {
+        if (!userId) return; // 🚨 user 없으면 실행 안 함
+
         setLoading(true);
         try {
             const data = await getFollowingList(userId);
@@ -39,10 +43,9 @@ export const useFollow = (userId) => {
     }, [userId]);
 
     useEffect(() => {
-        if (userId) {
-            loadFollowers();
-            loadFollowings();
-        }
+        if (!userId) return; // 🚨 로그인 안 되었으면 API 불러오지 않음
+        loadFollowers();
+        loadFollowings();
     }, [userId, loadFollowers, loadFollowings]);
 
     return {

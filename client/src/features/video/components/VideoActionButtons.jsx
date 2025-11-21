@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
 import { toggleVideoLike } from '../api/swipeVideoService';
 import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
@@ -68,7 +68,7 @@ export function VideoActionButtons({ video, user, onCommentClick }) {
                 >
                     <MessageCircle className="h-7 w-7 text-white" />
                 </button>
-                <span className="text-xs md:text-sm mt-1 text-white">{video.commentCnt}</span>
+                <span className="text-xs md:text-sm mt-1 text-white">{video.commentCount}</span>
             </div>
 
             <div className="flex flex-col items-center group">

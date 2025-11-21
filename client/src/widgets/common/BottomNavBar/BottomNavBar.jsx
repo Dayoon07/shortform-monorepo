@@ -5,11 +5,12 @@ import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { useUser } from "../../../shared/context/UserContext";
 import { useClickSound } from "../../../shared/hooks/useClickSound";
 import { NAVITEM } from "../../../shared/constants/BottomNavBarLocationList";
+import { clickSound } from "../../../shared/constants/Mp3List";
 
 export default function BottomNavBar() {
     const { user } = useUser();
     const location = useLocation();
-    const handlePlayClickSound = useClickSound("/mp3/click.mp3");
+    const handlePlayClickSound = useClickSound(clickSound);
 
     // 현재 경로가 활성 상태인지 확인
     const isActive = (path) => {

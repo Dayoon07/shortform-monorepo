@@ -7,18 +7,22 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function FollowingPage() {
-    const navigate = useNavigate();
     const { user } = useUser();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) {
+            navigate("/loginplz");
+        }
+    }, [user, navigate]);
+
     const { 
         followings, 
         error, 
         loading,
-    } = useFollow(user.id);
+    } = useFollow(user);
 
-    useEffect(() => {
-        if (!user) navigate("/loginplz");
-    }, [user, navigate]);
-
+    if (!user) return null;
     if (loading) return <Loading />;
     if (error) return <Error />;
 
@@ -31,4 +35,4 @@ export default function FollowingPage() {
             </main>
         </div>
     );
-};
+}

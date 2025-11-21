@@ -1,4 +1,4 @@
-export function showMessage(message, success, duration = 3000) {
+export function showMessage(message: string, success: boolean, duration = 3000) {
     const toast = document.createElement('div');
     toast.innerHTML = message;
     toast.style.position = 'absolute';

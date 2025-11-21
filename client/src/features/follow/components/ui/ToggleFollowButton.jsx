@@ -6,9 +6,8 @@ export default function ToggleFollowButton({
     onFollowChange
 }) {
     const baseClass = `inline-block rounded-full px-6 py-2 text-xs font-medium font-semibold 
-        transition duration-200 disabled:opacity-50 flex items-center space-x-2
+        transition duration-200 disabled:opacity-50 space-x-2 
     `;
-
     const {
         isFollowing,    // 초기값 null
         loading,
@@ -24,15 +23,15 @@ export default function ToggleFollowButton({
         }
     };
 
-    // 👉 서버에서 팔로우 상태 아직 못 받았을 때
+    // 서버에서 팔로우 상태 아직 못 받았을 때
     if (isFollowing === null) {
         return (
             <div className="inline-block w-[90px] h-[32px] rounded-full bg-neutral-700/50 animate-pulse" />
         );
     }
 
-    return (
-        <button
+    return ( 
+        followReqUser && <button
             onClick={handleClick}
             disabled={loading}
             className={

@@ -18,8 +18,8 @@ export default function LikeVideoList() {
                 console.error(error);
             }
         }
-        likeVideo();
-    }, [user?.mention]);
+        if (user) likeVideo();
+    }, [user]);
 
     if (!user || user == null) return <ToGoPage errorMessage="로그인이 필요합니다" />
 

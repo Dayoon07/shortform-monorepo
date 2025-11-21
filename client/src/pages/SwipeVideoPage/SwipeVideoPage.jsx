@@ -6,6 +6,7 @@ import SwipeVideoPlayer from '../../widgets/video/SwipeVideoPlayer';
 import { Loading } from '../../shared/components/Loading';
 import { getFirstSwipeVideo } from '../../features/video/api/swipeVideoService';
 import ToGoPage from "../../shared/components/ToGoPage";
+import { CommentModal } from '../../widgets/comment/CommentModal';
 
 export default function SwipeVideoPage() {
     const params = useParams();
@@ -31,6 +32,12 @@ export default function SwipeVideoPage() {
         error: swipeError,
         canGoPrev
     } = useSwipeVideo(initialVideo, user);
+
+    // 스와이프 핸들러
+    const handleSwipe = (direction) => {
+        if (direction === 'next') nextVideo();
+        if (direction === 'prev') prevVideo();
+    };
 
     // 초기 비디오 로드
     useEffect(() => {
@@ -106,15 +113,6 @@ export default function SwipeVideoPage() {
         return () => window.removeEventListener('popstate', handlePopState);
     }, [canGoPrev, prevVideo]);
 
-    // 스와이프 핸들러
-    const handleSwipe = (direction) => {
-        if (direction === 'next') {
-            nextVideo();
-        } else if (direction === 'prev') {
-            prevVideo();
-        }
-    };
-
     if (loadError) return <ToGoPage />      // 에러 처리
     if (!initialVideo || !currentVideo) return <Loading message="영상을 불러오는 중..." />; // 초기 로딩
 
@@ -161,32 +159,14 @@ export default function SwipeVideoPage() {
                 </div>
             </div>
 
-            {showCommentModal && (
-                <div 
-                    className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
-                    onClick={() => setShowCommentModal(false)}
-                >
-                    <div 
-                        className="bg-gray-900 rounded-2xl w-full max-w-2xl h-3/4 overflow-hidden flex flex-col"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="flex justify-between items-center p-4 border-b border-gray-700">
-                            <h3 className="text-white text-lg font-semibold">댓글</h3>
-                            <button 
-                                onClick={() => setShowCommentModal(false)}
-                                className="text-gray-400 hover:text-white"
-                            >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div className="flex-1 overflow-y-auto p-4">
-                            <p className="text-gray-400 text-center">댓글 기능은 구현 예정입니다</p>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <CommentModal
+                open={showCommentModal}
+                onClose={() => setShowCommentModal(false)}
+                videoCommentSize={currentVideo.commentCount}
+                user={user}
+                videoId={currentVideo.id}
+            />
+
         </main>
     );
 }

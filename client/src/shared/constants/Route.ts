@@ -10,7 +10,7 @@ export const ROUTE = {
      */
     SEARCH: "/search",
 
-    DYNAMIC_SEARCH_ROUTE: (word) => `/search?q=${word}`,
+    DYNAMIC_SEARCH_ROUTE: (word: string) => `/search?q=${word}`,
 
     /** 
      * 로그아웃 요청 경로
@@ -23,7 +23,7 @@ export const ROUTE = {
      * @param {string} mention - 사용자 아이디 (예: "yoon")
      * @example ROUTE.PROFILE("yoon") => "/@yoon"
      */
-    PROFILE: (mention) => `/@${mention}`,
+    PROFILE: (mention: string) => `/@${mention}`,
 
     /** 
      * 특정 사용자의 개별 비디오 상세 페이지 경로
@@ -31,14 +31,14 @@ export const ROUTE = {
      * @param {string} videoLoc - 비디오 식별자 (URL 또는 파일명 등)
      * @example ROUTE.PROFILE_VIDEO("yoon", "abc123") => "/@yoon/video/abc123"
      */
-    PROFILE_VIDEO: (mention, videoLoc) => `/@${mention}/video/${videoLoc}`,
+    PROFILE_VIDEO: (mention: string, videoLoc: string) => `/@${mention}/video/${videoLoc}`,
 
     /** 
      * 특정 사용자의 게시물 목록 페이지 경로
      * @param {string} mention - 사용자 아이디
      * @example ROUTE.PROFILE_POST("yoon") => "/@yoon/post"
      */
-    PROFILE_POST: (mention) => `/@${mention}/post`,
+    PROFILE_POST: (mention: string) => `/@${mention}/post`,
 
     /** 
      * 특정 사용자의 게시물 상세 페이지 경로
@@ -46,7 +46,7 @@ export const ROUTE = {
      * @param {string} communityUuid - 커뮤니티 게시물의 고유 식별자(UUID)
      * @example ROUTE.PROFILE_POST_DETAIL("yoon", "abcd-efgh") => "/@yoon/post/abcd-efgh"
      */
-    PROFILE_POST_DETAIL: (mention, communityUuid) => `/@${mention}/post/${communityUuid}`,
+    PROFILE_POST_DETAIL: (mention: string, communityUuid: string) => `/@${mention}/post/${communityUuid}`,
 
     /** 
      * 프로필 내 스와이프 비디오 상세 페이지 경로
@@ -54,7 +54,7 @@ export const ROUTE = {
      * @param {string} videoLoc - 비디오 식별자
      * @example ROUTE.PROFILE_SWIPE_VIDEO("yoon", "abc123") => "/@yoon/swipe/video/abc123"
      */
-    PROFILE_SWIPE_VIDEO: (mention, videoLoc) => `/@${mention}/swipe/video/${videoLoc}`,
+    PROFILE_SWIPE_VIDEO: (mention: string, videoLoc: string) => `/@${mention}/swipe/video/${videoLoc}`,
 
     /** 
      * 스튜디오 업로드 페이지 경로 (영상 업로드)
@@ -97,7 +97,7 @@ export const ROUTE = {
      * @param {string} videoTag - 해시태그 문자열 (예: "funny")
      * @example ROUTE.HASHTAG("funny") => "/hashtag/funny"
      */
-    HASHTAG: (videoTag) => `/hashtag/${videoTag}`,
+    HASHTAG: (videoTag: string) => `/hashtag/${videoTag}`,
 };
 
 export const PATTERN_ROUTE = {

@@ -1,3 +1,9 @@
+type ToastOptions = {
+    success?: boolean;
+    duration?: number;
+    position?: 'top' | 'center' | 'bottom';
+};
+
 /**
  * 토스트 메시지를 표시합니다
  * @param {string} message - 표시할 메시지 (HTML 지원)
@@ -6,7 +12,7 @@
  * @param {number} options.duration - 표시 시간 (ms)
  * @param {string} options.position - 위치 ('top', 'bottom', 'center')
  */
-export function showToast(message, options = {}) {
+export function showToast(message: string, options: ToastOptions = {}) {
     const {
         success = true,
         duration = 3000,
@@ -62,14 +68,14 @@ export function showToast(message, options = {}) {
 /**
  * 에러 토스트를 표시합니다 (편의 함수)
  */
-export function showErrorToast(message, duration = 3000) {
+export function showErrorToast(message: string, duration = 3000) {
     showToast(message, { success: false, duration });
 }
 
 /**
  * 성공 토스트를 표시합니다 (편의 함수)
  */
-export function showSuccessToast(message, duration = 3000) {
+export function showSuccessToast(message: string, duration = 3000) {
     showToast(message, { success: true, duration });
 }
 

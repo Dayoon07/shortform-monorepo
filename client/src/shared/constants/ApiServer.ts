@@ -1,0 +1,1 @@
+export const REST_API_SERVER: string = "http://192.168.219.104:9005";

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { UploadIcon } from '../../../widgets/icon/icon';
 import { useClickSound } from '../../../shared/hooks/useClickSound';
+import { clickSound } from '../../../shared/constants/Mp3List';
 
 export default function VideoUploadDropzone({ onFileSelect, disabled }) {
     const [isDragging, setIsDragging] = useState(false);
-    const handlePlaySound = useClickSound("/mp3/click.mp3");
+    const handlePlaySound = useClickSound(clickSound);
 
     const handleDragOver = (e) => {
         e.preventDefault();
