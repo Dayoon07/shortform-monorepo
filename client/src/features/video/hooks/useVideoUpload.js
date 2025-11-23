@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { uploadVideo, validateVideoFile } from '../api/videoUploadService';
 import { showSuccessToast, showErrorToast } from '../../../shared/utils/toast';
-import { extractThumbnail } from '../utils/thumbnailExtractor'; // 추가
+import { extractThumbnail } from '../../../shared/utils/thumbnailExtractor';  // 추가
 
 export function useVideoUpload() {
     const [currentFile, setCurrentFile] = useState(null);

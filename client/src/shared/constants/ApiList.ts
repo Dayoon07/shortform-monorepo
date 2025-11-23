@@ -15,7 +15,7 @@ export const API_LIST = {
         // 전체 비디오 목록 (레거시)
         ALL_LEGACY: "/api/video/all/legacy",
         USER_VIDEO: (mention: string) => `/api/user/info/${mention}/video`,
-        RANDOM_VIDEO: "/api/videos/random",
+        RANDOM_VIDEO: (excludeIds: number[], mention: string) => `/api/videos/v2/random?excludeIds=${excludeIds}&mention=${mention}`,
         FIRST_SWIPE_VIDEO: (videoLoc: string, mention: string) => `/api/video/swipe/find?videoLoc=${videoLoc}&mention=${mention}`,
         UPLOAD_VIDEO: "/api/upload/video",
         SEARCH: (query: string) => `/api/video/search?q=${query}`,

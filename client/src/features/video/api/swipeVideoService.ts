@@ -1,12 +1,11 @@
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 
-export async function getRandomVideo(mention, excludeIds = []) {
+export async function getRandomVideo(mention: string, excludeIds: number[] = []) {
     try {
-        const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.RANDOM_VIDEO}`, {
+        const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.RANDOM_VIDEO(excludeIds, mention)}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ excludeIds: excludeIds, mention: mention })
+            headers: { 'Content-Type': 'application/json' }
         });
         
         if (!response.ok) throw new Error('영상을 불러올 수 없습니다.');
@@ -19,7 +18,7 @@ export async function getRandomVideo(mention, excludeIds = []) {
     }
 }
 
-export async function getFirstSwipeVideo(videoLoc, mention) {
+export async function getFirstSwipeVideo(videoLoc: string, mention: string) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.FIRST_SWIPE_VIDEO(videoLoc, mention)}`, {
             method: "POST",
@@ -32,7 +31,7 @@ export async function getFirstSwipeVideo(videoLoc, mention) {
     }
 }
 
-export async function toggleVideoLike(videoId) {
+export async function toggleVideoLike(videoId: number) {
     try {
         const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO_LIKE.TOGGLE_VIDEO_LIKE}`, {
             method: 'POST',

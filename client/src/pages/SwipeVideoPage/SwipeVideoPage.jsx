@@ -7,6 +7,7 @@ import { Loading } from '../../shared/components/Loading';
 import { getFirstSwipeVideo } from '../../features/video/api/swipeVideoService';
 import ToGoPage from "../../shared/components/ToGoPage";
 import { CommentModal } from '../../widgets/comment/CommentModal';
+import { VideoInfoModal } from '../../widgets/video/VideoInfoModal';
 
 export default function SwipeVideoPage() {
     const params = useParams();
@@ -18,6 +19,7 @@ export default function SwipeVideoPage() {
     
     const [initialVideo, setInitialVideo] = useState(null);
     const [showCommentModal, setShowCommentModal] = useState(false);
+    const [showVideoInfoModal, setShowVideoInfoModal] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
     const [loadError, setLoadError] = useState(null);
     
@@ -46,10 +48,10 @@ export default function SwipeVideoPage() {
             if (hasFetched.current) return;
             
             // 로그인 안 했으면 로그인 페이지로
-            if (!user) {
-                navigate('/loginplz');
-                return;
-            }
+            // if (!user) {
+            //     navigate('/loginplz');
+            //     return;
+            // }
             
             if (!videoLoc || !mention) {
                 setLoadError('잘못된 접근입니다');
@@ -60,7 +62,7 @@ export default function SwipeVideoPage() {
             hasFetched.current = true;
             
             try {
-                const data = await getFirstSwipeVideo(videoLoc, user.mention);
+                const data = await getFirstSwipeVideo(videoLoc, user?.mention);
                 console.log(data);
                 if (!data) {
                     setLoadError('영상을 찾을 수 없습니다');
@@ -113,7 +115,7 @@ export default function SwipeVideoPage() {
         return () => window.removeEventListener('popstate', handlePopState);
     }, [canGoPrev, prevVideo]);
 
-    if (loadError) return <ToGoPage />      // 에러 처리
+    if (loadError) return <ToGoPage errorMessage={loadError} />      // 에러 처리
     if (!initialVideo || !currentVideo) return <Loading message="영상을 불러오는 중..." />; // 초기 로딩
 
     return (
@@ -124,6 +126,7 @@ export default function SwipeVideoPage() {
                 isFollowing={isFollowing}
                 onFollowChange={setIsFollowing}
                 onCommentClick={() => setShowCommentModal(true)}
+                onInfoClick={() => setShowVideoInfoModal(true)}
                 onSwipe={handleSwipe}
             />
 
@@ -137,16 +140,22 @@ export default function SwipeVideoPage() {
             )}
 
             {swipeError && (
-                <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadeIn">
+                <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 
+                    text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadeIn"
+                >
                     {swipeError}
                 </div>
             )}
 
-            <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 text-white text-sm opacity-50 z-40 pointer-events-none">
+            <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex items-center 
+                space-x-4 text-white text-sm opacity-50 z-40 pointer-events-none"
+            >
                 {canGoPrev && (
                     <div className="flex items-center space-x-1">
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+                            <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 
+                                0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd"
+                            />
                         </svg>
                         <span>위로 스와이프</span>
                     </div>
@@ -154,7 +163,9 @@ export default function SwipeVideoPage() {
                 <div className="flex items-center space-x-1">
                     <span>아래로 스와이프</span>
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 
+                            1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"
+                        />
                     </svg>
                 </div>
             </div>
@@ -167,6 +178,11 @@ export default function SwipeVideoPage() {
                 videoId={currentVideo.id}
             />
 
+           <VideoInfoModal
+                open={showVideoInfoModal}
+                onClose={() => setShowVideoInfoModal(false)}
+                video={currentVideo}
+            />
         </main>
     );
 }

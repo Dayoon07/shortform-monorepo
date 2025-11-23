@@ -23,6 +23,10 @@ export default function ToggleFollowButton({
         }
     };
 
+    if (followReqUser.mention === followResUser.mention) {
+        return null;
+    }
+
     // 서버에서 팔로우 상태 아직 못 받았을 때
     if (isFollowing === null) {
         return (

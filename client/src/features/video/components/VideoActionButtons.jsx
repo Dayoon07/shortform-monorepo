@@ -1,12 +1,24 @@
-import { useState } from 'react';
-import { Heart, MessageCircle, Share2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Info, ThumbsUp, MessageCircle, Share2, ChevronUp, ChevronDown } from 'lucide-react';
 import { toggleVideoLike } from '../api/swipeVideoService';
 import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
 
-export function VideoActionButtons({ video, user, onCommentClick }) {
+export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, onSwipe }) {
     const [isLiked, setIsLiked] = useState(video.isLiked);
     const [likeCount, setLikeCount] = useState(video.likeCount);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // 화면 크기 감지 (md: 768px)
+    useEffect(() => {
+        const checkMobileSize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobileSize();
+        window.addEventListener('resize', checkMobileSize);
+        return () => window.removeEventListener('resize', checkMobileSize);
+    }, []);
 
     const handleLike = async () => {
         if (!user) {
@@ -51,7 +63,7 @@ export function VideoActionButtons({ video, user, onCommentClick }) {
                     className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
                     aria-label="좋아요"
                 >
-                    <Heart
+                    <ThumbsUp
                         className={`h-7 w-7 transition-colors duration-200 ${isAnimating ? 'heart-animation' : ''}`}
                         fill={isLiked ? '#ef4444' : 'none'}
                         stroke={isLiked ? '#ef4444' : 'currentColor'}
@@ -81,6 +93,43 @@ export function VideoActionButtons({ video, user, onCommentClick }) {
                 </button>
                 <span className="text-xs md:text-sm mt-1 text-white">공유</span>
             </div>
+
+            <div className="flex flex-col items-center group">
+                <button
+                    onClick={onInfoClick}
+                    className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
+                    aria-label="설명"
+                >
+                    <Info className="h-7 w-7 text-white" />
+                </button>
+                <span className="text-xs md:text-sm mt-1 text-white">설명</span>
+            </div>
+
+            {/* 모바일 전용 위 스와이프 버튼 */}
+            {isMobile && (
+                <div className="flex flex-col items-center group">
+                    <button
+                        onClick={() => onSwipe('prev')}
+                        className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
+                        aria-label="이전 영상"
+                    >
+                        <ChevronUp className="h-7 w-7 text-white" />
+                    </button>
+                </div>
+            )}
+
+            {/* 모바일 전용 아래 스와이프 버튼 */}
+            {isMobile && (
+                <div className="flex flex-col items-center group">
+                    <button
+                        onClick={() => onSwipe('next')}
+                        className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
+                        aria-label="다음 영상"
+                    >
+                        <ChevronDown className="h-7 w-7 text-white" />
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

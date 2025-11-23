@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { VideoPlayer } from '../../features/video/components/VideoPlayer';
 import { VideoActionButtons } from '../../features/video/components/VideoActionButtons';
 import { VideoInfoOverlay } from '../../features/video/components/VideoInfoOverlay';
@@ -9,8 +9,22 @@ export default function SwipeVideoPlayer({
     isFollowing, 
     onFollowChange,
     onCommentClick,
+    onInfoClick,
     onSwipe 
 }) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    // 화면 크기 감지 (md: 768px)
+    useEffect(() => {
+        const checkMobileSize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobileSize();
+        window.addEventListener('resize', checkMobileSize);
+        return () => window.removeEventListener('resize', checkMobileSize);
+    }, []);
+
     useEffect(() => {
         let startY = 0;
 
@@ -37,35 +51,25 @@ export default function SwipeVideoPlayer({
             }
         };
 
-        // 위/아래 화살표 키 누르면 스와이프 되지만 현재는 주석 처리
-        // const handleKeyDown = (e) => {
-        //     const tagName = e.target.tagName.toLowerCase();
-        //     if (tagName === 'input' || tagName === 'textarea') return;
+        // 모바일: 터치만 활성화
+        if (isMobile) {
+            window.addEventListener('touchstart', handleTouchStart);
+            window.addEventListener('touchend', handleTouchEnd);
 
-        //     switch(e.key) {
-        //         case 'ArrowDown':
-        //             e.preventDefault();
-        //             onSwipe('next');
-        //             break;
-        //         case 'ArrowUp':
-        //             e.preventDefault();
-        //             onSwipe('prev');
-        //             break;
-        //     }
-        // };
+            return () => {
+                window.removeEventListener('touchstart', handleTouchStart);
+                window.removeEventListener('touchend', handleTouchEnd);
+            };
+        }
+        // PC: 휠만 활성화
+        else {
+            window.addEventListener('wheel', handleWheel);
 
-        window.addEventListener('touchstart', handleTouchStart);
-        window.addEventListener('touchend', handleTouchEnd);
-        window.addEventListener('wheel', handleWheel);
-        // document.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('touchstart', handleTouchStart);
-            window.removeEventListener('touchend', handleTouchEnd);
-            window.removeEventListener('wheel', handleWheel);
-            // document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [onSwipe]);
+            return () => {
+                window.removeEventListener('wheel', handleWheel);
+            };
+        }
+    }, [onSwipe, isMobile]);
 
     return (
         <div className="relative w-full h-full flex items-center justify-center">
@@ -75,6 +79,8 @@ export default function SwipeVideoPlayer({
                 video={video}
                 user={user}
                 onCommentClick={onCommentClick}
+                onInfoClick={onInfoClick}
+                onSwipe={onSwipe}
             />
             
             <VideoInfoOverlay

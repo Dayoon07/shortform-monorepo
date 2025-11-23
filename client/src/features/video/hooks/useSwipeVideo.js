@@ -26,6 +26,8 @@ export function useSwipeVideo(initialVideo, user) {
         // video 객체가 있으면 사용, 없으면 responseData 자체 사용
         const video = responseData.video || responseData;
         const uploader = responseData.uploader || video.uploader;
+        console.log(`데이터 확인용 video: ${video}`);
+        console.log(`데이터 확인용 uploader: ${uploader}`);
         
         return {
             id: responseData.id || video.id,
@@ -34,6 +36,10 @@ export function useSwipeVideo(initialVideo, user) {
             title: video.videoTitle || video.title || '',
             description: video.videoDescription || video.description || '',
             videoTag: video.videoTag || '',
+            views: video.videoViews,
+            commentAvailability: video.commentAvailability,
+            videoWatchAvailability: video.videoWatchAvailability,
+            uploadAt: video.uploadAt,
             uploader: {
                 id: uploader?.id,
                 mention: uploader?.mention || '',
@@ -51,7 +57,7 @@ export function useSwipeVideo(initialVideo, user) {
     const fetchNextVideo = useCallback(async (currentVideoLoc = null) => {
         try {
             // 현재 비디오의 videoLoc을 넘겨서 다음 영상 가져오기
-            const data = await getRandomVideo(user.mention, Array.from(watchedIds), currentVideoLoc);
+            const data = await getRandomVideo(user?.mention, Array.from(watchedIds), currentVideoLoc);
             
             if (!data) {
                 return null;

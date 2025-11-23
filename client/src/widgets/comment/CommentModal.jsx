@@ -2,6 +2,7 @@ import { useState } from "react";
 import { REST_API_SERVER } from "../../shared/constants/ApiServer";
 import { useComment } from "../../features/comment/hooks/useComment";
 import { showSuccessToast } from "../../shared/utils/toast";
+import { CommentList } from "../../features/comment/components/CommentList";
 
 export function CommentModal({ open, onClose, videoCommentSize = 0, user, videoId }) {
     const [commentText, setCommentText] = useState("");
@@ -21,11 +22,11 @@ export function CommentModal({ open, onClose, videoCommentSize = 0, user, videoI
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={onClose}
+        <div onClick={onClose} className="fixed inset-0 bg-black bg-opacity-75 
+            backdrop-blur-sm z-50 flex items-center justify-center p-4" 
         >
-            <div className="bg-gray-900 rounded-2xl w-full max-w-2xl h-3/4 flex flex-col shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
+            <div onClick={(e) => e.stopPropagation()} className="bg-gray-900 rounded-2xl 
+                w-full max-w-2xl h-3/4 flex flex-col shadow-2xl"
             >
                 <div className="flex items-center justify-between p-4 border-b border-gray-700">
                     <h2 className="text-xl font-bold text-white">댓글 {videoCommentSize}개</h2>
@@ -68,21 +69,9 @@ export function CommentModal({ open, onClose, videoCommentSize = 0, user, videoI
                     </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {commentList !== null ? (
-                        commentList.map((c) => (
-                            <div className="flex">
-                                <img src={REST_API_SERVER + c.profileImgSrc} alt={`${c.username}님의 프로필`} className="w-8 h-8 rounded-full" />
-                                <div className="ml-4">
-                                    <p className="font-semibold">{c.username}</p>
-                                    <p className="font-semibold">{c.commentText}</p>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-gray-400 text-center">댓글이 없습니다.</p>
-                    )}
-                </div>
+                <CommentList 
+                    commentList={commentList}
+                />
 
                 {user && (
                     <div className="p-4 border-t border-gray-700">
