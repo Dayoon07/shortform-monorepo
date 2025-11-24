@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { getTagVideoList } from "../api/videoService";
+import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
-export const useTagVideo = (tag) => {
-    const [tagVideoList, setTagVideoList] = useState([]);
+export const useTagVideo = (tag?: string): VideoGridContent[] => {
+    const [tagVideoList, setTagVideoList] = useState<VideoGridContent[]>([]);
     
     useEffect(() => {
         if (!tag) return; // tag 없으면 실행 안함
@@ -12,7 +13,7 @@ export const useTagVideo = (tag) => {
         
         const fetchData = async () => {
             try {
-                const data = await getTagVideoList(tag);
+                const data: VideoGridContent[] = await getTagVideoList(tag);
                 if (isMounted) {
                     setTagVideoList(data);
                 }

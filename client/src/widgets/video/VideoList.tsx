@@ -51,10 +51,7 @@ const VideoList: React.FC = () => {
 
     return (
         <div className="relative mx-auto">
-            <VideoGrid 
-                videos={videos} 
-                maxVideos={100}
-            />
+            <VideoGrid videos={videos} />
             
             {loading && videos.length > 0 && (
                 <div className="flex justify-center py-8">

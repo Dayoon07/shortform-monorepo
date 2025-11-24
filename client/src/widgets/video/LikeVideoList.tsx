@@ -3,22 +3,24 @@ import { CommonVideoGrid } from "../../shared/components/CommonVideoGrid";
 import { myLikeVideoList } from "../../features/video/api/videoLikeService";
 import { useUser } from "../../shared/context/UserContext";
 import ToGoPage from "../../shared/components/ToGoPage";
+import { VideoGridContent } from "../../entities/video/ui/VideoGridContent";
 
 export default function LikeVideoList() {
-    const [videos, setVideos] = useState([]);
+    const [videos, setVideos] = useState<VideoGridContent[]>([]);
     const { user } = useUser();
 
     useEffect(() => {
-        const likeVideo = async () => {
+        if (!user) return;
+        const likeVideo = async (mention: string) => {
             try {
-                const data = await myLikeVideoList(user.mention);
+                const data = await myLikeVideoList(mention);
                 console.log(data);
                 setVideos(data || []);
             } catch (error) {
                 console.error(error);
             }
         }
-        if (user) likeVideo();
+        likeVideo(user.mention);
     }, [user]);
 
     if (!user || user == null) return <ToGoPage errorMessage="로그인이 필요합니다" />

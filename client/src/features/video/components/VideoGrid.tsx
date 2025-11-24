@@ -1,10 +1,10 @@
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { useLazyHoverVideo } from "../hooks/useLazyHoverVideo";
-import { VideoCard } from "./VideoCard";
+import { VideoCard } from "./ui/VideoCard";
 
 interface VideoGridProps {
     videos: VideoGridContent[],
-    maxVideos: number
+    maxVideos?: number
 }
 
 export function VideoGrid({ videos, maxVideos = 100}: VideoGridProps) {

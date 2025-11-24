@@ -1,5 +1,5 @@
 interface LoadingComponentProps {
-    message: string
+    message?: string
 }
 
 export function Loading({

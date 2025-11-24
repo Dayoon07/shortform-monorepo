@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { getFollowerList, getFollowingList } from "../api/followService";
 import { showToast } from "../../../shared/utils/FollowShowToast";
+import { User } from "../../../entities/user/model/User";
 
-export const useFollow = (user) => {
+export const useFollow = (user: User | null) => {
     const userId = user?.id ?? null;
 
-    const [followers, setFollowers] = useState([]);
-    const [followings, setFollowings] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [followers, setFollowers] = useState<User[]>([]);
+    const [followings, setFollowings] = useState<User[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<(string | any) | null>(null);
 
     const loadFollowers = useCallback(async () => {
         if (!userId) return;  // 🚨 user 없으면 실행 안 함
@@ -19,7 +20,7 @@ export const useFollow = (user) => {
             setFollowers(data || []);
             setError(null);
         } catch (err) {
-            setError(err.message);
+            setError(err);
             showToast("팔로워 목록을 불러오는데 실패했습니다.", "error");
         } finally {
             setLoading(false);
@@ -35,7 +36,7 @@ export const useFollow = (user) => {
             setFollowings(data || []);
             setError(null);
         } catch (err) {
-            setError(err.message);
+            setError(err);
             showToast("팔로잉 목록을 불러오는데 실패했습니다.", "error");
         } finally {
             setLoading(false);

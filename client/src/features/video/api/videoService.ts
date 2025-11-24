@@ -8,7 +8,7 @@ import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
  * @param {number} page - 페이지 번호 (0부터 시작)
  * @param {number} size - 페이지당 아이템 수
  */
-export async function getVideoPaginated(page = 0, size = 20): Promise<Page<VideoGridContent>> {
+export async function getVideoPaginated(page: number = 0, size: number = 20): Promise<Page<VideoGridContent>> {
     try {
         const res = await fetch(
             `${REST_API_SERVER}${API_LIST.VIDEO.ALL}?page=${page}&size=${size}`,
@@ -93,7 +93,7 @@ export async function getVideoById(videoLoc: string) {
     }
 }
 
-export async function getTagVideoList(tag: string) {
+export async function getTagVideoList(tag: string): Promise<VideoGridContent[]> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.TAG(tag)}`);
         if (!res.ok) throw new Error("에러남!!!");
@@ -102,7 +102,7 @@ export async function getTagVideoList(tag: string) {
         return data;
     } catch (error) {
         console.error(error);
-        return [];
+        throw error;
     }
 }
 

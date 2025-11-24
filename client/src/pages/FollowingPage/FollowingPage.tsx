@@ -21,7 +21,7 @@ export default function FollowingPage() {
         error, 
         loading,
     } = useFollow(user);
-
+    
     if (!user) return null;
     if (loading) return <Loading />;
     if (error) return <Error />;

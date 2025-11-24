@@ -1,5 +1,6 @@
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { API_LIST } from "../../../shared/constants/ApiList";
+import { User } from "../../../entities/user/model/User";
 
 export async function toggleFollow(mention: string) {
     try {
@@ -99,7 +100,7 @@ export async function getFollowStatus(reqUserMention: string, resUserMention: st
     }
 }
 
-export async function getFollowerList(id: number) {
+export async function getFollowerList(id: number): Promise<User[]> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.USER_FOLLOWER_LIST(id)}`);
         if (!res.ok) throw new Error("에러남!!!");
@@ -108,11 +109,11 @@ export async function getFollowerList(id: number) {
         return data;
     } catch (error) {
         console.error(error);
-        return false;
+        throw error;
     }
 }
 
-export async function getFollowingList(id: number) {
+export async function getFollowingList(id: number): Promise<User[]> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.USER_FOLLOWING_LIST(id)}`);
         if (!res.ok) throw new Error("에러남!!!");
@@ -121,7 +122,7 @@ export async function getFollowingList(id: number) {
         return data;
     } catch (error) {
         console.error(error);
-        return false;
+        throw error;
     }
 }
 
