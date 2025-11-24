@@ -1,7 +1,13 @@
+import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { useLazyHoverVideo } from "../hooks/useLazyHoverVideo";
 import { VideoCard } from "./VideoCard";
 
-export function VideoGrid({ videos, maxVideos = 100 }) {
+interface VideoGridProps {
+    videos: VideoGridContent[],
+    maxVideos: number
+}
+
+export function VideoGrid({ videos, maxVideos = 100}: VideoGridProps) {
     const videoRefs = useLazyHoverVideo(videos);
     const videoGridClassName = `md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
         sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 
@@ -19,7 +25,7 @@ export function VideoGrid({ videos, maxVideos = 100 }) {
             {videos.slice(0, maxVideos).map((video, index) => {
                 return (
                     <VideoCard 
-                        key={video.videoLoc || video.id || `video-${index}`}
+                        key={video.videoLoc || video.videoId || `video-${index}`}
                         video={video} 
                         index={index} 
                         videoRefs={videoRefs}

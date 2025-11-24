@@ -1,9 +1,17 @@
-import { memo } from "react";
+import { memo, MutableRefObject } from "react";
 import { Link } from "react-router-dom";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { ROUTE } from "../../../shared/constants/Route";
+import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
-export const VideoCard = memo(({ video, index, videoRefs }) => {
+interface VideoCardProps {
+    video: VideoGridContent,
+    index: number,
+    videoRefs: MutableRefObject<(HTMLVideoElement | null)[]>
+}
+
+export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
+    console.log(videoRefs);
     return (
         <div>
             <Link to={ROUTE.PROFILE_SWIPE_VIDEO(video.mention, video.videoLoc)}
@@ -11,7 +19,7 @@ export const VideoCard = memo(({ video, index, videoRefs }) => {
             >
                 <div className="relative aspect-[9/16] bg-gray-900 rounded-lg overflow-hidden">
                     <video
-                        ref={(el) => (videoRefs.current[index] = el)}
+                        ref={(el) => { videoRefs.current[index] = el; }}
                         data-src={video.videoSrc}
                         data-preview-img={video.previewImg}
                         playsInline

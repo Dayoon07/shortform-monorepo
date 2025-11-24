@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { upgradeToggleFollow, getFollowStatus } from "../api/followService";
 import { showErrorToast, showSuccessToast } from "../../../shared/utils/toast";
+import { User } from "../../../entities/user/model/User";
 
-export const useToggleFollow = (followReqUser, followResUser) => {
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [messageData, setMessageData] = useState("");
-    const [loading, setLoading] = useState(false);
+export const useToggleFollow = (followReqUser: User, followResUser: User) => {
+    const [isFollowing, setIsFollowing] = useState<boolean>(false);
+    const [messageData, setMessageData] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     // 초기 팔로우 상태 가져오기
     useEffect(() => {
-        const fetchFollowStatus = async () => {
+        const fetchFollowStatus = async (): Promise<void> => {
             if (!followResUser?.mention) return;
             
             try {
@@ -25,7 +26,7 @@ export const useToggleFollow = (followReqUser, followResUser) => {
         fetchFollowStatus();
     }, [followReqUser?.mention, followResUser?.mention]);
 
-    const toggleFollow = async () => {
+    const toggleFollow = async (): Promise<boolean> => {
         if (!followReqUser?.mention || !followResUser?.mention) {
             setMessageData("사용자 정보가 올바르지 않습니다.");
             showErrorToast("사용자 정보가<br className='md:hidden'/>올바르지 않습니다");
@@ -48,8 +49,8 @@ export const useToggleFollow = (followReqUser, followResUser) => {
             }
         } catch (error) {
             console.error(error);
-            setMessageData(`데이터 불러오기 실패: ${error.message}`);
-            showErrorToast(`데이터 불러오기 실패: ${error.message}`);
+            setMessageData(`데이터 불러오기 실패: ${(error as Error).message}`);
+            showErrorToast(`데이터 불러오기 실패: ${(error as Error).message}`);
             throw error;
         } finally {
             setLoading(false);

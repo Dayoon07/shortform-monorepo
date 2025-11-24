@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { X, Upload, Check, AlertCircle } from "lucide-react";
-import { signup } from "../../../features/user/api/userService";
-import { validateUsername, validateEmail } from "../../../features/user/api/validationService";
+import { signup } from "../api/userService";
+import { validateUsername, validateEmail } from "../api/validationService";
 import { showSuccessToast } from "../../../shared/utils/toast";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 3; // 3MB

@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { login } from "../../user/api/userService";
+import { login } from "../api/userService";
 import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccessToast } from "../../../shared/utils/toast";
+import { LoginResponse } from "../../../entities/user/ui/LoginResponse";
 
-export default function LoginModal({ onClose }) {
+interface LoginModalProps {
+    onClose: () => void
+}
+
+export default function LoginModal({ onClose }: LoginModalProps) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +20,7 @@ export default function LoginModal({ onClose }) {
 
     // ESC 키로 닫기
     useEffect(() => {
-        const handleEscape = (e) => {
+        const handleEscape = (e: { key: string; }): void => {
             if (e.key === 'Escape') onClose();
         };
         document.addEventListener('keydown', handleEscape);
@@ -23,13 +28,13 @@ export default function LoginModal({ onClose }) {
     }, [onClose]);
 
     // 백드롭 클릭으로 닫기
-    const handleBackdropClick = (e) => {
+    const handleBackdropClick = (e: { target: any; currentTarget: any; }): void => {
         if (e.target === e.currentTarget) {
             onClose();
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         setError('');
 
@@ -41,7 +46,7 @@ export default function LoginModal({ onClose }) {
         setIsLoading(true);
 
         try {
-            const data = await login(username, password);
+            const data: LoginResponse | null = await login(username, password);
             
             if (data && data.success) {
                 setUser(data.user);

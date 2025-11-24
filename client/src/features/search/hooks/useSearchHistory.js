@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getSearchHistory } from '../api/searchService';
+import { deleteSearchWord, getSearchHistory } from '../api/searchService';
+
 
 export function useSearchHistory(userId) {
     const [searchHistory, setSearchHistory] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchSearchHistory = useCallback(async () => {
+    const fetchSearchHistoryHook = useCallback(async () => {
         if (!userId) return;
         
         setIsLoading(true);
@@ -22,25 +23,27 @@ export function useSearchHistory(userId) {
         }
     }, [userId]);
 
-    const deleteSearchWord = async (id, searchWord) => {
+    const deleteSearchWordHook = async (id, searchWord) => {
         if (!userId) return;
         
         try {
-            await searchService.deleteSearchWord(userId, searchWord);
-            setSearchHistory(prev => prev.filter(item => item.id !== id));
+            const what_the = await deleteSearchWord(userId, searchWord);
+            if (what_the) {
+                setSearchHistory(prev => prev.filter(item => item.id !== id));
+            }
         } catch (err) {
             console.error('검색어 삭제 실패:', err);
         }
     };
 
     useEffect(() => {
-        fetchSearchHistory();
-    }, [fetchSearchHistory]);
+        fetchSearchHistoryHook();
+    }, [fetchSearchHistoryHook]);
 
     return {
         searchHistory,
         isLoading,
         error,
-        deleteSearchWord
+        deleteSearchWordHook
     };
 }

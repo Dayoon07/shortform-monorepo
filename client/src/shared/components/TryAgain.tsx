@@ -1,4 +1,10 @@
-export function TryAgain({ errorMessage = "데이터를 불러오는 과정에서 실패했습니다" }) {
+interface TryAgainComponentProps {
+    errorMessage: string
+}
+
+export function TryAgain({
+    errorMessage = "데이터를 불러오는 과정에서 실패했습니다"
+}: TryAgainComponentProps) {
     return (
         <div className="mx-auto flex items-center justify-center h-96">
             <div className="text-center">

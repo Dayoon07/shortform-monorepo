@@ -118,7 +118,10 @@ export default function AppBar() {
             </nav>
 
             {showSearchModal && (
-                <SearchModal user={user} onClose={() => setShowSearchModal(false)} />
+                <SearchModal 
+                    user={user}
+                    onClose={() => setShowSearchModal(false)} 
+                />
             )}
         </>
     );

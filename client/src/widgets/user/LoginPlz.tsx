@@ -6,8 +6,8 @@ import SignupModal from "../../features/user/components/SignupModal";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPlz() {
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showSignupModal, setShowSignupModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+    const [showSignupModal, setShowSignupModal] = useState<boolean>(false);
     const { user } = useUser();
     const navigate = useNavigate();
 

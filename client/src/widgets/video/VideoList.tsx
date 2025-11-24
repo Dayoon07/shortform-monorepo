@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useVideoPagination } from "../../features/video/hooks/useVideoPagination";
-import { VideoGrid } from "../../features/video/components/VideoGrid";
 import { Loading } from "../../shared/components/Loading";
 import { TryAgain } from "../../shared/components/TryAgain";
+import { VideoGrid } from "../../features/video/components/VideoGrid";
 
-export default function VideoList() {
+const VideoList: React.FC = () => {
     const { 
         videos, 
         loading, 
@@ -15,7 +15,7 @@ export default function VideoList() {
         // refresh 
     } = useVideoPagination(6); // 한 페이지당 6개
     
-    const observerTarget = useRef(null);
+    const observerTarget = useRef<HTMLDivElement>(null);
 
     // Intersection Observer를 사용한 무한 스크롤
     useEffect(() => {
@@ -38,7 +38,12 @@ export default function VideoList() {
             observer.observe(currentTarget);
         }
 
-        return () => currentTarget && observer.unobserve(currentTarget);
+        return () => {
+            if (currentTarget) {
+                observer.unobserve(currentTarget);
+            }
+            observer.disconnect();
+        };
     }, [loadMore, loading, hasMore]);
 
     if (initialLoading) return <Loading message="비디오를 불러오는 중..." />;     // 초기 로딩
@@ -46,7 +51,10 @@ export default function VideoList() {
 
     return (
         <div className="relative mx-auto">
-            <VideoGrid videos={videos} />
+            <VideoGrid 
+                videos={videos} 
+                maxVideos={100}
+            />
             
             {loading && videos.length > 0 && (
                 <div className="flex justify-center py-8">
@@ -58,11 +66,10 @@ export default function VideoList() {
             )}
             
             {/* Intersection Observer 타겟 */}
+            {/* hasMore가 true이고 로딩 중이 아닐 때만 타겟 요소를 렌더링하여 관찰 가능하게 함 */}
+            {/* useRef의 current가 여기 HTMLDivElement에 연결됩니다. */}
             {hasMore && !loading && (
-                <div 
-                    ref={observerTarget}
-                    className="h-20 flex items-center justify-center"
-                >
+                <div ref={observerTarget} className="h-20 flex items-center justify-center">
                     <span className="text-gray-600 text-sm">스크롤하여 더 보기</span>
                 </div>
             )}
@@ -89,3 +96,5 @@ export default function VideoList() {
         </div>
     );
 }
+
+export default VideoList;

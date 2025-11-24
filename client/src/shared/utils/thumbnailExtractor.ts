@@ -1,4 +1,4 @@
-export const extractThumbnail = (videoFile, timeInSeconds = 1) => {
+export const extractThumbnail = (videoFile: Blob, timeInSeconds = 1) => {
     return new Promise((resolve, reject) => {
         const video = document.createElement('video');
         const canvas = document.createElement('canvas');
@@ -14,6 +14,10 @@ export const extractThumbnail = (videoFile, timeInSeconds = 1) => {
         };
         
         video.onseeked = () => {
+            if (!ctx) {
+                reject(new Error('Canvas context를 가져올 수 없습니다'));
+                return;
+            }
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);

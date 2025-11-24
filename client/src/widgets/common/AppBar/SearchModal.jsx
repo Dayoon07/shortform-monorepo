@@ -1,34 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { SearchIcon, SearchModalBackButton, SearchModalCloseButton } from '../../icon/icon';
 import { X } from 'lucide-react';
+import { useSearchHistory } from '../../../features/search/hooks/useSearchHistory';
+import { Error } from '../../../shared/components/Error';
 
 export default function SearchModal({ user, onClose }) {
-    const [searchHistory, setSearchHistory] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const fetchSearchHistory = useCallback(async () => {
-        if (!user?.id) return;
-        
-        setIsLoading(true);
-        try {
-            const res = await fetch(`${REST_API_SERVER}/api/user/search/list?id=${user.id}`);
-            if (res.ok) {
-                const data = await res.json();
-                setSearchHistory(data.slice(0, 30));
-            } else {
-                console.error('Failed to fetch search history: HTTP', res.status);
-            }
-        } catch (err) {
-            console.error('Failed to fetch search history:', err);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [user?.id]);
+    const {
+        isLoading,
+        error,
+        deleteSearchWordHook,
+        searchHistory
+    } = useSearchHistory(user.id);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -39,35 +26,13 @@ export default function SearchModal({ user, onClose }) {
         onClose();
     };
 
-    const deleteSearchWord = async (id, searchWord) => {
-        if (!user?.id) return;
-        
-        try {
-            const res = await fetch(`${REST_API_SERVER}/api/search/list/delete`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: user.id, searchWord }),
-            });
-            
-            if (res.ok) {
-                setSearchHistory(prev => prev.filter(item => item.id !== id));
-            } else {
-                console.error('Failed to delete search word: HTTP', res.status);
-            }
-        } catch (err) {
-            console.error('Failed to delete search word:', err);
-        }
-    };
-
-    useEffect(() => {
-        fetchSearchHistory();
-    }, [fetchSearchHistory]);
-
     useEffect(() => {
         const handleEscape = (e) => e.key === 'Escape' && onClose();
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
     }, [onClose]);
+
+    if (error) return <Error message={error} />
 
     return (
         <div 
@@ -100,7 +65,7 @@ export default function SearchModal({ user, onClose }) {
                     ) : searchHistory.length > 0 ? (
                         <SearchHistoryList
                             items={searchHistory}
-                            onDelete={deleteSearchWord}
+                            onDelete={deleteSearchWordHook}
                             onSelect={(word) => navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(word))}
                         />
                     ) : (

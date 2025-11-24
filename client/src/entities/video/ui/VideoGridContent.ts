@@ -1,0 +1,23 @@
+export interface VideoGridContent {
+    videoId: number,
+    videoTitle: string,
+    videoDescription: string,
+    videoName: string,
+    videoSrc: string,
+    videoTag: string,
+    videoViews: number,
+    videoLoc: string,
+    videoWatchAvailability: string,
+    commentAvailavility: string,
+    uploadAt: string,
+    uploaderId: number,
+    uploaderUsername: string,
+    uploaderMail: string,
+    profileImg: string,
+    profileImgSrc: string,
+    previewImg: string,
+    bio: string,
+    mention: string,
+    uploaderCreateAt: string,
+    likeCount: number
+}

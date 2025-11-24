@@ -33,7 +33,7 @@ export const API_LIST = {
     },
     SEARCH: {
         ALL: "/api/user/search/all",
-        SEARCH: (query: string, mention: string) => `/api/search?q=${query}&mention=${mention}`,
+        SEARCH: (query: string, mention: string | null) => `/api/search?q=${query}&mention=${mention}`,
         SEARCH_LIST: (id: number) => `/api/user/search/list?id=${id}`,
         SEARCH_WORD_DELETE: "/api/search/list/delete"
     },
@@ -41,10 +41,12 @@ export const API_LIST = {
         ALL: "/api/user/follow/all",
         FOLLOW: "/api/follow",
         TOGGLE_FOLLOW: "/api/follow/toggle",
-        FOLLOW_STATUS: (reqUserMention: string, resUserMention: string) => `/api/follow/status/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}`,
+        FOLLOW_STATUS: (reqUserMention: string, resUserMention: string) => 
+            `/api/follow/status/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}`,
         USER_FOLLOWER_LIST: (id: number) => `/api/follow/user/follower/list?id=${id}`,
         USER_FOLLOWING_LIST: (id: number) => `/api/follow/user/following/list?id=${id}`,
-        UPGRADE_TOGGLE_FOLLOW: (reqUserMention: string, resUserMention: string) => `/api/follow/toggle/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}`
+        UPGRADE_TOGGLE_FOLLOW: (reqUserMention: string, resUserMention: string) => 
+            `/api/follow/toggle/upgrade?reqMention=${reqUserMention}&resMention=${resUserMention}`
     },
     POST: {
         ALL: "/api/community/all",

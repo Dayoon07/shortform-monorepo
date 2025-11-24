@@ -1,10 +1,17 @@
+import { User } from "../../../../entities/user/model/User";
 import { useToggleFollow } from "../../hooks/useToggleFollow";
+
+interface ToggleFollowButtonProps {
+    followReqUser: User,
+    followResUser: User,
+    onFollowChange: (param: boolean) => void
+}
 
 export default function ToggleFollowButton({
     followReqUser,
     followResUser,
     onFollowChange
-}) {
+}: ToggleFollowButtonProps) {
     const baseClass = `inline-block rounded-full px-6 py-2 text-xs font-medium font-semibold 
         transition duration-200 disabled:opacity-50 space-x-2 
     `;
@@ -16,7 +23,7 @@ export default function ToggleFollowButton({
 
     const handleClick = async () => {
         try {
-            const boolState = await toggleFollow();
+            const boolState: boolean = await toggleFollow();
             onFollowChange?.(boolState);
         } catch (error) {
             console.error(error);

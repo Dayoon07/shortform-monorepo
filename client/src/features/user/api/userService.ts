@@ -1,8 +1,10 @@
+import { EditResponse } from "../../../entities/user/ui/EditResponse";
+import { LoginResponse } from "../../../entities/user/ui/LoginResponse";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
-import { showSuccessToast } from "../../../shared/utils/toast";
+import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
 
-export async function signup(formData) {
+export async function signup(formData: FormData): Promise<{ data: string }> {
     try {
         const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.SIGNUP}`, {
             method: "POST",
@@ -14,14 +16,16 @@ export async function signup(formData) {
             return { data: data };
         } else {
             const message = await response.text();
-            alert("회원가입 실패: " + message);
+            showErrorToast(`회원가입 실패: ${message}`);
+            return { data: message };
         }
     } catch (error) {
-        alert("에러 발생: " + error.message);
+        showErrorToast(`에러 발생 ${error}`);
+        throw error;
     }
 }
 
-export async function login(username, password) {
+export async function login(username: string, password: string): Promise<LoginResponse | null> {
     try {
         //      주석 처리된 코드는 구글 소셜 로그인 기능 + JWT 토큰 로그인 
         //      방식을 구현하고 막상 사용을 안해서 그냥 방치 중
@@ -46,16 +50,11 @@ export async function login(username, password) {
         // })
         const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGIN}`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username,
-                password
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
         });
 
-        const data = await response.json();
+        const data: LoginResponse = await response.json();
 
         if (response.ok && data.success) {
             localStorage.setItem("user", JSON.stringify(data.user));
@@ -63,29 +62,37 @@ export async function login(username, password) {
             return data;
         } else {
             console.log(`로그인 실패: ${data.message || "사용자명 또는 비밀번호가 올바르지 않습니다."}`);
+            return null;
         }
     } catch (error) {
         console.error("로그인 요청 오류:", error);
         console.log("로그인 중 오류가 발생했습니다.");
+        throw error;
     }
 }
 
-export async function logout() {
+export async function logout(): Promise<string> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGOUT}`, {
             method: "POST"
         });
-        if (res.ok) {
-            const logoutText = await res.text();
-            localStorage.clear();
-            return logoutText;
-        }
+        if (!res.ok) throw new Error("에러남!");
+        const logoutText = await res.text();
+        localStorage.clear();
+        return logoutText;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 }
 
-export async function userInfoEdit(username, mail, mention, bio, profileImg, currentProfileImgSrc) {
+export async function userInfoEdit(
+    username: string, 
+    mail: string, 
+    mention: string, 
+    bio: string, 
+    profileImg: Blob, 
+    currentProfileImgSrc: Blob): Promise<EditResponse> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.EDIT}`, {
             method: "POST",
@@ -112,5 +119,6 @@ export async function userInfoEdit(username, mail, mention, bio, profileImg, cur
         }
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }

@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
-export function useLazyHoverVideo(videos) {
-    const videoRefs = useRef([]);
+export function useLazyHoverVideo(videos: VideoGridContent[]) {
+    const videoRefs = useRef<HTMLVideoElement[]>([]);
 
     useEffect(() => {
         if (!Array.isArray(videos) || videos.length === 0) return;
@@ -10,18 +11,17 @@ export function useLazyHoverVideo(videos) {
         const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        const video = entry.target;
+                        const video = entry.target as HTMLVideoElement;
 
                         // Lazy load
                         if (video.dataset.src && !video.src) {
                             // 마우스 커서 호버하면 영상 실행하는 거는 나중에 구현
                             video.src = `${REST_API_SERVER}${video.dataset.src}`;
                             video.poster = `${REST_API_SERVER}${video.dataset.previewImg}`;
-                            // video.load();
-                            video.addEventListener("mouseover", e => e.load());
+                            video.load();
                         }
 
-                        const card = video.closest(".video-card");
+                        const card = video.closest(".video-card") as HTMLVideoElement;
                         if (card && !card.dataset.listenerAttached) {
                             card.dataset.listenerAttached = "true";
 

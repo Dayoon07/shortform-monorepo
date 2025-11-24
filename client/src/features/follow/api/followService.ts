@@ -1,7 +1,7 @@
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { API_LIST } from "../../../shared/constants/ApiList";
 
-export async function toggleFollow(mention) {
+export async function toggleFollow(mention: string) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.TOGGLE_FOLLOW}`, {
             method: "POST",
@@ -21,7 +21,7 @@ export async function toggleFollow(mention) {
     }
 }
 
-export async function upgradeToggleFollow(reqUserMention, resUserMention) {
+export async function upgradeToggleFollow(reqUserMention: string, resUserMention: string) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.UPGRADE_TOGGLE_FOLLOW(reqUserMention, resUserMention)}`, {
             method: "POST"
@@ -85,7 +85,7 @@ export async function upgradeToggleFollow(reqUserMention, resUserMention) {
 //     }
 // }
 
-export async function getFollowStatus(reqUserMention, resUserMention) {
+export async function getFollowStatus(reqUserMention: string, resUserMention: string) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(reqUserMention, resUserMention)}`);
         if (!res.ok) throw new Error("에러남!!! " + await res.json());
@@ -99,7 +99,7 @@ export async function getFollowStatus(reqUserMention, resUserMention) {
     }
 }
 
-export async function getFollowerList(id) {
+export async function getFollowerList(id: number) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.USER_FOLLOWER_LIST(id)}`);
         if (!res.ok) throw new Error("에러남!!!");
@@ -112,7 +112,7 @@ export async function getFollowerList(id) {
     }
 }
 
-export async function getFollowingList(id) {
+export async function getFollowingList(id: number) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.USER_FOLLOWING_LIST(id)}`);
         if (!res.ok) throw new Error("에러남!!!");
