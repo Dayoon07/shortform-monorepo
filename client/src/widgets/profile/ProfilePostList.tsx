@@ -1,8 +1,11 @@
+import { Post } from "../../entities/post/ui/Post";
+import { togglePostLike } from "../../features/post/api/postService";
 import PostCard from "../../features/post/components/ui/PostCard";
 import { showSuccessToast, showErrorToast } from "../../shared/utils/toast";
 
-export default function ProfilePostList({ posts }) {
-    const handleShare = async (communityUuid) => {
+export default function ProfilePostList({ posts }: { posts: Post[] }) {
+    
+    const handleShare = async (communityUuid: string) => {
         const post = posts.find(p => p.communityUuid === communityUuid);
         if (!post) return;
 
@@ -14,6 +17,15 @@ export default function ProfilePostList({ posts }) {
         } catch (error) {
             console.error('링크 복사 실패:', error);
             showErrorToast("링크 복사에 실패했습니다");
+        }
+    };
+
+    const handleLike = async (post: Post) => {
+        try {
+            const data = await togglePostLike(post.communityUuid);
+            console.log(data);
+        } catch (error) {
+            showErrorToast('좋아요 처리에 실패했습니다.');
         }
     };
 
@@ -45,6 +57,7 @@ export default function ProfilePostList({ posts }) {
                 <PostCard 
                     key={post.communityUuid || post.id}
                     post={post}
+                    onLike={() => handleLike(post)}
                     onShare={handleShare}
                 />
             ))}

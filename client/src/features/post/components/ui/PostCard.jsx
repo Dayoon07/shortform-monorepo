@@ -7,7 +7,7 @@ import { togglePostLike } from "../../api/postService";
 import { showSuccessToast, showErrorToast } from "../../../../shared/utils/toast";
 import { formatDate } from "../../../../shared/utils/formatDate";
 
-export default function PostCard({ post, onLike, onCommentClick, onShare }) {
+export default function PostCard({ post, onLike, onShare }) {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(post.likeCnt || 0);
     
@@ -129,10 +129,7 @@ export default function PostCard({ post, onLike, onCommentClick, onShare }) {
                         <ThumbsUp className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
                         <span className="text-sm">좋아요 {likeCount}</span>
                     </button>
-                    <button
-                        className="flex items-center space-x-1.5 text-gray-300 hover:text-white transition-colors"
-                        onClick={() => onCommentClick?.(post.communityUuid)}
-                    >
+                    <button className="flex items-center space-x-1.5 text-gray-300 hover:text-white transition-colors">
                         <MessageCircle className="w-5 h-5" />
                         <span className="text-sm">댓글 {post.commentCnt || 0}</span>
                     </button>

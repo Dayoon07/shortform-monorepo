@@ -6,14 +6,22 @@ import { FollowRelationModal } from "../../features/profile/components/ui/Follow
 import { useParams } from "react-router-dom";
 import ToggleFollowButton from "../../features/follow/components/ui/ToggleFollowButton";
 import ProfileEditFormModal from "../../features/profile/components/ProfileEditFormModal";
+import { ProfileInfo } from "../../entities/profile/ui/ProfileInfo";
+import { User } from "../../entities/user/model/User";
 
-export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
-    const [profileData, setProfileData] = useState(profile);
-    const [profileEditModal, setProfileEditModal] = useState(false);
+interface ProfileHeaderProps {
+    profile: ProfileInfo,
+    videoCount: number,
+    onShowInfo: () => void
+}
+
+export default function ProfileHeader({ profile, videoCount, onShowInfo }: ProfileHeaderProps) {
+    const [profileData, setProfileData] = useState<ProfileInfo>(profile);
+    const [profileEditModal, setProfileEditModal] = useState<boolean>(false);
     
-    const [followModalOpen, setFollowModalOpen] = useState(false);
-    const [followModalTitle, setFollowModalTitle] = useState("");
-    const [followModalData, setFollowModalData] = useState([]);
+    const [followModalOpen, setFollowModalOpen] = useState<boolean>(false);
+    const [followModalTitle, setFollowModalTitle] = useState<string>("");
+    const [followModalData, setFollowModalData] = useState<User[]>([]);
 
     const { mention } = useParams();
     const { user } = useUser();
@@ -25,7 +33,7 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }) {
     } = useProfile(mention, user);
 
     /** 팔로워 수 변경 → Optimistic UI */
-    const handleFollowerCountChange = (isFollowing) => {
+    const handleFollowerCountChange = (isFollowing: boolean) => {
         setProfileData((prev) => ({
             ...prev,
             followerCount: prev.followerCount + (isFollowing ? 1 : -1),

@@ -2,9 +2,7 @@ interface LoadingComponentProps {
     message?: string
 }
 
-export function Loading({
-    message = "로딩 중..."
-}: LoadingComponentProps) {
+export function Loading({ message = "로딩 중..." }: LoadingComponentProps) {
     return (
         <div className="flex mx-auto items-center justify-center h-96">
             <div className="text-center">

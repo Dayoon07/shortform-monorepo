@@ -1,15 +1,23 @@
 import { X } from "lucide-react";
 import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import ToggleFollowButton from "../../../follow/components/ui/ToggleFollowButton";
-import { useUser } from "../../../../shared/context/UserContext";
+import { User } from "../../../../entities/user/model/User";
+
+interface FollowRelationModalProps {
+    isOpen: boolean,
+    onClose: () => void,
+    title: string,
+    users: User[],
+    sessionUser: User | null
+}
 
 export const FollowRelationModal = ({
     isOpen,
     onClose,
     title,
-    users = []
-}) => {
-    const { user } = useUser();
+    users = [],
+    sessionUser
+}: FollowRelationModalProps) => {
     if (!isOpen) return null;
 
     return (
@@ -48,7 +56,7 @@ export const FollowRelationModal = ({
                                 </div>
 
                                 <ToggleFollowButton 
-                                    followReqUser={user}
+                                    followReqUser={sessionUser}
                                     followResUser={u}
                                 />
                             </li>

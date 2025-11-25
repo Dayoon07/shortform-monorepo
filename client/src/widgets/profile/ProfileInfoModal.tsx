@@ -1,6 +1,19 @@
 import { Calendar, Users, Video, Eye, Heart, X } from "lucide-react";
+import { ProfileInfo } from "../../entities/profile/ui/ProfileInfo";
 
-export default function ProfileInfoModal({ profile, videoCount, isOpen, onClose }) {
+interface ProfileInfoModalProps {
+    profile: ProfileInfo,
+    videoCount: number,
+    isOpen: boolean,
+    onClose: () => void
+}
+
+export default function ProfileInfoModal({
+    profile,
+    videoCount,
+    isOpen,
+    onClose
+}: ProfileInfoModalProps) {
     if (!isOpen) return null;
     
     return (

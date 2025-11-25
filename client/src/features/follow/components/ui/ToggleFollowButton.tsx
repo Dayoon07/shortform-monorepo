@@ -2,16 +2,12 @@ import { User } from "../../../../entities/user/model/User";
 import { useToggleFollow } from "../../hooks/useToggleFollow";
 
 interface ToggleFollowButtonProps {
-    followReqUser: User,
+    followReqUser: User | null,
     followResUser: User,
-    onFollowChange: (param: boolean) => void
+    onFollowChange?: (param: boolean) => void
 }
 
-export default function ToggleFollowButton({
-    followReqUser,
-    followResUser,
-    onFollowChange
-}: ToggleFollowButtonProps) {
+export default function ToggleFollowButton({ followReqUser, followResUser, onFollowChange }: ToggleFollowButtonProps) {
     const baseClass = `inline-block rounded-full px-6 py-2 text-xs font-medium font-semibold 
         transition duration-200 disabled:opacity-50 space-x-2 
     `;
@@ -30,7 +26,7 @@ export default function ToggleFollowButton({
         }
     };
 
-    if (followReqUser.mention === followResUser.mention) {
+    if (!followReqUser || followReqUser.id === followResUser.id) {
         return null;
     }
 

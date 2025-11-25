@@ -10,15 +10,10 @@ import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
  */
 export async function getVideoPaginated(page: number = 0, size: number = 20): Promise<Page<VideoGridContent>> {
     try {
-        const res = await fetch(
-            `${REST_API_SERVER}${API_LIST.VIDEO.ALL}?page=${page}&size=${size}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.ALL}?page=${page}&size=${size}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
 
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);

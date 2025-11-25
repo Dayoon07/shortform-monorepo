@@ -3,7 +3,7 @@ import { upgradeToggleFollow, getFollowStatus } from "../api/followService";
 import { showErrorToast, showSuccessToast } from "../../../shared/utils/toast";
 import { User } from "../../../entities/user/model/User";
 
-export const useToggleFollow = (followReqUser: User, followResUser: User) => {
+export const useToggleFollow = (followReqUser: User | null, followResUser: User) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [messageData, setMessageData] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -11,7 +11,7 @@ export const useToggleFollow = (followReqUser: User, followResUser: User) => {
     // 초기 팔로우 상태 가져오기
     useEffect(() => {
         const fetchFollowStatus = async (): Promise<void> => {
-            if (!followResUser?.mention) return;
+            if (!followReqUser?.mention || !followResUser?.mention) return;
             
             try {
                 const result = await getFollowStatus(followReqUser.mention, followResUser.mention);

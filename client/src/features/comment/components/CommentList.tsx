@@ -12,8 +12,8 @@ export function CommentList({ commentList }: CommentListProps) {
     return (
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {commentList !== null ? (
-                commentList.map((c, i) => (
-                    <div className="flex" key={i}>
+                commentList.map((c) => (
+                    <div className="flex" key={c.mention}>
                         <img src={REST_API_SERVER + c.profileImgSrc} alt={`${c.username}님의 프로필`} className="w-8 h-8 rounded-full" />
                         <div className="ml-4">
                             <div className="flex items-center space-x-2">

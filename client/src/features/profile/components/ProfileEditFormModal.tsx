@@ -1,7 +1,14 @@
+import { ProfileInfo } from "../../../entities/profile/ui/ProfileInfo";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { useProfileEdit } from "../hooks/useProfileEdit";
 
-export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
+interface ProfileEditFormModalProps {
+    profile: ProfileInfo,
+    isOpen: boolean,
+    onClose: () => void
+}
+
+export default function ProfileEditFormModal({ profile, isOpen, onClose }: ProfileEditFormModalProps) {
     const {
         previewImg,
         formData,
@@ -94,7 +101,7 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }) {
                         <textarea
                             id="bio"
                             name="bio"
-                            rows="4"
+                            rows={4}
                             placeholder="자신을 소개해주세요..."
                             value={formData.bio}
                             onChange={handleInputChange}

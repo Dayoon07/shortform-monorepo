@@ -1,19 +1,20 @@
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { API_LIST } from "../../../shared/constants/ApiList";
+import { Post } from "../../../entities/post/ui/Post";
 
-export async function getUserPosts(mention) {
+export async function getUserPosts(mention: string): Promise<Post[]> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.POST.USER_POST(mention)}`);
         if (!res.ok) throw new Error('해당 게시물을 찾을 수 없습니다.');
-        const data = await res.json();
+        const data: Post[] = await res.json();
         return data;
     } catch (error) {
         console.error('게시물 수신 실패:', error);
-        return [];
+        throw error;
     }
 }
 
-export async function createPost(formData) {
+export async function createPost(formData: FormData) {
     try {
         const response = await fetch(`${REST_API_SERVER}${API_LIST.POST.CREATE_POST}`, {
             method: 'POST',
@@ -30,7 +31,7 @@ export async function createPost(formData) {
     }
 }
 
-export async function togglePostLike(communityUuid) {
+export async function togglePostLike(communityUuid: string) {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.POST.TOGGLE_POST_LIKE(communityUuid)}`,{
             method: "POST"

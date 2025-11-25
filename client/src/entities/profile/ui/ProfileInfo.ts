@@ -1,0 +1,14 @@
+export interface ProfileInfo {
+    id: number,
+    username: string,
+    mail: string,
+    profileImg: string,
+    profileImgSrc: string,
+    bio: string,
+    mention: string,
+    createAt: string,
+    followerCount: number,
+    followingCount: number,
+    totalViews: number,
+    totalLikes: number
+}

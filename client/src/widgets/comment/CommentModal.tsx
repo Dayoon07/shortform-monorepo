@@ -3,10 +3,26 @@ import { REST_API_SERVER } from "../../shared/constants/ApiServer";
 import { useComment } from "../../features/comment/hooks/useComment";
 import { showSuccessToast } from "../../shared/utils/toast";
 import { CommentList } from "../../features/comment/components/CommentList";
+import { User } from "../../entities/user/model/User";
+import { X } from "lucide-react";
 
-export function CommentModal({ open, onClose, videoCommentSize = 0, user, videoId }) {
-    const [commentText, setCommentText] = useState("");
-    const [sortType, setSortType] = useState("popular");
+interface CommentModalWidgetProps {
+    open: boolean,
+    onClose: () => void,
+    videoCommentSize: number,
+    user: User,
+    videoId: number
+}
+
+export function CommentModal({ 
+    open, 
+    onClose, 
+    videoCommentSize = 0, 
+    user, 
+    videoId
+}: CommentModalWidgetProps) {
+    const [commentText, setCommentText] = useState<string>("");
+    const [sortType, setSortType] = useState<string>("popular");
 
     const { 
         commentWrite,
@@ -57,14 +73,17 @@ export function CommentModal({ open, onClose, videoCommentSize = 0, user, videoI
                         <button className="text-gray-400 hover:text-white transition-colors duration-200"
                             onClick={onClose}
                         >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
+                            {/* 
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            */}
+                            <X className="w-6 h-6" />
                         </button>
                     </div>
                 </div>

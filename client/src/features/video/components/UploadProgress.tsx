@@ -1,9 +1,9 @@
-export default function UploadProgress({ progress, label, color = 'blue' }) {
-    const colorClasses = {
-        blue: 'bg-blue-500',
-        pink: 'bg-[#FE2C55]'
-    };
+interface UploadProgressProps {
+    progress: number,
+    label: string
+}
 
+export default function UploadProgress({ progress, label }: UploadProgressProps) {
     return (
         <div className="w-full mt-4">
             <div className="flex justify-between items-center mb-2 text-xs md:text-sm">
@@ -12,7 +12,7 @@ export default function UploadProgress({ progress, label, color = 'blue' }) {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
-                    className={`${colorClasses[color]} h-2 rounded-full transition-all duration-300`}
+                    className="bg-[#FE2C55] h-2 rounded-full transition-all duration-300"
                     style={{ width: `${progress}%` }}
                 />
             </div>
