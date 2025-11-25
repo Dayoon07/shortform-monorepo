@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import NavItem from "../../../../widgets/common/SideBar/NavItem";
+import NavItem from "./ui/NavItem";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import { NAV_ITEMS } from "../../../../shared/constants/SideBarNavItem";

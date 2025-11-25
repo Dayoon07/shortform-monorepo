@@ -7,7 +7,7 @@ interface VideoGridProps {
     maxVideos?: number
 }
 
-export function VideoGrid({ videos, maxVideos = 100}: VideoGridProps) {
+export function VideoGrid({ videos, maxVideos = 100 }: VideoGridProps) {
     const videoRefs = useLazyHoverVideo(videos);
     const videoGridClassName = `md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
         sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 

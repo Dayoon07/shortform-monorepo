@@ -8,16 +8,19 @@ import { ROUTE } from "../../shared/constants/Route";
 import { Loading } from "../../shared/components/common/Loading";
 import NotFoundProfile from "../../widgets/profile/NotFoundProfile";
 import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
+import ProfilePostList from "../../widgets/profile/ProfilePostList";
 
 export default function ProfilePage() {
     const [showInfoModal, setShowInfoModal] = useState(false);
+    const [tab, setTab] = useState("videos");
     const navigate = useNavigate();
     const { mention } = useParams();
     const { user } = useUser();
-    const profileUserCleanMention = mention?.replace('@', '');
+    // const profileUserCleanMention = mention?.replace('@', '');
 
     const {
         profile,
+        posts,
         videos,
         loading,
     } = useProfile(mention, user);
@@ -35,28 +38,49 @@ export default function ProfilePage() {
 
             <div className="border-b border-gray-800 sticky top-0 bg-black z-10">
                 <div className="flex md:max-w-6xl md:mx-auto">
-                    <button onClick={() => navigate(ROUTE.PROFILE(profileUserCleanMention))}
-                        className="px-12 py-3 font-semibold border-b-2 transition border-white text-white max-md:w-full"
+                    <button 
+                        className={`
+                            ${tab === "videos" ? "border-white" : "border-transparent"} 
+                            px-12 py-3 font-semibold border-b-2 transition max-md:w-full
+                        `}
+                        onClick={() => {
+                            // navigate(ROUTE.PROFILE(profileUserCleanMention))
+                            setTab("videos");
+                        }}
                     >
                         동영상
                     </button>
-                    <button
-                        onClick={() => navigate(ROUTE.PROFILE_POST(profileUserCleanMention))}
-                        className="px-12 py-3 font-semibold border-b-2 transition border-transparent text-gray-400 hover:text-white max-md:w-full"
+                    <button 
+                        className={`
+                            ${tab === "posts" ? "border-white" : "border-transparent"} 
+                            px-12 py-3 font-semibold border-b-2 transition max-md:w-full
+                        `}
+                        onClick={() => {
+                            // navigate(ROUTE.PROFILE_POST(profileUserCleanMention))
+                            setTab("posts");
+                        }}
                     >
                         게시글
                     </button>
                 </div>
             </div>
 
-            {videos.length > 0 ? (
+            {(tab === "videos" && videos.length > 0) ? (
                 <CommonVideoGrid videos={videos} />
             ) : (
                 <div className="text-center py-20">
                     <p className="text-gray-400">동영상이 없습니다</p>
                 </div>
             )}
-            
+
+            {(tab === "posts" && posts.length > 0) ? (
+                <ProfilePostList posts={posts} />
+            ) : (
+                <div className="text-center py-20">
+                    <p className="text-gray-400">게시물이 없습니다</p>
+                </div>
+            )}
+
             <ProfileInfoModal 
                 profile={profile}
                 videoCount={videos.length}
