@@ -1,3 +1,4 @@
+import { User } from "../../entities/user/model/User";
 import { 
     createContext, 
     useContext, 
@@ -7,16 +8,6 @@ import {
     ReactNode, // children prop의 타입
     FC // 함수형 컴포넌트 타입
 } from "react";
-
-// User 엔티티 정의 (별도 파일에 있을 경우 import 처리)
-export interface User {
-    id: number;
-    username: string;
-    mail: string;
-    mention: string;
-    profileImgSrc: string;
-    createAt: string;
-}
 
 // ----------------------------------------------------
 // 1. Context 타입 정의

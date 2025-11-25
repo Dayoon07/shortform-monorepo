@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "../../../features/common/SideBar/components/SearchBar";
 import Navigation from "../../../features/common/SideBar/components/Navigation";
@@ -11,20 +11,20 @@ import { useUser } from "../../../shared/context/UserContext";
 import { useSearch } from "../../../shared/hooks/useSearch";
 import { showSuccessToast } from "../../../shared/utils/toast";
 
-export default function SideBar() {
+export default function SideBar(): JSX.Element {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
     const [showSignupModal, setShowSignupModal] = useState<boolean>(false);
     const [searchWord] = useSearch();
     const { user, setUser } = useUser();
     const navigate = useNavigate();
 
-    const handleSearch = (query: string) => {
+    const handleSearch = (query: string): void => {
         if (query.trim()) {
             navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(encodeURIComponent(query)));
         }
     };
 
-    const handleLogout = async () => {
+    const handleLogout = async (): Promise<void> => {
         const data = await logout();
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
         showSuccessToast(data);
