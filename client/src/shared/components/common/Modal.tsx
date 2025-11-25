@@ -1,8 +1,14 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
-export default function Modal({ onClose, title, children }) {
+interface ModalProps {
+    onClose: () => void,
+    title: string,
+    children: ReactNode
+}
+
+export default function Modal({ onClose, title, children }: ModalProps) {
     useEffect(() => {
-        const handleEscape = (e) => e.key === 'Escape' && onClose();
+        const handleEscape = (e: { key: string; }) => e.key === 'Escape' && onClose();
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
     }, [onClose]);

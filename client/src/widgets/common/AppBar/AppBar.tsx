@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import { SearchIcon, UploadPageIcon, LikePageIcon, CommunityPageIcon } from '../../icon/icon';
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { useUser } from '../../../shared/context/UserContext';
 import { logout } from "../../../features/user/api/userService";
-import SearchModal from './SearchModal';
+import SearchModal from '../../../features/search/components/SearchModal';
 import { LogOut } from 'lucide-react';
 import { useClickSound } from '../../../shared/hooks/useClickSound';
 import { showSuccessToast } from '../../../shared/utils/toast';
 import { clickSound } from '../../../shared/constants/Mp3List';
 
 export default function AppBar() {
-    const [showDropdown, setShowDropdown] = useState(false);
-    const [showSearchModal, setShowSearchModal] = useState(false);
+    const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
     const { user, setUser } = useUser();
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
     const handlePlayClickSound = useClickSound(clickSound);
     const navigate = useNavigate();
     const dropdownItem = `block w-full px-4 py-2 text-gray-300 
@@ -28,7 +28,7 @@ export default function AppBar() {
     `;
 
     useEffect(() => {
-        function handleClickOutside(event) {
+        function handleClickOutside(event: { target: any | null; }): void {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setShowDropdown(false);
             }
@@ -37,7 +37,7 @@ export default function AppBar() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showDropdown]);
 
-    const handleLogout = async () => {
+    const handleLogout = async (): Promise<void> => {
         const data = await logout();
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
         showSuccessToast(data);

@@ -5,9 +5,9 @@ import { useProfile } from "../../features/profile/hooks/useProfile";
 import ProfileHeader from "../../widgets/profile/ProfileHeader";
 import ProfileInfoModal from "../../widgets/profile/ProfileInfoModal";
 import { ROUTE } from "../../shared/constants/Route";
-import { Loading } from "../../shared/components/Loading";
+import { Loading } from "../../shared/components/common/Loading";
 import NotFoundProfile from "../../widgets/profile/NotFoundProfile";
-import { CommonVideoGrid } from "../../shared/components/CommonVideoGrid";
+import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
 
 export default function ProfilePage() {
     const [showInfoModal, setShowInfoModal] = useState(false);

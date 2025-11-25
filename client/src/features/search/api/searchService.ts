@@ -1,4 +1,4 @@
-import { SearchList } from "../../../entities/search/ui/SearchList";
+import { SearchHistory } from "../../../entities/search/ui/SearchHistory";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
@@ -16,12 +16,12 @@ export async function searchVideoLogic(query: string, mention: string | null): P
     }
 }
 
-export async function getSearchHistory(userId: number): Promise<SearchList[]> {
+export async function getSearchHistory(userId: number): Promise<SearchHistory[]> {
     const res = await fetch(`${REST_API_SERVER}${API_LIST.SEARCH.SEARCH_LIST(userId)}`);
     if (!res.ok) {
         throw new Error(`검색 기록 불러오기 실패: HTTP ${res.status}`);
     }
-    const data: SearchList[] = await res.json();
+    const data: SearchHistory[] = await res.json();
     return data.slice(0, 30);
 }
 

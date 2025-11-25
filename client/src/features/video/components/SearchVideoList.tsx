@@ -1,4 +1,4 @@
-import { CommonVideoGrid } from "../../../shared/components/CommonVideoGrid";
+import { CommonVideoGrid } from "../../../shared/components/video/CommonVideoGrid";
 import { useSearchVideoList } from "../hooks/useSearchVideoList";
 
 export default function SearchVideoList({ searchValue }: { searchValue: string }) {

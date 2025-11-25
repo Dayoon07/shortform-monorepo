@@ -1,12 +1,13 @@
-export function SearchHistoryList({ items, onDelete, onSelect }) {
-    if (items.length === 0) {
-        return (
-            <div className="mt-4 text-center py-8">
-                <p className="text-white/70">검색 기록이 없습니다</p>
-            </div>
-        );
-    }
+import { X } from "lucide-react";
+import { SearchHistory } from "../../../../entities/search/ui/SearchHistory";
 
+interface SearchModalHistoryListProps {
+    items: SearchHistory[],
+    onDelete: (id: number, searchWord: string) => void,
+    onSelect: (word: string) => void
+}
+
+export const SearchModalHistoryList = ({ items, onDelete, onSelect }: SearchModalHistoryListProps) => {
     return (
         <div className="mt-4 max-h-96 overflow-y-auto">
             <h3 
@@ -33,7 +34,7 @@ export function SearchHistoryList({ items, onDelete, onSelect }) {
                         onClick={() => onDelete(item.id, item.searchedWord)}
                         aria-label={`"${item.searchedWord}" 검색 기록 삭제`}
                     >
-                        &times;
+                        <X />
                     </button>
                 </div>
             ))}

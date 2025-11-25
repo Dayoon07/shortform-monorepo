@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Modal from "./Modal";
+import Modal from "../../../shared/components/common/Modal";
 import { login } from "../../../features/user/api/userService";
 import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";

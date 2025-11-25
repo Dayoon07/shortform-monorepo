@@ -23,7 +23,7 @@ export const API_LIST = {
     },
     VIDEO_LIKE: {
         ALL: "/api/video/like/all",
-        TOGGLE_VIDEO_LIKE: "/api/video/like",
+        TOGGLE_VIDEO_LIKE: "/api/video/like/by/mention",
         MY_LIKE_VIDEOS: (mention: string) => `/api/like/video?mention=${mention}`
     },
     COMMENT: {

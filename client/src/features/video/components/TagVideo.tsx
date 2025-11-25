@@ -1,5 +1,5 @@
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
-import { CommonVideoGrid } from "../../../shared/components/CommonVideoGrid";
+import { CommonVideoGrid } from "../../../shared/components/video/CommonVideoGrid";
 import { useTagVideo } from "../hooks/useTagVideo";
 
 export function TagVideo({ hashtag }: { hashtag?: string }) {

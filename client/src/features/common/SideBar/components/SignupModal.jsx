@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Modal from "./Modal";
-import ProfileImageUpload from "./ProfileImageUpload";
-import SignupForm from "./SignupForm";
-import { signup } from "../../../features/user/api/userService";
-import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
+import Modal from "../../../../shared/components/common/Modal";
+import ProfileImageUpload from "./ui/ProfileImageUpload";
+import SignupForm from "./ui/SignupForm";
+import { signup } from "../../../user/api/userService";
+import { showSuccessToast, showErrorToast } from "../../../../shared/utils/toast";
 
 export default function SignupModal({ onClose }) {
     const [step, setStep] = useState(1);

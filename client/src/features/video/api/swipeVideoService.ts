@@ -36,7 +36,9 @@ export async function toggleVideoLike(videoId: number) {
         const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO_LIKE.TOGGLE_VIDEO_LIKE}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ videoId: videoId })
+            body: JSON.stringify({ 
+                videoId: videoId
+            })
         });
         
         if (!response.ok) throw new Error('좋아요 처리 실패');

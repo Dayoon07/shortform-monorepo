@@ -1,8 +1,27 @@
 import { useState } from "react";
-import { validateUsername, validateEmail } from "../../../features/user/api/validationService";
-import ValidationMessage from "./ValidationMessage";
+import { validateUsername, validateEmail } from "../../../../user/api/validationService";
 
-export default function SignupForm({ onSubmit }) {
+interface SignupFormProps {
+  onSubmit: (formData: any) => Promise<void>
+}
+
+function ValidationMessage({ 
+    message,
+    color
+}: {
+    message: string,
+    color: string
+}) {
+    if (!message) return null;
+
+    return (
+        <div className="mt-1 text-sm" style={{ color }}>
+            {message}
+        </div>
+    );
+}
+
+export default function SignupForm({ onSubmit }: SignupFormProps) {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -17,7 +36,7 @@ export default function SignupForm({ onSubmit }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleUsernameChange = async (value) => {
+  const handleUsernameChange = async (value: string) => {
     setFormData(prev => ({ ...prev, username: value }));
     
     if (!value) {
@@ -43,7 +62,7 @@ export default function SignupForm({ onSubmit }) {
     }
   };
 
-  const handleEmailChange = async (value) => {
+  const handleEmailChange = async (value: string) => {
     setFormData(prev => ({ ...prev, email: value }));
     
     if (!value) {
@@ -69,7 +88,7 @@ export default function SignupForm({ onSubmit }) {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     if (!formData.email || !formData.username || !formData.password || !formData.confirmPassword) {

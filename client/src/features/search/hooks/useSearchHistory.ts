@@ -1,33 +1,34 @@
 import { useState, useEffect, useCallback } from 'react';
 import { deleteSearchWord, getSearchHistory } from '../api/searchService';
+import { SearchHistory } from '../../../entities/search/ui/SearchHistory';
+import { User } from '../../../entities/user/model/User';
 
-
-export function useSearchHistory(userId) {
-    const [searchHistory, setSearchHistory] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+export function useSearchHistory(user: User | null) {
+    const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const fetchSearchHistoryHook = useCallback(async () => {
-        if (!userId) return;
+        if (!user?.id) return;
         
         setIsLoading(true);
         setError(null);
         try {
-            const data = await getSearchHistory(userId);
+            const data = await getSearchHistory(user?.id);
             setSearchHistory(data);
         } catch (err) {
             console.error('검색 기록 불러오기 실패:', err);
-            setError(err.message);
+            setError(err as unknown as string);
         } finally {
             setIsLoading(false);
         }
-    }, [userId]);
+    }, [user?.id]);
 
-    const deleteSearchWordHook = async (id, searchWord) => {
-        if (!userId) return;
+    const deleteSearchWordHook = async (id: number, searchWord: string) => {
+        if (!user?.id) return;
         
         try {
-            const what_the = await deleteSearchWord(userId, searchWord);
+            const what_the = await deleteSearchWord(user?.id, searchWord);
             if (what_the) {
                 setSearchHistory(prev => prev.filter(item => item.id !== id));
             }

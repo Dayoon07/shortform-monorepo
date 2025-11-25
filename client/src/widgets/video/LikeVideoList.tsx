@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { CommonVideoGrid } from "../../shared/components/CommonVideoGrid";
+import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
 import { myLikeVideoList } from "../../features/video/api/videoLikeService";
 import { useUser } from "../../shared/context/UserContext";
-import ToGoPage from "../../shared/components/ToGoPage";
+import ToGoPage from "../../shared/components/common/ToGoPage";
 import { VideoGridContent } from "../../entities/video/ui/VideoGridContent";
 
 export default function LikeVideoList() {

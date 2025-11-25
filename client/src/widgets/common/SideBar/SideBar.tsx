@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import SearchBar from "./SearchBar";
-import Navigation from "./Navigation";
-import AuthButtons from "./AuthButtons";
-import LoginModal from "./LoginModal";
-import SignupModal from "./SignupModal";
+import SearchBar from "../../../features/common/SideBar/components/SearchBar";
+import Navigation from "../../../features/common/SideBar/components/Navigation";
+import AuthButtons from "../../../features/common/SideBar/components/AuthButtons";
+import LoginModal from "../../../features/common/SideBar/components/LoginModal";
+import SignupModal from "../../../features/common/SideBar/components/SignupModal";
 import { ROUTE } from "../../../shared/constants/Route";
 import { logout } from "../../../features/user/api/userService";
 import { useUser } from "../../../shared/context/UserContext";
@@ -12,13 +12,13 @@ import { useSearch } from "../../../shared/hooks/useSearch";
 import { showSuccessToast } from "../../../shared/utils/toast";
 
 export default function SideBar() {
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showSignupModal, setShowSignupModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+    const [showSignupModal, setShowSignupModal] = useState<boolean>(false);
     const [searchWord] = useSearch();
     const { user, setUser } = useUser();
     const navigate = useNavigate();
 
-    const handleSearch = (query) => {
+    const handleSearch = (query: string) => {
         if (query.trim()) {
             navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(encodeURIComponent(query)));
         }

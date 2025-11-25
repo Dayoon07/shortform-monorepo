@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useVideoPagination } from "../../features/video/hooks/useVideoPagination";
-import { Loading } from "../../shared/components/Loading";
-import { TryAgain } from "../../shared/components/TryAgain";
+import { Loading } from "../../shared/components/common/Loading";
+import { TryAgain } from "../../shared/components/common/TryAgain";
 import { VideoGrid } from "../../features/video/components/VideoGrid";
 
 const VideoList: React.FC = () => {

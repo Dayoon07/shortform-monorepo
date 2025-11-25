@@ -1,6 +1,6 @@
-import { useLazyHoverVideo } from "../../features/video/hooks/useLazyHoverVideo";
-import { VideoCard } from "../../features/video/components/ui/VideoCard";
-import { VideoGridContent } from "../../entities/video/ui/VideoGridContent";
+import { useLazyHoverVideo } from "../../../features/video/hooks/useLazyHoverVideo";
+import { VideoCard } from "../../../features/video/components/ui/VideoCard";
+import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
 interface CommonVideoGridProps {
     videos: VideoGridContent[],

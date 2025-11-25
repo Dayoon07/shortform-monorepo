@@ -1,4 +1,4 @@
-export interface SearchList {
+export interface SearchHistory {
     id: number,
     searchedUserId: number,
     searchedWord: string,

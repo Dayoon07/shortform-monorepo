@@ -1,9 +1,14 @@
 import { useState } from "react";
 
-export default function SearchBar({ initialValue = '', onSearch }) {
-    const [searchQuery, setSearchQuery] = useState(initialValue);
+interface SearchBarProps {
+    initialValue?: string,
+    onSearch: (query: string) => void
+}
 
-    const handleSubmit = (e) => {
+export default function SearchBar({ initialValue = '', onSearch }: SearchBarProps) {
+    const [searchQuery, setSearchQuery] = useState<string>(initialValue);
+
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         onSearch(searchQuery);
     };
@@ -25,7 +30,7 @@ export default function SearchBar({ initialValue = '', onSearch }) {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="검색"
-                    maxLength="100"
+                    maxLength={100}
                     className="w-full pl-10 pr-3 py-2 rounded-full bg-gray-900 text-white focus:outline-none focus:ring-2"
                     required
                 />

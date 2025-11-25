@@ -1,8 +1,8 @@
 import FollowingList from "../../widgets/follow/FollowingList";
 import { useFollow } from "../../features/follow/hooks/useFollow";
 import { useUser } from "../../shared/context/UserContext";
-import { Loading } from "../../shared/components/Loading";
-import { Error } from "../../shared/components/Error";
+import { Loading } from "../../shared/components/common/Loading";
+import { Error } from "../../shared/components/common/Error";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 

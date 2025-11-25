@@ -1,4 +1,11 @@
-export function SearchInput({ value, setValue, onSubmit }) {
+import { SearchIcon } from "../../../../widgets/icon/icon";
+
+interface SearchModalInputProps {
+    value: string,
+    setValue: (e: string) => void
+}
+
+export function SearchModalInput({ value, setValue }: SearchModalInputProps) {
     return (
         <>
             <button 
@@ -6,14 +13,7 @@ export function SearchInput({ value, setValue, onSubmit }) {
                 className="absolute top-2.5 left-2.5 p-0 bg-transparent border-none cursor-pointer"
                 aria-label="검색"
             >
-                <svg 
-                    className="w-6 h-6 text-white/80 hover:text-white transition-colors" 
-                    fill="currentColor" 
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5z"/>
-                </svg>
+                <SearchIcon />
             </button>
             <input
                 type="text"
