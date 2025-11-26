@@ -18,11 +18,8 @@ export function useVideoPagination(initialSize: number = 10) {
     const isFetchingRef = useRef<boolean>(false);
 
     const loadVideos = useCallback(async (pageNum: number, isInitial = false) => {
-        // 중복 요청 방지
-        if (isFetchingRef.current) return;
-        
-        // 더 이상 불러올 데이터가 없으면 중단
-        if (!isInitial && !hasMore) return;
+        if (isFetchingRef.current) return;  // 중복 요청 방지
+        if (!isInitial && !hasMore) return; // 더 이상 불러올 데이터가 없으면 중단
 
         isFetchingRef.current = true;
         setLoading(true);
@@ -33,11 +30,9 @@ export function useVideoPagination(initialSize: number = 10) {
             const data: Page<VideoGridContent> = await getVideoPaginated(pageNum, initialSize);
 
             if (isInitial) {
-                // 초기 로드 시 기존 데이터 교체
-                setVideos(data.content || []);
+                setVideos(data.content || []);  // 초기 로드 시 기존 데이터 교체
             } else {
-                // 추가 로드 시 기존 데이터에 추가
-                setVideos(prev => [...prev, ...(data.content || [])]);
+                setVideos(prev => [...prev, ...(data.content || [])]);  // 추가 로드 시 기존 데이터에 추가
             }
             
             setHasMore(!data.last);
@@ -70,7 +65,7 @@ export function useVideoPagination(initialSize: number = 10) {
         if (!loading && hasMore && !isFetchingRef.current) {
             loadVideos(page + 1, false);
         }
-    }, [loading, hasMore, page, loadVideos]); // 의존성 배열에 loadVideos 추가
+    }, [loading, hasMore, page, loadVideos]); // <- 의존성 배열에 loadVideos 추가
 
     // 새로고침
     const refresh = useCallback(() => {
@@ -79,7 +74,7 @@ export function useVideoPagination(initialSize: number = 10) {
         setHasMore(true);
         setError(null);
         loadVideos(0, true);
-    }, [loadVideos]); // 의존성 배열에 loadVideos 추가
+    }, [loadVideos]); // <- 의존성 배열에 loadVideos 추가
 
     return {
         videos,

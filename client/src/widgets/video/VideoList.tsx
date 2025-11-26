@@ -21,7 +21,7 @@ const VideoList: React.FC = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                // 타겟이 화면에 보이고, 로딩 중이 아니고, 더 불러올 데이터가 있을 때
+                // 타겟이 화면에 보이면서 로딩이 끝나고, 더 불러올 데이터가 있을 때
                 if (entries[0].isIntersecting && !loading && hasMore) {
                     loadMore();
                 }
@@ -46,8 +46,8 @@ const VideoList: React.FC = () => {
         };
     }, [loadMore, loading, hasMore]);
 
-    if (initialLoading) return <Loading message="비디오를 불러오는 중..." />;     // 초기 로딩
-    if (error && videos.length === 0) return <TryAgain errorMessage={error} />; // 에러 발생
+    if (initialLoading) return <Loading message="비디오를 불러오는 중..." />;
+    if (error && videos.length === 0) return <TryAgain errorMessage={error} />;
 
     return (
         <div className="relative mx-auto">
@@ -77,19 +77,6 @@ const VideoList: React.FC = () => {
                     <p>모든 비디오를 불러왔습니다</p>
                 </div>
             )}
-            
-            {/* 비디오가 하나도 없을 때 */}
-            {/* {!loading && videos.length === 0 && (
-                <div className="flex flex-col items-center justify-center h-96">
-                    <p className="text-gray-400 text-lg mb-4">비디오가 없습니다</p>
-                    <button 
-                        onClick={refresh}
-                        className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
-                    >
-                        새로고침
-                    </button>
-                </div>
-            )} */}
         </div>
     );
 }

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useUser } from "../../shared/context/UserContext";
 import { useProfile } from "../../features/profile/hooks/useProfile";
 import ProfileHeader from "../../widgets/profile/ProfileHeader";
 import ProfileInfoModal from "../../widgets/profile/ProfileInfoModal";
-import { ROUTE } from "../../shared/constants/Route";
+// import { ROUTE } from "../../shared/constants/Route";
 import { Loading } from "../../shared/components/common/Loading";
 import NotFoundProfile from "../../widgets/profile/NotFoundProfile";
 import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
@@ -13,7 +13,7 @@ import ProfilePostList from "../../widgets/profile/ProfilePostList";
 export default function ProfilePage() {
     const [showInfoModal, setShowInfoModal] = useState(false);
     const [tab, setTab] = useState("videos");
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { mention } = useParams();
     const { user } = useUser();
     // const profileUserCleanMention = mention?.replace('@', '');
@@ -87,7 +87,6 @@ export default function ProfilePage() {
                 isOpen={showInfoModal}
                 onClose={() => setShowInfoModal(false)}
             />
-
         </main>
     );
 }

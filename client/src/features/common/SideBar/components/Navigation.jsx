@@ -3,11 +3,13 @@ import NavItem from "./ui/NavItem";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import { NAV_ITEMS } from "../../../../shared/constants/SideBarNavItem";
+import { User } from "../../../../entities/user/model/User";
 
 export default function Navigation({ user }) {
     return (
         <nav className="flex flex-col space-y-2 w-60">
             {NAV_ITEMS.map((item) => (
+                // <NavItem key={item.to} {...item} />
                 <NavItem key={item.to} {...item} />
             ))}
             

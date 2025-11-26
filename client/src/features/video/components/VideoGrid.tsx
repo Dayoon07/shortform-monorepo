@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { useLazyHoverVideo } from "../hooks/useLazyHoverVideo";
 import { VideoCard } from "./ui/VideoCard";
@@ -8,7 +9,7 @@ interface VideoGridProps {
 }
 
 export function VideoGrid({ videos, maxVideos = 100 }: VideoGridProps) {
-    const videoRefs = useLazyHoverVideo(videos);
+    const videoRefs: RefObject<HTMLVideoElement[]> = useLazyHoverVideo(videos);
     const videoGridClassName = `md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
         sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 
         max-md:pb-[56px] p-2`;
