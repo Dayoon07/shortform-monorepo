@@ -1,5 +1,6 @@
 import { User } from "../../../../entities/user/model/User";
 import { useToggleFollow } from "../../hooks/useToggleFollow";
+import "./ToggleFollowButton.scss";
 
 interface ToggleFollowButtonProps {
     followReqUser: User | null,
@@ -7,17 +8,18 @@ interface ToggleFollowButtonProps {
     onFollowChange?: (param: boolean) => void
 }
 
-export default function ToggleFollowButton({ followReqUser, followResUser, onFollowChange }: ToggleFollowButtonProps) {
-    const baseClass = `inline-block rounded-full px-6 py-2 text-xs font-medium font-semibold 
-        transition duration-200 disabled:opacity-50 space-x-2 
-    `;
+export default function ToggleFollowButton({
+    followReqUser,
+    followResUser,
+    onFollowChange
+}: ToggleFollowButtonProps) {
     const {
         isFollowing,    // 초기값 null
         loading,
         toggleFollow
     } = useToggleFollow(followReqUser, followResUser);
 
-    const handleClick = async () => {
+    const handleClick = async (): Promise<void> => {
         try {
             const boolState: boolean = await toggleFollow();
             onFollowChange?.(boolState);
@@ -42,9 +44,7 @@ export default function ToggleFollowButton({ followReqUser, followResUser, onFol
             onClick={handleClick}
             disabled={loading}
             className={
-                isFollowing
-                    ? `${baseClass} bg-gray-600 hover:bg-red-500 active:bg-red-600 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-red-500`
-                    : `${baseClass} bg-neutral-100 text-neutral-700 hover:bg-neutral-200 active:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700`
+                isFollowing ? `${'base-class'} following` : `${'base-class'} follow`
             }
         >
             {isFollowing ? "팔로우 취소" : "팔로우"}

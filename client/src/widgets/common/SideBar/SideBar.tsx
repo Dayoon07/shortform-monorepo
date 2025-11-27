@@ -11,7 +11,7 @@ import { useUser } from "../../../shared/context/UserContext";
 import { useSearch } from "../../../shared/hooks/useSearch";
 import { showSuccessToast } from "../../../shared/utils/toast";
 
-export default function SideBar(): JSX.Element {
+export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
     const [showSignupModal, setShowSignupModal] = useState<boolean>(false);
     const [searchWord] = useSearch();

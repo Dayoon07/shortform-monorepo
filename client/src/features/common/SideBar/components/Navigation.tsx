@@ -5,12 +5,20 @@ import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import { NAV_ITEMS } from "../../../../shared/constants/SideBarNavItem";
 import { User } from "../../../../entities/user/model/User";
 
-export default function Navigation({ user }) {
+export default function Navigation({ user }: { user?: User }) {
     return (
         <nav className="flex flex-col space-y-2 w-60">
             {NAV_ITEMS.map((item) => (
                 // <NavItem key={item.to} {...item} />
-                <NavItem key={item.to} {...item} />
+                <NavItem 
+                    key={item.to}
+                    to={item.to}
+                    label={item.label}
+                    Icon={item.icon}
+                    stroke={item.stroke}
+                    strokeWidth={item.strokeWidth}
+                    viewBox={item.viewBox}
+                />
             ))}
             
             {user && (

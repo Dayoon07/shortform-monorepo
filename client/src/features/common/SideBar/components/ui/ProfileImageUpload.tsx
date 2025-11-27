@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { ChangeEventHandler, useState } from "react";
+
+interface ProfileImageUploadProps {
+    previewUrl: string,
+    onImageSelect: (file: any, preview: any) => void,
+    onNext: () => void
+}
 
 const MAX_FILE_SIZE = 1024 * 1024 * 3; // 3MB
 
-export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }) {
+export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }: ProfileImageUploadProps) {
     const [isDragging, setIsDragging] = useState(false);
 
-    const processFile = (file) => {
+    const processFile = (file: Blob) => {
         if (!file) return;
 
         if (file.size > MAX_FILE_SIZE) {
@@ -15,16 +21,16 @@ export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            onImageSelect(file, e.target.result);
+            onImageSelect(file, e.target?.result);
         };
         reader.readAsDataURL(file);
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e: any): void => {
         processFile(e.target.files[0]);
     };
 
-    const handleDragOver = (e) => {
+    const handleDragOver = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         setIsDragging(true);
     };
@@ -33,7 +39,7 @@ export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }
         setIsDragging(false);
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = (e: any): void => {
         e.preventDefault();
         setIsDragging(false);
         processFile(e.dataTransfer.files[0]);
@@ -51,7 +57,7 @@ export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }
                     className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                 />
                 {previewUrl ? (
-                    <img src={previewUrl} alt="Preview" className="w-28 h-28 object-cover rounded-full" />
+                    <img src={previewUrl} alt="preview-img" className="w-28 h-28 object-cover rounded-full" />
                 ) : (
                     <p className="text-sm text-gray-400 text-center">
                         이미지를 업로드하려면 <br /> 
