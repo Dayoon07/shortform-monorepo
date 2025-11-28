@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 
 interface ProfileImageUploadProps {
     previewUrl: string,
