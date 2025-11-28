@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ROUTE, PATTERN_ROUTE } from "./shared/constants/Route";
 import { UserProvider } from "./shared/context/UserContext";
 
-import AppBar from "./widgets/common/AppBar/AppBar";
-import SideBar from "./widgets/common/SideBar/SideBar";
-import BottomNavBar from "./widgets/common/BottomNavBar/BottomNavBar";
+import AppBar from "./widgets/common/appbar/AppBar";
+import SideBar from "./widgets/common/sidebar/SideBar";
+import BottomNavBar from "./widgets/common/bottomnavbar/BottomNavBar";
 
 import HomePage from "./pages/HomePage/HomePage";
 import LoginPlzPage from "./pages/Loginplz/LoginPlzPage";

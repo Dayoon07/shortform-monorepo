@@ -1,9 +1,5 @@
 import { JSX } from "react";
-import { ThumbsUp } from "lucide-react";
-
-interface IconProps {
-    className?: string;
-}
+import { IconProps } from "../../shared/components/icon/IconProps";
 
 interface ButtonIconProps {
     onClick: () => void;
@@ -11,7 +7,9 @@ interface ButtonIconProps {
 
 export const HomePageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-6 h-6 ${className}`}
+            fill="currentColor"
+            viewBox="0 0 24 24">
             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
         </svg>
     );
@@ -19,7 +17,9 @@ export const HomePageIcon = ({ className = "" }: IconProps): JSX.Element => {
 
 export const ExplorePageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-6 h-6 ${className}`} 
+            fill="currentColor"
+            viewBox="0 0 24 24">
             <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
         </svg>
     );
@@ -27,22 +27,29 @@ export const ExplorePageIcon = ({ className = "" }: IconProps): JSX.Element => {
 
 export const LikePageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        // 전에 사용하던 거
-        // <svg className={`w-6 h-6 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        //     <path
-        //         strokeLinecap="round"
-        //         strokeLinejoin="round"
-        //         strokeWidth="2"
-        //         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-        //     />
-        // </svg>
-        <ThumbsUp className={`w-6 h-6 ${className}`} />
+        <svg className={`${className} w-6 h-6 lucide lucide-thumbs-up-icon lucide-thumbs-up`}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2" 
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M7 10v12"/> 
+            <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 
+                1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+            />
+        </svg>
     );
 };
 
 export const FollowingPageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 48 48">
+        <svg className={`w-6 h-6 ${className}`}
+            fill="currentColor"
+            viewBox="0 0 48 48">
             <path d="M18.99 3a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 4a6 6 0 1 0 0 12.00A6 6 0 0 0 19 7ZM18.99 26c2.96 0 5.6.58 7.87 1.65l-3.07
                 3.06a15.38 15.38 0 0 0-4.8-.71C10.9 30 6.3 35.16 6 43c-.02.55-.46 1-1.02 1h-2c-.55 0-1-.45-.98-1C2.33 32.99 8.7 26 19 26ZM35.7 41.88
                 31.82 38H45a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H31.82l3.88-3.88a1 1 0 0 0 0-1.41l-1.41-1.42a1 1 0 0 0-1.42 0l-7.3 7.3a2 2 0 0 0 0 2.82l7.3
@@ -53,10 +60,15 @@ export const FollowingPageIcon = ({ className = "" }: IconProps): JSX.Element =>
 
 export const UploadPageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
+        <svg className={`w-6 h-6 ${className}`} 
+            fill="currentColor"
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em"
+            height="1em">
             <path d="M25 15a1 1 0 0 1 1 1v6h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-6v6a1 1 0 0 1-1
-                1h-2a1 1 0 0 1-1-1v-6h-6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h6v-6a1 1 0 0 1 1-1h2Z">
-            </path>
+                1h-2a1 1 0 0 1-1-1v-6h-6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h6v-6a1 1 0 0 1 1-1h2Z"
+            />
             <path d="M33.58 4.5H14.42c-1.33 0-2.45 0-3.37.07-.95.08-1.86.25-2.73.7a7 7 0 0 0-3.06 3.05 7.14 7.14 0 0 0-.69 2.73 44.6 44.6 0 
                 0 0-.07 3.37v19.16c0 1.33 0 2.45.07 3.37.08.95.25 1.86.7 2.73a7 7 0 0 0 3.05 3.06c.87.44 1.78.6 2.73.69.92.07 2.04.07 
                 3.37.07h19.16c1.33 0 2.45 0 3.37-.07a7.14 7.14 0 0 0 2.73-.7 7 7 0 0 0
@@ -66,15 +78,20 @@ export const UploadPageIcon = ({ className = "" }: IconProps): JSX.Element => {
                 1.25.06.73.06 1.69.06 3.12v19c0 1.43 0 2.39-.06 3.12a3.3 3.3 0 0 1-.27 1.24 3 3 0 0 1-1.3 
                 1.31c-.21.1-.54.21-1.25.27-.73.06-1.69.06-3.12.06h-19c-1.43 0-2.39 0-3.12-.06a3.3 3.3 0 0 1-1.24-.27 3 3 0 
                 0 1-1.31-1.3c-.1-.21-.21-.54-.27-1.25-.06-.73-.06-1.69-.06-3.12v-19c0-1.43 0-2.39.06-3.12a3.3 3.3 0 
-                0 1 .27-1.24 3 3 0 0 1 1.3-1.31Z">
-            </path>
+                0 1 .27-1.24 3 3 0 0 1 1.3-1.31Z"
+            />
         </svg>
     );
 };
 
 export const FancyUploadPageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+        <svg className={className} 
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            width="32"
+            height="32"
+        >
             <defs>
                 <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="#ec4899"/>
@@ -161,14 +178,23 @@ export const CommunityPageIcon = ({ className = "" }: IconProps): JSX.Element =>
             strokeLinejoin="round"
         >
             <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-            <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
+            <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 
+                0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"
+            />
         </svg>
     );
 };
 
 export const BackIcon = (): JSX.Element => {
     return (
-        <svg width="32" height="32" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg 
+            width="32"
+            height="32"
+            viewBox="0 0 20 20"
+            fill="none" 
+            stroke="currentColor"
+            strokeWidth="2"
+        >
             <line x1="19" y1="12" x2="5" y2="12" />
             <polyline points="12 19 5 12 12 5" />
         </svg>
@@ -177,15 +203,23 @@ export const BackIcon = (): JSX.Element => {
 
 export const SearchIcon = (): JSX.Element => {
     return (
-        <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+        <svg className="w-6 h-6 text-gray-400 hover:text-white" 
+            fill="currentColor"
+            viewBox="0 0 24 24"
+        >
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 
+                0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 
+                9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" 
+            />
         </svg>
     );
 };
 
 export const CancelIcon = (): JSX.Element => {
     return (
-        <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg width="28" height="28" viewBox="0 0 20 20" 
+            fill="none" stroke="currentColor" strokeWidth="2"
+        >
             <path d="M18 6 6 18" />
             <path d="m6 6 12 12" />
         </svg>
@@ -225,8 +259,13 @@ export function SearchModalCloseButton({ onClick }: ButtonIconProps): JSX.Elemen
 
 export function FollowingUserEmptyState({ className = "" }: IconProps): JSX.Element {
     return (
-        <svg className={className + ' w-12 h-12 md:w-16 md:h-16 text-gray-600'} fill="currentColor" viewBox="0 0 20 20">
-            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+        <svg className={className + ' w-12 h-12 md:w-16 md:h-16 text-gray-600'} 
+            fill="currentColor" viewBox="0 0 20 20"
+        >
+            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 
+                8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 
+                12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+            />
         </svg>
     );
 }

@@ -1,4 +1,18 @@
-export default function AuthButtons({ user, onLogout, onShowLogin, onShowSignup }) {
+import { User } from "../../../../../entities/user/model/User";
+
+interface AuthButtonsProps {
+    user: User | null,
+    onLogout: () => void,
+    onShowLogin: () => void,
+    onShowSignup: () => void
+}
+
+export default function AuthButtons({
+    user,
+    onLogout,
+    onShowLogin,
+    onShowSignup
+}: AuthButtonsProps) {
     if (user) {
         return (
             <div>
