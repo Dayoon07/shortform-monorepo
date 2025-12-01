@@ -46,14 +46,9 @@ export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
             </Link>
 
             <div className="mt-2 px-1">
-                <Link
-                    to={ROUTE.PROFILE(video.mention)}
-                    className="block flex items-center space-x-2 mb-1"
-                >
-                    <img
-                        src={`${REST_API_SERVER}${video.profileImgSrc}`}
-                        className="w-8 h-8 rounded-full object-cover"
-                        alt="프로필"
+                <Link to={ROUTE.PROFILE(video.mention)} className="block flex items-center space-x-2 mb-1">
+                    <img src={`${REST_API_SERVER}${video.profileImgSrc}`} 
+                        className="w-8 h-8 rounded-full object-cover" alt="프로필"
                     />
                     <span className="text-white text-md font-semibold truncate">
                         {video.uploaderUsername}
