@@ -14,18 +14,17 @@ import { clickSound } from '../../../shared/constants/Mp3List';
 export default function AppBar() {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
-    const { user, setUser } = useUser();
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const handlePlayClickSound = useClickSound(clickSound);
     const navigate = useNavigate();
+    const { user, setUser } = useUser();
+
     const dropdownItem = `block w-full px-4 py-2 text-gray-300 
         hover:text-white hover:bg-gray-700/50 z-[91] 
-        flex items-center space-x-2
-    `;
+        flex items-center space-x-2`;
     const nav = `sticky top-0 left-0 bg-black/90 backdrop-blur-sm border-b 
         border-gray-800 md:px-4 px-3 md:py-2 py-1 md:hidden 
-        z-[41] flex justify-between items-center
-    `;
+        z-[41] flex justify-between items-center`;
 
     useEffect(() => {
         function handleClickOutside(event: { target: any | null; }): void {
@@ -41,7 +40,7 @@ export default function AppBar() {
         const data = await logout();
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
         showSuccessToast(data);
-        navigate("/");
+        navigate(ROUTE.HOMEPAGE);
     };
 
     return (

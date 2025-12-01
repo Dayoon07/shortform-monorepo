@@ -1,15 +1,31 @@
 import { JSX } from "react";
-import { IconProps } from "../../shared/components/icon/IconProps";
+import { 
+    IconProps, 
+    ButtonIconProps
+} from "../../shared/components/icon/IconProps";
 
-interface ButtonIconProps {
-    onClick: () => void;
-}
+/**
+ * HomePageIcon             |   홈페이지 아이콘 (SideBar, BottomNavBar)
+ * ExplorePageIcon          |   탐색 페이지 아이콘 (SideBar, BottomNavBar)
+ * LikePageIcon             |   좋아요 표시 영상 아이콘 (SideBar, AppBar)
+ * FollowingPageIcon        |   팔로우 중인 유저 확인 페이지 아이콘 (SideBar, BottomNavBar)
+ * UploadPageIcon           |   업로드 페이지 아이콘 (SideBar, AppBar)
+ * FancyUploadPageIcon      |   모바일 화면용 업로드 페이지 아이콘 (BottomNavBar)
+ * UploadIcon               |   업로드할 영상 아이콘 (UploadPage/VideoUploadDropzone)
+ * CommunityPageIcon        |   게시글 작성 페이지 아이콘 (SideBar, AppBar)
+ * BackIcon                 |   AppBar의 Search Modal에서 사용하려 했으나 그냥 
+ *                              다른 거 만들어서 사용중 (사용할 필요 없음, 나중에 삭제)
+ * SearchIcon               |   검색 아이콘, 검색 바에서만 사용 (AppBar/SearchModal/SearchModalInput)
+ * CancelIcon               |   BackIcon과 같이 사용하려 했으나 SearchModal 관련 버튼을 모르고 만듬
+ * SearchModalBackButton    |   검색 바 뒤로 가기 버튼 (SearchModal)
+ * SearchModalCloseButton   |   검색 바 닫기 버튼 (SearchModal)
+ * FollowingUserEmptyState  |   팔로우 중인 유저가 없을 때 나오는 화면에 들어가는 아이콘 (EmptyState)
+ * GoogleIcon               |   구글 로그인 버튼에 들어가는 아이콘 (LoginModal)
+ */
 
 export const HomePageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={`w-6 h-6 ${className}`}
-            fill="currentColor"
-            viewBox="0 0 24 24">
+        <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 24 24">
             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
         </svg>
     );
@@ -17,9 +33,7 @@ export const HomePageIcon = ({ className = "" }: IconProps): JSX.Element => {
 
 export const ExplorePageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={`w-6 h-6 ${className}`} 
-            fill="currentColor"
-            viewBox="0 0 24 24">
+        <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 24 24">
             <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
         </svg>
     );
@@ -28,15 +42,9 @@ export const ExplorePageIcon = ({ className = "" }: IconProps): JSX.Element => {
 export const LikePageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
         <svg className={`${className} w-6 h-6 lucide lucide-thumbs-up-icon lucide-thumbs-up`}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2" 
-            stroke-linecap="round"
-            stroke-linejoin="round">
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+            strokeLinejoin="round">
             <path d="M7 10v12"/> 
             <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 
                 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
@@ -60,12 +68,8 @@ export const FollowingPageIcon = ({ className = "" }: IconProps): JSX.Element =>
 
 export const UploadPageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={`w-6 h-6 ${className}`} 
-            fill="currentColor"
-            viewBox="0 0 48 48"
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em">
+        <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em">
             <path d="M25 15a1 1 0 0 1 1 1v6h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-6v6a1 1 0 0 1-1
                 1h-2a1 1 0 0 1-1-1v-6h-6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h6v-6a1 1 0 0 1 1-1h2Z"
             />
@@ -86,12 +90,8 @@ export const UploadPageIcon = ({ className = "" }: IconProps): JSX.Element => {
 
 export const FancyUploadPageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg className={className} 
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 32 32"
-            width="32"
-            height="32"
-        >
+        <svg className={className} xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32" width="32" height="32">
             <defs>
                 <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="#ec4899"/>
@@ -168,15 +168,8 @@ export const UploadIcon = (): JSX.Element => {
 
 export const CommunityPageIcon = ({ className = "" }: IconProps): JSX.Element => {
     return (
-        <svg
-            className={`w-6 h-6 ${className}`}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
+        <svg className={`w-6 h-6 ${className}`} viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
             <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 
                 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"
@@ -187,14 +180,8 @@ export const CommunityPageIcon = ({ className = "" }: IconProps): JSX.Element =>
 
 export const BackIcon = (): JSX.Element => {
     return (
-        <svg 
-            width="32"
-            height="32"
-            viewBox="0 0 20 20"
-            fill="none" 
-            stroke="currentColor"
-            strokeWidth="2"
-        >
+        <svg width="32" height="32" viewBox="0 0 20 20" fill="none" 
+            stroke="currentColor" strokeWidth="2">
             <line x1="19" y1="12" x2="5" y2="12" />
             <polyline points="12 19 5 12 12 5" />
         </svg>
@@ -204,9 +191,7 @@ export const BackIcon = (): JSX.Element => {
 export const SearchIcon = (): JSX.Element => {
     return (
         <svg className="w-6 h-6 text-gray-400 hover:text-white" 
-            fill="currentColor"
-            viewBox="0 0 24 24"
-        >
+            fill="currentColor" viewBox="0 0 24 24">
             <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 
                 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 
                 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" 
@@ -217,9 +202,7 @@ export const SearchIcon = (): JSX.Element => {
 
 export const CancelIcon = (): JSX.Element => {
     return (
-        <svg width="28" height="28" viewBox="0 0 20 20" 
-            fill="none" stroke="currentColor" strokeWidth="2"
-        >
+        <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6 6 18" />
             <path d="m6 6 12 12" />
         </svg>
@@ -228,14 +211,8 @@ export const CancelIcon = (): JSX.Element => {
 
 export function SearchModalBackButton({ onClick }: ButtonIconProps): JSX.Element {
     return (
-        <svg
-            onClick={onClick}
-            className="w-8 h-8 text-white cursor-pointer mr-2 hover:opacity-70"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 20 20"
-        >
+        <svg onClick={onClick} className="w-8 h-8 text-white cursor-pointer mr-2 hover:opacity-70"
+            fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 20 20">
             <line x1="19" y1="12" x2="5" y2="12" />
             <polyline points="12 19 5 12 12 5" />
         </svg>
@@ -244,13 +221,8 @@ export function SearchModalBackButton({ onClick }: ButtonIconProps): JSX.Element
 
 export function SearchModalCloseButton({ onClick }: ButtonIconProps): JSX.Element {
     return (
-        <svg
-            onClick={onClick}
-            className="w-7 h-7 text-white cursor-pointer ml-2 hover:opacity-70"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-        >
+        <svg onClick={onClick} className="w-7 h-7 text-white cursor-pointer ml-2 hover:opacity-70"
+            fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6 6 18" />
             <path d="m6 6 12 12" />
         </svg>
@@ -260,12 +232,24 @@ export function SearchModalCloseButton({ onClick }: ButtonIconProps): JSX.Elemen
 export function FollowingUserEmptyState({ className = "" }: IconProps): JSX.Element {
     return (
         <svg className={className + ' w-12 h-12 md:w-16 md:h-16 text-gray-600'} 
-            fill="currentColor" viewBox="0 0 20 20"
-        >
+            fill="currentColor" viewBox="0 0 20 20">
             <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 
                 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 
                 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
             />
+        </svg>
+    );
+}
+
+export function GoogleIcon() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            x="0px" y="0px" width="24" height="24" 
+            viewBox="0 0 48 48" style={{ marginRight: "10px" }}>
+            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
         </svg>
     );
 }

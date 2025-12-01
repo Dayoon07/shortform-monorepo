@@ -13,31 +13,20 @@ export default function AuthButtons({
     onShowLogin,
     onShowSignup
 }: AuthButtonsProps) {
+    const btnClassName = `
+        w-full p-3 border border-gray-600 rounded-xl font-semibold 
+        hover:border-gray-400 hover:bg-gray-300/10 transition-all
+    `;
     if (user) {
-        return (
-            <div>
-                <button 
-                    onClick={onLogout} 
-                    className="w-full p-3 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-300/10 transition-all"
-                >
-                로그아웃
-                </button>
-            </div>
-        );
+        return <><button onClick={onLogout} className={btnClassName}>로그아웃</button></>
     }
 
     return (
         <div className="space-y-3">
-            <button 
-                onClick={onShowLogin} 
-                className="w-full p-3 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-300/10 transition-all"
-            >
+            <button onClick={onShowLogin} className={btnClassName}>
                 로그인
             </button>
-            <button 
-                onClick={onShowSignup} 
-                className="w-full p-3 border border-gray-600 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-300/10 transition-all"
-            >
+            <button onClick={onShowSignup} className={btnClassName}>
                 회원가입
             </button>
         </div>

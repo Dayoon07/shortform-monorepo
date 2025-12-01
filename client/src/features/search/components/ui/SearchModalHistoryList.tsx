@@ -18,7 +18,7 @@ export const SearchModalHistoryList = ({ items, onDelete, onSelect }: SearchModa
             </h3>
             {items.map((item) => (
                 <div 
-                    key={item.id} 
+                    key={item.createAt} 
                     className="flex justify-between items-center group"
                 >
                     <button

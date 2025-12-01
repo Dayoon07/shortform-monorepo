@@ -8,11 +8,7 @@ export const SearchModalLoginPrompt = ({ onClose }: { onClose: () => void }) => 
     return (
         <div className="mt-4 text-center py-8">
             <p className="text-white/70 mb-4">로그인하면 검색 기록을 저장할 수 있어요</p>
-            <Link
-                to={ROUTE.LOGINPLZ}
-                className={classNa}
-                onClick={onClose}
-            >
+            <Link to={ROUTE.LOGINPLZ} className={classNa} onClick={onClose}>
                 로그인하기
             </Link>
         </div>

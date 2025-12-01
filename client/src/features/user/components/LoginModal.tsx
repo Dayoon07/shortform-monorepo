@@ -5,12 +5,11 @@ import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccessToast } from "../../../shared/utils/toast";
 import { LoginResponse } from "../../../entities/user/ui/LoginResponse";
+import { GoogleIcon } from "../../../widgets/icon/icon";
+import { API_LIST } from "../../../shared/constants/ApiList";
+import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 
-interface LoginModalProps {
-    onClose: () => void
-}
-
-export default function LoginModal({ onClose }: LoginModalProps) {
+export default function LoginModal({ onClose }: { onClose: () => void }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +73,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-2xl font-bold text-white">로그인</h3>
+                    <h3 className="text-2xl font-bold text-center">로그인</h3>
                     <button 
                         onClick={onClose}
                         className="text-gray-400 hover:text-white transition-colors p-1 hover:bg-gray-800 rounded-lg"
@@ -151,6 +150,12 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                             '로그인'
                         )}
                     </button>
+                    <div id="google-login-btn" onClick={() => {
+                        window.location.href = `${REST_API_SERVER}${API_LIST.USER.GOOGLE_LOGIN}`;
+                    }}>
+                        <GoogleIcon />
+                        Google 계정으로 로그인
+                    </div>
                 </form>
 
                 <div className="mt-6 text-center">

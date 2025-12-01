@@ -1,3 +1,5 @@
+// src/shared/components/common/Modal.tsx
+
 import { ReactNode, useEffect } from "react";
 
 interface ModalProps {
@@ -13,13 +15,30 @@ export default function Modal({ onClose, title, children }: ModalProps) {
         return () => document.removeEventListener('keydown', handleEscape);
     }, [onClose]);
 
+    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
+    };
+
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 w-full flex items-center justify-center">
-            <div className="bg-gray-900 p-8 rounded-2xl max-w-md w-full mx-4">
-                <h3 className="text-2xl font-bold mb-6 text-center">{title}</h3>
+        <div 
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[150] flex items-center justify-center p-4 w-full"
+            onClick={handleBackdropClick}
+        >
+            <div 
+                className="bg-gray-900 p-8 rounded-2xl w-full max-w-md shadow-2xl" 
+                onClick={(e) => e.stopPropagation()}
+            >
+                <h3 className="text-2xl font-bold mb-6 text-center text-white">{title}</h3>
                 {children}
                 <div className="mt-6 text-center">
-                    <button onClick={onClose} className="text-gray-400 hover:text-white">닫기</button>
+                    <button 
+                        onClick={onClose} 
+                        className="text-gray-400 hover:text-white transition-colors"
+                    >
+                        닫기
+                    </button>
                 </div>
             </div>
         </div>

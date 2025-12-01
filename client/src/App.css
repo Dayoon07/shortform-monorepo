@@ -186,3 +186,7 @@ body::-webkit-scrollbar-thumb:hover {
 .heart-animation {
     animation: heartBeat 0.6s ease-in-out;
 }
+
+#google-login-btn {
+    @apply w-full flex justify-center items-center py-3 bg-white text-black font-semibold border border-gray-500 cursor-pointer rounded-xl;
+}

@@ -1,3 +1,8 @@
 export interface IconProps {
-    className?: string;
+    className?: string
 }
+
+export interface ButtonIconProps {
+    onClick: () => void
+}
+
