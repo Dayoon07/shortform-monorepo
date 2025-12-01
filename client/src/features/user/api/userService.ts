@@ -50,13 +50,20 @@ export async function login(username: string, password: string): Promise<LoginRe
         // })
         const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGIN}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
+            headers: { 
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                password
+            })
         });
 
         const data: LoginResponse = await response.json();
+        console.log(data);
 
         if (response.ok && data.success) {
+            localStorage.setItem("accessTkn", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
             showSuccessToast(data.message);
             return data;
