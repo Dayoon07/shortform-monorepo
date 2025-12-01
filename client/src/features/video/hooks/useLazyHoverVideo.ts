@@ -12,6 +12,7 @@ export function useLazyHoverVideo(videos: VideoGridContent[]): RefObject<HTMLVid
 
     useEffect(() => {
         if (!Array.isArray(videos) || videos.length === 0) return;
+        const timersSnapshot = unloadTimers.current; // 스냅샷 저장
 
         /**
          * 비디오를 메모리에서 해제합니다.
@@ -144,8 +145,8 @@ export function useLazyHoverVideo(videos: VideoGridContent[]): RefObject<HTMLVid
         // Cleanup: Observer와 타이머 모두 해제
         return () => {
             observer.disconnect();
-            unloadTimers.current.forEach(timer => clearTimeout(timer));
-            unloadTimers.current.clear();
+            timersSnapshot.forEach(timer => clearTimeout(timer)); // 스냅샷 사용
+            timersSnapshot.clear();
         };
     }, [videos]); // videos 배열이 변경될 때만 재실행
 

@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import SearchBar from "../../../features/common/sidebar/components/SearchBar";
-import Navigation from "../../../features/common/sidebar/components/Navigation";
+import SearchBar from "../../../features/common/side-bar/components/SearchBar";
+import Navigation from "../../../features/common/side-bar/components/Navigation";
 import { ROUTE } from "../../../shared/constants/Route";
 import { useSearch } from "../../../shared/hooks/useSearch";
-import AuthSection from "../../../features/common/sidebar/components/AuthSection";
+import AuthSection from "../../../features/common/side-bar/components/AuthSection";
 
 export default function SideBar() {
     const [searchWord] = useSearch();
