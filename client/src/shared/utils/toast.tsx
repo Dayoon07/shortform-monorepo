@@ -65,21 +65,15 @@ export function showToast(message: string, options: ToastOptions = {}) {
     }, duration);
 }
 
-/**
- * 에러 토스트를 표시합니다 (편의 함수)
- */
+/** 에러 토스트를 표시합니다 (편의 함수) */
 export function showErrorToast(message: string, duration = 3000) {
     showToast(message, { success: false, duration });
 }
 
-/**
- * 성공 토스트를 표시합니다 (편의 함수)
- */
+/** 성공 토스트를 표시합니다 (편의 함수) */
 export function showSuccessToast(message: string, duration = 3000) {
     showToast(message, { success: true, duration });
 }
-
-
 
 
 

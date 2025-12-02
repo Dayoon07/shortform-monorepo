@@ -10,15 +10,13 @@ interface ModalProps {
 
 export default function Modal({ onClose, title, children }: ModalProps) {
     useEffect(() => {
-        const handleEscape = (e: { key: string; }) => e.key === 'Escape' && onClose();
+        const handleEscape = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
     }, [onClose]);
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
+        if (e.target === e.currentTarget) onClose();
     };
 
     return (

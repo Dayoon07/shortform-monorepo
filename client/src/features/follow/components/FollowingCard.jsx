@@ -13,9 +13,9 @@ export const FollowingCard = ({ followingUser, onToggleFollow }) => {
         >
             <Link to={ROUTE.PROFILE(followingUser.mention)} className="mb-4 group">
                 <div className="relative">
-                    <img src={`${REST_API_SERVER}${followingUser.profileImgSrc}`} alt={followingUser.username} className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 
-                        cursor-pointer bg-gradient-to-br from-pink-500 via-purple-500 to-sky-500 p-1 rounded-full object-cover 
-                        group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl"
+                    <img src={REST_API_SERVER + followingUser.profileImgSrc} alt={followingUser.username} className="w-20 h-20 
+                        md:w-24 md:h-24 lg:w-28 lg:h-28 cursor-pointer bg-gradient-to-br from-pink-500 via-purple-500 to-sky-500 p-1 
+                        rounded-full object-cover group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl"
                     />
                 </div>
             </Link>

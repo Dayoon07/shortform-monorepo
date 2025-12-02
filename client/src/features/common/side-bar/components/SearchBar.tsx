@@ -8,7 +8,7 @@ interface SearchBarProps {
 export default function SearchBar({ initialValue = '', onSearch }: SearchBarProps) {
     const [searchQuery, setSearchQuery] = useState<string>(initialValue);
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSearch(searchQuery);
     };

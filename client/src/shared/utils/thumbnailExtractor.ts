@@ -1,4 +1,9 @@
-export const extractThumbnail = (videoFile: Blob, timeInSeconds = 1) => {
+/**
+ * 영상을 업로드하면 해당 영상의 프로필 이미지를 추출하는 함수
+ * @param {Blob} videoFile
+ * @param {number} timeInSeconds 
+ */
+export const extractThumbnail = (videoFile: Blob, timeInSeconds: number = 1) => {
     return new Promise((resolve, reject) => {
         const video = document.createElement('video');
         const canvas = document.createElement('canvas');

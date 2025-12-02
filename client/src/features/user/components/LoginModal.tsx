@@ -19,7 +19,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
 
     // ESC 키로 닫기
     useEffect(() => {
-        const handleEscape = (e: { key: string; }): void => {
+        const handleEscape = (e: KeyboardEvent): void => {
             if (e.key === 'Escape') onClose();
         };
         document.addEventListener('keydown', handleEscape);

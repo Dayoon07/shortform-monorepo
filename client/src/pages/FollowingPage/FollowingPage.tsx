@@ -11,9 +11,7 @@ export default function FollowingPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) {
-            navigate("/loginplz");
-        }
+        if (!user) navigate("/loginplz");
     }, [user, navigate]);
 
     const { 

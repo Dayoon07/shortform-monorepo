@@ -67,8 +67,7 @@ src/
     ├── hooks/            # 공통 커스텀 훅
     │   └── useSearch.js
     └── utils/            # 유틸리티 함수
-        ├── toast.jsx
-        └── showMessage.jsx
+        └── toast.jsx
 ```
 
 #### 레이어별 역할

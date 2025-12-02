@@ -3,12 +3,11 @@ import SearchVideo from "../../widgets/search/SearchVideo";
 import { JSX } from "react";
 
 export default function SearchPage(): JSX.Element {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const searchWord: string = queryParams.get("q") ?? "";
+    const l = useLocation();
+    const w: string = new URLSearchParams(l.search).get("q") ?? "";
 
     const { q } = useParams();
     console.log(`uesParams: ${q}`);
 
-    return <SearchVideo searchValue={searchWord} />
+    return <SearchVideo searchValue={w} />
 }

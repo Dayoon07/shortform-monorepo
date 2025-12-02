@@ -1,6 +1,7 @@
 import { useLazyHoverVideo } from "../../../features/video/hooks/useLazyHoverVideo";
 import { VideoCard } from "../../../features/video/components/ui/VideoCard";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
+import { RefObject } from "react";
 
 interface CommonVideoGridProps {
     videos: VideoGridContent[],
@@ -8,7 +9,7 @@ interface CommonVideoGridProps {
 }
 
 export function CommonVideoGrid({ videos, message = "영상이 없습니다" }: CommonVideoGridProps) {
-    const videoRefs = useLazyHoverVideo(videos);
+    const videoRefs: RefObject<HTMLVideoElement[]> = useLazyHoverVideo(videos);
     const commonVideoGridClassName = `
         md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
         sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 

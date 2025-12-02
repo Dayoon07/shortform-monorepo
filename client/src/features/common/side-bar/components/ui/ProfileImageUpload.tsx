@@ -30,7 +30,7 @@ export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }
         processFile(e.target.files[0]);
     };
 
-    const handleDragOver = (e: { preventDefault: () => void; }) => {
+    const handleDragOver = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(true);
     };

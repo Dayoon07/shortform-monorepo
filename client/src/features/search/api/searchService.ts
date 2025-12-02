@@ -37,3 +37,13 @@ export async function deleteSearchWord(userId: number, searchWord: string) {
     if (!res.ok) throw new Error(`검색어 삭제 실패: HTTP ${res.status}`);
     return true;
 }
+
+
+
+
+
+
+
+
+
+
