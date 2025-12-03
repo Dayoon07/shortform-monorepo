@@ -1,6 +1,7 @@
 export const API_LIST = {
     USER: {
         GOOGLE_LOGIN: "/oauth2/authorization/google",
+        CHK_ME: "/api/user/me",
         ALL: "/api/user/all",
         SIGNUP: "/api/user/signup",
         LOGIN: "/api/user/login",

@@ -7,6 +7,8 @@ export interface ProfileInfo {
     bio: string,
     mention: string,
     createAt: string,
+    social: boolean,
+    provider: string,
     followerCount: number,
     followingCount: number,
     totalViews: number,

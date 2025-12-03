@@ -1,4 +1,4 @@
-import { EditResponse } from "../../../entities/user/ui/EditResponse";
+import { UserInfoEditResponse } from "../../../entities/user/ui/UserInfoEditResponse";
 import { LoginResponse } from "../../../entities/user/ui/LoginResponse";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
@@ -99,7 +99,7 @@ export async function userInfoEdit(
     mention: string, 
     bio: string, 
     profileImg: Blob, 
-    currentProfileImgSrc: Blob): Promise<EditResponse> {
+    currentProfileImgSrc: Blob): Promise<UserInfoEditResponse> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.EDIT}`, {
             method: "POST",

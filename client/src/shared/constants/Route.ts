@@ -98,6 +98,7 @@ export const ROUTE = {
      * @example ROUTE.HASHTAG("funny") => "/hashtag/funny"
      */
     HASHTAG: (videoTag: string) => `/hashtag/${videoTag}`,
+    OAUTH_CALLBACK: "/oauth/callback"
 };
 
 export const PATTERN_ROUTE = {

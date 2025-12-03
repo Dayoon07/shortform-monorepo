@@ -1,6 +1,6 @@
 import { User } from "../model/User";
 
-export interface EditResponse {
+export interface UserInfoEditResponse {
     status: boolean,
     message: string,
     profileImgPath: string,

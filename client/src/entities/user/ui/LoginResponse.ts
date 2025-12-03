@@ -10,7 +10,7 @@ export interface LoginResponse {
         profileImgSrc: string,
         mention: string,
         createAt: string,
-        isSocial: boolean,
+        social: boolean,
         provider: string
     }
 }

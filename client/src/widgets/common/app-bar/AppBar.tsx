@@ -70,7 +70,7 @@ export default function AppBar() {
                                 className="w-8 h-8 p-0.5 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 hover:opacity-80 transition-opacity"
                                 aria-label="프로필 메뉴" aria-expanded={showDropdown}
                             >
-                                <img src={`${REST_API_SERVER}${user.profileImgSrc}`} alt={`${user.username}의 프로필`}
+                                <img src={user.social ? `${user.profileImgSrc}` : `${REST_API_SERVER}${user.profileImgSrc}`} alt={`${user.username}의 프로필`}
                                     className="w-full h-full object-cover rounded-full" 
                                 />
                             </button>
@@ -81,7 +81,7 @@ export default function AppBar() {
                                         className="block w-full px-4 py-2 text-gray-300 hover:text-white 
                                         hover:bg-gray-700/50 flex items-center transition-colors"
                                     >
-                                        <img src={`${REST_API_SERVER}${user.profileImgSrc}`} alt="..." 
+                                        <img src={user.social ? `${user.profileImgSrc}` : `${REST_API_SERVER}${user.profileImgSrc}`} alt="..." 
                                             className="w-[26px] h-[26px] p-0.5 object-cover 
                                             rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500" 
                                         />

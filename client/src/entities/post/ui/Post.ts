@@ -9,5 +9,7 @@ export interface Post {
     createAt: string,
     files: string,
     likeCnt: number,
-    commentCnt: number
+    commentCnt: number,
+    social: boolean,
+    provider: string
 }

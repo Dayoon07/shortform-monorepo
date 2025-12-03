@@ -24,7 +24,7 @@ export default function Navigation({ user }: { user?: User | null }) {
                         transition-colors group"
                 >
                     <img 
-                        src={`${REST_API_SERVER}${user.profileImgSrc}`} 
+                        src={user.social ? `${user.profileImgSrc}` : `${REST_API_SERVER}${user.profileImgSrc}`} 
                         alt={`${user.username}님 프로필`} 
                         className="w-6 h-6 rounded-full"
                     />

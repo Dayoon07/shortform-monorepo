@@ -4,5 +4,7 @@ export interface User {
     mail: string,
     mention: string,
     profileImgSrc: string,
-    createAt: string
+    createAt: string,
+    social: boolean,
+    provider: string
 };

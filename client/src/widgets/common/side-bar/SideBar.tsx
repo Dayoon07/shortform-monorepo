@@ -44,6 +44,7 @@ export default function SideBar() {
                 />
 
                 <Navigation user={user} />
+                
                 <AuthButtons 
                     user={user}
                     onLogout={handleLogout}

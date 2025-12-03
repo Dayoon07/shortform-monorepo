@@ -9,15 +9,15 @@ import { clickSound } from "../../../shared/constants/Mp3List";
 
 export default function BottomNavBar() {
     const { user } = useUser();
-    const location = useLocation();
+    const loc = useLocation();
     const handlePlayClickSound = useClickSound(clickSound);
 
     // 현재 경로가 활성 상태인지 확인
     const isActive = (path: string): boolean => {
         if (path === ROUTE.HOMEPAGE) {
-            return location.pathname === path;
+            return loc.pathname === path;
         } else {
-            return location.pathname.startsWith(path);
+            return loc.pathname.startsWith(path);
         }
     };
 
@@ -29,11 +29,7 @@ export default function BottomNavBar() {
                     const active = isActive(item.to);
 
                     return (
-                        <Link 
-                            key={item.to} 
-                            to={item.to} 
-                            aria-label={item.label} 
-                            aria-current={active ? 'page' : undefined} 
+                        <Link to={item.to} key={item.to} aria-label={item.label} aria-current={active ? 'page' : undefined} 
                             className={`nav-item relative p-3 flex flex-col items-center transition-colors
                                 ${active ? 'text-white' : 'text-gray-400'}
                             `}
@@ -45,9 +41,7 @@ export default function BottomNavBar() {
                 })}
 
                 {user ? (
-                    <Link 
-                        to={ROUTE.PROFILE(user.mention)} 
-                        aria-label="프로필" 
+                    <Link to={ROUTE.PROFILE(user.mention)} aria-label="프로필" 
                         className={`nav-item p-3 flex flex-col items-center gap-1 transition-colors ${
                             isActive(ROUTE.PROFILE(user.mention)) ? 'text-white' : 'text-gray-400'
                         }`}
@@ -55,19 +49,16 @@ export default function BottomNavBar() {
                         aria-current={isActive(ROUTE.PROFILE(user.mention)) ? 'page' : undefined}
                     >
                         <div className={`w-6 h-6 rounded-full overflow-hidden ${isActive(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-white' : ''}`}>
-                            <img 
-                                src={REST_API_SERVER + user.profileImgSrc} 
-                                alt={user.username + "님의 프로필"}
-                                className="w-full h-full object-cover"
+                            <img src={user.social ? user.profileImgSrc : REST_API_SERVER + user.profileImgSrc} 
+                                alt={user.username + "님의 프로필"} className="w-full h-full object-cover"
                             />
                         </div>
                     </Link>
                 ) : (
-                    <Link 
-                        to={ROUTE.LOGINPLZ} 
-                        aria-label="로그인" 
-                        onClick={handlePlayClickSound}
-                        className={`nav-item p-3 transition-colors ${isActive(ROUTE.LOGINPLZ) ? 'text-white' : 'text-gray-400'}`}
+                    <Link to={ROUTE.LOGINPLZ} aria-label="로그인" onClick={handlePlayClickSound}
+                        className={`nav-item p-3 transition-colors ${
+                            isActive(ROUTE.LOGINPLZ) ? 'text-white' : 'text-gray-400'
+                        }`}
                     >
                         <LogIn className="w-6 h-6" />
                     </Link>
