@@ -18,6 +18,8 @@ export interface VideoGridContent {
     previewImg: string,
     bio: string,
     mention: string,
+    social: boolean,
+    provider: string,
     uploaderCreateAt: string,
     likeCount: number
 }

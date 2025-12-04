@@ -84,21 +84,21 @@ export default function UploadPage() {
                 >
                     <div className="text-white">
                         <div className="flex items-start gap-2">
-                            <span className="font-bold">📦 크기</span>
+                            <span className="font-bold">크기</span>
                             <span>최대 크기: 150MB</span>
                         </div>
                         <div className="flex items-start gap-2">
-                            <span className="font-bold">🧩 파일 형식</span>
+                            <span className="font-bold">파일 형식</span>
                             <span>권장 형식은 .mp4이며 주요 포맷 지원</span>
                         </div>
                     </div>
                     <div className="text-white">
                         <div className="flex items-start gap-2">
-                            <span className="font-bold">🎞 해상도</span>
+                            <span className="font-bold">해상도</span>
                             <span>1080p, 1440p, 4K 고해상도 권장</span>
                         </div>
                         <div className="flex items-start gap-2">
-                            <span className="font-bold">🖼 비율</span>
+                            <span className="font-bold">비율</span>
                             <span>가로: 16:9, 세로: 9:16 권장</span>
                         </div>
                     </div>

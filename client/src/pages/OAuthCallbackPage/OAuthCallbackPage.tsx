@@ -21,9 +21,8 @@ export default function OAuthCallbackPage() {
     }
 
     useEffect(() => {
-        const handleOAuthCallback = async () => {
+        const handleOAuthCallback = async (): Promise<void> => {
             try {
-                // 쿠키에서 access_token 읽기
                 const token = getCookie("accessTkn");
                 
                 if (!token) {
@@ -31,31 +30,22 @@ export default function OAuthCallbackPage() {
                     throw new Error('토큰을 찾을 수 없습니다');
                 }
 
-                // 토큰으로 사용자 정보 가져오기
                 const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.CHK_ME}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { "Authorization": `Bearer ${token}` }
                 });
 
-                if (!response.ok) {
-                    throw new Error('사용자 정보를 가져올 수 없습니다');
-                }
+                if (!response.ok) throw new Error("사용자 정보를 가져올 수 없습니다");
 
-                const userData = await response.json();
+                const data = await response.json();
+                setUser(data);
+                localStorage.setItem("accessTkn", token);
+                localStorage.setItem("user", JSON.stringify(data));
                 
-                // localStorage에 토큰과 사용자 정보 저장
-                localStorage.setItem('accessTkn', token);
-                localStorage.setItem('user', JSON.stringify(userData));
-                
-                // Context 업데이트
-                setUser(userData);
-                
-                showSuccessToast('로그인되었습니다');
+                showSuccessToast("로그인되었습니다");
                 navigate(ROUTE.HOMEPAGE);
             } catch (error) {
-                console.error('OAuth 콜백 처리 실패:', error);
-                showErrorToast('로그인에 실패했습니다');
+                console.error("OAuth 콜백 처리 실패:", error);
+                showErrorToast("로그인에 실패했습니다");
                 navigate(ROUTE.LOGINPLZ);
             }
         };

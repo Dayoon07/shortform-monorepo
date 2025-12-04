@@ -13,7 +13,7 @@ export default function LikeVideoList() {
         if (!user) return;
         const likeVideo = async (mention: string) => {
             try {
-                const data = await myLikeVideoList(mention);
+                const data: VideoGridContent[] = await myLikeVideoList(mention);
                 console.log(data);
                 setVideos(data || []);
             } catch (error) {

@@ -17,6 +17,8 @@ export interface VideoSwipe {
         id: number,
         username: string,
         mention: string,
+        social: boolean,
+        provider: string,
         profileImgSrc: string,
     }
 }
