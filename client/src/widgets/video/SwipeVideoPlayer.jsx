@@ -16,10 +16,7 @@ export default function SwipeVideoPlayer({
 
     // 화면 크기 감지 (md: 768px)
     useEffect(() => {
-        const checkMobileSize = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
+        const checkMobileSize = () => setIsMobile(window.innerWidth < 768);
         checkMobileSize();
         window.addEventListener('resize', checkMobileSize);
         return () => window.removeEventListener('resize', checkMobileSize);
@@ -28,27 +25,18 @@ export default function SwipeVideoPlayer({
     useEffect(() => {
         let startY = 0;
 
-        const handleTouchStart = (e) => {
-            startY = e.touches[0].clientY;
-        };
+        const handleTouchStart = (e) => startY = e.touches[0].clientY;
 
         const handleTouchEnd = (e) => {
             const endY = e.changedTouches[0].clientY;
             const delta = startY - endY;
-            
-            if (delta > 50) {
-                onSwipe('next');
-            } else if (delta < -50) {
-                onSwipe('prev');
-            }
+            if (delta > 50)   onSwipe('next');
+            if (delta < -50)  onSwipe('prev');
         };
 
         const handleWheel = (e) => {
-            if (e.deltaY > 50) {
-                onSwipe('next');
-            } else if (e.deltaY < -50) {
-                onSwipe('prev');
-            }
+            if (e.deltaY > 50)  onSwipe('next');
+            if (e.deltaY < -50) onSwipe('prev');
         };
 
         // 모바일: 터치만 활성화

@@ -3,13 +3,13 @@ export interface Post {
     username: string,
     profileImgSrc: string,
     mention: string,
+    social: boolean,
+    provider: string,
     communityUuid: string,
     communityWriterId: number,
     communityText: string,
     createAt: string,
     files: string,
     likeCnt: number,
-    commentCnt: number,
-    social: boolean,
-    provider: string
+    commentCnt: number
 }

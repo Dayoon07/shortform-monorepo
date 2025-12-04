@@ -29,5 +29,5 @@ export const useTagVideo = (tag?: string): VideoGridContent[] => {
         };
     }, [tag]); // tag만 의존성으로 놓고 재생성 할 필요 없게 만듬
     
-    return { tagVideoList };
+    return tagVideoList;
 }

@@ -12,7 +12,7 @@ export default function BottomNavBar() {
     const loc = useLocation();
     const handlePlayClickSound = useClickSound(clickSound);
 
-    // 현재 경로가 활성 상태인지 확인
+    /** 현재 경로가 활성 상태인지 확인 */
     const isActive = (path: string): boolean => {
         if (path === ROUTE.HOMEPAGE) {
             return loc.pathname === path;

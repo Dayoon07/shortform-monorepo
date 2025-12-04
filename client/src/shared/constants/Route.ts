@@ -5,12 +5,14 @@ export const ROUTE = {
      */
     HOMEPAGE: "/",
 
-    /** 
+    /**
      * 검색 페이지 경로
+     * @example "/searcj"
      */
     SEARCH: "/search",
 
-    DYNAMIC_SEARCH_ROUTE: (word: string) => `/search?q=${word}`,
+    /** 검색 페이지 경로 (검색어 포함, 함수형) */
+    SEARCH_V2: (word: string) => `/search?q=${word}`,
 
     /** 
      * 로그아웃 요청 경로
@@ -98,6 +100,11 @@ export const ROUTE = {
      * @example ROUTE.HASHTAG("funny") => "/hashtag/funny"
      */
     HASHTAG: (videoTag: string) => `/hashtag/${videoTag}`,
+
+    /**
+     * 소셜 로그인 시 다시 돌아오는 경로
+     * @example "/oauth/callback"
+     */
     OAUTH_CALLBACK: "/oauth/callback"
 };
 

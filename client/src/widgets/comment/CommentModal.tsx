@@ -23,17 +23,12 @@ export function CommentModal({
 }: CommentModalWidgetProps) {
     const [commentText, setCommentText] = useState<string>("");
     const [sortType, setSortType] = useState<string>("popular");
-
     const { 
         commentWrite,
-        commentSuccessMessage,
         commentList
     } = useComment(videoId);
 
-    const handleCommentWrite = async () => {
-        await commentWrite(videoId, commentText, user.mention);
-        showSuccessToast(commentSuccessMessage);
-    }
+    const handleCommentWrite = async () => showSuccessToast(await commentWrite(videoId, commentText, user.mention));
 
     if (!open) return null;
 
@@ -88,17 +83,13 @@ export function CommentModal({
                     </div>
                 </div>
 
-                <CommentList 
-                    commentList={commentList}
-                />
+                <CommentList commentList={commentList} />
 
                 {user && (
                     <div className="p-4 border-t border-gray-700">
                         <div className="flex space-x-3">
-                            <img
-                                src={REST_API_SERVER + user.profileImgSrc}
-                                alt="profile"
-                                className="w-10 h-10 p-0.5 rounded-full object-cover"
+                            <img src={user.social ? user.profileImgSrc : REST_API_SERVER + user.profileImgSrc}
+                                alt="profile" className="w-10 h-10 p-0.5 rounded-full object-cover"
                                 style={{ background: "linear-gradient(to right, #ec4899, #0ea5e9)" }}
                             />
 

@@ -8,27 +8,18 @@ import SignupModal from "../../../features/common/side-bar/components/SignupModa
 import { useState } from "react";
 import AuthButtons from "../../../features/common/side-bar/components/ui/AuthButtons";
 import { useUser } from "../../../shared/context/UserContext";
-import { logout } from "../../../features/user/api/userService";
-import { showSuccessToast } from "../../../shared/utils/toast";
+import { useLogout } from "../../../shared/hooks/useLogout";
 
 export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
     const [showSignupModal, setShowSignupModal] = useState<boolean>(false);
     const [searchWord] = useSearch();
-    const { user, setUser } = useUser();
+    const { user } = useUser();
+    const { handleLogout } = useLogout();
     const navigate = useNavigate();
 
     const handleSearch = (query: string): void => {
-        if (query.trim()) {
-            navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(encodeURIComponent(query)));
-        }
-    };
-
-    const handleLogout = async (): Promise<void> => {
-        const data = await logout();
-        setUser(null);
-        showSuccessToast(data);
-        navigate(ROUTE.HOMEPAGE);
+        if (query.trim()) navigate(ROUTE.SEARCH_V2(encodeURIComponent(query)));
     };
 
     return (

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchModalBackButton, SearchModalCloseButton } from '../../icon/icon';
-import { useSearchHistory } from '../../../features/search/hooks/useSearchHistory';
+import { useSearchHistory } from '../../features/search/hooks/useSearchHistory';
 import { SearchInput } from '../../../features/search/components/SearchInput';
 import { SearchHistoryList } from '../../../features/search/components/SearchHistoryList';
 import { LoginPrompt } from '../../../features/search/components/LoginPrompt';

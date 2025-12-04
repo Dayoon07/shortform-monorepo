@@ -1,23 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import { SearchIcon, UploadPageIcon, LikePageIcon, CommunityPageIcon } from '../../icon/icon';
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { useUser } from '../../../shared/context/UserContext';
-import { logout } from "../../../features/user/api/userService";
 import SearchModal from '../../../features/search/components/SearchModal';
 import { LogOut } from 'lucide-react';
 import { useClickSound } from '../../../shared/hooks/useClickSound';
-import { showSuccessToast } from '../../../shared/utils/toast';
 import { clickSound } from '../../../shared/constants/Mp3List';
+import { useLogout } from '../../../shared/hooks/useLogout';
 
 export default function AppBar() {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const handlePlayClickSound = useClickSound(clickSound);
-    const navigate = useNavigate();
-    const { user, setUser } = useUser();
+    const { user } = useUser();
+    const { handleLogout } = useLogout();
 
     const dropdownItem = `block w-full px-4 py-2 text-gray-300 
         hover:text-white hover:bg-gray-700/50 z-[91] 
@@ -35,13 +34,6 @@ export default function AppBar() {
         if (showDropdown) document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showDropdown]);
-
-    const handleLogout = async (): Promise<void> => {
-        const data = await logout();
-        setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
-        showSuccessToast(data);
-        navigate(ROUTE.HOMEPAGE);
-    };
 
     return (
         <>
@@ -70,7 +62,8 @@ export default function AppBar() {
                                 className="w-8 h-8 p-0.5 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 hover:opacity-80 transition-opacity"
                                 aria-label="프로필 메뉴" aria-expanded={showDropdown}
                             >
-                                <img src={user.social ? `${user.profileImgSrc}` : `${REST_API_SERVER}${user.profileImgSrc}`} alt={`${user.username}의 프로필`}
+                                <img src={user.social ? `${user.profileImgSrc}` : `${REST_API_SERVER}${user.profileImgSrc}`} 
+                                    alt={`${user.username}의 프로필`}
                                     className="w-full h-full object-cover rounded-full" 
                                 />
                             </button>

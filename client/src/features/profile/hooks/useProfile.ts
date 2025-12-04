@@ -3,16 +3,19 @@ import { getFollowStatus, getFollowerList, getFollowingList } from "../../follow
 import { showErrorToast } from "../../../shared/utils/toast";
 import { getProfileByMention } from "../api/profileService";
 import { getUserPosts } from "../../post/api/postService";
+import { User } from "../../../entities/user/model/User";
+import { Post } from "../../../entities/post/ui/Post";
+import { ProfileInfo } from "../../../entities/profile/ui/ProfileInfo";
+import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
-export const useProfile = (mention, currentUser) => {
-    const [profile, setProfile] = useState(null);
-    const [videos, setVideos] = useState([]);
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [isFollowing, setIsFollowing] = useState(false);
-
-    const cleanMention = mention?.replace('@', '');
-    const isOwnProfile = currentUser?.mention === cleanMention;
+export const useProfile = (mention: string | undefined, currentUser: User | null) => {
+    const [profile, setProfile] = useState<ProfileInfo | null>(null);
+    const [videos, setVideos] = useState<VideoGridContent[]>([]);
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [isFollowing, setIsFollowing] = useState<boolean>(false);
+    const cleanMention: string | undefined = mention?.replace('@', '');
+    const isOwnProfile: boolean = currentUser?.mention === cleanMention;
 
     // const handleToggleFollow = async () => {
     //     if (!cleanMention) return;
@@ -28,27 +31,27 @@ export const useProfile = (mention, currentUser) => {
     //     }
     // };
 
-    const getFollowerListHook = async () => {
+    const getFollowerListHook = async (): Promise<User[]> => {
         try {
-            const data = await getFollowerList(profile.id);
-            return data;            
+            if (!profile) throw new Error("로그인이 필요한 기능입니다");
+            return await getFollowerList(profile.id);
         } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    const getFollowingListHook = async () => {
+    const getFollowingListHook = async (): Promise<User[]> => {
         try {
-            const data = await getFollowingList(profile.id);
-            return data;
+            if (!profile) throw new Error("로그인이 필요한 기능입니다");
+            return await getFollowingList(profile.id);
         } catch (error) {
             console.error(error);
             throw error;
         }
     }
 
-    const fetchProfilePosts = async () => {
+    const fetchProfilePosts = async (): Promise<void> => {
         if (!cleanMention) return;
         
         try {
@@ -60,7 +63,7 @@ export const useProfile = (mention, currentUser) => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (): Promise<void> => {
             if (!cleanMention) return;
             
             setLoading(true);
@@ -77,7 +80,7 @@ export const useProfile = (mention, currentUser) => {
                 // 팔로우 상태 확인 (본인 프로필이 아닐 때만)
                 if (currentUser && !isOwnProfile) {
                     const followStatus = await getFollowStatus(currentUser.mention, cleanMention);
-                    setIsFollowing(followStatus);
+                    setIsFollowing(followStatus.isFollowing);
                 }
             } catch (error) {
                 console.error('프로필 불러오기 실패:', error);

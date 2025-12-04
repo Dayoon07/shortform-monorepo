@@ -93,7 +93,7 @@ export async function getFollowStatus(reqUserMention: string, resUserMention: st
 
         const data = await res.json();
         // console.log(data.isFollowing);
-        return { data }
+        return data;
     } catch (error) {
         console.log(error);
         return false;

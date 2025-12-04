@@ -1,7 +1,8 @@
+// 웬만하면 RequestParam으로 요청하는 거는 함수처럼 만듬
 export const API_LIST = {
     USER: {
         GOOGLE_LOGIN: "/oauth2/authorization/google",
-        CHK_ME: "/api/user/me",
+        ME: "/api/user/me",
         ALL: "/api/user/all",
         SIGNUP: "/api/user/signup",
         LOGIN: "/api/user/login",

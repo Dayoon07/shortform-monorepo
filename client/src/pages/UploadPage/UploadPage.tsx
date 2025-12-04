@@ -7,6 +7,7 @@ import UploadProgress from '../../features/video/components/UploadProgress';
 import VideoUploadModal from '../../widgets/video/VideoUploadModal';
 import { ROUTE } from '../../shared/constants/Route';
 import { useEffect } from 'react';
+import { showSuccessToast } from '../../shared/utils/toast';
 
 // `주석 처리` = 현재는 불필요한 컴포넌트/코드
 
@@ -26,20 +27,9 @@ export default function UploadPage() {
         setShowModal
     } = useVideoUpload();
 
-    // 로그인 체크
-    useEffect(() => {
-        if (!user) {
-            navigate(ROUTE.LOGINPLZ);
-        }
-    }, [user, navigate]);
-
-    const handleModalSubmit = async (metadata) => {
-        try {
-            await handleUpload(metadata);
-            navigate(ROUTE.PROFILE(user.mention));
-        } catch (error) {
-            // 에러는 useVideoUpload에서 처리됨
-        }
+    const handleModalSubmit = async (metadata: any) => {
+        await handleUpload(metadata);
+        showSuccessToast("업로드 성공!");
     };
 
     const handleModalClose = () => {
@@ -50,6 +40,10 @@ export default function UploadPage() {
             }
         }
     };
+
+    useEffect(() => {
+        if (!user) navigate(ROUTE.LOGINPLZ);
+    }, [user, navigate]);
 
     if (!user) return null;
 

@@ -3,20 +3,23 @@ import { insertComment, popularCommentList, recentCommentList } from "../api/com
 import { Comment } from "../../../entities/comment/ui/Comment";
 
 export const useComment = (videoId: number) => {
-    const [commentSuccessMessage, setCommentSuccessMessage] = useState<string>("");
     const [commentList, setCommentList] = useState<Comment[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const commentWrite = async (commentVideoId: number, commentText: string, resUserMention: string) => {
+    /**
+     * @param id 댓글을 작성할 영상의 id
+     * @param comment 댓글
+     * @param m 댓글을 작성할 사용자의 멘션
+     */
+    const commentWrite = async (id: number, comment: string, m: string) => {
         try {
             const formData = new FormData();
-            formData.append('commentVideoId', commentVideoId.toString());
-            formData.append('commentText', commentText);
-            formData.append('resUserMention', resUserMention);
+            formData.append('commentVideoId', id.toString());
+            formData.append('commentText', comment);
+            formData.append('resUserMention', m);
 
             const data = await insertComment(formData);
-            console.log(data);
-            setCommentSuccessMessage(data);
+            return data;
         } catch (error) {
             setErrorMessage(error as string);
             console.error(error);
@@ -68,7 +71,6 @@ export const useComment = (videoId: number) => {
         commentWrite,
         getPopularCommentList,
         getRecentCommentList,
-        commentSuccessMessage,
         commentList,
         errorMessage
     }

@@ -30,7 +30,7 @@ export default function SearchModal({ user, onClose }: SearchModalProps) {
         const trimmedQuery = searchQuery.trim();
         if (!trimmedQuery) return;
         
-        navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(trimmedQuery));
+        navigate(ROUTE.SEARCH_V2(trimmedQuery));
         onClose();
     };
 
@@ -74,7 +74,7 @@ export default function SearchModal({ user, onClose }: SearchModalProps) {
                         <SearchModalHistoryList 
                             items={searchHistory}
                             onDelete={deleteSearchWordHook}
-                            onSelect={(word: string) => navigate(ROUTE.DYNAMIC_SEARCH_ROUTE(word))}
+                            onSelect={(word: string) => navigate(ROUTE.SEARCH_V2(word))}
                         />
                     ) : (
                         <div className="mt-4 text-center py-8">

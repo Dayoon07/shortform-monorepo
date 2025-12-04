@@ -11,14 +11,13 @@ import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
 import ProfilePostList from "../../widgets/profile/ProfilePostList";
 
 export default function ProfilePage() {
-    const [showInfoModal, setShowInfoModal] = useState(false);
-    const [tab, setTab] = useState("videos");
-    // const navigate = useNavigate();
+    const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
+    const [tab, setTab] = useState<string>("videos");
     const { mention } = useParams();
     const { user } = useUser();
+    // const navigate = useNavigate();
     // const profileUserCleanMention = mention?.replace('@', '');
     const tabClassName = "px-12 py-3 font-semibold border-b-2 transition max-md:w-full";
-
     const {
         profile,
         posts,

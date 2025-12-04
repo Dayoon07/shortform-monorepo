@@ -18,40 +18,40 @@ import UploadPage from "./pages/UploadPage/UploadPage";
 import PostWritePage from "./pages/PostWritePage/PostWritePage";
 import LikesPage from "./pages/LikesPage/LikesPage";
 import TagVideoPage from "./pages/TagVideoPage/TagVideoPage";
-import "./App.css";
 import OAuthCallbackPage from "./pages/OAuthCallbackPage/OAuthCallbackPage";
+import "./App.css";
 
 export default function App() {
-    return (
-        <>
-            <BrowserRouter basename="/shortform-client">
-                <UserProvider>
-                    <div>
-                        <AppBar />
-                        <div className="sm:flex">
-                            <SideBar />
-                            <Routes>
-                                <Route path={ROUTE.HOMEPAGE}                    element={<HomePage />} />
-                                <Route path={ROUTE.LOGINPLZ}                    element={<LoginPlzPage />} />
-                                <Route path={ROUTE.SEARCH}                      element={<SearchPage />} />
-                                <Route path={ROUTE.FOLLOWING}                   element={<FollowingPage />} />
-                                <Route path={ROUTE.EXPLORE}                     element={<ExplorePage />} />
-                                <Route path={PATTERN_ROUTE.HASHTAG}             element={<TagVideoPage />} />
-                                <Route path={ROUTE.STUDIO_UPLOAD}               element={<UploadPage />} />
-                                <Route path={ROUTE.STUDIO_POST_WRITE}           element={<PostWritePage />} />
-                                <Route path={ROUTE.LIKES}                       element={<LikesPage />} />
-                                <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO} element={<SwipeVideoPage />} />
-                                <Route path={PATTERN_ROUTE.PROFILE}             element={<ProfilePage />} />
-                                <Route path={PATTERN_ROUTE.PROFILE_POST}        element={<ProfilePostPage />} />
-                                <Route path={ROUTE.OAUTH_CALLBACK}              element={<OAuthCallbackPage />} />
-                            </Routes>
-                        </div>
-                        <BottomNavBar />
-                    </div>
-                </UserProvider>
-            </BrowserRouter>
-        </>
-    );
+  return (
+    <>
+      <BrowserRouter basename="/shortform-client">
+        <UserProvider>
+          <div>
+            <AppBar />
+            <div className="sm:flex">
+              <SideBar />
+              <Routes>
+                  <Route path={ROUTE.HOMEPAGE}                    element={<HomePage />} />
+                  <Route path={ROUTE.LOGINPLZ}                    element={<LoginPlzPage />} />
+                  <Route path={ROUTE.SEARCH}                      element={<SearchPage />} />
+                  <Route path={ROUTE.FOLLOWING}                   element={<FollowingPage />} />
+                  <Route path={ROUTE.EXPLORE}                     element={<ExplorePage />} />
+                  <Route path={PATTERN_ROUTE.HASHTAG}             element={<TagVideoPage />} />
+                  <Route path={ROUTE.STUDIO_UPLOAD}               element={<UploadPage />} />
+                  <Route path={ROUTE.STUDIO_POST_WRITE}           element={<PostWritePage />} />
+                  <Route path={ROUTE.LIKES}                       element={<LikesPage />} />
+                  <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO} element={<SwipeVideoPage />} />
+                  <Route path={PATTERN_ROUTE.PROFILE}             element={<ProfilePage />} />
+                  <Route path={PATTERN_ROUTE.PROFILE_POST}        element={<ProfilePostPage />} />
+                  <Route path={ROUTE.OAUTH_CALLBACK}              element={<OAuthCallbackPage />} />
+              </Routes>
+            </div>
+            <BottomNavBar />
+          </div>
+        </UserProvider>
+      </BrowserRouter>
+    </>
+  );
 }
 
 

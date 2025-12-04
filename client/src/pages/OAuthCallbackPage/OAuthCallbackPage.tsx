@@ -30,7 +30,7 @@ export default function OAuthCallbackPage() {
                     throw new Error('토큰을 찾을 수 없습니다');
                 }
 
-                const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.CHK_ME}`, {
+                const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.ME}`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
 

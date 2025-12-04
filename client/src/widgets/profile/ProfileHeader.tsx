@@ -18,7 +18,6 @@ interface ProfileHeaderProps {
 export default function ProfileHeader({ profile, videoCount, onShowInfo }: ProfileHeaderProps) {
     const [profileData, setProfileData] = useState<ProfileInfo>(profile);
     const [profileEditModal, setProfileEditModal] = useState<boolean>(false);
-    
     const [followModalOpen, setFollowModalOpen] = useState<boolean>(false);
     const [followModalTitle, setFollowModalTitle] = useState<string>("");
     const [followModalData, setFollowModalData] = useState<User[]>([]);
