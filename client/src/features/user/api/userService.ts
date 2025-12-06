@@ -1,8 +1,10 @@
-import { UserInfoEditResponse } from "../../../entities/user/ui/UserInfoEditResponse";
-import { LoginResponse } from "../../../entities/user/ui/LoginResponse";
+import { UserInfoEditResponse } from "../../../entities/user/ui/UserInfoEditRes";
+import { LoginResponse } from "../../../entities/user/ui/LoginRes";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
+import { LogoutRes } from "../../../entities/user/ui/LogoutRes";
+import { apiClient } from "../../../shared/utils/ApiClient";
 
 export async function signup(formData: FormData): Promise<{ data: string }> {
     try {
@@ -59,6 +61,11 @@ export async function login(username: string, password: string): Promise<LoginRe
             })
         });
 
+        apiClient.post(API_LIST.USER.LOGIN, false, {
+            username,
+            password
+        })
+
         const data: LoginResponse = await response.json();
         console.log(data);
 
@@ -78,15 +85,19 @@ export async function login(username: string, password: string): Promise<LoginRe
     }
 }
 
-export async function logout(): Promise<string> {
+export async function logout(token: string | null): Promise<LogoutRes> {
     try {
         const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGOUT}`, {
-            method: "POST"
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
         });
         if (!res.ok) throw new Error("에러남!");
-        const logoutText = await res.text();
+        const t = await res.json();
         localStorage.clear();
-        return logoutText;
+        return t;
     } catch (error) {
         console.log(error);
         throw error;

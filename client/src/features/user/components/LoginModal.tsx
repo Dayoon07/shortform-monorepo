@@ -4,7 +4,7 @@ import { login } from "../api/userService";
 import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccessToast } from "../../../shared/utils/toast";
-import { LoginResponse } from "../../../entities/user/ui/LoginResponse";
+import { LoginResponse } from "../../../entities/user/ui/LoginRes";
 import { GoogleIcon } from "../../../widgets/icon/icon";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";

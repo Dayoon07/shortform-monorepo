@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { LoginResponse } from "../../../../entities/user/ui/LoginResponse";
+import { LoginResponse } from "../../../../entities/user/ui/LoginRes";
 import { login } from "../../../user/api/userService";
 import { showErrorToast, showSuccessToast } from "../../../../shared/utils/toast";
 import { ROUTE } from "../../../../shared/constants/Route";

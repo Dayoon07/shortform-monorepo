@@ -8,6 +8,7 @@ import {
     ReactNode, // children prop의 타입
     FC // 함수형 컴포넌트 타입
 } from "react";
+import { showErrorToast } from "../utils/toast";
 
 // ----------------------------------------------------
 // 1. Context 타입 정의
@@ -20,6 +21,7 @@ interface UserContextType {
     logout: () => void; // 로그아웃 함수
     loading: boolean; // 초기 로딩 상태
     isAuthenticated: boolean; // 인증 상태
+    getToken: () => string | null
 }
 
 // Context 생성: 초기값은 `null`이지만, 사용 시 `UserContextType`임을 보장합니다.
@@ -60,6 +62,11 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     const logout = useCallback(() => {
         setUser(null);
         localStorage.removeItem("user");
+    }, []);
+
+    // 토큰 가져오는 함수
+    const getToken = useCallback((): string | null => {
+        return localStorage.getItem("accessTkn");
     }, []);
 
     // localStorage 동기화
@@ -129,13 +136,25 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
         return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
+    // UserContext.tsx에 추가
+    useEffect(() => {
+        const handleTokenExpired = () => {
+            setUser(null);
+            showErrorToast('세션이 만료되었습니다<br className="sm:hidden"/>다시 로그인해주세요');
+        };
+
+        window.addEventListener('token-expired', handleTokenExpired);
+        return () => window.removeEventListener('token-expired', handleTokenExpired);
+    }, []);
+
     // Context value 타입 명시
     const value: UserContextType = {
         user,
         setUser: updateUser,
         logout,
         loading,
-        isAuthenticated: !!user // !!user는 boolean을 반환
+        isAuthenticated: !!user, // !!user는 boolean을 반환
+        getToken
     };
 
     return (
