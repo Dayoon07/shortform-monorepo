@@ -26,7 +26,6 @@ class ApiClient {
 
         // 토큰이 있으면 헤더에 추가
         if (requireAuth && token) {
-            const token = localStorage.getItem("accessTkn");
             headers['Authorization'] = `Bearer ${token}`;
         }
 
@@ -64,11 +63,24 @@ class ApiClient {
         window.location.href = '/loginplz';
     }
 
-    // GET 요청
-    async get<T>(endpoint: string, requireAuth: boolean = true, data?: any): Promise<T> {
-        return this.request<T>(endpoint, requireAuth, {
+    // GET 요청 (쿼리 파라미터 지원)
+    async get<T>(endpoint: string, requireAuth: boolean = true, params?: Record<string, any>): Promise<T> {
+        // 쿼리 파라미터가 있으면 URL에 추가
+        let url = endpoint;
+        if (params) {
+            const queryString = new URLSearchParams(
+                Object.entries(params)
+                    .filter(([_, value]) => value !== null && value !== undefined)
+                    .map(([key, value]) => [key, String(value)])
+            ).toString();
+            
+            if (queryString) {
+                url += `?${queryString}`;
+            }
+        }
+
+        return this.request<T>(url, requireAuth, {
             method: 'GET',
-            body: data ? JSON.stringify(data) : undefined
         });
     }
 
@@ -80,8 +92,20 @@ class ApiClient {
         });
     }
 
-    // PUT, DELETE 등 메서드는 
-    // 필요하지 않으니 추가하지는 않았습니다
+    // PUT 요청
+    async put<T>(endpoint: string, requireAuth: boolean = true, data?: any): Promise<T> {
+        return this.request<T>(endpoint, requireAuth, {
+            method: 'PUT',
+            body: data ? JSON.stringify(data) : undefined,
+        });
+    }
+
+    // DELETE 요청
+    async delete<T>(endpoint: string, requireAuth: boolean = true): Promise<T> {
+        return this.request<T>(endpoint, requireAuth, {
+            method: 'DELETE',
+        });
+    }
 }
 
 export const apiClient = ApiClient.getInstance();

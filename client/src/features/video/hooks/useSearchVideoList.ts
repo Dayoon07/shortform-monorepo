@@ -4,17 +4,16 @@ import { useUser } from "../../../shared/context/UserContext";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
 export const useSearchVideoList = (searchValue: string): { videos: VideoGridContent[] } => {
-    const { user } = useUser();
+    const { accessTkn } = useUser();
     const [videos, setVideos] = useState<VideoGridContent[]>([]);
 
     useEffect(() => {
         const search = async (): Promise<void> => {
-            const mention = user?.mention ? user.mention : null;
-            const a: VideoGridContent[] = await searchVideoLogic(searchValue, mention);
+            const a: VideoGridContent[] = await searchVideoLogic(searchValue, accessTkn);
             setVideos(a);
         };
         search();
-    }, [searchValue, user]);
+    }, [searchValue, accessTkn]);
 
     return { videos };
 }

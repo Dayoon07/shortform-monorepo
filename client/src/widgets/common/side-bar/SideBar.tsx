@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchBar from "../../../features/common/side-bar/components/SearchBar";
 import Navigation from "../../../features/common/side-bar/components/Navigation";
 import { ROUTE } from "../../../shared/constants/Route";
@@ -16,11 +16,6 @@ export default function SideBar() {
     const [searchWord] = useSearch();
     const { user } = useUser();
     const { handleLogout } = useLogout();
-    const navigate = useNavigate();
-
-    const handleSearch = (query: string): void => {
-        if (query.trim()) navigate(ROUTE.SEARCH_V2(encodeURIComponent(query)));
-    };
 
     return (
         <>
@@ -29,11 +24,7 @@ export default function SideBar() {
                     <Link to={ROUTE.HOMEPAGE}>FlipFlop</Link>
                 </h1>
 
-                <SearchBar 
-                    initialValue={searchWord} 
-                    onSearch={handleSearch} 
-                />
-
+                <SearchBar initialValue={searchWord} />
                 <Navigation user={user} />
                 
                 <AuthButtons 

@@ -34,7 +34,7 @@ export const API_LIST = {
     },
     SEARCH: {
         ALL: "/api/user/search/all",
-        SEARCH: (q: string, m: string | null) => `/api/search?q=${q}&mention=${m}`,
+        SEARCH: "/api/search",
         SEARCH_LIST: (i: number) => `/api/user/search/list?id=${i}`,
         SEARCH_WORD_DELETE: "/api/search/list/delete"
     },

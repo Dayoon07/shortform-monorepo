@@ -21,14 +21,14 @@ export function useSideBarLoginModal(username: string, password: string, onClose
         try {
             const data: LoginResponse | null = await login(username, password);
             
-            if (data !== null) {
-                if (data.success === false) {
-                    showErrorToast(`로그인 실패: ${data.message || "사용자명 또는 <br className='md:hidden'/> 비밀번호가 올바르지 않습니다"}`, 5000);
-                } else {
-                    setUser(data.user); // Context 업데이트
-                    showSuccessToast("로그인 되었습니다");
-                    navigate(ROUTE.HOMEPAGE); // 홈으로 이동 (새로고침 없이)
-                }
+            if (data?.success === false || data == null) {
+                showErrorToast(`로그인 실패: ${data?.message || "사용자명 또는 <br className='md:hidden'/> 비밀번호가 올바르지 않습니다"}`, 5000);
+                navigate(ROUTE.HOMEPAGE);
+            }
+            if (data?.success === true) {
+                setUser(data.user);
+                showSuccessToast("로그인 되었습니다");
+                navigate(ROUTE.HOMEPAGE); // 홈으로 이동 (새로고침 없이)
             }
         } catch (error) {
             console.error("로그인 요청 오류: ", error);

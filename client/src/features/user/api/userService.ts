@@ -4,7 +4,6 @@ import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
 import { LogoutRes } from "../../../entities/user/ui/LogoutRes";
-import { apiClient } from "../../../shared/utils/ApiClient";
 
 export async function signup(formData: FormData): Promise<{ data: string }> {
     try {
@@ -52,24 +51,15 @@ export async function login(username: string, password: string): Promise<LoginRe
         // })
         const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGIN}`, {
             method: "POST",
-            headers: { 
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username,
-                password
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
         });
-
-        apiClient.post(API_LIST.USER.LOGIN, false, {
-            username,
-            password
-        })
 
         const data: LoginResponse = await response.json();
         console.log(data);
 
         if (response.ok && data.success) {
+            localStorage.setItem("accessTknType", data.tokenType);
             localStorage.setItem("accessTkn", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
             showSuccessToast(data.message);

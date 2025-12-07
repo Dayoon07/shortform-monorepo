@@ -2,12 +2,14 @@ import { SearchHistory } from "../../../entities/search/ui/SearchHistory";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { apiClient } from "../../../shared/utils/ApiClient";
 
-export async function searchVideoLogic(query: string, mention: string | null): Promise<VideoGridContent[]> {
+export async function searchVideoLogic(query: string, tkn: string | null): Promise<VideoGridContent[]> {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.SEARCH.SEARCH(query, mention)}`);
-        if (!res.ok) throw new Error("에러남!!!");
-        const data: VideoGridContent[] = await res.json();
+        const data: VideoGridContent[] = await apiClient.get<VideoGridContent[]>(API_LIST.SEARCH.SEARCH, false, {
+            "q": query,
+            "tkn": tkn
+        });
         console.log(data);
         return data;
     } catch (error) {

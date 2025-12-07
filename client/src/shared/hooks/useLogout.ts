@@ -6,11 +6,10 @@ import { ROUTE } from "../constants/Route";
 
 export const useLogout = () => {
     const navigate = useNavigate();
-    const { getToken, setUser } = useUser();
+    const { accessTkn, setUser } = useUser();
 
     const handleLogout = async (): Promise<void> => {
-        const tkn = getToken();
-        const data = await logout(tkn);
+        const data = await logout(accessTkn);
         setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
         showSuccessToast(data.message);
         navigate(ROUTE.HOMEPAGE);

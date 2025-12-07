@@ -1,16 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTE } from "../../../../shared/constants/Route";
 
 interface SearchBarProps {
-    initialValue?: string,
-    onSearch: (query: string) => void
+    initialValue?: string
 }
 
-export default function SearchBar({ initialValue = '', onSearch }: SearchBarProps) {
+export default function SearchBar({ initialValue = "" }: SearchBarProps) {
     const [searchQuery, setSearchQuery] = useState<string>(initialValue);
+    const navigate = useNavigate();
+
+    const SearchFunc = (query: string): void => {
+        if (query.trim()) navigate(ROUTE.SEARCH_V2(encodeURIComponent(query)));
+    };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSearch(searchQuery);
+        SearchFunc(searchQuery);
     };
 
     return (
@@ -34,7 +40,7 @@ export default function SearchBar({ initialValue = '', onSearch }: SearchBarProp
                     className="w-full pl-10 pr-3 py-2 rounded-full bg-gray-900 text-white focus:outline-none focus:ring-2"
                     required
                 />
-                </form>
+            </form>
         </div>
     );
 }

@@ -50,10 +50,6 @@ export default function LoginPlz() {
                             로그인
                         </button>
                     </div>
-
-                    <div className="mt-12 text-sm text-gray-500">
-                        <p>계정이 없으신가요? 지금 바로 가입하세요!</p>
-                    </div>
                 </div>
             </div>
 
