@@ -60,7 +60,7 @@ class ApiClient {
         // UserContext의 setUser를 직접 호출할 수 없으므로
         // 커스텀 이벤트 발생
         window.dispatchEvent(new Event('token-expired'));
-        window.location.href = '/loginplz';
+        window.location.href = `${window.location.origin}/loginplz`;
     }
 
     // GET 요청 (쿼리 파라미터 지원)

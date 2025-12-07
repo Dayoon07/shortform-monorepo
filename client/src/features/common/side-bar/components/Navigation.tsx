@@ -6,11 +6,11 @@ import { User } from "../../../../entities/user/model/User";
 
 export default function Navigation({ user }: { user?: User | null }) {
     return (
-        <nav className="flex flex-col space-y-2 w-60">
+        <nav className="flex flex-col space-y-2 w-58">
             {NAV_ITEMS.map((item) => (
                 <Link to={item.to} key={item.to}
-                    className="nav-btn flex items-center space-x-3 p-3 
-                        hover:bg-gray-800/50 rounded-xl transition-colors group"
+                    className="nav-btn flex items-center space-x-4 p-2 
+                        hover:bg-gray-300/50 rounded-lg transition-colors group"
                 >
                     <item.icon />
                     <span className="font-medium">{item.label}</span>
@@ -20,7 +20,7 @@ export default function Navigation({ user }: { user?: User | null }) {
             {user && (
                 <Link to={ROUTE.PROFILE(user.mention)} 
                     className="nav-btn flex items-center space-x-3 p-3 
-                        hover:bg-gray-800/50 rounded-xl 
+                        hover:bg-gray-300/50 rounded-lg 
                         transition-colors group"
                 >
                     <img 

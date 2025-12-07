@@ -14,8 +14,8 @@ export default function AuthButtons({
     onShowSignup
 }: AuthButtonsProps) {
     const btnClassName = `
-        w-full p-3 border border-gray-600 rounded-xl font-semibold 
-        hover:border-gray-400 hover:bg-gray-300/10 transition-all
+        sm:w-full max-sm:w-32 p-2 bg-black text-white font-semibold 
+        rounded-lg transition-all hover:bg-gray-800/90
     `;
     if (user) {
         return <><button onClick={onLogout} className={btnClassName}>로그아웃</button></>

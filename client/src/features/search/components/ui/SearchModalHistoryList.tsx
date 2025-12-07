@@ -9,7 +9,7 @@ interface SearchModalHistoryListProps {
 
 export const SearchModalHistoryList = ({ items, onDelete, onSelect }: SearchModalHistoryListProps) => {
     return (
-        <div className="mt-4 max-h-96 overflow-y-auto">
+        <div className="mt-4 max-h-40 overflow-y-auto">
             <h3 
                 id="search-modal-title" 
                 className="text-white/70 text-sm mb-2 px-2"

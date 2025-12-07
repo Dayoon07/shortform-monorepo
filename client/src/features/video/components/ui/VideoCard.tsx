@@ -50,12 +50,12 @@ export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
                     <img src={`${REST_API_SERVER}${video.profileImgSrc}`} 
                         className="w-8 h-8 rounded-full object-cover" alt="프로필"
                     />
-                    <span className="text-white text-md font-semibold truncate">
+                    <span className="text-md font-bold truncate">
                         {video.uploaderUsername}
                     </span>
                 </Link>
 
-                <p className="text-gray-300 text-md leading-tight line-clamp-2 mb-1 break-words whitespace-pre-wrap">
+                <p className="font-bold text-md leading-tight line-clamp-2 mb-1 break-words whitespace-pre-wrap">
                     {video.videoTitle.length > 25
                         ? video.videoTitle.substring(0, 25) + "..."
                         : video.videoTitle}

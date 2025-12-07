@@ -4,18 +4,13 @@ import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { apiClient } from "../../../shared/utils/ApiClient";
 
-export async function searchVideoLogic(query: string, tkn: string | null): Promise<VideoGridContent[]> {
-    try {
-        const data: VideoGridContent[] = await apiClient.get<VideoGridContent[]>(API_LIST.SEARCH.SEARCH, false, {
-            "q": query,
-            "tkn": tkn
-        });
-        console.log(data);
-        return data;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+export async function searchVideoLogic(query: string): Promise<VideoGridContent[]> {
+    const data: VideoGridContent[] = await apiClient.get<VideoGridContent[]>(
+        API_LIST.SEARCH.SEARCH, 
+        false,  // 인증 불필요
+        { "q": query }  // 검색어만 전달
+    );
+    return data;
 }
 
 export async function getSearchHistory(userId: number): Promise<SearchHistory[]> {

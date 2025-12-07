@@ -4,6 +4,7 @@ import { useUser } from "../../shared/context/UserContext";
 import LoginModal from "../../features/user/components/LoginModal";
 import SignupModal from "../../features/user/components/SignupModal";
 import { useNavigate } from "react-router-dom";
+import { ROUTE } from "../../shared/constants/Route";
 
 export default function LoginPlz() {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -13,7 +14,7 @@ export default function LoginPlz() {
 
     // 이미 로그인된 경우 홈으로 리다이렉트
     useEffect(() => {
-        if (user) navigate("/");
+        if (user) navigate(ROUTE.HOMEPAGE);
     }, [user, navigate]);
 
     return (
@@ -21,34 +22,51 @@ export default function LoginPlz() {
             <div className="flex items-center justify-center mt-20">
                 <div className="text-center px-4">
                     <div className="mb-6 flex justify-center">
-                        <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center">
-                            <Lock className="w-8 h-8 text-gray-400" />
+                        <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                            <Lock className="w-8 h-8" />
                         </div>
                     </div>
 
-                    <h1 className="text-2xl font-semibold text-white mb-4">
+                    <h1 className="text-2xl font-semibold mb-4">
                         로그인이 필요합니다
                     </h1>
                     
-                    <p className="text-gray-400 text-md mb-8">
+                    <p className="text-md mb-8">
                         서비스를 이용하려면 먼저 로그인해주세요
                     </p>
 
                     <div className="flex justify-center items-center gap-3">
-                        <button onClick={() => setShowSignupModal(true)}
-                            className="px-6 py-3 border-2 border-gray-600 text-gray-300 bg-gray-900/50 
-                                rounded-full hover:border-gray-500 hover:bg-gray-800 
-                                transition-all duration-200 font-medium"
-                        >
-                            회원가입
-                        </button>
-                        <button onClick={() => setShowLoginModal(true)}
-                            className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-500 
-                                hover:from-pink-600 hover:to-sky-600 text-white rounded-full 
-                                transition-all duration-200 font-medium shadow-lg"
-                        >
-                            로그인
-                        </button>
+                        {/* 회원가입 버튼: 그라데이션 테두리 */}
+                        <div className="relative p-0.5 rounded-full group"> 
+                            {/* 그라데이션 배경을 위한 <div> */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-pink-500 to-sky-500 rounded-full"></div>
+                            
+                            {/* 실제 버튼 (배경 흰색, 텍스트 검정) */}
+                            <button onClick={() => setShowSignupModal(true)}
+                                className="relative px-6 py-3 
+                                    bg-white 
+                                    text-gray-800
+                                    rounded-full 
+                                    transition-all duration-200 font-medium font-bold
+                                    hover:shadow-md" // 호버 효과 유지
+                            >
+                                회원가입
+                            </button>
+                        </div>
+                        
+                        <div className="relative p-0.5 rounded-full group"> 
+                            <div className="absolute inset-0 bg-gradient-to-t from-pink-500 to-sky-500 rounded-full"></div>
+                            <button onClick={() => setShowLoginModal(true)}
+                                className="relative px-6 py-3 
+                                    bg-white 
+                                    text-gray-800
+                                    rounded-full 
+                                    transition-all duration-200 font-medium font-bold
+                                    hover:shadow-lg"
+                            >
+                                로그인
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

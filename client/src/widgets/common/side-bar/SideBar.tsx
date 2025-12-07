@@ -9,6 +9,7 @@ import { useState } from "react";
 import AuthButtons from "../../../features/common/side-bar/components/ui/AuthButtons";
 import { useUser } from "../../../shared/context/UserContext";
 import { useLogout } from "../../../shared/hooks/useLogout";
+import { Logo } from "../../../shared/components/common/Logo";
 
 export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -18,11 +19,9 @@ export default function SideBar() {
     const { handleLogout } = useLogout();
 
     return (
-        <>
-            <aside className="max-md:hidden w-64 bg-black/50 backdrop-blur-sm flex flex-col px-3 py-6 space-y-4">
-                <h1 className="text-3xl font-bold bg-gradient-to-t from-pink-500 to-sky-500 bg-clip-text text-transparent pl-2">
-                    <Link to={ROUTE.HOMEPAGE}>FlipFlop</Link>
-                </h1>
+        <div>
+            <aside className="max-md:hidden w-64 border-r flex flex-col px-4 space-y-4 fixed h-full left-0 top-0">
+                <Logo className="pt-4 pb-2" />
 
                 <SearchBar initialValue={searchWord} />
                 <Navigation user={user} />
@@ -37,6 +36,6 @@ export default function SideBar() {
             
             {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
             {showSignupModal && <SignupModal onClose={() => setShowSignupModal(false)} />}
-        </>
+        </div>
     );
 }

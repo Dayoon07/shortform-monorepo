@@ -7,18 +7,18 @@ import SideBar from "./widgets/common/side-bar/SideBar";
 import BottomNavBar from "./widgets/common/bottom-nav-bar/BottomNavBar";
 
 import HomePage from "./pages/HomePage/HomePage";
-import LoginPlzPage from "./pages/Loginplz/LoginPlzPage";
-import SearchPage from "./pages/SearchPage/SearchPage";
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import FollowingPage from "./pages/FollowingPage/FollowingPage";
-import ProfilePostPage from "./pages/ProfilePostPage/ProfilePostPage";
-import SwipeVideoPage from "./pages/SwipeVideoPage/SwipeVideoPage";
-import ExplorePage from "./pages/ExplorePage/ExplorePage";
-import UploadPage from "./pages/UploadPage/UploadPage";
-import PostWritePage from "./pages/PostWritePage/PostWritePage";
-import LikesPage from "./pages/LikesPage/LikesPage";
-import TagVideoPage from "./pages/TagVideoPage/TagVideoPage";
-import OAuthCallbackPage from "./pages/OAuthCallbackPage/OAuthCallbackPage";
+import LoginPlzPage from "./pages/user/LoginPlzPage";
+import SearchPage from "./pages/search/SearchPage";
+import ProfilePage from "./pages/profile/ProfilePage";
+import FollowingPage from "./pages/follow/FollowingPage";
+import ProfilePostPage from "./pages/profile/ProfilePostPage";
+import SwipeVideoPage from "./pages/video/SwipeVideoPage";
+import ExplorePage from "./pages/video/ExplorePage";
+import UploadPage from "./pages/video/UploadPage";
+import PostWritePage from "./pages/post/PostWritePage";
+import LikesPage from "./pages/video/LikesPage";
+import TagVideoPage from "./pages/video/TagVideoPage";
+import OAuthCallbackPage from "./pages/user/OAuthCallbackPage";
 import "./App.css";
 
 export default function App() {
@@ -28,7 +28,7 @@ export default function App() {
                 <UserProvider>
                     <div>
                         <AppBar />
-                        <div className="sm:flex">
+                        <div className="md:flex md:pl-64">
                             <SideBar />
                             <Routes>
                                 <Route path={ROUTE.HOMEPAGE}                        element={<HomePage />} />

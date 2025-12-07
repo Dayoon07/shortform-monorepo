@@ -22,18 +22,22 @@ export default function BottomNavBar() {
     };
 
     return (
-        <nav className="fixed bottom-0 left-0 w-full bg-black/90 backdrop-blur-sm border-t border-gray-800 px-4 md:hidden z-[100]">
+        <nav className="fixed bottom-0 left-0 w-full bg-gray-200/90 backdrop-blur-sm border-t border px-4 md:hidden z-[100]">
             <div className="flex justify-around items-center">
                 {NAVITEM.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(item.to);
 
                     return (
-                        <Link to={item.to} key={item.to} aria-label={item.label} aria-current={active ? 'page' : undefined} 
-                            className={`nav-item relative p-3 flex flex-col items-center transition-colors
-                                ${active ? 'text-white' : 'text-gray-400'}
-                            `}
+                        <Link 
+                            to={item.to} 
+                            key={item.to} 
+                            aria-label={item.label} 
+                            aria-current={active ? 'page' : undefined} 
                             onClick={handlePlayClickSound}
+                            className={`nav-item relative p-3 flex flex-col items-center transition-colors
+                                ${active ? 'text-black' : 'text-gray-400'}
+                            `}
                         >
                             <Icon />
                         </Link>
@@ -41,23 +45,33 @@ export default function BottomNavBar() {
                 })}
 
                 {user ? (
-                    <Link to={ROUTE.PROFILE(user.mention)} aria-label="프로필" 
-                        className={`nav-item p-3 flex flex-col items-center gap-1 transition-colors ${
-                            isActive(ROUTE.PROFILE(user.mention)) ? 'text-white' : 'text-gray-400'
-                        }`}
+                    <Link
+                        to={ROUTE.PROFILE(user.mention)} 
+                        aria-label="프로필" 
                         onClick={handlePlayClickSound}
                         aria-current={isActive(ROUTE.PROFILE(user.mention)) ? 'page' : undefined}
+                        className={`nav-item p-3 flex flex-col items-center gap-1 transition-colors ${
+                            isActive(ROUTE.PROFILE(user.mention)) ? 'text-black' : 'text-gray-400'
+                        }`}
                     >
-                        <div className={`w-6 h-6 rounded-full overflow-hidden ${isActive(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-white' : ''}`}>
-                            <img src={user.social ? user.profileImgSrc : REST_API_SERVER + user.profileImgSrc} 
-                                alt={user.username + "님의 프로필"} className="w-full h-full object-cover"
+                        <div 
+                            className={`w-6 h-6 rounded-full overflow-hidden ${
+                                isActive(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-black' : ''
+                            }`}>
+                            <img 
+                                src={user.social ? user.profileImgSrc : REST_API_SERVER + user.profileImgSrc} 
+                                alt={user.username + "님의 프로필"}
+                                className="w-full h-full object-cover"
                             />
                         </div>
                     </Link>
                 ) : (
-                    <Link to={ROUTE.LOGINPLZ} aria-label="로그인" onClick={handlePlayClickSound}
+                    <Link
+                        to={ROUTE.LOGINPLZ}
+                        aria-label="로그인"
+                        onClick={handlePlayClickSound}
                         className={`nav-item p-3 transition-colors ${
-                            isActive(ROUTE.LOGINPLZ) ? 'text-white' : 'text-gray-400'
+                            isActive(ROUTE.LOGINPLZ) ? 'text-black' : 'text-gray-400'
                         }`}
                     >
                         <LogIn className="w-6 h-6" />

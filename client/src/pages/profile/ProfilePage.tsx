@@ -29,14 +29,14 @@ export default function ProfilePage() {
     if (!profile) return <NotFoundProfile />;
 
     return (
-        <main className="flex-1 overflow-y-auto bg-black text-white">
+        <main className="flex-1 overflow-y-auto">
             <ProfileHeader 
                 profile={profile}
                 videoCount={videos.length}
                 onShowInfo={() => setShowInfoModal(true)}
             />
 
-            <div className="border-b border-gray-800 sticky top-0 bg-black z-10">
+            <div className="border-b sticky top-0 z-10">
                 <div className="flex md:max-w-6xl md:mx-auto">
                     <button onClick={() => setTab("videos")}
                         className={`${tab === "videos" ? "border-white" : "border-transparent"} ${tabClassName}`}
@@ -51,20 +51,24 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-            {tab === "videos" && videos.length > 0 ? (
-                <CommonVideoGrid videos={videos} />
-            ) : (
-                <div className="text-center py-20">
-                    <p className="text-gray-400">동영상이 없습니다</p>
-                </div>
+            {tab === "videos" && (
+                videos.length > 0 ? (
+                    <CommonVideoGrid videos={videos} />
+                ) : (
+                    <div className="text-center py-20">
+                        <p className="text-gray-400">동영상이 없습니다</p>
+                    </div>
+                )
             )}
 
-            {tab === "posts" && posts.length > 0 ? (
-                <ProfilePostList posts={posts} />
-            ) : (
-                <div className="text-center py-20">
-                    <p className="text-gray-400">게시물이 없습니다</p>
-                </div>
+            {tab === "posts" && (
+                posts.length > 0 ? (
+                    <ProfilePostList posts={posts} />
+                ) : (
+                    <div className="text-center py-20">
+                        <p className="text-gray-400">게시물이 없습니다</p>
+                    </div>
+                )
             )}
 
             <ProfileInfoModal 

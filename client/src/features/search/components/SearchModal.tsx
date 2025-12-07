@@ -74,7 +74,10 @@ export default function SearchModal({ user, onClose }: SearchModalProps) {
                         <SearchModalHistoryList 
                             items={searchHistory}
                             onDelete={deleteSearchWordHook}
-                            onSelect={(word: string) => navigate(ROUTE.SEARCH_V2(word))}
+                            onSelect={(word: string) => {
+                                navigate(ROUTE.SEARCH_V2(word));
+                                onClose();
+                            }}
                         />
                     ) : (
                         <div className="mt-4 text-center py-8">

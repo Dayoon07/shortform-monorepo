@@ -20,10 +20,10 @@ export default function SearchBar({ initialValue = "" }: SearchBarProps) {
     };
 
     return (
-        <div style={{ marginTop: '25px' }}>
+        <>
             <form onSubmit={handleSubmit} className="relative">
                 <button type="submit" aria-label="검색" 
-                    className="absolute top-2.5 left-2.5 p-0 bg-transparent border-none cursor-pointer"
+                    className="absolute top-2.5 left-2.5 bg-transparent border-none cursor-pointer"
                 >
                     <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 
@@ -37,10 +37,10 @@ export default function SearchBar({ initialValue = "" }: SearchBarProps) {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="검색"
                     maxLength={100}
-                    className="w-full pl-10 pr-3 py-2 rounded-full bg-gray-900 text-white focus:outline-none focus:ring-2"
+                    className="w-full pl-10 pr-3 py-2 rounded-full border-gray-400 border focus:outline-none ring-gray-400 focus:ring-2"
                     required
                 />
             </form>
-        </div>
+        </>
     );
 }
