@@ -9,7 +9,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const inputClassName = `
-        w-full p-3 bg-gray-800 border border-gray-700 
+        w-full p-3 bg-gray-200 border border-gray-300 
         rounded-xl focus:border-gray-400 focus:outline-none
     `;
 
@@ -39,11 +39,15 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
                     disabled={isLoading}
                     required
                 />
-                <button type="submit" disabled={isLoading} className="w-full py-3 rounded-xl font-bold 
-                    bg-gray-700 hover:bg-gray-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                <button 
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full py-3 rounded-xl font-bold bg-gray-200 hover:bg-gray-300 
+                    transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isLoading ? '로그인 중...' : '로그인'}
                 </button>
+                <hr />
                 <div id="google-login-btn" onClick={() => {
                     window.location.href = `${REST_API_SERVER}${API_LIST.USER.GOOGLE_LOGIN}`;
                 }}>

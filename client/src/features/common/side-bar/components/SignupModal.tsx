@@ -5,10 +5,14 @@ import SignupForm from "./ui/SignupForm";
 import { signup } from "../../../user/api/userService";
 import { showSuccessToast, showErrorToast } from "../../../../shared/utils/toast";
 
-export default function SignupModal({ onClose }) {
-    const [step, setStep] = useState(1);
-    const [profileImg, setProfileImg] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState('');
+interface SignupModalProps {
+    onClose: () => void;
+}
+
+export default function SignupModal({ onClose }: SignupModalProps) {
+    const [step, setStep] = useState<number>(1);
+    const [profileImg, setProfileImg] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string>('');
 
     const resetForm = () => {
         setStep(1);
@@ -16,7 +20,7 @@ export default function SignupModal({ onClose }) {
         setPreviewUrl('');
     };
 
-    const handleImageSelect = (file, preview) => {
+    const handleImageSelect = (file: File, preview: string) => {
         setProfileImg(file);
         setPreviewUrl(preview);
     };
@@ -29,12 +33,14 @@ export default function SignupModal({ onClose }) {
         setStep(2);
     };
 
-    const handleSubmit = async (formData) => {
+    const handleSubmit = async (formData: { email: string; username: string; password: string }) => {
         const data = new FormData();
         data.append('email', formData.email.trim());
         data.append('username', formData.username.trim());
         data.append('password', formData.password);
-        data.append('profileImage', profileImg);
+        if (profileImg) {
+            data.append('profileImage', profileImg);
+        }
 
         try {
             const response = await signup(data);
@@ -44,11 +50,13 @@ export default function SignupModal({ onClose }) {
                 resetForm();
                 onClose();
             } else {
-                const message = await response.text();
-                showErrorToast(`회원가입 실패: ${message}`);
+                console.log(response);
+                console.error(response);
+                showErrorToast(`회원가입 실패: ${response}`);
             }
         } catch (error) {
-            showErrorToast(`에러 발생: ${error.message}`);
+            const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
+            showErrorToast(`에러 발생: ${errorMessage}`);
         }
     };
 
@@ -60,7 +68,7 @@ export default function SignupModal({ onClose }) {
                     onImageSelect={handleImageSelect}
                     onNext={goToStep2}
                 />
-                ) : (
+            ) : (
                 <SignupForm onSubmit={handleSubmit} />
             )}
         </Modal>

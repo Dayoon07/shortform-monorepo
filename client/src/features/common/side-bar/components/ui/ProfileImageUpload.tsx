@@ -1,17 +1,21 @@
 import { useState } from "react";
 
 interface ProfileImageUploadProps {
-    previewUrl: string,
-    onImageSelect: (file: any, preview: any) => void,
-    onNext: () => void
+    previewUrl: string;
+    onImageSelect: (file: File, preview: string) => void;
+    onNext: () => void;
 }
 
 const MAX_FILE_SIZE = 1024 * 1024 * 3; // 3MB
 
-export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }: ProfileImageUploadProps) {
-    const [isDragging, setIsDragging] = useState(false);
+export default function ProfileImageUpload({ 
+    previewUrl, 
+    onImageSelect, 
+    onNext 
+}: ProfileImageUploadProps) {
+    const [isDragging, setIsDragging] = useState<boolean>(false);
 
-    const processFile = (file: Blob) => {
+    const processFile = (file: File | null) => {
         if (!file) return;
 
         if (file.size > MAX_FILE_SIZE) {
@@ -21,16 +25,20 @@ export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            onImageSelect(file, e.target?.result);
+            const result = e.target?.result;
+            if (typeof result === 'string') {
+                onImageSelect(file, result);
+            }
         };
         reader.readAsDataURL(file);
     };
 
-    const handleFileChange = (e: any): void => {
-        processFile(e.target.files[0]);
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const file = e.target.files?.[0] || null;
+        processFile(file);
     };
 
-    const handleDragOver = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(true);
     };
@@ -39,25 +47,36 @@ export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }
         setIsDragging(false);
     };
 
-    const handleDrop = (e: any): void => {
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
         e.preventDefault();
         setIsDragging(false);
-        processFile(e.dataTransfer.files[0]);
+        const file = e.dataTransfer.files?.[0] || null;
+        processFile(file);
     };
 
     return (
         <div className="space-y-4">
             <label className="block text-sm mb-2">프로필 이미지</label>
-            <div onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}
+            <div 
+                onDragOver={handleDragOver} 
+                onDragLeave={handleDragLeave} 
+                onDrop={handleDrop}
                 className={`relative bg-gray-800 rounded px-3 py-6 flex flex-col items-center justify-center transition-all ${
                     isDragging ? 'border-2 border-gray-400 bg-gray-400/10' : ''
                 }`}
             >
-                <input type="file" onChange={handleFileChange} accept="image/*" 
+                <input 
+                    type="file" 
+                    onChange={handleFileChange} 
+                    accept="image/*" 
                     className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                 />
                 {previewUrl ? (
-                    <img src={previewUrl} alt="preview-img" className="w-28 h-28 object-cover rounded-full" />
+                    <img 
+                        src={previewUrl} 
+                        alt="preview-img" 
+                        className="w-28 h-28 object-cover rounded-full" 
+                    />
                 ) : (
                     <p className="text-sm text-gray-400 text-center">
                         이미지를 업로드하려면 <br /> 
@@ -65,7 +84,8 @@ export default function ProfileImageUpload({ previewUrl, onImageSelect, onNext }
                     </p>
                 )}
             </div>
-            <button onClick={onNext} 
+            <button 
+                onClick={onNext} 
                 className="w-full py-3 mt-4 rounded-xl font-semibold bg-gray-700 hover:bg-gray-600 transition-all"
             >
                 다음

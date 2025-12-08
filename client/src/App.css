@@ -188,5 +188,5 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 #google-login-btn {
-    @apply w-full flex justify-center items-center py-3 bg-white text-black font-semibold border border-gray-500 cursor-pointer rounded-xl;
+    @apply w-full flex justify-center items-center text-center py-3 bg-gray-200 hover:bg-gray-300 font-semibold cursor-pointer rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed;
 }
