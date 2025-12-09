@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
 import SearchBar from "../../../features/common/side-bar/components/SearchBar";
 import Navigation from "../../../features/common/side-bar/components/Navigation";
-import { ROUTE } from "../../../shared/constants/Route";
 import { useSearch } from "../../../shared/hooks/useSearch";
 import LoginModal from "../../../features/common/side-bar/components/LoginModal";
 import SignupModal from "../../../features/common/side-bar/components/SignupModal";
