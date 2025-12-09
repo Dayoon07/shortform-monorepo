@@ -3,7 +3,7 @@ import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 
 export async function getRandomVideo(mention: string, excludeIds: number[] = []) {
     try {
-        const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.RANDOM_VIDEO(excludeIds, mention)}`, {
+        const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.RANDOM(excludeIds, mention)}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -33,7 +33,7 @@ export async function getFirstSwipeVideo(videoLoc: string, mention: string) {
 
 export async function toggleVideoLike(videoId: number) {
     try {
-        const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO_LIKE.TOGGLE_VIDEO_LIKE}`, {
+        const response = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO_LIKE.TOGGLE}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 

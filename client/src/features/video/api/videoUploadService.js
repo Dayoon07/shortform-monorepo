@@ -60,7 +60,7 @@ export async function uploadVideo(file, metadata, thumbnailBlob, onProgress) {
         });
 
         // 요청 전송
-        xhr.open('POST', `${REST_API_SERVER}${API_LIST.VIDEO.UPLOAD_VIDEO}`);
+        xhr.open('POST', `${REST_API_SERVER}${API_LIST.VIDEO.UPLOAD}`);
         xhr.send(formData);
 
         // 취소 기능을 위해 xhr 반환

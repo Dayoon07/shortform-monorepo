@@ -90,7 +90,7 @@ export async function getVideoById(videoLoc: string) {
 
 export async function getTagVideoList(tag: string): Promise<VideoGridContent[]> {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.TAG(tag)}`);
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.HASHTAG(tag)}`);
         if (!res.ok) throw new Error("에러남!!!");
         const data = await res.json();
         console.log(data);

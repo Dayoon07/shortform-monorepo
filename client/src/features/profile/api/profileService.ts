@@ -3,7 +3,7 @@ import { API_LIST } from "../../../shared/constants/ApiList";
 
 export async function getProfileByMention(mention: string) {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.USER_INFO(mention)}`);
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.INFO(mention)}`);
         if (!res.ok) throw new Error("멘션에 해당하는 프로필 사용자를 찾지 못했습니다.");
         const data = await res.json();
         // console.log(data);
