@@ -109,6 +109,8 @@ export const ROUTE = {
 };
 
 export const PATTERN_ROUTE = {
+    WHILED_CARD: "*",
+
     /** 
      * 프로필 페이지 경로 패턴  
      * - 특정 사용자의 프로필 페이지 매칭용

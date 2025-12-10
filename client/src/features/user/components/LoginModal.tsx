@@ -8,6 +8,7 @@ import { LoginResponse } from "../../../entities/user/ui/LoginRes";
 import { GoogleIcon } from "../../../widgets/icon/icon";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { ROUTE } from "../../../shared/constants/Route";
 
 export default function LoginModal({ onClose }: { onClose: () => void }) {
     const [username, setUsername] = useState('');
@@ -51,7 +52,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
                 setUser(data.user);
                 onClose();
                 showSuccessToast(data.message);
-                navigate("/");
+                navigate(ROUTE.HOMEPAGE);
             } else {
                 setError(data?.message || '로그인에 실패했습니다.');
             }

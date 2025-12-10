@@ -1,10 +1,14 @@
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { API_LIST } from "../../../shared/constants/ApiList";
 import { User } from "../../../entities/user/model/User";
+import { apiClient } from "../../../shared/utils/ApiClient";
+import { ToggleFollowRes } from "../../../entities/follow/ui/ToggleFollowRes";
+import { FollowStatusRes } from "../../../entities/follow/ui/FollowStatusRes";
+import { showErrorToast } from "../../../shared/utils/toast";
 
 export async function toggleFollow(mention: string) {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.TOGGLE_FOLLOW}`, {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.TOGGLE}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ mention })
@@ -22,18 +26,28 @@ export async function toggleFollow(mention: string) {
     }
 }
 
-export async function upgradeToggleFollow(reqUserMention: string, resUserMention: string) {
+export async function upgradeToggleFollow(
+    reqUserMention: string,
+    resUserMention: string
+): Promise<ToggleFollowRes> {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.UPGRADE_TOGGLE_FOLLOW(reqUserMention, resUserMention)}`, {
-            method: "POST"
+        const res = await apiClient.post<ToggleFollowRes>(API_LIST.FOLLOW.TOGGLE_UPG_VER, true, {
+            "reqMention": reqUserMention,
+            "resMention": resUserMention
         });
+
         if (!res.ok) {
-            console.error(await res.json());
+            console.error(res);
             throw new Error("너무 많은 요청으로 요청이 취소 되었습니다");
         }
-        const data = await res.json();
-        console.log(data);
-        return { data: data };
+
+        if (res.data === undefined){
+            showErrorToast(res.data);
+            throw new Error(res.data);
+        }
+
+        console.log(res);
+        return res.data;
     } catch (error) {
         console.error(error);
         throw error;
@@ -86,17 +100,20 @@ export async function upgradeToggleFollow(reqUserMention: string, resUserMention
 //     }
 // }
 
-export async function getFollowStatus(reqUserMention: string, resUserMention: string) {
+export async function getFollowStatus(
+    reqUserMention: string,
+    resUserMention: string
+): Promise<FollowStatusRes> {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.FOLLOW.FOLLOW_STATUS(reqUserMention, resUserMention)}`);
-        if (!res.ok) throw new Error("에러남!!! " + await res.json());
+        const res = await apiClient.get<FollowStatusRes>(API_LIST.FOLLOW.STATUS(reqUserMention, resUserMention), false);
+        if (!res.ok) throw new Error("에러남!!! " + res);
+        if (!res.data?.success) throw new Error("요청 실패: " + res.data);
 
-        const data = await res.json();
-        // console.log(data.isFollowing);
-        return data;
+        // console.log(res.data.isFollowing);
+        return res.data;
     } catch (error) {
         console.log(error);
-        return false;
+        throw error;
     }
 }
 

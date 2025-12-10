@@ -1,5 +1,13 @@
 import { REST_API_SERVER } from "../constants/ApiServer";
 
+// API 응답 래퍼 타입
+export interface ApiResponse<T> {
+    ok: boolean;
+    status: number;
+    data?: T;
+    error?: string;
+}
+
 class ApiClient {
     private static instance: ApiClient;
 
@@ -16,18 +24,21 @@ class ApiClient {
         endpoint: string, 
         requireAuth: boolean = true,
         options: RequestInit = {}
-    ): Promise<T> {
+    ): Promise<ApiResponse<T>> {
         const token = localStorage.getItem("accessTkn");
 
         const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
             ...(options.headers as Record<string, string> | undefined)
         };
 
+        // FormData가 아닌 경우에만 Content-Type 설정
+        // FormData는 브라우저가 자동으로 boundary와 함께 설정
+        if (!(options.body instanceof FormData)) 
+            headers['Content-Type'] = 'application/json';
+
         // 토큰이 있으면 헤더에 추가
-        if (requireAuth && token) {
+        if (requireAuth && token) 
             headers['Authorization'] = `Bearer ${token}`;
-        }
 
         try {
             const response = await fetch(`${REST_API_SERVER}${endpoint}`, {
@@ -38,19 +49,34 @@ class ApiClient {
             // 401 에러 처리
             if (response.status === 401) {
                 this.handleUnauthorized();
-                throw new Error('Unauthorized');
+                return {
+                    ok: false,
+                    status: 401,
+                    error: 'Unauthorized'
+                };
             }
 
             // 응답이 JSON이 아닐 수도 있으므로 체크
             const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                return await response.json();
-            }
+            let data: T;
             
-            return await response.text() as unknown as T;
+            contentType && contentType.includes('application/json') ? 
+                data = await response.json() 
+                : data = await response.text() as unknown as T;
+
+            return {
+                ok: response.ok,
+                status: response.status,
+                data: data,
+                error: response.ok ? undefined : `요청 실패, 상태 코드 : ${response.status}`
+            };
         } catch (error) {
             console.error('API 요청 실패:', error);
-            throw error;
+            return {
+                ok: false,
+                status: 0,
+                error: error instanceof Error ? error.message : '알 수 없는 에러 발생'
+            };
         }
     }
 
@@ -64,7 +90,7 @@ class ApiClient {
     }
 
     // GET 요청 (쿼리 파라미터 지원)
-    async get<T>(endpoint: string, requireAuth: boolean = true, params?: Record<string, any>): Promise<T> {
+    async get<T>(endpoint: string, requireAuth: boolean = true, params?: Record<string, any>): Promise<ApiResponse<T>> {
         // 쿼리 파라미터가 있으면 URL에 추가
         let url = endpoint;
         if (params) {
@@ -84,24 +110,24 @@ class ApiClient {
         });
     }
 
-    // POST 요청
-    async post<T>(endpoint: string, requireAuth: boolean = true, data?: any): Promise<T> {
+    // POST 요청 (JSON 또는 FormData)
+    async post<T>(endpoint: string, requireAuth: boolean = true, data?: any): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, requireAuth, {
             method: 'POST',
-            body: data ? JSON.stringify(data) : undefined,
+            body: data instanceof FormData ? data : (data ? JSON.stringify(data) : undefined),
         });
     }
 
-    // PUT 요청
-    async put<T>(endpoint: string, requireAuth: boolean = true, data?: any): Promise<T> {
+    // PUT 요청 (JSON 또는 FormData)
+    async put<T>(endpoint: string, requireAuth: boolean = true, data?: any): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, requireAuth, {
             method: 'PUT',
-            body: data ? JSON.stringify(data) : undefined,
+            body: data instanceof FormData ? data : (data ? JSON.stringify(data) : undefined),
         });
     }
 
     // DELETE 요청
-    async delete<T>(endpoint: string, requireAuth: boolean = true): Promise<T> {
+    async delete<T>(endpoint: string, requireAuth: boolean = true): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, requireAuth, {
             method: 'DELETE',
         });

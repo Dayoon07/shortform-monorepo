@@ -2,13 +2,12 @@ import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 
 export const SearchModalLoginPrompt = ({ onClose }: { onClose: () => void }) => {
-    const classNa = `inline-block px-6 py-2 bg-gradient-to-r from-pink-500 to-sky-500 
-        rounded-full text-white font-semibold hover:opacity-80 transition-opacity
-    `;
+    const c = `inline-block px-6 py-2 rounded-full 
+        font-semibold hover:opacity-80 transition-opacity`;
     return (
         <div className="mt-4 text-center py-8">
-            <p className="text-white/70 mb-4">로그인하면 검색 기록을 저장할 수 있어요</p>
-            <Link to={ROUTE.LOGINPLZ} className={classNa} onClick={onClose}>
+            <p className="text-black/70 mb-4">로그인 시 검색 기록을 저장할 수 있어요</p>
+            <Link to={ROUTE.LOGINPLZ} className={c} onClick={onClose}>
                 로그인하기
             </Link>
         </div>

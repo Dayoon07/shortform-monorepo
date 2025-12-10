@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { SearchIcon } from '../../icon/icon';
 import { useUser } from '../../../shared/context/UserContext';
 import SearchModal from '../../../features/search/components/SearchModal';
 import { useClickSound } from '../../../shared/hooks/useClickSound';
 import { clickSound } from '../../../shared/constants/Mp3List';
 import { Logo } from '../../../shared/components/common/Logo';
-import { ProfileDropdown } from '../../../features/common/app-bar/components/ProfileDropdown';
+import { AppBarProfileDropdown } from '../../../features/common/app-bar/components/AppBarProfileDropdown';
+import { AppBarSearchButton } from '../../../features/common/app-bar/components/AppBarSearchButton';
 
 export default function AppBar() {
     const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
@@ -16,27 +16,16 @@ export default function AppBar() {
         border-b md:px-4 px-3 md:py-2 py-1 md:hidden 
         z-[41] flex justify-between items-center`
     ;
-    const searchBtn = `
-        nav-btn flex items-center space-x-3 p-3 
-        hover:bg-gray-400/50 rounded-xl transition-colors group
-    `;
     return (
         <>
             <nav className={nav}>
                 <Logo />
-
                 <div className="flex justify-around items-center gap-2">
-                    <button aria-label="검색" 
-                        className={searchBtn}
-                        onClick={() => {
-                            setShowSearchModal(true);
-                            handlePlayClickSound();
-                        }}
-                    >
-                        <SearchIcon />
-                    </button>
-
-                    <ProfileDropdown user={user} />
+                    <AppBarSearchButton
+                        onClickChangeState={() => setShowSearchModal(true)}
+                        onClickPlaySound={handlePlayClickSound}
+                    />
+                    <AppBarProfileDropdown user={user} />
                 </div>
             </nav>
 

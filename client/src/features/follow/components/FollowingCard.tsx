@@ -3,9 +3,16 @@ import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import ToggleFollowButton from "./ui/ToggleFollowButton";
 import { useUser } from "../../../shared/context/UserContext";
 import { ROUTE } from "../../../shared/constants/Route";
+import { User } from "../../../entities/user/model/User";
 
-export const FollowingCard = ({ followingUser, onToggleFollow }) => {
+interface FollowingCardProps {
+    followingUser: User,
+    onToggleFollow: (pm: string) => void
+}
+
+export const FollowingCard = ({ followingUser, onToggleFollow }: FollowingCardProps) => {
     const { user } = useUser();
+    
     return (
         <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center justify-center
             hover:bg-gray-700/60 transition-all duration-300 border border-gray-700/50 hover:border-gray-600/50

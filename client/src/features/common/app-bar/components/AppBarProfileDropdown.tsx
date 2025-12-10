@@ -1,13 +1,13 @@
 import { useRef, useState } from "react";
 import { User } from "../../../../entities/user/model/User";
-import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { CommunityPageIcon, LikePageIcon, UploadPageIcon } from "../../../../widgets/icon/icon";
 import { LogOut } from "lucide-react";
 import { useLogout } from "../../../../shared/hooks/useLogout";
+import { CustomImage } from "../../../../shared/components/common/CustomImage";
 
-export const ProfileDropdown = ({ user }: { user: User | null }) => {
+export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const dropdownItem = `block w-full px-4 py-2 text-black 
@@ -36,10 +36,11 @@ export const ProfileDropdown = ({ user }: { user: User | null }) => {
                         aria-label="프로필 메뉴" 
                         aria-expanded={showDropdown}
                     >
-                        <img 
-                            src={user.social ? `${user.profileImgSrc}` : `${REST_API_SERVER}${user.profileImgSrc}`} 
-                            alt={`${user.username}의 프로필`}
-                            className="w-full h-full object-cover rounded-full" 
+                        <CustomImage 
+                            url={user.profileImgSrc}
+                            alt={user.username + "의 프로필"}
+                            social={user.social}
+                            className="w-full h-full object-cover rounded-full"
                         />
                     </button>
 
@@ -52,11 +53,12 @@ export const ProfileDropdown = ({ user }: { user: User | null }) => {
                                 onClick={() => setShowDropdown(false)} 
                                 className="block w-full px-4 py-2 text-black hover:bg-gray-300/50 flex items-center transition-colors"
                             >
-                                <img 
-                                    src={user.social ? user.profileImgSrc : REST_API_SERVER + user.profileImgSrc} 
-                                    alt="..." 
+                                <CustomImage 
+                                    url={user.profileImgSrc}
+                                    alt={user.username + "의 프로필"}
+                                    social={user.social}
                                     className="w-[26px] h-[26px] p-0.5 object-cover 
-                                        rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500" 
+                                        rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500"
                                 />
                                 <span>내 프로필</span>
                             </Link>

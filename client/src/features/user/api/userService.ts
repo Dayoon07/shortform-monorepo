@@ -4,6 +4,7 @@ import { API_LIST } from "../../../shared/constants/ApiList";
 import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
 import { LogoutRes } from "../../../entities/user/ui/LogoutRes";
+import { apiClient } from "../../../shared/utils/ApiClient";
 
 export async function signup(formData: FormData): Promise<{ data: string }> {
     try {
@@ -27,71 +28,28 @@ export async function signup(formData: FormData): Promise<{ data: string }> {
 }
 
 export async function login(username: string, password: string): Promise<LoginResponse | null> {
-    try {
-        //      주석 처리된 코드는 구글 소셜 로그인 기능 + JWT 토큰 로그인 
-        //      방식을 구현하고 막상 사용을 안해서 그냥 방치 중
-        //
-        // fetch('/user/login', {   로그인
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'X-Client-Type': 'mobile'
-        //     },
-        //     body: JSON.stringify({
-        //         username: 'user',
-        //         password: 'pass'
-        //     })
-        // })
-        //
-        // // 이후 API 요청시
-        // fetch('/api/someEndpoint', {
-        //     headers: {
-        //         'Authorization': 'Bearer ' + token
-        //     }
-        // })
-        const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGIN}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
+    const response = await apiClient.post<LoginResponse>(API_LIST.USER.LOGIN, false, {
+        "username": username,
+        "password": password
+    });
 
-        const data: LoginResponse = await response.json();
-        console.log(data);
-
-        if (response.ok && data.success) {
-            localStorage.setItem("accessTknType", data.tokenType);
-            localStorage.setItem("accessTkn", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            showSuccessToast(data.message);
-            return data;
-        } else {
-            console.log(`로그인 실패: ${data.message || "사용자명 또는 비밀번호가 올바르지 않습니다."}`);
-            return null;
-        }
-    } catch (error) {
-        console.error("로그인 요청 오류:", error);
-        console.log("로그인 중 오류가 발생했습니다.");
-        throw error;
+    if (!response.ok || response.data === undefined || !response.data.success) {
+        console.error("로그인 실패: ", response?.data?.message);
+        return null;
+    } else {
+        localStorage.setItem("accessTknType", response.data.tokenType);
+        localStorage.setItem("accessTkn", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        showSuccessToast(response.data.message);
+        return response.data;
     }
 }
 
 export async function logout(token: string | null): Promise<LogoutRes> {
-    try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.USER.LOGOUT}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
-        if (!res.ok) throw new Error("에러남!");
-        const t = await res.json();
-        localStorage.clear();
-        return t;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+    const res = await apiClient.post<LogoutRes>(API_LIST.USER.LOGOUT, true);
+    if (!res.ok || res.data === undefined) throw new Error("에러남!");
+    localStorage.clear();
+    return res.data;
 }
 
 export async function userInfoEdit(

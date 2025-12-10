@@ -36,19 +36,16 @@ export default function LoginPlz() {
                     </p>
 
                     <div className="flex justify-center items-center gap-3">
-                        {/* 회원가입 버튼: 그라데이션 테두리 */}
                         <div className="relative p-0.5 rounded-full group"> 
-                            {/* 그라데이션 배경을 위한 <div> */}
                             <div className="absolute inset-0 bg-gradient-to-t from-pink-500 to-sky-500 rounded-full"></div>
                             
-                            {/* 실제 버튼 (배경 흰색, 텍스트 검정) */}
                             <button onClick={() => setShowSignupModal(true)}
                                 className="relative px-6 py-3 
                                     bg-white 
                                     text-gray-800
                                     rounded-full 
                                     transition-all duration-200 font-medium font-bold
-                                    hover:shadow-md" // 호버 효과 유지
+                                    hover:shadow-md"
                             >
                                 회원가입
                             </button>

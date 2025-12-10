@@ -1,43 +1,30 @@
 import { SearchHistory } from "../../../entities/search/ui/SearchHistory";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { API_LIST } from "../../../shared/constants/ApiList";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
 import { apiClient } from "../../../shared/utils/ApiClient";
 
 export async function searchVideoLogic(query: string): Promise<VideoGridContent[]> {
-    const data: VideoGridContent[] = await apiClient.get<VideoGridContent[]>(
-        API_LIST.SEARCH.SEARCH, 
-        false,  // 인증 불필요
-        { "q": query }  // 검색어만 전달
-    );
-    return data;
+    const res = await apiClient.get<VideoGridContent[]>(
+        API_LIST.SEARCH.SEARCH, false, { "q": query });
+    if (!res.ok) throw new Error("뭐 때문인지는 모르겠으나 에러: " + res);
+    if (res.data === undefined) throw new Error("검색어에 해당하는 데이터가 없습니다: " + res);
+    return res.data;
 }
 
-export async function getSearchHistory(userId: number): Promise<SearchHistory[]> {
-    const res = await fetch(`${REST_API_SERVER}${API_LIST.SEARCH.SEARCH_LIST(userId)}`);
-    if (!res.ok) {
-        throw new Error(`검색 기록 불러오기 실패: HTTP ${res.status}`);
-    }
-    const data: SearchHistory[] = await res.json();
-    return data.slice(0, 30);
+export async function getSearchHistory(i: number): Promise<SearchHistory[]> {
+    const res = await apiClient.get<SearchHistory[]>(API_LIST.SEARCH.HISOTRY(i), false);
+    if (!res.ok) throw new Error("검색어를 가져오지 못 했습니다: " + res);
+    if (!res.data === undefined) throw new Error("검색어를 찾을 수 없습니다: " + res);
+    return res.data?.slice(0, 30) ?? [];
 }
 
-export async function deleteSearchWord(userId: number, searchWord: string) {
-    const res = await fetch(`${REST_API_SERVER}${API_LIST.SEARCH.SEARCH_WORD_DELETE}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            id: userId,
-            searchWord: searchWord
-        }),
+export async function deleteSearchWord(sw: string) {
+    const res = await apiClient.get(API_LIST.SEARCH.WORD_DELETE, true, {
+        "searchWord": sw
     });
     if (!res.ok) throw new Error(`검색어 삭제 실패: HTTP ${res.status}`);
     return true;
 }
-
-
-
-
 
 
 

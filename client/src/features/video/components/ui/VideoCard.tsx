@@ -1,8 +1,8 @@
 import { memo, RefObject } from "react";
 import { Link } from "react-router-dom";
-import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { VideoGridContent } from "../../../../entities/video/ui/VideoGridContent";
+import { CustomImage } from "../../../../shared/components/common/CustomImage";
 
 interface VideoCardProps {
     video: VideoGridContent,
@@ -47,8 +47,11 @@ export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
 
             <div className="mt-2 px-1">
                 <Link to={ROUTE.PROFILE(video.mention)} className="block flex items-center space-x-2 mb-1">
-                    <img src={`${REST_API_SERVER}${video.profileImgSrc}`} 
-                        className="w-8 h-8 rounded-full object-cover" alt="프로필"
+                    <CustomImage 
+                        url={video.profileImgSrc} 
+                        social={video.social} 
+                        alt="VideoCard 컴포넌트 프로필"
+                        className="w-8 h-8 rounded-full object-cover"
                     />
                     <span className="text-md font-bold truncate">
                         {video.uploaderUsername}

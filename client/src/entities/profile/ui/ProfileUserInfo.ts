@@ -1,4 +1,4 @@
-export interface ProfileInfo {
+export interface ProfileUserInfo {
     id: number,
     username: string,
     mail: string,

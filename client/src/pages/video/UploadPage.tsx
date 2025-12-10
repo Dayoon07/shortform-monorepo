@@ -33,11 +33,9 @@ export default function UploadPage() {
     };
 
     const handleModalClose = () => {
-        if (!isUploading) {
-            if (window.confirm('업로드를 취소하시겠습니까? 입력한 정보가 모두 사라집니다.')) {
-                setShowModal(false);
-                reset();
-            }
+        if (!isUploading && window.confirm("업로드를 취소하시겠습니까? 입력한 정보가 모두 사라집니다.")) {
+            setShowModal(false);
+            reset();
         }
     };
 
@@ -48,7 +46,7 @@ export default function UploadPage() {
     if (!user) return null;
 
     return (
-        <main className="flex-1 bg-black text-white min-h-screen">
+        <main className="flex-1 min-h-screen">
             <section className="w-full md:h-full md:flex md:flex-col items-center justify-center px-4 py-6 max-md:mt-32">
                 <VideoUploadDropzone
                     onFileSelect={handleFileSelect}
@@ -74,9 +72,9 @@ export default function UploadPage() {
                 )}
 
                 <div className="flex flex-col lg:flex-row lg:flex-wrap lg:justify-center lg:gap-8 
-                    text-xs md:text-sm text-gray-700 mt-6 space-y-4 lg:space-y-0"
+                    text-xs md:text-sm mt-6 space-y-4 lg:space-y-0"
                 >
-                    <div className="text-white">
+                    <div className="text-gray-400">
                         <div className="flex items-start gap-2">
                             <span className="font-bold">크기</span>
                             <span>최대 크기: 150MB</span>
@@ -86,7 +84,7 @@ export default function UploadPage() {
                             <span>권장 형식은 .mp4이며 주요 포맷 지원</span>
                         </div>
                     </div>
-                    <div className="text-white">
+                    <div className="text-gray-400">
                         <div className="flex items-start gap-2">
                             <span className="font-bold">해상도</span>
                             <span>1080p, 1440p, 4K 고해상도 권장</span>

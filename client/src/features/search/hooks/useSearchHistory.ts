@@ -8,7 +8,18 @@ export function useSearchHistory(user: User | null) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchSearchHistoryHook = useCallback(async () => {
+    const deleteSearchWordHook = async (id: number, searchWord: string) => {
+        if (!user?.id) return;
+        
+        try {
+            const w = await deleteSearchWord(searchWord);
+            if (w) setSearchHistory(prev => prev.filter(item => item.id !== id));
+        } catch (err) {
+            console.error('검색어 삭제 실패:', err);
+        }
+    };
+
+    const setupSearchHistoryLoadData = useCallback(async () => {
         if (!user?.id) return;
         
         setIsLoading(true);
@@ -24,22 +35,9 @@ export function useSearchHistory(user: User | null) {
         }
     }, [user?.id]);
 
-    const deleteSearchWordHook = async (id: number, searchWord: string) => {
-        if (!user?.id) return;
-        
-        try {
-            const what_the = await deleteSearchWord(user?.id, searchWord);
-            if (what_the) {
-                setSearchHistory(prev => prev.filter(item => item.id !== id));
-            }
-        } catch (err) {
-            console.error('검색어 삭제 실패:', err);
-        }
-    };
-
     useEffect(() => {
-        fetchSearchHistoryHook();
-    }, [fetchSearchHistoryHook]);
+        setupSearchHistoryLoadData();
+    }, [setupSearchHistoryLoadData]);
 
     return {
         searchHistory,

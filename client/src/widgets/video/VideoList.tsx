@@ -49,7 +49,7 @@ const VideoList: React.FC = () => {
     if (initialLoading) return <Loading message="비디오를 불러오는 중..." />;
     if (error && videos.length === 0) {
         console.log(error);
-        return <TryAgain errorMessage="서버 전원이 켜저 있지 않습니다" />
+        return <TryAgain em="서버 전원이 켜저 있지 않습니다" />
     }
 
     return (

@@ -28,38 +28,32 @@ export default function ToggleFollowButton({
     const {
         isFollowing,    // 초기값 null
         loading,
-        toggleFollow
+        upgradeToggleFollowHook
     } = useToggleFollow(followReqUser, followResUser);
 
     const handleClick = async (): Promise<void> => {
         try {
-            const boolState: boolean = await toggleFollow();
+            const boolState: boolean = await upgradeToggleFollowHook();
             onFollowChange?.(boolState);
         } catch (error) {
             console.error(error);
         }
     };
 
-    if (!followReqUser || followReqUser.id === followResUser.id) {
+    if (!followReqUser || followReqUser.id === followResUser.id) 
         return null;
-    }
 
     // 서버에서 팔로우 상태 아직 못 받았을 때
-    if (isFollowing === null) {
-        return (
-            <div className="inline-block w-[90px] h-[32px] rounded-full bg-neutral-700/50 animate-pulse" />
-        );
-    }
+    if (isFollowing === null) 
+        return <div className="inline-block w-[90px] h-[32px] rounded-full bg-neutral-700/50 animate-pulse" />
 
     return ( 
         followReqUser && <button
             onClick={handleClick}
             disabled={loading}
-            className={
-                `${baseClass} ${isFollowing ? following : follow}`
-            }
-        >
+            className={`${baseClass} ${isFollowing ? following : follow}`}>
             {isFollowing ? "팔로우 취소" : "팔로우"}
         </button>
     );
 }
+

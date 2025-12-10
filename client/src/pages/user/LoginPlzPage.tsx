@@ -1,5 +1,4 @@
+import React from "react";
 import LoginPlz from "../../widgets/user/LoginPlz";
-
-export default function LoginPlzPage() {
-    return <LoginPlz />
-}
+const LoginPlzPage = (): React.JSX.Element => <LoginPlz />
+export default LoginPlzPage;

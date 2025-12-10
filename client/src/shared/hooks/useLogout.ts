@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../features/user/api/userService";
+import { login, logout } from "../../features/user/api/userService";
 import { useUser } from "../context/UserContext";
 import { showSuccessToast } from "../utils/toast";
 import { ROUTE } from "../constants/Route";
+import { useState } from "react";
 
 export const useLogout = () => {
     const navigate = useNavigate();
@@ -16,4 +17,14 @@ export const useLogout = () => {
     };
 
     return { handleLogout };
+}
+
+const useLogin = (username: string, password: string) => {
+    const [loadingState, setLoadingState] = useState<boolean>(false);
+    setLoadingState(true);
+    try {
+        const data = await login(username, password);
+    } catch (error) {
+        console.error(error);
+    }
 }

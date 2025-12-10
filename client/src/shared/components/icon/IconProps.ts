@@ -3,6 +3,6 @@ export interface IconProps {
 }
 
 export interface ButtonIconProps {
-    onClick: () => void
+    onClick: (p?: any) => void
 }
 

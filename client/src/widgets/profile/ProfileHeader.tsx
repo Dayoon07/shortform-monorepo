@@ -6,7 +6,7 @@ import { FollowRelationModal } from "../../features/profile/components/ui/Follow
 import { useParams } from "react-router-dom";
 import ToggleFollowButton from "../../features/follow/components/ui/ToggleFollowButton";
 import ProfileEditFormModal from "../../features/profile/components/ProfileEditFormModal";
-import { ProfileInfo } from "../../entities/profile/ui/ProfileInfo";
+import { ProfileInfo } from "../../entities/profile/ui/ProfileUserInfo";
 import { User } from "../../entities/user/model/User";
 
 interface ProfileHeaderProps {

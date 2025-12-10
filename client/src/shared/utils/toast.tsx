@@ -66,12 +66,12 @@ export function showToast(message: string, options: ToastOptions = {}) {
 }
 
 /** 에러 토스트를 표시합니다 (편의 함수) */
-export function showErrorToast(message: string, duration = 3000) {
+export function showErrorToast(message: string | any, duration = 3000) {
     showToast(message, { success: false, duration });
 }
 
 /** 성공 토스트를 표시합니다 (편의 함수) */
-export function showSuccessToast(message: string, duration = 3000) {
+export function showSuccessToast(message: string | any, duration = 3000) {
     showToast(message, { success: true, duration });
 }
 

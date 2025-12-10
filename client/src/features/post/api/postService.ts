@@ -16,7 +16,7 @@ export async function getUserPosts(mention: string): Promise<Post[]> {
 
 export async function createPost(formData: FormData) {
     try {
-        const response = await fetch(`${REST_API_SERVER}${API_LIST.POST.CREATE_POST}`, {
+        const response = await fetch(`${REST_API_SERVER}${API_LIST.POST.WRITE}`, {
             method: 'POST',
             body: formData
         });
@@ -33,7 +33,7 @@ export async function createPost(formData: FormData) {
 
 export async function togglePostLike(communityUuid: string) {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.POST.TOGGLE_POST_LIKE(communityUuid)}`,{
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.POST.TOGGLE_LIKE(communityUuid)}`,{
             method: "POST"
         });
 

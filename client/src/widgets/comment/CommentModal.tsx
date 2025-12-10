@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { REST_API_SERVER } from "../../shared/constants/ApiServer";
 import { useComment } from "../../features/comment/hooks/useComment";
 import { showSuccessToast } from "../../shared/utils/toast";
 import { CommentList } from "../../features/comment/components/CommentList";
 import { User } from "../../entities/user/model/User";
 import { X } from "lucide-react";
+import { CustomImage } from "../../shared/components/common/CustomImage";
 
 interface CommentModalWidgetProps {
     open: boolean,
@@ -88,9 +88,12 @@ export function CommentModal({
                 {user && (
                     <div className="p-4 border-t border-gray-700">
                         <div className="flex space-x-3">
-                            <img src={user.social ? user.profileImgSrc : REST_API_SERVER + user.profileImgSrc}
-                                alt="profile" className="w-10 h-10 p-0.5 rounded-full object-cover"
+                            <CustomImage 
+                                url={user.profileImgSrc}
+                                social={user.social}
+                                alt="profile"
                                 style={{ background: "linear-gradient(to right, #ec4899, #0ea5e9)" }}
+                                className="w-10 h-10 p-0.5 rounded-full object-cover"
                             />
 
                             <div className="flex-1 flex space-x-2 items-center">

@@ -1,4 +1,5 @@
 import { ROUTE } from "./Route";
+import { IconProps } from "../components/icon/IconProps";
 import { 
     CommunityPageIcon, 
     ExplorePageIcon, 
@@ -8,7 +9,17 @@ import {
     UploadPageIcon
 } from "../../widgets/icon/icon";
 
-export const NAV_ITEMS = [
+export interface NavItem {
+    to: string;
+    label: string;
+    icon: React.ComponentType<IconProps>;
+    // SVG 관련 선택적 속성
+    stroke?: boolean;
+    strokeWidth?: string;
+    viewBox?: string;
+}
+
+export const NAV_ITEMS: NavItem[] = [
     {
         to: ROUTE.HOMEPAGE,
         label: "홈",

@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
-import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
 import ToggleFollowButton from "../../../follow/components/ui/ToggleFollowButton";
 import { User } from "../../../../entities/user/model/User";
+import { CustomImage } from "../../../../shared/components/common/CustomImage";
 
 interface FollowRelationModalProps {
     isOpen: boolean,
@@ -42,16 +42,15 @@ export const FollowRelationModal = ({
                         return (
                             <li key={u.id || u.mention} className="flex items-center justify-between p-4">
                                 <div className="flex items-center space-x-3">
-                                    <img src={`${REST_API_SERVER}${u.profileImgSrc}`} alt={u.username}
+                                    <CustomImage 
+                                        url={u.profileImgSrc}
+                                        alt={u.username}
+                                        social={u.social}
                                         className="w-10 h-10 rounded-full object-cover"
                                     />
                                     <div>
-                                        <p className="font-semibold text-black">
-                                            {u.username}
-                                        </p>
-                                        <p className="text-gray-500 text-sm">
-                                            @{u.mention}
-                                        </p>
+                                        <p className="font-semibold text-black">{u.username}</p>
+                                        <p className="text-gray-500 text-sm">@{u.mention}</p>
                                     </div>
                                 </div>
 

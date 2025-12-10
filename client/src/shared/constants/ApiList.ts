@@ -15,7 +15,7 @@ export const API_LIST = {
         ALL: "/api/video/all",                  // 페이징된 비디오 목록 (기본)
         ALL_LEGACY: "/api/video/all/legacy",    // 전체 비디오 목록 (레거시)
         UPLOAD: "/api/upload/video",
-        RANDOM: (excludeIds: number[], mention: string) => `/api/videos/v2/random?excludeIds=${excludeIds}&mention=${mention}`,
+        RANDOM: (e: number[], m: string) => `/api/videos/v2/random?excludeIds=${e}&mention=${m}`,
         SEARCH: (q: string) => `/api/video/search?q=${q}`,
         HASHTAG: (t: string) => `/api/hashtag?videoTag=${t}`,
         USER_VIDEO: (m: string) => `/api/user/info/${m}/video`,
@@ -33,7 +33,7 @@ export const API_LIST = {
     SEARCH: {
         SEARCH: "/api/search",
         WORD_DELETE: "/api/search/list/delete",
-        MY_LIST: (i: number) => `/api/user/search/list?id=${i}`,
+        HISOTRY: (i: number) => `/api/user/search/list?id=${i}`,
     },
     FOLLOW: {
         FOLLOW: "/api/follow",
@@ -41,7 +41,7 @@ export const API_LIST = {
         STATUS: (requm: string, resum: string) => `/api/follow/status/upgrade?reqMention=${requm}&resMention=${resum}`,
         USER_FOLLOWER_LIST: (i: number) => `/api/follow/user/follower/list?id=${i}`,
         USER_FOLLOWING_LIST: (i: number) => `/api/follow/user/following/list?id=${i}`,
-        UPGRADE_TOGGLE_FOLLOW: (requm: string, resum: string) => `/api/follow/toggle/upgrade?reqMention=${requm}&resMention=${resum}`
+        TOGGLE_UPG_VER: "/api/follow/toggle/upgrade"
     },
     POST: {
         USER_POST: (m: string) => `/api/user/post/info?mention=${m}`,

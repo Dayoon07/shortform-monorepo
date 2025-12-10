@@ -17,7 +17,6 @@ interface SearchModalProps {
 export default function SearchModal({ user, onClose }: SearchModalProps) {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const navigate = useNavigate();
-
     const {
         isLoading,
         error,
@@ -44,14 +43,14 @@ export default function SearchModal({ user, onClose }: SearchModalProps) {
 
     return (
         <div 
-            className="fixed inset-0 bg-black/80 z-[100]" 
+            className="fixed inset-0 bg-white/80 z-[100]" 
             onClick={onClose}
             role="dialog"
             aria-modal="true"
             aria-labelledby="search-modal-title"
         >
             <div 
-                className="bg-black/90 border-b border-white/30 px-4 py-3" 
+                className="bg-white/90 border-b border-white/30 px-4 py-3" 
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center py-2">
@@ -68,7 +67,7 @@ export default function SearchModal({ user, onClose }: SearchModalProps) {
                 {user ? (
                     isLoading ? (
                         <div className="mt-4 text-center py-8">
-                            <p className="text-white/70">로딩 중...</p>
+                            <p className="text-black/70">로딩 중...</p>
                         </div>
                     ) : searchHistory.length > 0 ? (
                         <SearchModalHistoryList 

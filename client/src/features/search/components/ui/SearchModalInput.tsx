@@ -6,11 +6,15 @@ interface SearchModalInputProps {
 }
 
 export function SearchModalInput({ value, setValue }: SearchModalInputProps) {
+    const iptcn = `w-full pl-10 pr-3 py-2 rounded-full bg-white/20 backdrop-blur-sm 
+        border border-white/30 text-white placeholder-white/70 focus:outline-none 
+        focus:ring-2 focus:ring-white/50 focus:bg-white/25`;
     return (
         <>
             <button 
                 type="submit" 
-                className="absolute top-2.5 left-2.5 p-0 bg-transparent border-none cursor-pointer"
+                className="absolute top-2.5 left-2.5 p-0 
+                    bg-transparent border-none cursor-pointer"
                 aria-label="검색"
             >
                 <SearchIcon />
@@ -23,8 +27,7 @@ export function SearchModalInput({ value, setValue }: SearchModalInputProps) {
                 maxLength={100}
                 autoFocus
                 aria-label="검색어 입력"
-                className="w-full pl-10 pr-3 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white 
-                    placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/25"
+                className={iptcn}
             />
         </>
     );

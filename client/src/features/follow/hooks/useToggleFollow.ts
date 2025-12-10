@@ -14,10 +14,8 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
             if (!followReqUser?.mention || !followResUser?.mention) return;
             
             try {
-                const result = await getFollowStatus(followReqUser.mention, followResUser.mention);
-                if (result && result.data) {
-                    setIsFollowing(result.data.isFollowing || false);
-                }
+                const r = await getFollowStatus(followReqUser.mention, followResUser.mention);
+                setIsFollowing(r.isFollowing || false);
             } catch (error) {
                 console.error("팔로우 상태 조회 실패:", error);
             }
@@ -26,7 +24,7 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
         fetchFollowStatus();
     }, [followReqUser?.mention, followResUser?.mention]);
 
-    const toggleFollow = async (): Promise<boolean> => {
+    const upgradeToggleFollowHook = async (): Promise<boolean> => {
         if (!followReqUser?.mention || !followResUser?.mention) {
             setMessageData("사용자 정보가 올바르지 않습니다.");
             showErrorToast("사용자 정보가<br className='md:hidden'/>올바르지 않습니다");
@@ -35,16 +33,16 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
 
         setLoading(true);
         try {
-            const { data } = await upgradeToggleFollow(followReqUser.mention, followResUser.mention);
+            const data = await upgradeToggleFollow(followReqUser.mention, followResUser.mention);
             console.log(data);
             
-            if (data.success) {
+            if (data?.success) {
                 setIsFollowing(prev => !prev);
                 setMessageData(data.message);
                 showSuccessToast(data.message);
                 return data.isFollowing;
             } else {
-                setMessageData(data.message || "팔로우 처리에 실패했습니다.");
+                setMessageData(data?.message || "팔로우 처리에 실패했습니다.");
                 return data.isFollowing;
             }
         } catch (error) {
@@ -62,6 +60,6 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
         isFollowing,
         messageData,
         loading,
-        toggleFollow
+        upgradeToggleFollowHook
     };
 };

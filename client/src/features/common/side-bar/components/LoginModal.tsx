@@ -48,9 +48,14 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
                     {isLoading ? '로그인 중...' : '로그인'}
                 </button>
                 <hr />
-                <div id="google-login-btn" onClick={() => {
-                    window.location.href = `${REST_API_SERVER}${API_LIST.USER.GOOGLE_LOGIN}`;
-                }}>
+                <div 
+                    className="w-full flex justify-center items-center text-center py-3 bg-gray-200 
+                        hover:bg-gray-300 font-semibold cursor-pointer rounded-xl transition-all 
+                        disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => {
+                        window.location.href = `${REST_API_SERVER}${API_LIST.USER.GOOGLE_LOGIN}`;
+                    }}
+                >
                     <GoogleIcon />
                     Google 계정으로 로그인
                 </div>

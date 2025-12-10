@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
-import { REST_API_SERVER } from '../../../shared/constants/ApiServer';
 import ToggleFollowButton from '../../follow/components/ui/ToggleFollowButton';
+import { CustomImage } from '../../../shared/components/common/CustomImage';
 
 export function VideoInfoOverlay({ video, user, isFollowing, onFollowChange }) {
     const truncate = (str, maxLen) => {
@@ -13,10 +13,10 @@ export function VideoInfoOverlay({ video, user, isFollowing, onFollowChange }) {
         <div className="absolute left-2 md:left-6 bottom-20 md:bottom-32 space-y-2 md:space-y-3 w-2/3 md:w-1/2 z-20">
             <div className="flex items-center space-x-2 md:space-x-3">
                 <Link to={ROUTE.PROFILE(video.uploader.mention)}>
-                    <img
-                        src={`${REST_API_SERVER}${video.uploader.profileImgSrc}`}
-                        alt="프로필"
-                        className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover border-2 border-white border-opacity-30 transition-transform hover:scale-110"
+                    <CustomImage url={video.uploader.profileImgSrc} alt='프로필'
+                        className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover border-2 border-white 
+                            border-opacity-30 transition-transform hover:scale-110"
+                        social={video.uploader.social}
                     />
                 </Link>
                 

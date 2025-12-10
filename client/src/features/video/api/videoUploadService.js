@@ -61,6 +61,8 @@ export async function uploadVideo(file, metadata, thumbnailBlob, onProgress) {
 
         // 요청 전송
         xhr.open('POST', `${REST_API_SERVER}${API_LIST.VIDEO.UPLOAD}`);
+        const token = localStorage.getItem('accessTkn');
+        if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
         xhr.send(formData);
 
         // 취소 기능을 위해 xhr 반환

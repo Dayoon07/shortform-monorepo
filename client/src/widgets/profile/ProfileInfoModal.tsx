@@ -1,5 +1,5 @@
 import { Calendar, Users, Video, Eye, Heart, X } from "lucide-react";
-import { ProfileInfo } from "../../entities/profile/ui/ProfileInfo";
+import { ProfileInfo } from "../../entities/profile/ui/ProfileUserInfo";
 
 interface ProfileInfoModalProps {
     profile: ProfileInfo,

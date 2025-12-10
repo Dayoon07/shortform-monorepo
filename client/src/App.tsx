@@ -19,6 +19,7 @@ import PostWritePage from "./pages/post/PostWritePage";
 import LikesPage from "./pages/video/LikesPage";
 import TagVideoPage from "./pages/video/TagVideoPage";
 import OAuthCallbackPage from "./pages/user/OAuthCallbackPage";
+import NotFoundWhat from "./pages/what/NotFoundWhat";
 import "./App.css";
 
 export default function App() {
@@ -44,6 +45,7 @@ export default function App() {
                                 <Route path={PATTERN_ROUTE.PROFILE}                 element={<ProfilePage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE_POST}            element={<ProfilePostPage />} />
                                 <Route path={ROUTE.OAUTH_CALLBACK}                  element={<OAuthCallbackPage />} />
+                                <Route path={PATTERN_ROUTE.WHILED_CARD}             element={<NotFoundWhat />} />
                             </Routes>
                         </div>
                         <BottomNavBar />

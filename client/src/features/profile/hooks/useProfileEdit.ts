@@ -3,12 +3,15 @@ import { editUserProfile } from "../api/profileService";
 import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
+import { ProfileInfo } from "../../../entities/profile/ui/ProfileUserInfo";
+import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { ROUTE } from "../../../shared/constants/Route";
 
-export function useProfileEdit(profile, onClose) {
-    const [previewImg, setPreviewImg] = useState(profile?.profileImgSrc || '');
-    const [selectedFile, setSelectedFile] = useState(null);
+export function useProfileEdit(profile: ProfileInfo, onClose: () => void) {
+    const [previewImg, setPreviewImg] = useState<ProfileInfo | string>(profile?.profileImgSrc || "");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const navigate = useNavigate();
-    const { user, setUser } = useUser();
+    const { setUser } = useUser();
 
     const [formData, setFormData] = useState({
         username: profile?.username || '',
@@ -17,40 +20,39 @@ export function useProfileEdit(profile, onClose) {
         bio: profile?.bio || ''
     });
 
-    const handleImageChange = (e) => {
+    const handleImageChange = (e: any) => {
         const file = e.target.files[0];
         if (file) {
             setSelectedFile(file);
             const reader = new FileReader();
-            reader.onloadend = () => setPreviewImg(reader.result);
+            reader.onloadend = () => {
+                if (typeof reader.result === 'string') {
+                    setPreviewImg(reader.result);
+                }
+            };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async () => {
         try {
-            console.log(user.id);
+            console.log(profile?.id);
             const data = await editUserProfile(
-                formData.username,
-                formData.mail,
-                formData.mention,
-                formData.bio,
-                selectedFile,
-                profile?.profileImgSrc,
-                user.id
+                formData, // DTO에 들어갈 모든 필드가 담긴 객체
+                selectedFile, // MultipartFile
+                profile?.social ? profile.profileImgSrc : REST_API_SERVER + profile?.profileImgSrc, // currentProfileImgSrc
             );
             
-            if (data.user) {
+            if (data.user) 
                 localStorage.setItem("user", JSON.stringify(data.user));
-            }
 
             console.log("프로필 업데이트 완료:", data);
-            navigate("/");
+            navigate(ROUTE.HOMEPAGE);
             showSuccessToast("프로필이 저장되었습니다<br/>다시 로그인 해주세요", 5000);
             setUser(null);
             onClose();
