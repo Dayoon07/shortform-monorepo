@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import ToggleFollowButton from '../../follow/components/ui/ToggleFollowButton';
-import { CustomImage } from '../../../shared/components/common/CustomImage';
+import { CustomImage } from '../../../shared/components/common/custom/CustomImage';
 
 export function VideoInfoOverlay({ video, user, isFollowing, onFollowChange }) {
     const truncate = (str, maxLen) => {

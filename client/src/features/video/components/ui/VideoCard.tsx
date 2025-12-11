@@ -2,7 +2,7 @@ import { memo, RefObject } from "react";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { VideoGridContent } from "../../../../entities/video/ui/VideoGridContent";
-import { CustomImage } from "../../../../shared/components/common/CustomImage";
+import { CustomImage } from "../../../../shared/components/common/custom/CustomImage";
 
 interface VideoCardProps {
     video: VideoGridContent,

@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { REST_API_SERVER } from "../../constants/ApiServer";
+import { REST_API_SERVER } from "../../../constants/ApiServer";
 
 interface CustomImageProps {
     url: string,

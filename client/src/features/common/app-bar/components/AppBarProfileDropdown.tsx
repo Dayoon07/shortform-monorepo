@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { CommunityPageIcon, LikePageIcon, UploadPageIcon } from "../../../../widgets/icon/icon";
 import { LogOut } from "lucide-react";
-import { useLogout } from "../../../../shared/hooks/useLogout";
-import { CustomImage } from "../../../../shared/components/common/CustomImage";
+import { useLogout } from "../../../../shared/hooks/user/useSession";
+import { CustomImage } from "../../../../shared/components/common/custom/CustomImage";
 
 export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);

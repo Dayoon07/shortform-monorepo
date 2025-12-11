@@ -1,49 +1,70 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent, DragEvent } from "react";
 import { X, Upload, Check, AlertCircle } from "lucide-react";
-import { signup } from "../api/userService";
-import { validateUsername, validateEmail } from "../api/validationService";
+import { signup } from "../../../features/user/api/userService";
 import { showSuccessToast } from "../../../shared/utils/toast";
+import { validateUsername, validateEmail } from "../../../features/user/api/validationService";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 3; // 3MB
 
-export default function SignupModal({ onClose }) {
-    const [step, setStep] = useState(1); // 1: 프로필 이미지, 2: 회원 정보
-    const [profileImg, setProfileImg] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState('');
-    const [isDragging, setIsDragging] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+interface SignupModalProps {
+    onClose: () => void;
+}
+
+interface FormData {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+interface ValidationState {
+    checking: boolean;
+    available: boolean | null;
+    message: string;
+}
+
+interface Validation {
+    username: ValidationState;
+    email: ValidationState;
+}
+
+export default function SignupModal({ onClose }: SignupModalProps) {
+    const [step, setStep] = useState<number>(1); // 1: 프로필 이미지, 2: 회원 정보
+    const [profileImg, setProfileImg] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string>("");
+    const [isDragging, setIsDragging] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     // Step 2 state
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         username: '',
         email: '',
         password: '',
         confirmPassword: ''
     });
 
-    const [validation, setValidation] = useState({
+    const [validation, setValidation] = useState<Validation>({
         username: { checking: false, available: null, message: '' },
         email: { checking: false, available: null, message: '' }
     });
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string>('');
 
     // ESC 키로 닫기
     useEffect(() => {
-        const handleEscape = (e) => {
+        const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose();
         };
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
     }, [onClose]);
 
-    // 백드롭 클릭으로 닫기
-    const handleBackdropClick = (e) => {
+    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) onClose();
     };
 
     // 파일 처리
-    const processFile = (file) => {
+    const processFile = (file: File | undefined) => {
         if (!file) return;
 
         if (file.size > MAX_FILE_SIZE) {
@@ -52,19 +73,21 @@ export default function SignupModal({ onClose }) {
         }
 
         const reader = new FileReader();
-        reader.onload = (e) => {
-            setProfileImg(file);
-            setPreviewUrl(e.target.result);
-            setError('');
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+            if (e.target?.result) {
+                setProfileImg(file);
+                setPreviewUrl(e.target.result as string);
+                setError('');
+            }
         };
         reader.readAsDataURL(file);
     };
 
-    const handleFileChange = (e) => {
-        processFile(e.target.files[0]);
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        processFile(e.target.files?.[0]);
     };
 
-    const handleDragOver = (e) => {
+    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(true);
     };
@@ -73,10 +96,10 @@ export default function SignupModal({ onClose }) {
         setIsDragging(false);
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(false);
-        processFile(e.dataTransfer.files[0]);
+        processFile(e.dataTransfer.files?.[0]);
     };
 
     // Step 1에서 Step 2로
@@ -90,7 +113,7 @@ export default function SignupModal({ onClose }) {
     };
 
     // 사용자명 검증
-    const checkUsername = async (value) => {
+    const checkUsername = async (value: string) => {
         if (!value) {
             setValidation(prev => ({
                 ...prev,
@@ -124,7 +147,7 @@ export default function SignupModal({ onClose }) {
     };
 
     // 이메일 검증
-    const checkEmail = async (value) => {
+    const checkEmail = async (value: string) => {
         if (!value) {
             setValidation(prev => ({
                 ...prev,
@@ -158,7 +181,7 @@ export default function SignupModal({ onClose }) {
     };
 
     // 폼 제출
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
 
@@ -185,7 +208,9 @@ export default function SignupModal({ onClose }) {
             data.append('email', formData.email.trim());
             data.append('username', formData.username.trim());
             data.append('password', formData.password);
-            data.append('profileImage', profileImg);
+            if (profileImg) {
+                data.append('profileImage', profileImg);
+            }
 
             const response = await signup(data);
 

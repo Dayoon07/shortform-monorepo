@@ -45,7 +45,7 @@ export default function App() {
                                 <Route path={PATTERN_ROUTE.PROFILE}                 element={<ProfilePage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE_POST}            element={<ProfilePostPage />} />
                                 <Route path={ROUTE.OAUTH_CALLBACK}                  element={<OAuthCallbackPage />} />
-                                <Route path={PATTERN_ROUTE.WHILED_CARD}             element={<NotFoundWhat />} />
+                                <Route path={PATTERN_ROUTE.WILD_CARD}               element={<NotFoundWhat />} />
                             </Routes>
                         </div>
                         <BottomNavBar />

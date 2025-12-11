@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import ToggleFollowButton from "../../../follow/components/ui/ToggleFollowButton";
 import { User } from "../../../../entities/user/model/User";
-import { CustomImage } from "../../../../shared/components/common/CustomImage";
+import { CustomImage } from "../../../../shared/components/common/custom/CustomImage";
 
 interface FollowRelationModalProps {
     isOpen: boolean,

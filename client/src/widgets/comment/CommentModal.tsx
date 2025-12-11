@@ -4,7 +4,7 @@ import { showSuccessToast } from "../../shared/utils/toast";
 import { CommentList } from "../../features/comment/components/CommentList";
 import { User } from "../../entities/user/model/User";
 import { X } from "lucide-react";
-import { CustomImage } from "../../shared/components/common/CustomImage";
+import { CustomImage } from "../../shared/components/common/custom/CustomImage";
 
 interface CommentModalWidgetProps {
     open: boolean,

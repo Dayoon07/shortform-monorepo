@@ -1,7 +1,8 @@
+import { User } from "../../entities/user/model/User";
 import { EmptyState } from "../../features/follow/components/EmptyState";
 import { FollowingCard } from "../../features/follow/components/FollowingCard";
 
-const FollowingList = ({ followings }) => {
+const FollowingList = ({ followings }: { followings: User[] }) => {
     if (!(followings instanceof Array)) return <EmptyState />;
     if (followings.length === 0) return <EmptyState />;
     

@@ -7,7 +7,7 @@ import { User } from "../../../entities/user/model/User";
 
 interface FollowingCardProps {
     followingUser: User,
-    onToggleFollow: (pm: string) => void
+    onToggleFollow?: (pm: string) => void
 }
 
 export const FollowingCard = ({ followingUser, onToggleFollow }: FollowingCardProps) => {

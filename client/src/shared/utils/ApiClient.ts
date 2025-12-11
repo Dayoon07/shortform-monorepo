@@ -1,4 +1,5 @@
 import { REST_API_SERVER } from "../constants/ApiServer";
+import { showErrorToast } from "./toast";
 
 // API 응답 래퍼 타입
 export interface ApiResponse<T> {
@@ -71,6 +72,7 @@ class ApiClient {
                 error: response.ok ? undefined : `요청 실패, 상태 코드 : ${response.status}`
             };
         } catch (error) {
+            showErrorToast(error as Error);
             console.error('API 요청 실패:', error);
             return {
                 ok: false,

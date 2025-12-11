@@ -109,7 +109,7 @@ export const ROUTE = {
 };
 
 export const PATTERN_ROUTE = {
-    WHILED_CARD: "*",
+    WILD_CARD: "*",
 
     /** 
      * 프로필 페이지 경로 패턴  

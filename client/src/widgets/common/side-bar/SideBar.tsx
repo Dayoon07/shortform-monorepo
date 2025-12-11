@@ -6,7 +6,7 @@ import SignupModal from "../../../features/common/side-bar/components/SignupModa
 import { useState } from "react";
 import AuthButtons from "../../../features/common/side-bar/components/ui/AuthButtons";
 import { useUser } from "../../../shared/context/UserContext";
-import { useLogout } from "../../../shared/hooks/useLogout";
+import { useSession } from "../../../shared/hooks/user/useSession";
 import { Logo } from "../../../shared/components/common/Logo";
 
 export default function SideBar() {
@@ -14,7 +14,7 @@ export default function SideBar() {
     const [showSignupModal, setShowSignupModal] = useState<boolean>(false);
     const [searchWord] = useSearch();
     const { user } = useUser();
-    const { handleLogout } = useLogout();
+    const { logoutHook } = useSession();
 
     return (
         <div>
@@ -26,7 +26,7 @@ export default function SideBar() {
                 
                 <AuthButtons 
                     user={user}
-                    onLogout={handleLogout}
+                    onLogout={logoutHook}
                     onShowLogin={() => setShowLoginModal(true)}
                     onShowSignup={() => setShowSignupModal(true)}
                 />

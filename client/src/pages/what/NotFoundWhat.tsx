@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { CustomImage } from "../../shared/components/common/CustomImage";
+import { CustomImage } from "../../shared/components/common/custom/CustomImage";
 import { ROUTE } from "../../shared/constants/Route";
 
 export default function NotFoundWhat() {
