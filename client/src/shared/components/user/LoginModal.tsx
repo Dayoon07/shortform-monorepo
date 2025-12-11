@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSession } from "../../hooks/user/useSession";
 import { FloatingInput } from "./ui/FloatingInput";
 import Modal from "../common/Modal";
@@ -16,15 +16,16 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
         setPassword,
         setUsername
     } = useSession();
-        
+
+    const modalEsc = useCallback((e: KeyboardEvent): void | null => {
+        if (e.key === "Escape") onClose();
+    }, [onClose]);
+
     // ESC 키로 닫기
     useEffect(() => {
-        const handleEscape = (e: KeyboardEvent): void => {
-            if (e.key === "Escape") onClose();
-        };
-        document.addEventListener("keydown", handleEscape);
-        return () => document.removeEventListener("keydown", handleEscape);
-    }, [onClose]);
+        document.addEventListener("keydown", modalEsc);
+        return () => document.removeEventListener("keydown", modalEsc);
+    }, [modalEsc]);
 
     return (
         <Modal onClose={onClose} title="로그인">
@@ -60,12 +61,12 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
                 <button type="submit" disabled={isLoading} 
                     className="w-full py-3 rounded-xl font-bold bg-gray-200 
                     hover:bg-gray-300 transition-all disabled:opacity-50 
-                    disabled:cursor-not-allowed"
+                    disabled:cursor-not-allowed max-md:text-sm"
                 >
                     {isLoading ? (
                         <div className="flex items-center justify-center space-x-2">
                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            <span>로그인 중...</span>
+                            <span className="max-md:text-sm">로그인 중...</span>
                         </div>
                     ) : (
                         "로그인"
@@ -77,7 +78,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
                     className="w-full flex justify-center items-center 
                         text-center py-3 bg-gray-200 hover:bg-gray-300 
                         font-semibold cursor-pointer rounded-xl transition-all 
-                        disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled:opacity-50 disabled:cursor-not-allowed max-md:text-sm"
                 >
                     <GoogleIcon />
                     Google 계정으로 로그인

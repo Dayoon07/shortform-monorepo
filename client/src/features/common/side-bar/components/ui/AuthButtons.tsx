@@ -13,20 +13,20 @@ export default function AuthButtons({
     onShowLogin,
     onShowSignup
 }: AuthButtonsProps) {
-    const btnClassName = `
+    const b = `
         sm:w-full max-sm:w-32 p-2 bg-black text-white font-semibold 
         rounded-lg transition-all hover:bg-gray-800/90
     `;
     if (user) {
-        return <><button onClick={onLogout} className={btnClassName}>로그아웃</button></>
+        return <><button onClick={onLogout} className={b}>로그아웃</button></>
     }
 
     return (
         <div className="space-y-3">
-            <button onClick={onShowLogin} className={btnClassName}>
+            <button onClick={onShowLogin} className={b}>
                 로그인
             </button>
-            <button onClick={onShowSignup} className={btnClassName}>
+            <button onClick={onShowSignup} className={b}>
                 회원가입
             </button>
         </div>

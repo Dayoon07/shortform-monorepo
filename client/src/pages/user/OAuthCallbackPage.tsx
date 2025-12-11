@@ -36,6 +36,7 @@ export default function OAuthCallbackPage() {
                 if (!response.ok) throw new Error("사용자 정보를 가져올 수 없습니다");
 
                 const data = await response.json();
+                console.log(data);
                 setUser(data);
                 localStorage.setItem("accessTkn", token);
                 localStorage.setItem("user", JSON.stringify(data));

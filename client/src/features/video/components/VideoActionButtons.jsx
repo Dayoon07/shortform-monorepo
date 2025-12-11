@@ -3,6 +3,14 @@ import { Info, ThumbsUp, MessageCircle, Share2, ChevronUp, ChevronDown } from 'l
 import { toggleVideoLike } from '../api/swipeVideoService';
 import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
 
+// interface VideoActionButtonsProps {
+//     video: VideoGridContent[],
+//     user: User,
+//     onCommentClick: () => void,
+//     onInfoClick: () => void,
+//     onSwipe: () => void
+// }
+
 export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, onSwipe }) {
     const [isLiked, setIsLiked] = useState(video.isLiked);
     const [likeCount, setLikeCount] = useState(video.likeCount);

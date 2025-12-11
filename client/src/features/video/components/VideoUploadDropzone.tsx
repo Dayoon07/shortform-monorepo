@@ -3,11 +3,16 @@ import { UploadIcon } from '../../../widgets/icon/icon';
 import { useClickSound } from '../../../shared/hooks/useClickSound';
 import { clickSound } from '../../../shared/constants/Mp3List';
 
-export default function VideoUploadDropzone({ onFileSelect, disabled }) {
+interface VideoUploadDropzoneProps {
+    onFileSelect: (file: File) => void,
+    disabled: boolean
+}
+
+export default function VideoUploadDropzone({ onFileSelect, disabled }: VideoUploadDropzoneProps) {
     const [isDragging, setIsDragging] = useState(false);
     const handlePlaySound = useClickSound(clickSound);
 
-    const handleDragOver = (e) => {
+    const handleDragOver = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         if (!disabled) setIsDragging(true);
     };
@@ -16,7 +21,7 @@ export default function VideoUploadDropzone({ onFileSelect, disabled }) {
         setIsDragging(false);
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = (e: { preventDefault: () => void; dataTransfer: { files: any; }; }) => {
         e.preventDefault();
         setIsDragging(false);
         
@@ -28,7 +33,7 @@ export default function VideoUploadDropzone({ onFileSelect, disabled }) {
         }
     };
 
-    const handleFileInput = (e) => {
+    const handleFileInput = (e: { target: { files: any; }; }) => {
         if (disabled) return;
         
         const files = e.target.files;
@@ -72,7 +77,7 @@ export default function VideoUploadDropzone({ onFileSelect, disabled }) {
                     type="button"
                     onClick={(e) => {
                         e.preventDefault();
-                        document.getElementById('video-file-input').click();
+                        document.getElementById('video-file-input')?.click();
                         handlePlaySound();
                     }}
                     disabled={disabled}
