@@ -1,7 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { LogIn } from "lucide-react";
 import { ROUTE } from "../../../shared/constants/Route";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { useUser } from "../../../shared/context/UserContext";
 import { useClickSound } from "../../../shared/hooks/useClickSound";
 import { NAVITEM } from "../../../shared/constants/BottomNavBarLocationList";

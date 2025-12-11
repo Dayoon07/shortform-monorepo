@@ -1,5 +1,4 @@
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
-import { API_LIST } from "../../../shared/constants/ApiList";
+import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { User } from "../../../entities/user/model/User";
 import { apiClient } from "../../../shared/utils/ApiClient";
 import { ToggleFollowRes } from "../../../entities/follow/ui/ToggleFollowRes";

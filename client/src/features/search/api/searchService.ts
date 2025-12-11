@@ -1,6 +1,6 @@
 import { SearchHistory } from "../../../entities/search/ui/SearchHistory";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
-import { API_LIST } from "../../../shared/constants/ApiList";
+import { API_LIST } from "../../../shared/constants/ApiCollectionList";
 import { apiClient } from "../../../shared/utils/ApiClient";
 
 export async function searchVideoLogic(query: string): Promise<VideoGridContent[]> {

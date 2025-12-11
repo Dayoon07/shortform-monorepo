@@ -1,3 +1,5 @@
+export const REST_API_SERVER: string = "http://localhost:9005";
+
 // 웬만하면 RequestParam으로 요청하는 거는 함수처럼 만듬
 export const API_LIST = {
     USER: {

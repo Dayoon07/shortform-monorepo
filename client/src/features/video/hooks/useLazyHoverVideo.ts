@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useRef } from "react";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
 // 비디오 언로드 지연 시간 (5초)

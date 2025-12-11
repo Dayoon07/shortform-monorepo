@@ -1,10 +1,9 @@
 import { Comment } from "../../../entities/comment/ui/Comment";
-import { API_LIST } from "../../../shared/constants/ApiList";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 
 export async function insertComment(formData: FormData): Promise<any> {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.COMMENT.INSERT_COMMENT}`, {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.COMMENT.INSERT}`, {
             method: "POST",
             body: formData
         });
@@ -20,7 +19,7 @@ export async function insertComment(formData: FormData): Promise<any> {
 
 export async function popularCommentList(videoId: number): Promise<Comment[]> {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.COMMENT.POPULAR_COMMENT_LIST(videoId)}`);
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.COMMENT.POPULAR_LIST(videoId)}`);
         if (!res.ok) throw new Error("에러남!!!");
         const data = await res.json();
         console.log(data);
@@ -33,7 +32,7 @@ export async function popularCommentList(videoId: number): Promise<Comment[]> {
 
 export async function recentCommentList(videoId: number): Promise<Comment[]> {
     try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.COMMENT.RECENT_COMMENT_LIST(videoId)}`);
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.COMMENT.RECENT_LIST(videoId)}`);
         if (!res.ok) throw new Error("에러남!!!");
         const data = await res.json();
         console.log(data);

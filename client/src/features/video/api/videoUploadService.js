@@ -1,5 +1,4 @@
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
-import { API_LIST } from "../../../shared/constants/ApiList";
+import { REST_API_SERVER, API_LIST } from "../../../shared/constants/ApiCollectionList";
 
 /**
  * 비디오를 서버에 업로드합니다

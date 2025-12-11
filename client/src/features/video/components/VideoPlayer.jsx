@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Play, Pause } from 'lucide-react';
-import { REST_API_SERVER } from '../../../shared/constants/ApiServer';
+import { REST_API_SERVER } from '../../../shared/constants/ApiCollectionList';
 import { useVideoPlayer } from '../hooks/useVideoPlayer';
 
 export function VideoPlayer({ video }) {

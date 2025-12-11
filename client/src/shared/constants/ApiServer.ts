@@ -1,1 +1,0 @@
-export const REST_API_SERVER: string = "http://localhost:9005";

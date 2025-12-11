@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
-import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
+import { REST_API_SERVER } from "../../../../shared/constants/ApiCollectionList";
 import { NAV_ITEMS } from "../../../../shared/constants/SideBarNavItem";
 import { User } from "../../../../entities/user/model/User";
 

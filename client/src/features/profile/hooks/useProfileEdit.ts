@@ -3,12 +3,12 @@ import { editUserProfile } from "../api/profileService";
 import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
-import { ProfileInfo } from "../../../entities/profile/ui/ProfileUserInfo";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { ProfileUserInfo } from "../../../entities/profile/ui/ProfileUserInfo";
+import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { ROUTE } from "../../../shared/constants/Route";
 
-export function useProfileEdit(profile: ProfileInfo, onClose: () => void) {
-    const [previewImg, setPreviewImg] = useState<ProfileInfo | string>(profile?.profileImgSrc || "");
+export function useProfileEdit(profile: ProfileUserInfo, onClose: () => void) {
+    const [previewImg, setPreviewImg] = useState<ProfileUserInfo | string>(profile?.profileImgSrc || "");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const navigate = useNavigate();
     const { setUser } = useUser();
@@ -48,6 +48,7 @@ export function useProfileEdit(profile: ProfileInfo, onClose: () => void) {
                 profile?.social ? profile.profileImgSrc : REST_API_SERVER + profile?.profileImgSrc, // currentProfileImgSrc
             );
             
+            if (data === undefined) throw new Error("값이 없음: " + data);
             if (data.user) 
                 localStorage.setItem("user", JSON.stringify(data.user));
 

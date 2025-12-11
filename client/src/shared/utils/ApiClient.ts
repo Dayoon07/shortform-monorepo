@@ -1,4 +1,4 @@
-import { REST_API_SERVER } from "../constants/ApiServer";
+import { REST_API_SERVER } from "../constants/ApiCollectionList";
 import { showErrorToast } from "./toast";
 
 // API 응답 래퍼 타입

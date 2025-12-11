@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ThumbsUp, MessageCircle, Share2, MoreVertical } from "lucide-react";
-import { REST_API_SERVER } from "../../../../shared/constants/ApiServer";
+import { REST_API_SERVER } from "../../../../shared/constants/ApiCollectionList";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { togglePostLike } from "../../api/postService";
 import { showSuccessToast, showErrorToast } from "../../../../shared/utils/toast";

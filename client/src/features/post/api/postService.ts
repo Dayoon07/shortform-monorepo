@@ -1,5 +1,4 @@
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
-import { API_LIST } from "../../../shared/constants/ApiList";
+import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { Post } from "../../../entities/post/ui/Post";
 
 export async function getUserPosts(mention: string): Promise<Post[]> {

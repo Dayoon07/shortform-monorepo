@@ -1,22 +1,22 @@
 import { useState } from "react";
-import { REST_API_SERVER } from "../../shared/constants/ApiServer";
+import { REST_API_SERVER } from "../../shared/constants/ApiCollectionList";
 import { useUser } from "../../shared/context/UserContext";
 import { useProfile } from "../../features/profile/hooks/useProfile";
 import { FollowRelationModal } from "../../features/profile/components/ui/FollowRelationModal";
 import { useParams } from "react-router-dom";
 import ToggleFollowButton from "../../features/follow/components/ui/ToggleFollowButton";
 import ProfileEditFormModal from "../../features/profile/components/ProfileEditFormModal";
-import { ProfileInfo } from "../../entities/profile/ui/ProfileUserInfo";
+import { ProfileUserInfo } from "../../entities/profile/ui/ProfileUserInfo";
 import { User } from "../../entities/user/model/User";
 
 interface ProfileHeaderProps {
-    profile: ProfileInfo,
+    profile: ProfileUserInfo,
     videoCount: number,
     onShowInfo: () => void
 }
 
 export default function ProfileHeader({ profile, videoCount, onShowInfo }: ProfileHeaderProps) {
-    const [profileData, setProfileData] = useState<ProfileInfo>(profile);
+    const [profileData, setProfileData] = useState<ProfileUserInfo>(profile);
     const [profileEditModal, setProfileEditModal] = useState<boolean>(false);
     const [followModalOpen, setFollowModalOpen] = useState<boolean>(false);
     const [followModalTitle, setFollowModalTitle] = useState<string>("");

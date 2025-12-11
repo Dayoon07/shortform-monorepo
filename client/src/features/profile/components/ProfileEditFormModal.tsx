@@ -1,9 +1,9 @@
-import { ProfileInfo } from "../../../entities/profile/ui/ProfileUserInfo";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { ProfileUserInfo } from "../../../entities/profile/ui/ProfileUserInfo";
+import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { useProfileEdit } from "../hooks/useProfileEdit";
 
 interface ProfileEditFormModalProps {
-    profile: ProfileInfo,
+    profile: ProfileUserInfo,
     isOpen: boolean,
     onClose: () => void
 }

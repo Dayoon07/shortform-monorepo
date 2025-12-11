@@ -1,5 +1,4 @@
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
-import { API_LIST } from "../../../shared/constants/ApiList";
+import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { apiClient } from "../../../shared/utils/ApiClient";
 import { ProfileEditRes } from "../../../entities/profile/ui/ProfileEditRes";
 import { ProfileUserData } from "../../../entities/profile/ui/ProfileUserData";
@@ -54,6 +53,7 @@ export async function editUserProfile(
 
         const res = await apiClient.post<ProfileEditRes>(API_LIST.USER.EDIT, true, { form });
         if (!res.ok) throw new Error("서버 응답 오류: " + res);
+        if (!res.data === undefined) throw new Error("값이 없음: " + res);
 
         console.log("프로필 수정 성공:", res.data);
         return res.data;

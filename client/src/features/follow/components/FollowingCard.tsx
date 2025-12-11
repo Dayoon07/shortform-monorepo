@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import ToggleFollowButton from "./ui/ToggleFollowButton";
 import { useUser } from "../../../shared/context/UserContext";
 import { ROUTE } from "../../../shared/constants/Route";

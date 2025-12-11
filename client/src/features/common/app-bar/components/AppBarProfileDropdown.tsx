@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { CommunityPageIcon, LikePageIcon, UploadPageIcon } from "../../../../widgets/icon/icon";
 import { LogOut } from "lucide-react";
-import { useLogout } from "../../../../shared/hooks/user/useSession";
 import { CustomImage } from "../../../../shared/components/common/custom/CustomImage";
+import { useSession } from "../../../../shared/hooks/user/useSession";
 
 export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -13,7 +13,7 @@ export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
     const dropdownItem = `block w-full px-4 py-2 text-black 
         hover:bg-gray-300/50 z-[91] 
         flex items-center space-x-2`;
-    const { handleLogout } = useLogout();
+    const { logoutHook } = useSession();
         
     // useEffect(() => {
     //     function handleClickOutside(event: { target: any | null; }): void {
@@ -86,7 +86,7 @@ export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
                                 <span>커뮤니티</span>
                             </Link>
                             <button 
-                                onClick={handleLogout}
+                                onClick={logoutHook}
                                 className={dropdownItem}
                             >
                                 <LogOut className="w-6 h-6" />

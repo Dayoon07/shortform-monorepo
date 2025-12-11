@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Lock } from "lucide-react";
 import { useUser } from "../../shared/context/UserContext";
-import LoginModal from "../../features/user/components/LoginModal";
-import SignupModal from "../../features/user/components/SignupModal";
+import LoginModal from "../../shared/components/user/LoginModal";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../shared/constants/Route";
+import SignupModal from "../../shared/components/user/SignupModal";
 
 export default function LoginPlz() {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);

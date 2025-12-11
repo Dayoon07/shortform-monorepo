@@ -1,13 +1,13 @@
-import SearchBar from "../../../features/common/side-bar/components/SearchBar";
-import Navigation from "../../../features/common/side-bar/components/Navigation";
-import { useSearch } from "../../../shared/hooks/useSearch";
-import LoginModal from "../../../features/common/side-bar/components/LoginModal";
-import SignupModal from "../../../features/common/side-bar/components/SignupModal";
 import { useState } from "react";
-import AuthButtons from "../../../features/common/side-bar/components/ui/AuthButtons";
+import { Logo } from "../../../shared/components/common/Logo";
 import { useUser } from "../../../shared/context/UserContext";
 import { useSession } from "../../../shared/hooks/user/useSession";
-import { Logo } from "../../../shared/components/common/Logo";
+import { useSearch } from "../../../shared/hooks/useSearch";
+import SearchBar from "../../../features/common/side-bar/components/SearchBar";
+import Navigation from "../../../features/common/side-bar/components/Navigation";
+import SignupModal from "../../../features/common/side-bar/components/SignupModal";
+import LoginModal from "../../../shared/components/user/LoginModal";
+import AuthButtons from "../../../features/common/side-bar/components/ui/AuthButtons";
 
 export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);

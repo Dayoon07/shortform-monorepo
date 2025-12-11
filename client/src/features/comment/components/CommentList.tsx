@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../shared/constants/Route";
-import { REST_API_SERVER } from "../../../shared/constants/ApiServer";
+import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { LikePageIcon } from "../../../widgets/icon/icon";
 import { Comment } from "../../../entities/comment/ui/Comment";
 

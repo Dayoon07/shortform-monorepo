@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../shared/context/UserContext';
-import { REST_API_SERVER } from '../../shared/constants/ApiServer';
+import { API_LIST, REST_API_SERVER } from '../../shared/constants/ApiCollectionList';
 import { showSuccessToast, showErrorToast } from '../../shared/utils/toast';
 import { ROUTE } from '../../shared/constants/Route';
-import { API_LIST } from '../../shared/constants/ApiList';
 
 export default function OAuthCallbackPage() {
     const navigate = useNavigate();
