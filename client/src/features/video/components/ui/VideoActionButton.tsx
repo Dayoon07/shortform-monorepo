@@ -3,28 +3,29 @@ import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 interface VideoActionButtonProps {
     onClick: () => void,
-    disabled: boolean,
-    className?: string,
+    disabled?: boolean,
     ariaLabel: string,
-    children: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
+    BtnIcon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>,
+    text: string | number,
+    className?: string, 
 }
 
-export const VideoActionButton = () => {
+/** 좋아요 버튼을 제외한 나머지 액션 버튼을 위한 공통 컴포넌트 */
+export const VideoActionButton = ({
+    onClick, disabled = false, ariaLabel,
+    BtnIcon, text, className = ''
+}: VideoActionButtonProps) => {
     return (
         <div className="flex flex-col items-center group">
             <button
-                onClick={handleLike}
-                disabled={!user}
-                className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
-                aria-label="좋아요"
+                onClick={onClick}
+                disabled={disabled}
+                className={`bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all ${className}`}
+                aria-label={ariaLabel}
             >
-                <ThumbsUp
-                    className={`h-7 w-7 transition-colors duration-200 ${isAnimating ? 'heart-animation' : ''}`}
-                    fill={isLiked ? '#ef4444' : 'none'}
-                    stroke={isLiked ? '#ef4444' : 'currentColor'}
-                />
+                <BtnIcon className="h-7 w-7 text-black" />
             </button>
-            <span className="text-xs md:text-sm mt-1 text-white">{likeCount}</span>
-        </div>       
+            <span className="text-xs md:text-sm mt-1 text-black">{text}</span>
+        </div>
     );
-}
+};

@@ -2,18 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
 import ToggleFollowButton from '../../follow/components/ui/ToggleFollowButton';
-import { CustomImage } from '../../../shared/components/common/custom/CustomImage';
+import { Image } from '../../../shared/components/common/custom/Image';
 
-export function VideoInfoOverlay({ video, user, isFollowing, onFollowChange }) {
-    const truncate = (str, maxLen) => {
-        return str.length > maxLen ? str.substring(0, maxLen) + '...' : str;
-    };
+export function VideoInfoOverlay({ 
+    video, user, isFollowing, onFollowChange
+}) {
+    const truncate = (t, l) => t.length > l ? t.substring(0, l) + "..." : t;
 
     return (
         <div className="absolute left-2 md:left-6 bottom-20 md:bottom-32 space-y-2 md:space-y-3 w-2/3 md:w-1/2 z-20">
             <div className="flex items-center space-x-2 md:space-x-3">
                 <Link to={ROUTE.PROFILE(video.uploader.mention)}>
-                    <CustomImage url={video.uploader.profileImgSrc} alt='프로필'
+                    <Image 
+                        url={video.uploader.profileImgSrc} 
+                        alt='프로필'
                         className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover border-2 border-white 
                             border-opacity-30 transition-transform hover:scale-110"
                         social={video.uploader.social}

@@ -1,16 +1,11 @@
 import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { Post } from "../../../entities/post/ui/Post";
+import { apiClient } from "../../../shared/utils/ApiClient";
 
 export async function getUserPosts(mention: string): Promise<Post[]> {
-    try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.POST.USER_POST(mention)}`);
-        if (!res.ok) throw new Error('해당 게시물을 찾을 수 없습니다.');
-        const data: Post[] = await res.json();
-        return data;
-    } catch (error) {
-        console.error('게시물 수신 실패:', error);
-        throw error;
-    }
+    const res = await apiClient.get<Post[]>(API_LIST.POST.USER_POST(mention), false);
+    if (!res.ok || res.data === undefined) throw new Error("해당 게시글을 찾을 수 없습니다: " + res);
+    return res.data;
 }
 
 export async function createPost(formData: FormData) {

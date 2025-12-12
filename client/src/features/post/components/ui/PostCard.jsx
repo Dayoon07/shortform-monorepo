@@ -37,7 +37,7 @@ export default function PostCard({ post, onLike, onShare }) {
     };
 
     return (
-        <div className="bg-black border-b border-gray-800">
+        <div className="border-b border-gray-800">
 
             <div className="flex items-center justify-between px-4 py-3">
                 <Link 
@@ -57,7 +57,7 @@ export default function PostCard({ post, onLike, onShare }) {
                         }}
                     />
                     <div>
-                        <p className="text-sm font-semibold text-white">
+                        <p className="text-sm font-semibold">
                             {post.username}
                         </p>
                         <p className="text-xs text-gray-500">
@@ -65,14 +65,14 @@ export default function PostCard({ post, onLike, onShare }) {
                         </p>
                     </div>
                 </Link>
-                <button className="text-gray-400 hover:text-white p-2">
+                <button className="text-gray-400 hover:text-black p-2">
                     <MoreVertical className="w-5 h-5" />
                 </button>
             </div>
 
             {post.communityText && (
                 <div className="px-4 pb-3">
-                    <p className="text-white text-sm whitespace-pre-wrap break-words">
+                    <p className="text-black text-sm whitespace-pre-wrap break-words">
                         {post.communityText.length > 100 
                             ? `${post.communityText.substring(0, 100)}...` 
                             : post.communityText}
@@ -89,7 +89,7 @@ export default function PostCard({ post, onLike, onShare }) {
                         return (
                             <div 
                                 key={index}
-                                className={`relative bg-gray-900 ${
+                                className={`relative bg-gray-400 ${
                                     images.length === 1 
                                         ? 'aspect-[4/3]' 
                                         : images.length === 5 && index >= 3
@@ -107,7 +107,7 @@ export default function PostCard({ post, onLike, onShare }) {
                                 />
                                 {showOverlay && (
                                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                                        <span className="text-white text-3xl font-bold">
+                                        <span className="text-black text-3xl font-bold">
                                             +{remainingCount}
                                         </span>
                                     </div>

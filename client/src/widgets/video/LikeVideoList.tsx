@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
-import { myLikeVideoList } from "../../features/video/api/videoLikeService";
+import { myLikeVideoList } from "../../features/video/api/videoService";
 import { useUser } from "../../shared/context/UserContext";
 import ToGoPage from "../../shared/components/common/ToGoPage";
 import { VideoGridContent } from "../../entities/video/ui/VideoGridContent";

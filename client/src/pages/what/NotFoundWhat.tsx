@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { CustomImage } from "../../shared/components/common/custom/CustomImage";
+import { Image } from "../../shared/components/common/custom/Image";
 import { ROUTE } from "../../shared/constants/Route";
 
 export default function NotFoundWhat() {
     const navigate = useNavigate();
     const toGoHome = () => navigate(ROUTE.HOMEPAGE);
-
     return (
         <>
-            <CustomImage 
+            <Image 
                 url="https://dayoon07.github.io/img/wow404error.png"
                 alt="Not Found What is?"
                 social={true}

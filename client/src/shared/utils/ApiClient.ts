@@ -57,20 +57,54 @@ class ApiClient {
                 };
             }
 
-            // 응답이 JSON이 아닐 수도 있으므로 체크
-            const contentType = response.headers.get('content-type');
-            let data: T;
-            
-            contentType && contentType.includes('application/json') ? 
-                data = await response.json() 
-                : data = await response.text() as unknown as T;
+            // --- 응답 본문 처리 로직 개선 시작 ---
 
+            let data: T | undefined = undefined;
+            const contentType = response.headers.get('content-type');
+            const isJson = contentType && contentType.includes('application/json');
+            
+            // 응답이 성공(ok: true)이거나 실패했지만 본문이 있을 경우를 위해
+            // 그리고 상태 코드가 204 (No Content)가 아닌 경우에 본문을 읽습니다.
+            if (response.status !== 204) {
+                try {
+                    if (isJson) {
+                        // JSON 형태일 경우
+                        // 응답 본문이 비어있지 않은지 먼저 확인하는 것이 좋습니다.
+                        const text = await response.text();
+                        if (text) {
+                            data = JSON.parse(text) as T;
+                        }
+                    } else {
+                        // JSON이 아닐 경우 (텍스트, HTML 등)
+                        data = await response.text() as unknown as T;
+                    }
+                } catch (e) {
+                    // 본문 파싱 에러 (예: 비어있는 본문에 대해 JSON.parse 시도, 유효하지 않은 JSON 등)
+                    // 로그만 남기고 data는 undefined로 유지
+                    console.warn(`응답 본문 파싱 실패 (status: ${response.status}):`, e);
+                }
+            }
+
+            // response.ok가 false인 경우 에러 처리
+            if (!response.ok) {
+                console.error(`API 요청 실패 (Status: ${response.status})`, response);
+                return {
+                    ok: false,
+                    status: response.status,
+                    error: data && typeof data === 'object' && 'message' in data ? (data as any).message : `요청 실패, 상태 코드 : ${response.status}`
+                };
+            }
+
+            // 성공 응답 반환
             return {
                 ok: response.ok,
                 status: response.status,
                 data: data,
-                error: response.ok ? undefined : `요청 실패, 상태 코드 : ${response.status}`
+                error: undefined
             };
+
+            // --- 응답 본문 처리 로직 개선 끝 ---
+
         } catch (error) {
             showErrorToast(error as Error);
             console.error('API 요청 실패:', error);

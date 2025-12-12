@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Info, ThumbsUp, MessageCircle, Share2, ChevronUp, ChevronDown } from 'lucide-react';
+import { Info, MessageCircle, Share2, ChevronUp, ChevronDown } from 'lucide-react';
 import { toggleVideoLike } from '../api/swipeVideoService';
 import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
-
-// interface VideoActionButtonsProps {
-//     video: VideoGridContent[],
-//     user: User,
-//     onCommentClick: () => void,
-//     onInfoClick: () => void,
-//     onSwipe: () => void
-// }
+import { VideoLikeButton } from './ui/VideoLikeButton';
+import { VideoActionButton } from './ui/VideoActionButton';
 
 export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, onSwipe }) {
     const [isLiked, setIsLiked] = useState(video.isLiked);
     const [likeCount, setLikeCount] = useState(video.likeCount);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+
+    // video prop이 변경될 때마다 좋아요 상태 및 갯수 동기화
+    useEffect(() => {
+        setIsLiked(video.isLiked);
+        setLikeCount(video.likeCount);
+    }, [video.id, video.isLiked, video.likeCount]);
 
     // 화면 크기 감지 (md: 768px)
     useEffect(() => {
@@ -38,11 +38,11 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
         setTimeout(() => setIsAnimating(false), 600);
 
         try {
-            const data = await toggleVideoLike(video.id);
+            const data = await toggleVideoLike(video.id); 
             
             if (data) {
                 setIsLiked(data.isLiked);
-                if (data.totalLikes !== undefined) {
+                if (data.likeCnt !== undefined) { 
                     setLikeCount(data.likeCnt);
                 }
             }
@@ -54,7 +54,8 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
 
     const handleShare = async () => {
         try {
-            await navigator.clipboard.writeText(window.location.href);
+            // 현재 페이지 URL을 복사
+            await navigator.clipboard.writeText(window.location.href); 
             showSuccessToast("링크가 복사되었습니다");
         } catch (err) {
             console.error('클립보드 복사 실패:', err);
@@ -64,79 +65,59 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
 
     return (
         <div className="absolute right-2 md:right-6 bottom-20 md:bottom-32 flex flex-col items-center space-y-4 md:space-y-6 z-20">
-            <div className="flex flex-col items-center group">
-                <button
-                    onClick={handleLike}
-                    disabled={!user}
-                    className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
-                    aria-label="좋아요"
-                >
-                    <ThumbsUp
-                        className={`h-7 w-7 transition-colors duration-200 ${isAnimating ? 'heart-animation' : ''}`}
-                        fill={isLiked ? '#ef4444' : 'none'}
-                        stroke={isLiked ? '#ef4444' : 'currentColor'}
-                    />
-                </button>
-                <span className="text-xs md:text-sm mt-1 text-white">{likeCount}</span>
-            </div>
+            
+            {/* 좋아요 버튼 */}
+            <VideoLikeButton
+                onClick={handleLike}
+                disabled={!user}
+                ariaLabel="좋아요"
+                likeCount={likeCount}
+                isAnimating={isAnimating}
+                isLiked={isLiked}
+            />
 
-            <div className="flex flex-col items-center group">
-                <button
-                    onClick={onCommentClick}
-                    className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
-                    aria-label="댓글"
-                >
-                    <MessageCircle className="h-7 w-7 text-white" />
-                </button>
-                <span className="text-xs md:text-sm mt-1 text-white">{video.commentCount}</span>
-            </div>
+            {/* 댓글 버튼 */}
+            <VideoActionButton
+                onClick={onCommentClick}
+                ariaLabel="댓글"
+                BtnIcon={MessageCircle}
+                text={video.commentCount}
+            />
 
-            <div className="flex flex-col items-center group">
-                <button
-                    onClick={handleShare}
-                    className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
-                    aria-label="공유"
-                >
-                    <Share2 className="h-7 w-7 text-white" />
-                </button>
-                <span className="text-xs md:text-sm mt-1 text-white">공유</span>
-            </div>
+            {/* 공유 버튼 */}
+            <VideoActionButton
+                onClick={handleShare}
+                ariaLabel="공유"
+                BtnIcon={Share2}
+                text="공유"
+            />
 
-            <div className="flex flex-col items-center group">
-                <button
-                    onClick={onInfoClick}
-                    className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
-                    aria-label="설명"
-                >
-                    <Info className="h-7 w-7 text-white" />
-                </button>
-                <span className="text-xs md:text-sm mt-1 text-white">설명</span>
-            </div>
+            {/* 설명 버튼 */}
+            <VideoActionButton
+                onClick={onInfoClick}
+                ariaLabel="설명"
+                BtnIcon={Info}
+                text="설명"
+            />
 
             {/* 모바일 전용 위 스와이프 버튼 */}
             {isMobile && (
-                <div className="flex flex-col items-center group">
-                    <button
-                        onClick={() => onSwipe('prev')}
-                        className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
-                        aria-label="이전 영상"
-                    >
-                        <ChevronUp className="h-7 w-7 text-white" />
-                    </button>
-                </div>
+                <VideoActionButton
+                    onClick={() => onSwipe('prev')}
+                    ariaLabel="이전 영상"
+                    BtnIcon={ChevronUp}
+                    text="" // 텍스트를 표시하지 않을 경우 빈 문자열
+                />
             )}
 
             {/* 모바일 전용 아래 스와이프 버튼 */}
             {isMobile && (
-                <div className="flex flex-col items-center group">
-                    <button
-                        onClick={() => onSwipe('next')}
-                        className="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all"
-                        aria-label="다음 영상"
-                    >
-                        <ChevronDown className="h-7 w-7 text-white" />
-                    </button>
-                </div>
+                <VideoActionButton
+                    onClick={() => onSwipe('next')}
+                    ariaLabel="다음 영상"
+                    BtnIcon={ChevronDown}
+                    text="" // 텍스트를 표시하지 않을 경우 빈 문자열
+                />
             )}
         </div>
     );

@@ -14,75 +14,14 @@ export async function getVideoPaginated(page: number = 0, size: number = 20): Pr
             headers: { 'Content-Type': 'application/json' }
         });
 
-        if (!res.ok) {
+        if (!res.ok) 
             throw new Error(`HTTP error! status: ${res.status}`);
-        }
 
         const data: Page<VideoGridContent> = await res.json();
         console.log(data);
-        // 백엔드가 페이징 정보를 포함하지 않는 경우를 대비한 처리
-        // if (Array.isArray(data)) {
-        //     return {
-        //         content: data,
-        //         totalPages: 1,
-        //         totalElements: data.length,
-        //         last: true,
-        //         number: page
-        //     };
-        // }
-
         return data;
     } catch (error) {
         console.error('Failed to fetch videos:', error);
-        throw error;
-    }
-}
-
-/**
- * 모든 비디오를 가져옵니다 (기존 호환성 유지)
- * @returns {Promise<Array>} 비디오 배열
- */
-export async function getVideoAll(): Promise<Array<any>> {
-    try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO.ALL}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        const data = await res.json();
-        
-        if (!Array.isArray(data)) {
-            console.warn('Expected array but got:', typeof data);
-            return [];
-        }
-
-        return data;
-    } catch (error) {
-        console.error('Failed to fetch videos:', error);
-        throw error;
-    }
-}
-
-/**
- * 특정 비디오의 상세 정보를 가져옵니다
- */
-export async function getVideoById(videoLoc: string) {
-    try {
-        const res = await fetch(`${REST_API_SERVER}/api/video/${videoLoc}`);
-        
-        if (!res.ok) {
-            throw new Error(`Video not found: ${videoLoc}`);
-        }
-
-        return await res.json();
-    } catch (error) {
-        console.error('Failed to fetch video:', error);
         throw error;
     }
 }
@@ -100,27 +39,15 @@ export async function getTagVideoList(tag: string): Promise<VideoGridContent[]> 
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export async function myLikeVideoList(mention: string): Promise<VideoGridContent[]> {
+    try {
+        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO_LIKE.MY_LIKE_INFO(mention)}`);
+        if (!res.ok) throw new Error("에러남!!!");
+        const data: VideoGridContent[] = await res.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

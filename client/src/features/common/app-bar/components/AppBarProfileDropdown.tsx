@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { CommunityPageIcon, LikePageIcon, UploadPageIcon } from "../../../../widgets/icon/icon";
 import { LogOut } from "lucide-react";
-import { CustomImage } from "../../../../shared/components/common/custom/CustomImage";
+import { Image } from "../../../../shared/components/common/custom/Image";
 import { useSession } from "../../../../shared/hooks/user/useSession";
 
 export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
@@ -36,7 +36,7 @@ export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
                         aria-label="프로필 메뉴" 
                         aria-expanded={showDropdown}
                     >
-                        <CustomImage 
+                        <Image 
                             url={user.profileImgSrc}
                             alt={user.username + "의 프로필"}
                             social={user.social}
@@ -53,7 +53,7 @@ export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
                                 onClick={() => setShowDropdown(false)} 
                                 className="block w-full px-4 py-2 text-black hover:bg-gray-300/50 flex items-center transition-colors"
                             >
-                                <CustomImage 
+                                <Image 
                                     url={user.profileImgSrc}
                                     alt={user.username + "의 프로필"}
                                     social={user.social}

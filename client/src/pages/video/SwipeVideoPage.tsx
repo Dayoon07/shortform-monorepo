@@ -8,6 +8,7 @@ import { getFirstSwipeVideo } from '../../features/video/api/swipeVideoService';
 import ToGoPage from "../../shared/components/common/ToGoPage";
 import { CommentModal } from '../../widgets/comment/CommentModal';
 import { VideoInfoModal } from '../../widgets/video/VideoInfoModal';
+import { RandomVideoSwipe } from '../../entities/video/ui/RandomVideoSwipe';
 
 export default function SwipeVideoPage() {
     const params = useParams();
@@ -17,11 +18,11 @@ export default function SwipeVideoPage() {
     const mention = params?.mention?.replace('@', '');
     const videoLoc = params?.videoLoc;
     
-    const [initialVideo, setInitialVideo] = useState(null);
-    const [showCommentModal, setShowCommentModal] = useState(false);
-    const [showVideoInfoModal, setShowVideoInfoModal] = useState(false);
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [loadError, setLoadError] = useState(null);
+    const [initialVideo, setInitialVideo] = useState<RandomVideoSwipe | null>(null);
+    const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
+    const [showVideoInfoModal, setShowVideoInfoModal] = useState<boolean>(false);
+    const [isFollowing, setIsFollowing] = useState<boolean>(false);
+    const [loadError, setLoadError] = useState<string | null>(null);
     
     // 중복 호출 방지
     const hasFetched = useRef(false);
@@ -36,7 +37,7 @@ export default function SwipeVideoPage() {
     } = useSwipeVideo(initialVideo, user);
 
     // 스와이프 핸들러
-    const handleSwipe = (direction) => {
+    const handleSwipe = (direction: string) => {
         if (direction === 'next') nextVideo();
         if (direction === 'prev') prevVideo();
     };
@@ -62,15 +63,15 @@ export default function SwipeVideoPage() {
             hasFetched.current = true;
             
             try {
-                const data = await getFirstSwipeVideo(videoLoc, user?.mention);
+                const data = await getFirstSwipeVideo(videoLoc, user ? user.mention : null);
                 console.log(data);
-                if (!data) {
+                if (!data || data.data === undefined) {
                     setLoadError('영상을 찾을 수 없습니다');
                     return;
                 }
                 
-                setInitialVideo(data);
-                setIsFollowing(data.isFollowing || false);
+                setInitialVideo(data.data);
+                setIsFollowing(data.data.isFollowing || false);
             } catch (error) {
                 console.error('Error fetching initial video:', error);
                 setLoadError('영상을 불러올 수 없습니다');
@@ -79,13 +80,13 @@ export default function SwipeVideoPage() {
             }
         };
 
-        fetchInitialVideo();
+        if (user !== null) fetchInitialVideo();
     }, [mention, videoLoc, user, navigate]);
 
     // URL 업데이트 (뒤로가기 지원)
     useEffect(() => {
-        if (currentVideo?.uploader?.mention && currentVideo?.videoLoc) {
-            const newUrl = `${window.location.origin}/@${currentVideo.uploader.mention}/swipe/video/${currentVideo.videoLoc}`;
+        if (currentVideo?.video.uploader.mention && currentVideo?.video.videoLoc) {
+            const newUrl = `${window.location.origin}/@${currentVideo.video.uploader.mention}/swipe/video/${currentVideo.video.videoLoc}`;
             const currentPath = window.location.pathname;
             
             // URL이 다를 때만 업데이트
@@ -97,13 +98,13 @@ export default function SwipeVideoPage() {
                 );
             }
             
-            document.title = `${currentVideo.title || 'Video'} | FlipFlop`;
+            document.title = `${currentVideo.video.videoTitle || 'Video'} | FlipFlop`;
         }
     }, [currentVideo]);
 
     // 브라우저 뒤로가기 처리
     useEffect(() => {
-        const handlePopState = (e) => {
+        const handlePopState = (e: { preventDefault: () => void; }) => {
             // 뒤로가기 시 이전 비디오로 이동
             if (canGoPrev) {
                 e.preventDefault();
@@ -119,7 +120,7 @@ export default function SwipeVideoPage() {
     if (!initialVideo || !currentVideo) return <Loading message="영상을 불러오는 중..." />; // 초기 로딩
 
     return (
-        <main className="flex-1 flex items-center justify-center relative bg-black">
+        <main className="flex-1 flex items-center justify-center relative">
             <SwipeVideoPlayer
                 video={currentVideo}
                 user={user}
@@ -131,10 +132,10 @@ export default function SwipeVideoPage() {
             />
 
             {isLoading && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 pointer-events-none">
+                <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 pointer-events-none">
                     <div className="flex flex-col items-center space-y-4">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
-                        <p className="text-white text-sm">다음 영상 로딩중...</p>
+                        <p className="text-black text-sm">다음 영상 로딩중...</p>
                     </div>
                 </div>
             )}
@@ -173,7 +174,7 @@ export default function SwipeVideoPage() {
             <CommentModal
                 open={showCommentModal}
                 onClose={() => setShowCommentModal(false)}
-                videoCommentSize={currentVideo.commentCount}
+                videoCommentSize={currentVideo.commentCnt}
                 user={user}
                 videoId={currentVideo.id}
             />
@@ -181,7 +182,7 @@ export default function SwipeVideoPage() {
            <VideoInfoModal
                 open={showVideoInfoModal}
                 onClose={() => setShowVideoInfoModal(false)}
-                video={currentVideo}
+                v={currentVideo}
             />
         </main>
     );

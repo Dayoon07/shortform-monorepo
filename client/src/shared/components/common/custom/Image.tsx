@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import { REST_API_SERVER } from "../../../constants/ApiCollectionList";
 
-interface CustomImageProps {
+interface ImageProps {
     url: string,
     alt: string,
     social: boolean,
@@ -16,9 +16,9 @@ interface CustomImageProps {
  * 해당 컴포넌트는 social 여부를 가지고 주소를 가지므로  
  * 외부 이미지 사용 시 social 값은 하드코딩으로 true 값을 넣고 사용
  */
-export const CustomImage = ({
+export const Image = ({
     url, alt, social, style, className, onClick
-}: CustomImageProps) => {
+}: ImageProps) => {
     const p = social ? url : REST_API_SERVER + url;
     return (
         <img 

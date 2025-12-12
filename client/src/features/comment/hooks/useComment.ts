@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { insertComment, popularCommentList, recentCommentList } from "../api/commentService";
 import { Comment } from "../../../entities/comment/ui/Comment";
+import { showErrorToast } from "../../../shared/utils/toast";
 
 export const useComment = (videoId: number) => {
     const [commentList, setCommentList] = useState<Comment[]>([]);
@@ -30,8 +31,12 @@ export const useComment = (videoId: number) => {
     const getPopularCommentList = async (): Promise<void> => {
         try {
             const data = await popularCommentList(videoId);
+            if (data.data === undefined) {
+                showErrorToast("댓글을 찾거나 가져올 수 없습니다");
+                return;
+            }
             console.log(data);
-            setCommentList(data);
+            setCommentList(data.data);
         } catch (error) {
             setErrorMessage(error as string);
             console.error(error);
@@ -42,8 +47,12 @@ export const useComment = (videoId: number) => {
     const getRecentCommentList = async (): Promise<void> => {
         try {
             const data = await recentCommentList(videoId);
+            if (data.data === undefined) {
+                showErrorToast("댓글을 찾거나 가져올 수 없습니다");
+                return;
+            }
             console.log(data);
-            setCommentList(data);
+            setCommentList(data.data);
         } catch (error) {
             setErrorMessage(error as string);
             console.error(error);
@@ -55,8 +64,12 @@ export const useComment = (videoId: number) => {
         const getPopularCommentListBootLoaderVer = async (): Promise<void> => {
             try {
                 const data = await popularCommentList(videoId);
+                if (data.data === undefined) {
+                    showErrorToast("댓글을 찾거나 가져올 수 없습니다");
+                    return;
+                }
                 console.log(data);
-                setCommentList(data);
+                setCommentList(data.data);
             } catch (error) {
                 setErrorMessage(error as string);
                 console.error(error);

@@ -2,7 +2,7 @@ import { memo, RefObject } from "react";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { VideoGridContent } from "../../../../entities/video/ui/VideoGridContent";
-import { CustomImage } from "../../../../shared/components/common/custom/CustomImage";
+import { Image } from "../../../../shared/components/common/custom/Image";
 
 interface VideoCardProps {
     video: VideoGridContent,
@@ -47,7 +47,7 @@ export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
 
             <div className="mt-2 px-1">
                 <Link to={ROUTE.PROFILE(video.mention)} className="block flex items-center space-x-2 mb-1">
-                    <CustomImage 
+                    <Image 
                         url={video.profileImgSrc} 
                         social={video.social} 
                         alt="VideoCard 컴포넌트 프로필"

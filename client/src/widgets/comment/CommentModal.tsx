@@ -4,13 +4,13 @@ import { showSuccessToast } from "../../shared/utils/toast";
 import { CommentList } from "../../features/comment/components/CommentList";
 import { User } from "../../entities/user/model/User";
 import { X } from "lucide-react";
-import { CustomImage } from "../../shared/components/common/custom/CustomImage";
+import { Image } from "../../shared/components/common/custom/Image";
 
 interface CommentModalWidgetProps {
     open: boolean,
     onClose: () => void,
     videoCommentSize: number,
-    user: User,
+    user: User | null,
     videoId: number
 }
 
@@ -28,7 +28,10 @@ export function CommentModal({
         commentList
     } = useComment(videoId);
 
-    const handleCommentWrite = async () => showSuccessToast(await commentWrite(videoId, commentText, user.mention));
+    const c = async () => {
+        if (user !== null) 
+            showSuccessToast(await commentWrite(videoId, commentText, user.mention));
+    };
 
     if (!open) return null;
 
@@ -88,7 +91,7 @@ export function CommentModal({
                 {user && (
                     <div className="p-4 border-t border-gray-700">
                         <div className="flex space-x-3">
-                            <CustomImage 
+                            <Image 
                                 url={user.profileImgSrc}
                                 social={user.social}
                                 alt="profile"
@@ -108,7 +111,7 @@ export function CommentModal({
                                     py-2 rounded-full text-sm font-medium transition-all duration-200 transform hover:scale-105"
                                     onClick={() => {
                                         if (commentText.trim() === "") return;
-                                        handleCommentWrite()
+                                        c()
                                         setCommentText("");
                                     }}
                                 >
