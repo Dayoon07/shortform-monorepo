@@ -5,9 +5,9 @@ import { VideoInfoOverlay } from '../../features/video/components/VideoInfoOverl
 import { RandomVideoSwipe } from '../../entities/video/ui/RandomVideoSwipe';
 import { User } from '../../entities/user/model/User';
 
-interface SwipeVideoPlayer {
+interface SwipeVideoPlayerProps {
     video: RandomVideoSwipe, 
-    user: User, 
+    user: User | null, 
     isFollowing: boolean, 
     onFollowChange: React.Dispatch<React.SetStateAction<boolean>>,
     onCommentClick: () => void,
@@ -23,8 +23,8 @@ export default function SwipeVideoPlayer({
     onCommentClick,
     onInfoClick,
     onSwipe 
-}: SwipeVideoPlayer) {
-    const [isMobile, setIsMobile] = useState(false);
+}: SwipeVideoPlayerProps) {
+    const [isMobile, setIsMobile] = useState<boolean>(false);
 
     // 화면 크기 감지 (md: 768px)
     useEffect(() => {
@@ -37,16 +37,18 @@ export default function SwipeVideoPlayer({
     useEffect(() => {
         let startY = 0;
 
-        const handleTouchStart = (e: { touches: { clientY: number; }[]; }) => startY = e.touches[0].clientY;
+        const handleTouchStart = (e: TouchEvent): void => {
+            startY = e.touches[0].clientY;
+        };
 
-        const handleTouchEnd = (e: { changedTouches: { clientY: any; }[]; }) => {
+        const handleTouchEnd = (e: TouchEvent): void => {
             const endY = e.changedTouches[0].clientY;
             const delta = startY - endY;
             if (delta > 50)   onSwipe('next');
             if (delta < -50)  onSwipe('prev');
         };
 
-        const handleWheel = (e: { deltaY: number; }) => {
+        const handleWheel = (e: WheelEvent): void => {
             if (e.deltaY > 50)  onSwipe('next');
             if (e.deltaY < -50) onSwipe('prev');
         };

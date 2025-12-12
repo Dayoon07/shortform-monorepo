@@ -14,8 +14,7 @@ export async function getFirstSwipeVideo(
     videoLoc: string, mention: string | null
 ): Promise<ApiResponse<RandomVideoSwipe>> {
     return await apiClient.post<RandomVideoSwipe>(
-        API_LIST.VIDEO.FIRST_SWIPE_VIDEO(videoLoc, mention),
-        false);
+        API_LIST.VIDEO.FIRST_SWIPE_VIDEO(videoLoc, mention), false);
 }
 
 export async function toggleVideoLike(videoId: number): Promise<ApiResponse<any>> {

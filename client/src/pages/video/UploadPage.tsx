@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../shared/context/UserContext';
 import { useVideoUpload } from '../../features/video/hooks/useVideoUpload';
 import VideoUploadDropzone from '../../features/video/components/VideoUploadDropzone';
-// import VideoPreview from '../../features/video/components/VideoPreview';
 import UploadProgress from '../../features/video/components/UploadProgress';
 import VideoUploadModal from '../../widgets/video/VideoUploadModal';
 import { ROUTE } from '../../shared/constants/Route';
@@ -52,14 +51,6 @@ export default function UploadPage() {
                     onFileSelect={handleFileSelect}
                     disabled={fileProgress > 0 && fileProgress < 100}
                 />
-
-                {/* {currentFile && !showModal && (
-                    <VideoPreview
-                        videoUrl={previewUrl}
-                        fileName={currentFile.name}
-                        fileSize={currentFile.size}
-                    />
-                )} */}
 
                 {fileProgress > 0 && fileProgress < 100 && (
                     <div className="w-full max-w-3xl">

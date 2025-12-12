@@ -9,24 +9,20 @@ import ToGoPage from "../../shared/components/common/ToGoPage";
 import { CommentModal } from '../../widgets/comment/CommentModal';
 import { VideoInfoModal } from '../../widgets/video/VideoInfoModal';
 import { RandomVideoSwipe } from '../../entities/video/ui/RandomVideoSwipe';
+import { ErrorAndLoading } from '../../features/video/components/ErrorAndLoading';
 
 export default function SwipeVideoPage() {
-    const params = useParams();
-    const navigate = useNavigate();
-    const { user } = useUser();
-    
-    const mention = params?.mention?.replace('@', '');
-    const videoLoc = params?.videoLoc;
-    
     const [initialVideo, setInitialVideo] = useState<RandomVideoSwipe | null>(null);
     const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
     const [showVideoInfoModal, setShowVideoInfoModal] = useState<boolean>(false);
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [loadError, setLoadError] = useState<string | null>(null);
-    
-    // 중복 호출 방지
-    const hasFetched = useRef(false);
-
+    const params = useParams();
+    const mention = params?.mention?.replace('@', '');
+    const videoLoc = params?.videoLoc;
+    const navigate = useNavigate();
+    const { user } = useUser();
+    const hasFetched = useRef<boolean>(false);   // 중복 호출 방지
     const {
         currentVideo,
         nextVideo,
@@ -36,7 +32,7 @@ export default function SwipeVideoPage() {
         canGoPrev
     } = useSwipeVideo(initialVideo, user);
 
-    // 스와이프 핸들러
+    /** 스와이프 핸들러 */
     const handleSwipe = (direction: string) => {
         if (direction === 'next') nextVideo();
         if (direction === 'prev') prevVideo();
@@ -45,52 +41,35 @@ export default function SwipeVideoPage() {
     // 초기 비디오 로드
     useEffect(() => {
         const fetchInitialVideo = async () => {
-            // 이미 호출했으면 중단
-            if (hasFetched.current) return;
-            
-            // 로그인 안 했으면 로그인 페이지로
-            // if (!user) {
-            //     navigate('/loginplz');
-            //     return;
-            // }
+            if (hasFetched.current) return; // 이미 호출했으면 중단
             
             if (!videoLoc || !mention) {
-                setLoadError('잘못된 접근입니다');
+                setLoadError('잘못된 접근입니다'); 
                 return;
             }
             
-            // 호출 시작 표시
-            hasFetched.current = true;
-            
-            try {
-                const data = await getFirstSwipeVideo(videoLoc, user ? user.mention : null);
-                console.log(data);
-                if (!data || data.data === undefined) {
-                    setLoadError('영상을 찾을 수 없습니다');
-                    return;
-                }
-                
-                setInitialVideo(data.data);
-                setIsFollowing(data.data.isFollowing || false);
-            } catch (error) {
-                console.error('Error fetching initial video:', error);
-                setLoadError('영상을 불러올 수 없습니다');
-                // 에러 발생 시 다시 시도 가능하도록
-                hasFetched.current = false;
+            hasFetched.current = true;  // 호출 시작 표시
+            const data = await getFirstSwipeVideo(videoLoc, user ? user.mention : null);
+            console.log(data);
+            if (!data || data.data === undefined) {
+                setLoadError("영상을 불러올 수 없습니다");
+                hasFetched.current = false; // 에러 발생 시 다시 시도 가능하도록
+                return;
             }
+            
+            setInitialVideo(data.data);
+            setIsFollowing(data.data.isFollowing || false);
         };
 
         if (user !== null) fetchInitialVideo();
     }, [mention, videoLoc, user, navigate]);
 
-    // URL 업데이트 (뒤로가기 지원)
-    useEffect(() => {
+    useEffect(() => {   // URL 업데이트 (뒤로가기 지원)
         if (currentVideo?.video.uploader.mention && currentVideo?.video.videoLoc) {
             const newUrl = `${window.location.origin}/@${currentVideo.video.uploader.mention}/swipe/video/${currentVideo.video.videoLoc}`;
             const currentPath = window.location.pathname;
             
-            // URL이 다를 때만 업데이트
-            if (currentPath !== newUrl) {
+            if (currentPath !== newUrl) {   // URL이 다를 때만 업데이트
                 window.history.pushState(
                     { videoId: currentVideo.id }, 
                     '', 
@@ -102,11 +81,9 @@ export default function SwipeVideoPage() {
         }
     }, [currentVideo]);
 
-    // 브라우저 뒤로가기 처리
-    useEffect(() => {
+    useEffect(() => {   // 브라우저 뒤로가기 처리
         const handlePopState = (e: { preventDefault: () => void; }) => {
-            // 뒤로가기 시 이전 비디오로 이동
-            if (canGoPrev) {
+            if (canGoPrev) {    // 뒤로가기 시 이전 비디오로 이동
                 e.preventDefault();
                 prevVideo();
             }
@@ -131,45 +108,11 @@ export default function SwipeVideoPage() {
                 onSwipe={handleSwipe}
             />
 
-            {isLoading && (
-                <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 pointer-events-none">
-                    <div className="flex flex-col items-center space-y-4">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
-                        <p className="text-black text-sm">다음 영상 로딩중...</p>
-                    </div>
-                </div>
-            )}
-
-            {swipeError && (
-                <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 
-                    text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadeIn"
-                >
-                    {swipeError}
-                </div>
-            )}
-
-            <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 flex items-center 
-                space-x-4 text-white text-sm opacity-50 z-40 pointer-events-none"
-            >
-                {canGoPrev && (
-                    <div className="flex items-center space-x-1">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 
-                                0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd"
-                            />
-                        </svg>
-                        <span>위로 스와이프</span>
-                    </div>
-                )}
-                <div className="flex items-center space-x-1">
-                    <span>아래로 스와이프</span>
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 
-                            1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"
-                        />
-                    </svg>
-                </div>
-            </div>
+            <ErrorAndLoading 
+                isLoading={isLoading}
+                swipeError={swipeError}
+                canGoPrev={canGoPrev}
+            />
 
             <CommentModal
                 open={showCommentModal}

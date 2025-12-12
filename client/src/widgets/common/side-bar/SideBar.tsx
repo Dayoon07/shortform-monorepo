@@ -10,13 +10,14 @@ import LoginModal from "../../../shared/components/user/LoginModal";
 import AuthButtons from "../../../features/common/side-bar/components/ui/AuthButtons";
 
 export default function SideBar() {
-    const side = `max-md:hidden w-64 border-r flex 
-        flex-col px-4 space-y-4 fixed h-full left-0 top-0`;
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
     const [showSignupModal, setShowSignupModal] = useState<boolean>(false);
     const [searchWord] = useSearch();
     const { user } = useUser();
     const { logoutHook } = useSession();
+
+    const side = `max-md:hidden w-64 border-r flex 
+        flex-col px-4 space-y-4 fixed h-full left-0 top-0`;
 
     return (
         <div>
