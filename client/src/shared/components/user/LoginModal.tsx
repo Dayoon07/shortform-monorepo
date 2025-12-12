@@ -72,6 +72,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
                         "로그인"
                     )}
                 </button>
+                <hr />
                 <div 
                     id="google-login-btn" 
                     onClick={() => {window.location.href = url}}

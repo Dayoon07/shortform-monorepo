@@ -1,4 +1,3 @@
-import React from "react";
 import LoginPlz from "../../widgets/user/LoginPlz";
-const LoginPlzPage = (): React.JSX.Element => <LoginPlz />
+const LoginPlzPage = () => <LoginPlz />
 export default LoginPlzPage;
