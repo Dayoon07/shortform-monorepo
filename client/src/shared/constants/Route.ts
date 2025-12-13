@@ -36,19 +36,12 @@ export const ROUTE = {
     PROFILE_VIDEO: (mention: string, videoLoc: string) => `/@${mention}/video/${videoLoc}`,
 
     /** 
-     * 특정 사용자의 게시물 목록 페이지 경로
-     * @param {string} mention - 사용자 아이디
-     * @example ROUTE.PROFILE_POST("yoon") => "/@yoon/post"
-     */
-    PROFILE_POST: (mention: string) => `/@${mention}/post`,
-
-    /** 
      * 특정 사용자의 게시물 상세 페이지 경로
      * @param {string} mention - 사용자 아이디
      * @param {string} communityUuid - 커뮤니티 게시물의 고유 식별자(UUID)
-     * @example ROUTE.PROFILE_POST_DETAIL("yoon", "abcd-efgh") => "/@yoon/post/abcd-efgh"
+     * @example ROUTE.POST_DETAIL("yoon", "abcd-efgh") => "/@yoon/post/abcd-efgh"
      */
-    PROFILE_POST_DETAIL: (mention: string, communityUuid: string) => `/@${mention}/post/${communityUuid}`,
+    POST_DETAIL: (mention: string, communityUuid: string) => `/@${mention}/post/${communityUuid}`,
 
     /** 
      * 프로필 내 스와이프 비디오 상세 페이지 경로

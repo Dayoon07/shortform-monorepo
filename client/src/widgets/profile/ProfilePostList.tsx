@@ -1,15 +1,15 @@
 import { Post } from "../../entities/post/ui/Post";
 import { togglePostLike } from "../../features/post/api/postService";
-import PostCard from "../../features/post/components/ui/PostCard";
+import PostCard from "../../features/post/components/PostCard";
 import { showSuccessToast, showErrorToast } from "../../shared/utils/toast";
+import { cl } from "../../shared/constants/CurrentLocation";
 
 export default function ProfilePostList({ posts }: { posts: Post[] }) {
-    
-    const handleShare = async (communityUuid: string) => {
-        const post = posts.find(p => p.communityUuid === communityUuid);
+    const handleShare = async (cuuid: string) => {
+        const post = posts.find(p => p.communityUuid === cuuid);
         if (!post) return;
 
-        const url = `${window.location.origin}/@${post.mention}/post/${communityUuid}`;
+        const url = `${cl}/@${post.mention}/post/${cuuid}`;
         
         try {
             await navigator.clipboard.writeText(url);
@@ -20,9 +20,9 @@ export default function ProfilePostList({ posts }: { posts: Post[] }) {
         }
     };
 
-    const handleLike = async (post: Post) => {
+    const handleLike = async (communityUuid: string) => {
         try {
-            const data = await togglePostLike(post.communityUuid);
+            const data = await togglePostLike(communityUuid);
             console.log(data);
         } catch (error) {
             showErrorToast('좋아요 처리에 실패했습니다.');
@@ -52,12 +52,12 @@ export default function ProfilePostList({ posts }: { posts: Post[] }) {
     }
 
     return (
-        <div className="w-full sm:max-w-lg pb-24">
+        <div className="md:max-w-6xl md:mx-auto sm:max-w-lg md:pt-20 p-4 space-y-4">
             {posts.map((post) => (
                 <PostCard 
                     key={post.communityUuid || post.id}
                     post={post}
-                    onLike={() => handleLike(post)}
+                    onLike={() => handleLike(post.communityUuid)}
                     onShare={handleShare}
                 />
             ))}

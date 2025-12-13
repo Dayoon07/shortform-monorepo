@@ -1,4 +1,4 @@
-export interface LoginResponse {
+export interface LoginRes {
     success: boolean,
     message: string,
     token: string,

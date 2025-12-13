@@ -1,5 +1,7 @@
 import { useRef } from "react";
 
+export const clickSound: string = "/mp3/click.mp3";
+
 export function useClickSound(filePath: string) {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 

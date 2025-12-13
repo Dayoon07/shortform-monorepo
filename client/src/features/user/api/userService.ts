@@ -1,5 +1,5 @@
 import { UserInfoEditResponse } from "../../../entities/user/ui/UserInfoEditRes";
-import { LoginResponse } from "../../../entities/user/ui/LoginRes";
+import { LoginRes } from "../../../entities/user/ui/LoginRes";
 import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
 import { LogoutRes } from "../../../entities/user/ui/LogoutRes";
@@ -26,8 +26,8 @@ export async function signup(formData: FormData): Promise<{ data: string }> {
     }
 }
 
-export async function login(username: string, password: string): Promise<LoginResponse | null> {
-    const response = await apiClient.post<LoginResponse>(API_LIST.USER.LOGIN, false, {
+export async function login(username: string, password: string): Promise<LoginRes | null> {
+    const response = await apiClient.post<LoginRes>(API_LIST.USER.LOGIN, false, {
         "username": username,
         "password": password
     });
@@ -44,7 +44,7 @@ export async function login(username: string, password: string): Promise<LoginRe
     }
 }
 
-export async function logout(token: string | null): Promise<LogoutRes> {
+export async function logout(): Promise<LogoutRes> {
     const res = await apiClient.post<LogoutRes>(API_LIST.USER.LOGOUT, true);
     if (!res.ok || res.data === undefined) throw new Error("에러남!");
     localStorage.clear();

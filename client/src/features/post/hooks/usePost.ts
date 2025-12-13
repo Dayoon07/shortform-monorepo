@@ -29,9 +29,12 @@ export function usePost(user: User | null) {
         setIsSubmitting(true);
         try {
             const res = await createPost(formData);
+            console.log(res);
 
-            if (!res.ok || res.data === undefined)
+            if (!res.ok || res.data === undefined) {
+                showErrorToast(res.data?.message || '게시글 작성에 실패했습니다');
                 throw new Error(res.data?.message || '게시글 작성에 실패했습니다');
+            }
 
             if (res.data) {
                 showSuccessToast(res.data.message);
@@ -70,6 +73,7 @@ export function usePost(user: User | null) {
 
         if (contentTooLong) {
             setValidationMessage('내용이 너무 깁니다. 2000자 이하로 작성해주세요');
+            showErrorToast('내용이 너무 깁니다. 2000자 이하로 작성해주세요')
             return false;
         }
 
@@ -89,11 +93,8 @@ export function usePost(user: User | null) {
         uploadedImages.forEach(file => formData.append('images', file));
 
         try {
-            const response = await submitPost(formData);
-            if (response.success) {
-                // 1.5초 후 프로필 게시글 페이지로 이동
-                setTimeout(() => navigate(ROUTE.PROFILE_POST(user.mention)), 1500);
-            }
+            const r = await submitPost(formData);
+            if (r !== undefined && r.success) navigate(ROUTE.PROFILE(user.mention));
         } catch (error) {
             console.error('게시글 작성 실패:', error);
         }
@@ -107,6 +108,7 @@ export function usePost(user: User | null) {
         const remainingSlots = maxImages - uploadedImages.length;
 
         if (remainingSlots <= 0) {
+            showErrorToast(`최대 ${maxImages}장까지만 업로드할 수 있습니다`);
             setValidationMessage(`최대 ${maxImages}장까지만 업로드할 수 있습니다`);
             return;
         }
@@ -114,9 +116,11 @@ export function usePost(user: User | null) {
         const validFiles = filesArray.slice(0, remainingSlots).filter(file => {
             if (!file.type.startsWith('image/')) {
                 setValidationMessage('이미지 파일만 업로드 가능합니다');
+                showErrorToast("이미지 파일만 업로드 가능합니다");
                 return false;
             }
             if (file.size > maxFileSize) {
+                showErrorToast("5MB 이하의 파일만 업로드 가능합니다");
                 setValidationMessage('5MB 이하의 파일만 업로드 가능합니다');
                 return false;
             }

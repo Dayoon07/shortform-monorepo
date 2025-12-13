@@ -10,6 +10,7 @@ import { CommentModal } from '../../widgets/comment/CommentModal';
 import { VideoInfoModal } from '../../widgets/video/VideoInfoModal';
 import { RandomVideoSwipe } from '../../entities/video/ui/RandomVideoSwipe';
 import { ErrorAndLoading } from '../../features/video/components/ErrorAndLoading';
+import { cl } from '../../shared/constants/CurrentLocation';
 
 export default function SwipeVideoPage() {
     const [initialVideo, setInitialVideo] = useState<RandomVideoSwipe | null>(null);
@@ -17,11 +18,11 @@ export default function SwipeVideoPage() {
     const [showVideoInfoModal, setShowVideoInfoModal] = useState<boolean>(false);
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [loadError, setLoadError] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const { user } = useUser();
     const params = useParams();
     const mention = params?.mention?.replace('@', '');
     const videoLoc = params?.videoLoc;
-    const navigate = useNavigate();
-    const { user } = useUser();
     const hasFetched = useRef<boolean>(false);   // 중복 호출 방지
     const {
         currentVideo,
@@ -66,7 +67,7 @@ export default function SwipeVideoPage() {
 
     useEffect(() => {   // URL 업데이트 (뒤로가기 지원)
         if (currentVideo?.video.uploader.mention && currentVideo?.video.videoLoc) {
-            const newUrl = `${window.location.origin}/@${currentVideo.video.uploader.mention}/swipe/video/${currentVideo.video.videoLoc}`;
+            const newUrl = `${cl}/@${currentVideo.video.uploader.mention}/swipe/video/${currentVideo.video.videoLoc}`;
             const currentPath = window.location.pathname;
             
             if (currentPath !== newUrl) {   // URL이 다를 때만 업데이트

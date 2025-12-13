@@ -30,19 +30,19 @@ export function PostWriteForm() {
     } = usePost(user);
 
     const postValueList = [{
-        value: AvailabilityStatus.PUBLIC,
-        label: "공개",
-        desc: "모든 사용자가 볼 수 있습니다"
-    },
-    {
-        value: AvailabilityStatus.FOLLOWERS,
-        label: "팔로워만",
-        desc: "나를 팔로우하는 사용자만 볼 수 있습니다"
-    },
-    {
-        value: AvailabilityStatus.PRIVATE,
-        label: "비공개",
-        desc: "나만 볼 수 있습니다"
+            value: AvailabilityStatus.PUBLIC,
+            label: "공개",
+            desc: "모든 사용자가 볼 수 있습니다"
+        },
+        {
+            value: AvailabilityStatus.FOLLOWERS,
+            label: "팔로워만",
+            desc: "나를 팔로우하는 사용자만 볼 수 있습니다"
+        },
+        {
+            value: AvailabilityStatus.PRIVATE,
+            label: "비공개",
+            desc: "나만 볼 수 있습니다"
     }];
 
     // 이탈 경고 이벤트 등록

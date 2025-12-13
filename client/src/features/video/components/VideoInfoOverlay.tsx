@@ -16,7 +16,8 @@ interface VideoInfoOverlayProps {
 export function VideoInfoOverlay({ 
     video, user, isFollowing, onFollowChange
 }: VideoInfoOverlayProps) {
-    const truncate = (t: string, l: number) => t.length > l ? t.substring(0, l) + "..." : t;
+    const truncate = (t: string, l: number) => 
+        t.length > l ? t.substring(0, l) + "..." : t;
 
     return (
         <div className="absolute left-2 md:left-6 bottom-20 md:bottom-32 space-y-2 md:space-y-3 w-2/3 md:w-1/2 z-20">
@@ -33,12 +34,12 @@ export function VideoInfoOverlay({
                 
                 <div style={{ maxWidth: '128px' }}>
                     <Link to={ROUTE.PROFILE(video.video.uploader.mention)} className="block truncate">
-                        <span className="text-sm md:text-lg font-semibold hover:text-blue-300 transition-colors">
+                        <span className="text-sm md:text-lg font-semibold hover:underline transition-colors">
                             {truncate(video.video.uploader.username, 10)}
                         </span>
                     </Link>
                     <Link to={ROUTE.PROFILE(video.video.uploader.mention)} className="block">
-                        <span className="text-xs text-gray-300 hover:text-gray-100 transition-colors">
+                        <span className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
                             {truncate(`@${video.video.uploader.mention}`, 10)}
                         </span>
                     </Link>
@@ -52,7 +53,7 @@ export function VideoInfoOverlay({
                 )}
             </div>
 
-            <h1 className="text-sm md:text-base font-medium text-white line-clamp-2">
+            <h1 className="text-sm md:text-base font-medium line-clamp-2">
                 {video.video.videoTitle}
             </h1>
 
@@ -62,7 +63,8 @@ export function VideoInfoOverlay({
                         <Link
                             key={index}
                             to={ROUTE.HASHTAG(tag.trim())}
-                            className="text-xs bg-white bg-opacity-10 text-blue-300 px-2 py-1 rounded-full cursor-pointer hover:bg-opacity-20 transition-all duration-200"
+                            className="text-xs bg-gray-200 text-blue-400 py-1 px-3 rounded-full 
+                                cursor-pointer hover:bg-opacity-20 transition-all duration-200"
                         >
                             {tag.trim()}
                         </Link>
@@ -70,7 +72,7 @@ export function VideoInfoOverlay({
                 </div>
             )}
 
-            <p className="text-xs md:text-sm text-gray-300 line-clamp-2">
+            <p className="text-xs md:text-sm text-gray-400 line-clamp-2">
                 {video.video.videoDescription}
             </p>
         </div>

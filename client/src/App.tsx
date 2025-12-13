@@ -20,6 +20,7 @@ import TagVideoPage from "./pages/video/TagVideoPage";
 import OAuthCallbackPage from "./pages/user/OAuthCallbackPage";
 import NotFoundWhat from "./pages/what/NotFoundWhat";
 import "./App.css";
+import ProfilePostDetailPage from "./pages/profile/ProfilePostDetailPage";
 
 export default function App() {
     return (
@@ -42,6 +43,7 @@ export default function App() {
                                 <Route path={ROUTE.LIKES}                           element={<LikesPage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO}     element={<SwipeVideoPage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE}                 element={<ProfilePage />} />
+                                <Route path={PATTERN_ROUTE.PROFILE_POST_DETAIL}     element={<ProfilePostDetailPage />} />
                                 <Route path={ROUTE.OAUTH_CALLBACK}                  element={<OAuthCallbackPage />} />
                                 <Route path={PATTERN_ROUTE.WILD_CARD}               element={<NotFoundWhat />} />
                             </Routes>

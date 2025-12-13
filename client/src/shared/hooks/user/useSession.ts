@@ -4,18 +4,18 @@ import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import { ROUTE } from "../../constants/Route";
 import { useUser } from "../../context/UserContext";
 import { useState } from "react";
-import { LoginResponse } from "../../../entities/user/ui/LoginRes";
+import { LoginRes } from "../../../entities/user/ui/LoginRes";
 
 export const useSession = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const { accessTkn, setUser } = useUser();
+    const { setUser } = useUser();
     const navigate = useNavigate();
 
     const logoutHook = async (): Promise<void> => {
-        const data = await logout(accessTkn);
+        const data = await logout();
         setUser(null);
         showSuccessToast(data.message);
         navigate(ROUTE.HOMEPAGE);
@@ -33,7 +33,7 @@ export const useSession = () => {
         setIsLoading(true);
 
         try {
-            const data: LoginResponse | null = await login(username, password);
+            const data: LoginRes | null = await login(username, password);
             
             if (data && data.success) {
                 setUser(data.user);

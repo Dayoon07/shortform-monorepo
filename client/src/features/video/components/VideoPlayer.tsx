@@ -32,14 +32,12 @@ export const VideoPlayer = ({ video }: { video: RandomVideoSwipe }) => {
                 playsInline
             />
 
-            {/* onClick에 void를 반환하는 함수 타입 명시 */}
             <div 
                 className="absolute inset-0 cursor-pointer z-10"
                 onClick={togglePlay}
             />
 
             <div className="absolute md:top-4 md:left-4 top-2 left-2 z-30">
-                {/* onClick에 void를 반환하는 함수 타입 명시 */}
                 <button
                     onClick={togglePlay}
                     className="bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition"
@@ -49,7 +47,6 @@ export const VideoPlayer = ({ video }: { video: RandomVideoSwipe }) => {
                 </button>
             </div>
 
-            {/* onClick에 MouseEvent<HTMLDivElement>를 받는 함수 타입 명시 */}
             <div 
                 className="absolute bottom-0 max-md:bottom-9 left-0 w-full h-2 bg-gray-600 z-20 cursor-pointer"
                 onClick={handleProgressClick}

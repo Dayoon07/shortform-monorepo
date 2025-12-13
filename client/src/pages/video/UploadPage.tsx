@@ -45,7 +45,7 @@ export default function UploadPage() {
     if (!user) return null;
 
     return (
-        <main className="flex-1 min-h-screen">
+        <main className="flex-1 md:min-h-screen">
             <section className="w-full md:h-full md:flex md:flex-col items-center justify-center px-4 py-6 max-md:mt-32">
                 <VideoUploadDropzone
                     onFileSelect={handleFileSelect}
@@ -63,27 +63,19 @@ export default function UploadPage() {
                 )}
 
                 <div className="flex flex-col lg:flex-row lg:flex-wrap lg:justify-center lg:gap-8 
-                    text-xs md:text-sm mt-6 space-y-4 lg:space-y-0"
-                >
+                    text-xs md:text-sm mt-4 space-y-4 lg:space-y-0">
                     <div className="text-gray-400">
-                        <div className="flex items-start gap-2">
-                            <span className="font-bold">크기</span>
-                            <span>최대 크기: 150MB</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                            <span className="font-bold">파일 형식</span>
-                            <span>권장 형식은 .mp4이며 주요 포맷 지원</span>
-                        </div>
-                    </div>
-                    <div className="text-gray-400">
-                        <div className="flex items-start gap-2">
-                            <span className="font-bold">해상도</span>
-                            <span>1080p, 1440p, 4K 고해상도 권장</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                            <span className="font-bold">비율</span>
-                            <span>가로: 16:9, 세로: 9:16 권장</span>
-                        </div>
+                        {[
+                            { title: "크기",        value: "최대 크기: 150MB"                  },
+                            { title: "파일 형식",   value: "권장 형식은 .mp4이며 주요 포맷 지원" },
+                            { title: "해상도",      value: "1080p, 1440p, 4K 고해상도 권장"    },
+                            { title: "비율",        value: "가로: 16:9, 세로: 9:16 권장"       },
+                        ].map((e, i) => ( 
+                            <div key={e.title} className="flex items-start gap-2">
+                                <span className="font-bold">{e.title}</span>
+                                <span>{e.value}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>

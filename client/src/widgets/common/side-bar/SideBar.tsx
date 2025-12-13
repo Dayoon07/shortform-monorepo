@@ -5,9 +5,9 @@ import { useSession } from "../../../shared/hooks/user/useSession";
 import { useSearch } from "../../../shared/hooks/useSearch";
 import SearchBar from "../../../features/common/side-bar/components/SearchBar";
 import Navigation from "../../../features/common/side-bar/components/Navigation";
-import SignupModal from "../../../features/common/side-bar/components/SignupModal";
 import LoginModal from "../../../shared/components/user/LoginModal";
 import AuthButtons from "../../../features/common/side-bar/components/ui/AuthButtons";
+import SignupModal from "../../../shared/components/user/SignupModal";
 
 export default function SideBar() {
     const [showLoginModal, setShowLoginModal] = useState<boolean>(false);

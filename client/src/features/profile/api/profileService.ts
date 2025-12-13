@@ -7,7 +7,7 @@ export async function getProfileByMention(mention: string): Promise<ProfileUserD
     const res = await apiClient.get<ProfileUserData>(API_LIST.USER.INFO(mention), false);
     if (!res.ok || res.data === undefined) 
         throw new Error("멘션에 해당하는 프로필 사용자를 찾지 못했습니다: " + res);
-    console.log(res.data);
+    // console.log(res.data);
     return res.data;
 }
 

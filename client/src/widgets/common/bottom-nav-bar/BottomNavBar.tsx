@@ -1,25 +1,17 @@
 import { useLocation, Link } from "react-router-dom";
 import { LogIn } from "lucide-react";
 import { ROUTE } from "../../../shared/constants/Route";
-import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { useUser } from "../../../shared/context/UserContext";
-import { useClickSound } from "../../../shared/hooks/useClickSound";
 import { NAVITEM } from "../../../shared/constants/BottomNavBarLocationList";
-import { clickSound } from "../../../shared/constants/Mp3List";
+import { Image } from "../../../shared/components/common/custom/Image";
 
 export default function BottomNavBar() {
     const { user } = useUser();
     const loc = useLocation();
-    const handlePlayClickSound = useClickSound(clickSound);
 
     /** 현재 경로가 활성 상태인지 확인 */
-    const isActive = (path: string): boolean => {
-        if (path === ROUTE.HOMEPAGE) {
-            return loc.pathname === path;
-        } else {
-            return loc.pathname.startsWith(path);
-        }
-    };
+    const isActive = (p: string): boolean => 
+        p === ROUTE.HOMEPAGE ? loc.pathname === p : loc.pathname.startsWith(p);
 
     return (
         <nav className="fixed bottom-0 left-0 w-full bg-gray-200/90 backdrop-blur-sm border-t border px-4 md:hidden z-[100]">
@@ -34,7 +26,6 @@ export default function BottomNavBar() {
                             key={item.to} 
                             aria-label={item.label} 
                             aria-current={active ? 'page' : undefined} 
-                            onClick={handlePlayClickSound}
                             className={`nav-item relative p-3 flex flex-col items-center transition-colors
                                 ${active ? 'text-black' : 'text-gray-400'}
                             `}
@@ -48,19 +39,18 @@ export default function BottomNavBar() {
                     <Link
                         to={ROUTE.PROFILE(user.mention)} 
                         aria-label="프로필" 
-                        onClick={handlePlayClickSound}
                         aria-current={isActive(ROUTE.PROFILE(user.mention)) ? 'page' : undefined}
                         className={`nav-item p-3 flex flex-col items-center gap-1 transition-colors ${
                             isActive(ROUTE.PROFILE(user.mention)) ? 'text-black' : 'text-gray-400'
                         }`}
                     >
-                        <div 
-                            className={`w-6 h-6 rounded-full overflow-hidden ${
-                                isActive(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-black' : ''
-                            }`}>
-                            <img 
-                                src={user.social ? user.profileImgSrc : REST_API_SERVER + user.profileImgSrc} 
+                        <div className={`w-6 h-6 rounded-full overflow-hidden ${
+                            isActive(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-black' : ''
+                        }`}>
+                            <Image
+                                url={user.profileImgSrc}
                                 alt={user.username + "님의 프로필"}
+                                social={user.social}
                                 className="w-full h-full object-cover"
                             />
                         </div>
@@ -69,7 +59,6 @@ export default function BottomNavBar() {
                     <Link
                         to={ROUTE.LOGINPLZ}
                         aria-label="로그인"
-                        onClick={handlePlayClickSound}
                         className={`nav-item p-3 transition-colors ${
                             isActive(ROUTE.LOGINPLZ) ? 'text-black' : 'text-gray-400'
                         }`}

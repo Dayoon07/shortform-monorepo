@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { UploadIcon } from '../../../widgets/icon/icon';
-import { useClickSound } from '../../../shared/hooks/useClickSound';
-import { clickSound } from '../../../shared/constants/Mp3List';
 
 interface VideoUploadDropzoneProps {
     onFileSelect: (file: File) => void,
@@ -9,8 +7,7 @@ interface VideoUploadDropzoneProps {
 }
 
 export default function VideoUploadDropzone({ onFileSelect, disabled }: VideoUploadDropzoneProps) {
-    const [isDragging, setIsDragging] = useState(false);
-    const handlePlaySound = useClickSound(clickSound);
+    const [isDragging, setIsDragging] = useState<boolean>(false);
 
     const handleDragOver = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -78,11 +75,9 @@ export default function VideoUploadDropzone({ onFileSelect, disabled }: VideoUpl
                     onClick={(e) => {
                         e.preventDefault();
                         document.getElementById('video-file-input')?.click();
-                        handlePlaySound();
                     }}
                     disabled={disabled}
-                    className="mt-4 px-4 py-2 md:px-6 md:py-2 bg-gradient-to-r from-pink-500 to-sky-500 
-                        hover:from-pink-600 hover:to-sky-600 text-white rounded-md font-medium
+                    className="mt-4 px-4 py-2 md:px-6 md:py-2 rounded-md bg-gray-300/50 font-bold 
                         disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     동영상 선택

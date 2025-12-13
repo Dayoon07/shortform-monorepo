@@ -28,7 +28,7 @@ export const VideoLikeButton = ({
                     stroke={isLiked ? '#ef4444' : 'currentColor'}
                 />
             </button>
-            <span className="text-xs md:text-sm mt-1 text-white">{likeCount}</span>
+            <span className="text-xs md:text-sm mt-1">{likeCount}</span>
         </div>
     );
 };

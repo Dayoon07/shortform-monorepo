@@ -61,8 +61,8 @@ export default function ProfileImageUpload({
                 onDragOver={handleDragOver} 
                 onDragLeave={handleDragLeave} 
                 onDrop={handleDrop}
-                className={`relative bg-gray-800 rounded px-3 py-6 flex flex-col items-center justify-center transition-all ${
-                    isDragging ? 'border-2 border-gray-400 bg-gray-400/10' : ''
+                className={`relative bg-gray-200 rounded px-3 py-6 flex flex-col items-center justify-center transition-all ${
+                    isDragging ? 'ring-2 bg-gray-300' : ''
                 }`}
             >
                 <input 
@@ -80,13 +80,13 @@ export default function ProfileImageUpload({
                 ) : (
                     <p className="text-sm text-gray-400 text-center">
                         이미지를 업로드하려면 <br /> 
-                        클릭하거나 <span className="text-white font-semibold">드래그</span> 하세요
+                        클릭하거나 <span className="text-black font-semibold">드래그</span> 하세요
                     </p>
                 )}
             </div>
             <button 
                 onClick={onNext} 
-                className="w-full py-3 mt-4 rounded-xl font-semibold bg-gray-700 hover:bg-gray-600 transition-all"
+                className="w-full py-3 mt-4 rounded-xl font-semibold bg-gray-200 hover:bg-gray-300 transition-all"
             >
                 다음
             </button>

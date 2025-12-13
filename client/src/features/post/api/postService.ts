@@ -1,6 +1,7 @@
 import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { Post } from "../../../entities/post/ui/Post";
-import { apiClient } from "../../../shared/utils/ApiClient";
+import { apiClient, ApiResponse } from "../../../shared/utils/ApiClient";
+import { WritePostRes } from "../../../entities/post/ui/WritePostRes";
 
 export async function getUserPosts(mention: string): Promise<Post[]> {
     const res = await apiClient.get<Post[]>(API_LIST.POST.USER_POST(mention), false);
@@ -8,8 +9,9 @@ export async function getUserPosts(mention: string): Promise<Post[]> {
     return res.data;
 }
 
-export async function createPost(formData: FormData) {
-    return await apiClient.post<any>(API_LIST.POST.WRITE, true, formData);
+export async function createPost(formData: FormData): Promise<ApiResponse<WritePostRes>> {
+    return await apiClient.post<WritePostRes>(
+        API_LIST.POST.WRITE, true, formData);
 }
 
 export async function togglePostLike(communityUuid: string) {

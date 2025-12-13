@@ -23,9 +23,9 @@ export const VideoActionButton = ({
                 className={`bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-2 md:p-3 transition-all ${className}`}
                 aria-label={ariaLabel}
             >
-                <BtnIcon className="h-7 w-7 text-black" />
+                <BtnIcon className="h-7 w-7" />
             </button>
-            <span className="text-xs md:text-sm mt-1 text-black">{text}</span>
+            <span className="text-xs md:text-sm mt-1">{text}</span>
         </div>
     );
 };

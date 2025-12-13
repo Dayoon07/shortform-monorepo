@@ -43,7 +43,7 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
             if (data) {
                 setIsLiked(data.isLiked);
                 if (data.likeCnt !== undefined) { 
-                    setLikeCount(data.likeCnt);
+                    setLikeCount(data.data.likeCnt);
                 }
             }
         } catch (error) {
@@ -65,9 +65,7 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
 
     return (
         <div className="absolute right-2 md:right-6 bottom-20 md:bottom-32 flex flex-col items-center space-y-4 md:space-y-6 z-20">
-            
-            {/* 좋아요 버튼 */}
-            <VideoLikeButton
+            <VideoLikeButton 
                 onClick={handleLike}
                 disabled={!user}
                 ariaLabel="좋아요"
@@ -76,24 +74,21 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
                 isLiked={isLiked}
             />
 
-            {/* 댓글 버튼 */}
-            <VideoActionButton
+            <VideoActionButton 
                 onClick={onCommentClick}
                 ariaLabel="댓글"
                 BtnIcon={MessageCircle}
                 text={video.commentCount}
             />
 
-            {/* 공유 버튼 */}
-            <VideoActionButton
+            <VideoActionButton 
                 onClick={handleShare}
                 ariaLabel="공유"
                 BtnIcon={Share2}
                 text="공유"
             />
 
-            {/* 설명 버튼 */}
-            <VideoActionButton
+            <VideoActionButton 
                 onClick={onInfoClick}
                 ariaLabel="설명"
                 BtnIcon={Info}
