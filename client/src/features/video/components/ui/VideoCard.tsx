@@ -51,7 +51,7 @@ export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
                         url={video.profileImgSrc} 
                         social={video.social} 
                         alt="VideoCard 컴포넌트 프로필"
-                        className="w-8 h-8 rounded-full object-cover"
+                        className="w-8 h-8 border rounded-full object-cover"
                     />
                     <span className="text-md font-bold truncate">
                         {video.uploaderUsername}

@@ -1,25 +1,22 @@
 import { User } from "../../entities/user/model/User";
 import { EmptyState } from "../../features/follow/components/EmptyState";
-import { FollowingCard } from "../../features/follow/components/FollowingCard";
+import { FollowingRow } from "../../features/follow/components/FollowingRow";
 
 const FollowingList = ({ followings }: { followings: User[] }) => {
-    if (!(followings instanceof Array)) return <EmptyState />;
-    if (followings.length === 0) return <EmptyState />;
+    if (!(followings instanceof Array) || followings.length === 0) return <EmptyState />;
     
     return (
-        <div>
-            <div className="mb-8">
-                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">팔로잉</h1>
-                <p className="text-gray-400 text-sm md:text-base">
-                    현재 <span className="text-blue-400 font-semibold">{followings.length}</span>명을 팔로잉하고 있습니다
+        <div className="md:max-w-4xl md:mx-auto p-4"> {/* Row 형식은 최대 너비를 줄여 중앙 정렬 */}
+            <div className="mb-6">
+                <h1 className="text-3xl font-extrabold text-gray-900 mb-2">팔로잉</h1>
+                <p className="text-gray-500 text-base">
+                    현재 <span className="text-blue-600 font-bold">{followings.length}</span>명을 팔로잉하고 있습니다
                 </p>
             </div>
-            <div className="md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
-                sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 
-                max-md:pb-[56px] p-2"
-            >
+            
+            <div className="flex flex-col gap-3"> {/* 행 간의 간격 */}
                 {followings.map((follower) => (
-                    <FollowingCard
+                    <FollowingRow
                         key={follower.id || follower.mention}
                         followingUser={follower}
                     />

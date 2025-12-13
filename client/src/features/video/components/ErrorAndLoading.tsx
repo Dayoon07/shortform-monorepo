@@ -1,12 +1,14 @@
+import React from "react";
+
 interface ErrorAndLoadingProps {
     isLoading: boolean,
     swipeError: string | null,
     canGoPrev: boolean
 }
 
-export const ErrorAndLoading = ({ 
+export const ErrorAndLoading: React.FC<ErrorAndLoadingProps> = ({
     isLoading, swipeError, canGoPrev
-}: ErrorAndLoadingProps) => {
+}) => {
     return (
         <>
             {isLoading && (

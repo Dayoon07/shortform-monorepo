@@ -4,6 +4,7 @@ import { showSuccessToast, showErrorToast } from '../../../shared/utils/toast';
 import { User } from '../../../entities/user/model/User';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
+import { AvailabilityStatus } from '../../../shared/constants/enums/AvailabilityStatuc';
 
 export function usePost(user: User | null) {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -11,7 +12,7 @@ export function usePost(user: User | null) {
 
     const [content, setContent] = useState<string>("");
     const [uploadedImages, setUploadedImages] = useState<Blob[]>([]);
-    const [visibility, setVisibility] = useState<string>("public");
+    const [visibility, setVisibility] = useState<string>(AvailabilityStatus.PUBLIC);
     const [dragOver, setDragOver] = useState<boolean>(false);
     const [validationMessage, setValidationMessage] = useState<string>("");
 
@@ -27,16 +28,17 @@ export function usePost(user: User | null) {
 
         setIsSubmitting(true);
         try {
-            const response = await createPost(formData);
+            const res = await createPost(formData);
 
-            if (response.success) {
-                showSuccessToast(response.message);
-                return response;
-            } else {
-                throw new Error(response.message || '게시글 작성에 실패했습니다.');
+            if (!res.ok || res.data === undefined)
+                throw new Error(res.data?.message || '게시글 작성에 실패했습니다');
+
+            if (res.data) {
+                showSuccessToast(res.data.message);
+                return res.data;
             }
         } catch (error) {
-            showErrorToast(error as string || '네트워크 오류가 발생했습니다.');
+            showErrorToast(error as string || '네트워크 오류가 발생했습니다');
             throw error;
         } finally {
             setIsSubmitting(false);
@@ -61,12 +63,13 @@ export function usePost(user: User | null) {
         const contentTooLong = content.length > maxContentLength;
 
         if (!hasContent && !hasImages) {
-            setValidationMessage('글 또는 이미지 중 하나를 입력해주세요.');
+            setValidationMessage('글 또는 이미지 중 하나를 입력해주세요');
+            showErrorToast('글 또는 이미지 중 하나를 입력해주세요');
             return false;
         }
 
         if (contentTooLong) {
-            setValidationMessage('내용이 너무 깁니다. 2000자 이하로 작성해주세요.');
+            setValidationMessage('내용이 너무 깁니다. 2000자 이하로 작성해주세요');
             return false;
         }
 
@@ -104,17 +107,17 @@ export function usePost(user: User | null) {
         const remainingSlots = maxImages - uploadedImages.length;
 
         if (remainingSlots <= 0) {
-            setValidationMessage(`최대 ${maxImages}장까지만 업로드할 수 있습니다.`);
+            setValidationMessage(`최대 ${maxImages}장까지만 업로드할 수 있습니다`);
             return;
         }
 
         const validFiles = filesArray.slice(0, remainingSlots).filter(file => {
             if (!file.type.startsWith('image/')) {
-                setValidationMessage('이미지 파일만 업로드 가능합니다.');
+                setValidationMessage('이미지 파일만 업로드 가능합니다');
                 return false;
             }
             if (file.size > maxFileSize) {
-                setValidationMessage('5MB 이하의 파일만 업로드 가능합니다.');
+                setValidationMessage('5MB 이하의 파일만 업로드 가능합니다');
                 return false;
             }
             return true;

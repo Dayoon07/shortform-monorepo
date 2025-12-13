@@ -45,8 +45,8 @@ export const API_LIST = {
         TOGGLE_UPG_VER: "/api/follow/toggle/upgrade"
     },
     POST: {
-        USER_POST: (m: string) => `/api/user/post/info?mention=${m}`,
-        WRITE: "/api/post/write",
-        TOGGLE_LIKE: (i: string) => `/api/post/like?communityUuid=${i}`
+        USER_POST: (m: string) => `/api/community/find?mention=${m}`,
+        WRITE: "/api/community/write",
+        TOGGLE_LIKE: (i: string) => `/api/community/like?communityUuid=${i}`
     }
 };

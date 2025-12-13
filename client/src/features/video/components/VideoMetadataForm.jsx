@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useUser } from "../../../shared/context/UserContext";
+import { AvailabilityStatus } from '../../../shared/constants/enums/AvailabilityStatuc';
 
 export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }) {
     const { user } = useUser();
@@ -7,8 +8,8 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
         title: '',
         description: '',
         hashtags: '',
-        visibility: 'public',
-        commentsAllowed: 'public',
+        visibility: AvailabilityStatus.PUBLIC,
+        commentsAllowed: AvailabilityStatus.PUBLIC,
         mention: user?.mention
     });
 
@@ -124,8 +125,8 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                         <input
                             type="radio"
                             name="commentsAllowed"
-                            value="public"
-                            checked={formData.commentsAllowed === 'public'}
+                            value={AvailabilityStatus.PUBLIC}
+                            checked={formData.commentsAllowed === AvailabilityStatus.PUBLIC}
                             onChange={handleChange}
                             disabled={isSubmitting}
                             className="w-4 h-4 text-[#FE2C55] border-gray-300 focus:ring-[#FE2C55]"
@@ -136,8 +137,8 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                         <input
                             type="radio"
                             name="commentsAllowed"
-                            value="followers"
-                            checked={formData.commentsAllowed === 'followers'}
+                            value={AvailabilityStatus.FOLLOWERS}
+                            checked={formData.commentsAllowed === AvailabilityStatus.FOLLOWERS}
                             onChange={handleChange}
                             disabled={isSubmitting}
                             className="w-4 h-4 text-[#FE2C55] border-gray-300 focus:ring-[#FE2C55]"
@@ -148,8 +149,8 @@ export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }
                         <input
                             type="radio"
                             name="commentsAllowed"
-                            value="private"
-                            checked={formData.commentsAllowed === 'private'}
+                            value={AvailabilityStatus.PRIVATE}
+                            checked={formData.commentsAllowed === AvailabilityStatus.PRIVATE}
                             onChange={handleChange}
                             disabled={isSubmitting}
                             className="w-4 h-4 text-[#FE2C55] border-gray-300 focus:ring-[#FE2C55]"

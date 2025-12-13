@@ -6,14 +6,6 @@ import { useUser } from "../../context/UserContext";
 import { useState } from "react";
 import { LoginResponse } from "../../../entities/user/ui/LoginRes";
 
-/**
- * 사용자 관리를 편하게 하기 위해 기존에 도메인마다 컴포넌트에 있던 중복된 
- * LoginModal, SignupModal을 합치고 logout, login hook으로 만들어서 
- * 전역에서 사용할 수 있게 만듬
- * 
- * 로그인은 shared에 있는 LoginModal에서만 진행하고 
- * 로그아웃은 logoutHook 하나만 가져가서 사용하면 됩니다
- */
 export const useSession = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -24,12 +16,12 @@ export const useSession = () => {
 
     const logoutHook = async (): Promise<void> => {
         const data = await logout(accessTkn);
-        setUser(null); // <- 이거 없으면 로컬 스토리지 안 지워짐
+        setUser(null);
         showSuccessToast(data.message);
         navigate(ROUTE.HOMEPAGE);
     };
 
-    const loginHook = async (e: { preventDefault: () => void; }) => {
+    const loginHook = async (e: { preventDefault: () => void; }, onSuccess?: () => void) => {
         e.preventDefault();
         setError("");
 
@@ -46,7 +38,14 @@ export const useSession = () => {
             if (data && data.success) {
                 setUser(data.user);
                 showSuccessToast(data.message);
-                navigate(ROUTE.HOMEPAGE);
+                
+                if (onSuccess) {
+                    onSuccess(); // 모달 닫기 콜백 실행
+                }
+                
+                setTimeout(() => {
+                    navigate(ROUTE.HOMEPAGE);
+                }, 100);
             } else {
                 setError(data?.message || "로그인에 실패했습니다");
                 showErrorToast(data?.message || "로그인에 실패했습니다");
@@ -71,9 +70,3 @@ export const useSession = () => {
         setPassword
     };
 }
-
-
-
-
-
-

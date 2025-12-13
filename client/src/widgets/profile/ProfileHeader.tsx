@@ -79,7 +79,7 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }: Profi
                     <div className="flex space-x-4 max-sm:justify-center">
                         <div>
                             <span className="text-lg font-semibold">{profile.followingCount || 0}</span>{' '}
-                            <span className="text-gray-500 hover:underline cursor-pointer"
+                            <span className="text-gray-600 hover:underline cursor-pointer"
                                 onClick={openFollowingModal}
                             >
                                 팔로우
@@ -88,7 +88,7 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }: Profi
 
                         <div>
                             <span className="text-lg font-semibold">{profileData.followerCount || 0}</span>{' '}
-                            <span className="text-gray-500 hover:underline cursor-pointer"
+                            <span className="text-gray-600 hover:underline cursor-pointer"
                                 onClick={openFollowerModal}
                             >
                                 팔로워
@@ -97,12 +97,12 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }: Profi
 
                         <div>
                             <span className="text-lg font-semibold">{videoCount || 0}</span>{' '}
-                            <span className="text-gray-500">동영상</span>
+                            <span className="text-gray-600">동영상</span>
                         </div>
                     </div>
 
                     {profile.bio && (
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-gray-600">
                             {profile.bio.length > 21 ? profile.bio.substring(0, 20) + '...' : profile.bio}
                         </p>
                     )}

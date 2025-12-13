@@ -11,7 +11,6 @@ import LoginPlzPage from "./pages/user/LoginPlzPage";
 import SearchPage from "./pages/search/SearchPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import FollowingPage from "./pages/follow/FollowingPage";
-import ProfilePostPage from "./pages/profile/ProfilePostPage";
 import SwipeVideoPage from "./pages/video/SwipeVideoPage";
 import ExplorePage from "./pages/video/ExplorePage";
 import UploadPage from "./pages/video/UploadPage";
@@ -43,7 +42,6 @@ export default function App() {
                                 <Route path={ROUTE.LIKES}                           element={<LikesPage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO}     element={<SwipeVideoPage />} />
                                 <Route path={PATTERN_ROUTE.PROFILE}                 element={<ProfilePage />} />
-                                <Route path={PATTERN_ROUTE.PROFILE_POST}            element={<ProfilePostPage />} />
                                 <Route path={ROUTE.OAUTH_CALLBACK}                  element={<OAuthCallbackPage />} />
                                 <Route path={PATTERN_ROUTE.WILD_CARD}               element={<NotFoundWhat />} />
                             </Routes>

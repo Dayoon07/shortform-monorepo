@@ -4,20 +4,26 @@ import { useUser } from "../../shared/context/UserContext";
 import { useProfile } from "../../features/profile/hooks/useProfile";
 import ProfileHeader from "../../widgets/profile/ProfileHeader";
 import ProfileInfoModal from "../../widgets/profile/ProfileInfoModal";
-// import { ROUTE } from "../../shared/constants/Route";
 import { Loading } from "../../shared/components/common/Loading";
 import NotFoundProfile from "../../widgets/profile/NotFoundProfile";
 import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
 import ProfilePostList from "../../widgets/profile/ProfilePostList";
 
+enum TabTitle {
+    VIDEO = "video",
+    POST = "post"
+}
+
 export default function ProfilePage() {
     const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
-    const [tab, setTab] = useState<string>("videos");
+    const [tab, setTab] = useState<TabTitle>(TabTitle.VIDEO); 
     const { mention } = useParams();
     const { user } = useUser();
-    // const navigate = useNavigate();
-    // const profileUserCleanMention = mention?.replace('@', '');
-    const tabClassName = "px-12 py-3 font-semibold border-b-2 transition max-md:w-full";
+    
+    const baseTabClassName = "px-12 py-3 font-semibold border-b-2 transition max-md:w-full";
+    const activeTabStyle = "border-black text-black"; // 활성화 시
+    const inactiveTabStyle = "border-transparent text-gray-500 hover:border-gray-300"; // 비활성화 시
+
     const {
         profile,
         posts,
@@ -36,23 +42,28 @@ export default function ProfilePage() {
                 onShowInfo={() => setShowInfoModal(true)}
             />
 
-            <div className="border-b sticky top-0 z-10">
+            <div className="border-b sticky top-0 z-10 bg-white">
                 <div className="flex md:max-w-6xl md:mx-auto">
-                    <button onClick={() => setTab("videos")}
-                        className={`${tab === "videos" ? "border-white" : "border-transparent"} ${tabClassName}`}
+                    <button 
+                        onClick={() => setTab(TabTitle.VIDEO)}
+                        className={`${baseTabClassName} ${
+                            tab === TabTitle.VIDEO ? activeTabStyle : inactiveTabStyle
+                        }`}
                     >
                         동영상
                     </button>
-                    <button onClick={() => setTab("posts")}
-                        className={`${tab === "posts" ? "border-white" : "border-transparent"} ${tabClassName}`}
+                    <button 
+                        onClick={() => setTab(TabTitle.POST)}
+                        className={`${baseTabClassName} ${
+                            tab === TabTitle.POST ? activeTabStyle : inactiveTabStyle
+                        }`}
                     >
                         게시글
                     </button>
                 </div>
             </div>
 
-            {tab === "videos" && (
-                videos.length > 0 ? (
+            {tab === TabTitle.VIDEO && (videos.length > 0 ? (
                     <CommonVideoGrid videos={videos} />
                 ) : (
                     <div className="text-center py-20">
@@ -61,7 +72,7 @@ export default function ProfilePage() {
                 )
             )}
 
-            {tab === "posts" && (
+            {tab === TabTitle.POST && (
                 posts.length > 0 ? (
                     <ProfilePostList posts={posts} />
                 ) : (

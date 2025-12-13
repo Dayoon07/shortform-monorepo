@@ -29,12 +29,10 @@ export async function upgradeToggleFollow(
 }
 
 export async function getFollowStatus(
-    reqUserMention: string,
-    resUserMention: string
+    reqUserMention: string, resUserMention: string
 ): Promise<ApiResponse<FollowStatusRes>> {
     return await apiClient.get<FollowStatusRes>(
-        API_LIST.FOLLOW.STATUS(reqUserMention, resUserMention), 
-        false);
+        API_LIST.FOLLOW.STATUS(reqUserMention, resUserMention), false);
 }
 
 export async function getFollowerList(id: number): Promise<ApiResponse<FollowingData[]>> {

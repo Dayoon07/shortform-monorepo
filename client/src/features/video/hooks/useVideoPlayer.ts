@@ -1,13 +1,22 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, MouseEvent, RefObject } from 'react';
 
-export function useVideoPlayer() {
+export interface VideoPlayerControls {
+    videoRef: RefObject<HTMLVideoElement | null>;
+    isPlaying: boolean;
+    progress: number;
+    togglePlay: () => void;
+    handleProgressClick: (e: MouseEvent<HTMLDivElement>) => void;
+}
+
+export function useVideoPlayer(): VideoPlayerControls {
     const [isPlaying, setIsPlaying] = useState(true);
     const [progress, setProgress] = useState(0);
-    const videoRef = useRef(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     const togglePlay = () => {
         if (videoRef.current) {
             if (videoRef.current.paused) {
+                // videoRef.current가 HTMLVideoElement임을 확신
                 videoRef.current.play();
                 setIsPlaying(true);
             } else {
@@ -19,14 +28,17 @@ export function useVideoPlayer() {
 
     const updateProgress = () => {
         if (videoRef.current) {
+            // videoRef.current가 HTMLVideoElement임을 확신
             const percent = (videoRef.current.currentTime / videoRef.current.duration) * 100;
             setProgress(percent || 0);
         }
     };
 
-    const handleProgressClick = (e) => {
+    // 이벤트 객체에 MouseEvent<HTMLDivElement> 타입을 명시
+    const handleProgressClick = (e: MouseEvent<HTMLDivElement>) => {
         if (!videoRef.current) return;
         
+        // currentTarget이 HTMLDivElement임을 확신
         const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const ratio = Math.min(Math.max(x / rect.width, 0), 1);
@@ -41,6 +53,7 @@ export function useVideoPlayer() {
         const handlePause = () => setIsPlaying(false);
         const handleTimeUpdate = updateProgress;
 
+        // 타입스크립트 환경에서 addEventListener의 이벤트 타입이 정확한지 확인
         video.addEventListener('play', handlePlay);
         video.addEventListener('pause', handlePause);
         video.addEventListener('timeupdate', handleTimeUpdate);

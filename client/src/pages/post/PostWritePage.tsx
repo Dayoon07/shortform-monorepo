@@ -10,7 +10,7 @@ export default function PostWritePage() {
     if (!user) return <Navigate to={ROUTE.LOGINPLZ} replace />;
 
     return (
-        <main className="flex-1 overflow-y-auto bg-black text-white">
+        <main className="flex-1 overflow-y-auto">
             <PostWriteSection />
         </main>
     );

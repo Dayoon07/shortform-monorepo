@@ -17,11 +17,14 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
         setUsername
     } = useSession();
 
-    const modalEsc = useCallback((e: KeyboardEvent): void | null => {
+    const handleLogin = useCallback((e: { preventDefault: () => void }) => {
+        loginHook(e, onClose);
+    }, [loginHook, onClose]);
+
+    const modalEsc = useCallback((e: KeyboardEvent): void => {
         if (e.key === "Escape") onClose();
     }, [onClose]);
 
-    // ESC 키로 닫기
     useEffect(() => {
         document.addEventListener("keydown", modalEsc);
         return () => document.removeEventListener("keydown", modalEsc);
@@ -35,7 +38,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
                 </div>
             )}
 
-            <form onSubmit={loginHook} className="space-y-4">
+            <form onSubmit={handleLogin} className="space-y-4">
                 <FloatingInput 
                     type="text" 
                     id="login-username" 

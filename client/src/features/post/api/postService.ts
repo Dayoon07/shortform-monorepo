@@ -9,20 +9,7 @@ export async function getUserPosts(mention: string): Promise<Post[]> {
 }
 
 export async function createPost(formData: FormData) {
-    try {
-        const response = await fetch(`${REST_API_SERVER}${API_LIST.POST.WRITE}`, {
-            method: 'POST',
-            body: formData
-        });
-
-        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-        const data = await response.json();
-        console.log(data);
-        return data;
-    } catch (error) {
-        console.error('게시글 작성 오류:', error);
-        throw error;
-    }
+    return await apiClient.post<any>(API_LIST.POST.WRITE, true, formData);
 }
 
 export async function togglePostLike(communityUuid: string) {

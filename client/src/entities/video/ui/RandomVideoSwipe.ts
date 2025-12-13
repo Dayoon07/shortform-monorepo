@@ -17,10 +17,12 @@ export interface RandomVideoSwipe {
         uploader: {
             id: number,
             username: string,
+            mail: string,
             mention: string,
-            social: boolean,
-            provider: string,
             profileImgSrc: string,
+            createAt: string,
+            social: boolean,
+            provider: string
         },
         videoWatchAvailability: string,
         commentAvailability: string,

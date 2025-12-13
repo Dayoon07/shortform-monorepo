@@ -17,7 +17,11 @@ export const useFollow = (user: User | null) => {
         setLoading(true);
         try {
             const data = await getFollowerList(userId);
-            setFollowers(data || []);
+            if (data.data === undefined) {
+                setFollowers([]);
+                setError("팔로워 데이터를 찾을 수 없습니다");
+            }                
+            setFollowers(data.data || []);
             setError(null);
         } catch (error) {
             setError(error);
@@ -33,7 +37,11 @@ export const useFollow = (user: User | null) => {
         setLoading(true);
         try {
             const data = await getFollowingList(userId);
-            setFollowings(data || []);
+            if (data === undefined) {
+                setFollowings([]);
+                setError("팔로잉 데이터를 찾을 수 없습니다");
+            }
+            setFollowings(data.data || []);
             setError(null);
         } catch (error) {
             setError(error);

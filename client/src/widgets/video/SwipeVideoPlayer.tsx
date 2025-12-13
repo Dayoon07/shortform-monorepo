@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { VideoPlayer } from '../../features/video/components/VideoPlayer';
 import { VideoActionButtons } from '../../features/video/components/VideoActionButtons';
 import { VideoInfoOverlay } from '../../features/video/components/VideoInfoOverlay';
@@ -9,7 +9,7 @@ interface SwipeVideoPlayerProps {
     video: RandomVideoSwipe, 
     user: User | null, 
     isFollowing: boolean, 
-    onFollowChange: React.Dispatch<React.SetStateAction<boolean>>,
+    onFollowChange: Dispatch<SetStateAction<boolean>>,
     onCommentClick: () => void,
     onInfoClick: () => void,
     onSwipe: (a: string) => void
@@ -24,6 +24,7 @@ export default function SwipeVideoPlayer({
     onInfoClick,
     onSwipe 
 }: SwipeVideoPlayerProps) {
+    console.log(video);
     const [isMobile, setIsMobile] = useState<boolean>(false);
 
     // 화면 크기 감지 (md: 768px)

@@ -15,7 +15,8 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
             
             try {
                 const r = await getFollowStatus(followReqUser.mention, followResUser.mention);
-                setIsFollowing(r.isFollowing || false);
+                if (!r.ok || r.data === undefined) throw new Error("에러: " + r);
+                setIsFollowing(r.data.isFollowing || false);
             } catch (error) {
                 console.error("팔로우 상태 조회 실패:", error);
             }
@@ -26,7 +27,7 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
 
     const upgradeToggleFollowHook = async (): Promise<boolean> => {
         if (!followReqUser?.mention || !followResUser?.mention) {
-            setMessageData("사용자 정보가 올바르지 않습니다.");
+            setMessageData("사용자 정보가 올바르지 않습니다");
             showErrorToast("사용자 정보가<br className='md:hidden'/>올바르지 않습니다");
             return false;
         }

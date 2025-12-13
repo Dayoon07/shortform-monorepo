@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
+import { Search } from "lucide-react"; // lucide-react의 Search 아이콘을 사용하는 것이 모던한 느낌을 줍니다.
 
-interface SearchBarProps {
-    initialValue?: string
-}
-
-export default function SearchBar({ initialValue = "" }: SearchBarProps) {
+export default function SearchBar({ initialValue = "" }: { initialValue?: string }) {
     const [searchQuery, setSearchQuery] = useState<string>(initialValue);
     const navigate = useNavigate();
+    const btnCn = `absolute top-1/2 left-3 -translate-y-1/2 p-1 
+        text-gray-500 hover:text-blue-500 transition-colors`;
 
     const SearchFunc = (query: string): void => {
         if (query.trim()) navigate(ROUTE.SEARCH_V2(encodeURIComponent(query)));
@@ -21,15 +20,9 @@ export default function SearchBar({ initialValue = "" }: SearchBarProps) {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="relative">
-                <button type="submit" aria-label="검색" 
-                    className="absolute top-2.5 left-2.5 bg-transparent border-none cursor-pointer"
-                >
-                    <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 
-                            4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                        />
-                    </svg>
+            <form onSubmit={handleSubmit} className="relative w-full">
+                <button type="submit" aria-label="검색" className={btnCn}>
+                    <Search size={20} />
                 </button>
                 <input
                     type="text"
@@ -37,8 +30,10 @@ export default function SearchBar({ initialValue = "" }: SearchBarProps) {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="검색"
                     maxLength={100}
-                    className="w-full pl-10 pr-3 py-2 rounded-full border-gray-400 border focus:outline-none ring-gray-400 focus:ring-2"
                     required
+                    className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full border border-transparent 
+                        focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 
+                        text-gray-900 placeholder-gray-500 transition-all duration-200"
                 />
             </form>
         </>

@@ -14,7 +14,7 @@ export const useProfile = (mention: string | undefined, currentUser: User | null
     const [videos, setVideos] = useState<VideoGridContent[]>([]);
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [isFollowing, setIsFollowing] = useState<FollowStatusRes | boolean>(false);
+    const [isFollowing, setIsFollowing] = useState<FollowStatusRes | boolean | undefined>(false);
     const cleanMention: string | undefined = mention?.replace('@', '');
     const isOwnProfile: boolean = currentUser?.mention === cleanMention;
 
@@ -33,23 +33,17 @@ export const useProfile = (mention: string | undefined, currentUser: User | null
     // };
 
     const getFollowerListHook = async (): Promise<User[]> => {
-        try {
-            if (!profile) throw new Error("로그인이 필요한 기능입니다");
-            return await getFollowerList(profile.id);
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
+        if (!profile) throw new Error("로그인이 필요한 기능입니다");
+        const res = await getFollowerList(profile.id);
+        if (res.data === undefined) throw new Error("팔로워 데이터를 찾을 수 없습니다");
+        return res.data;
     }
 
     const getFollowingListHook = async (): Promise<User[]> => {
-        try {
-            if (!profile) throw new Error("로그인이 필요한 기능입니다");
-            return await getFollowingList(profile.id);
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
+        if (!profile) throw new Error("로그인이 필요한 기능입니다");
+        const r = await getFollowingList(profile.id);
+        if (r.data === undefined) throw new Error("팔로잉 데이터를 찾을 수 없습니다");
+        return r.data;
     }
 
     const fetchProfilePosts = async (): Promise<void> => {
@@ -82,7 +76,7 @@ export const useProfile = (mention: string | undefined, currentUser: User | null
 
             if (currentUser && !isOwnProfile) {
                 const a = await getFollowStatus(currentUser.mention, `@${cleanMention}`);
-                setIsFollowing(a);
+                setIsFollowing(a.data);
             }
         } catch (error) {
             console.error('프로필 불러오기 실패:', error);
