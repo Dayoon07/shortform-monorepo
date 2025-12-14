@@ -4,7 +4,7 @@ import {
     ExplorePageIcon, 
     FancyUploadPageIcon, 
     FollowingPageIcon
-} from "../../widgets/icon/icon";
+} from "../utils/icon/icon";
 
 export const NAVITEM = [
     {

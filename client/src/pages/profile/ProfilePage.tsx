@@ -9,21 +9,16 @@ import NotFoundProfile from "../../widgets/profile/NotFoundProfile";
 import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
 import ProfilePostList from "../../widgets/profile/ProfilePostList";
 
-enum TabTitle {
-    VIDEO = "video",
-    POST = "post"
-}
+enum TabTitle { VIDEO = "video", POST = "post" }
 
 export default function ProfilePage() {
+    const btcl = "px-12 py-3 font-semibold border-b-2 transition max-md:w-full";    // buttonTabClassName = btcl
+    const activeTabStyle = "border-black text-black"; // 활성화 시
+    const inactiveTabStyle = "border-transparent text-gray-500 hover:border-gray-300"; // 비활성화 시
     const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
     const [tab, setTab] = useState<TabTitle>(TabTitle.VIDEO); 
     const { mention } = useParams();
     const { user } = useUser();
-    
-    const baseTabClassName = "px-12 py-3 font-semibold border-b-2 transition max-md:w-full";
-    const activeTabStyle = "border-black text-black"; // 활성화 시
-    const inactiveTabStyle = "border-transparent text-gray-500 hover:border-gray-300"; // 비활성화 시
-
     const {
         profile,
         posts,
@@ -44,19 +39,13 @@ export default function ProfilePage() {
 
             <div className="border-b sticky top-0 z-10 bg-white">
                 <div className="flex md:max-w-6xl md:mx-auto">
-                    <button 
-                        onClick={() => setTab(TabTitle.VIDEO)}
-                        className={`${baseTabClassName} ${
-                            tab === TabTitle.VIDEO ? activeTabStyle : inactiveTabStyle
-                        }`}
+                    <button onClick={() => setTab(TabTitle.VIDEO)}
+                        className={`${btcl} ${tab === TabTitle.VIDEO ? activeTabStyle : inactiveTabStyle}`}
                     >
                         동영상
                     </button>
-                    <button 
-                        onClick={() => setTab(TabTitle.POST)}
-                        className={`${baseTabClassName} ${
-                            tab === TabTitle.POST ? activeTabStyle : inactiveTabStyle
-                        }`}
+                    <button onClick={() => setTab(TabTitle.POST)}
+                        className={`${btcl} ${tab === TabTitle.POST ? activeTabStyle : inactiveTabStyle}`}
                     >
                         게시글
                     </button>

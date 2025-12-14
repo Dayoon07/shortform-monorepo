@@ -1,16 +1,54 @@
-import { memo, RefObject } from "react";
-import { Link } from "react-router-dom";
+import { memo, RefObject, useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
 import { VideoGridContent } from "../../../../entities/video/ui/VideoGridContent";
 import { Image } from "../../../../shared/components/common/custom/Image";
+import { MoreVertical } from "lucide-react";
 
 interface VideoCardProps {
     video: VideoGridContent,
     index: number,
-    videoRefs: RefObject<(HTMLVideoElement | null)[]>
+    videoRefs: RefObject<(HTMLVideoElement | null)[]>,
+    isOwner?: boolean,
+    onShowModal: () => void
 }
 
-export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
+export const VideoCard = memo(({
+    video, 
+    index, 
+    videoRefs, 
+    isOwner = false,
+    onShowModal 
+}: VideoCardProps) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const navigate = useNavigate();
+
+    // 외부 클릭 감지 로직
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            // 메뉴가 열려있고, 클릭된 요소가 메뉴 영역이나 버튼 영역에 속하지 않으면 메뉴를 닫습니다.
+            if (isMenuOpen && menuRef.current && !menuRef.current.contains(event.target as Node) && 
+                buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isMenuOpen]);
+
+
+    // 메뉴 토글 핸들러
+    const handleMenuToggle = (e: React.MouseEvent) => {
+        e.preventDefault(); // Link 태그로 인한 페이지 이동 방지
+        e.stopPropagation(); // 이벤트 버블링 방지
+        setIsMenuOpen(prev => !prev);
+    };
+
     return (
         <div>
             <Link to={ROUTE.PROFILE_SWIPE_VIDEO(video.mention, video.videoLoc)}
@@ -34,7 +72,7 @@ export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
                         </svg>
                         <span className="text-white text-xs font-medium">{video.likeCount}</span>
                     </div>
-
+                    
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30">
                             <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -42,6 +80,50 @@ export const VideoCard = memo(({ video, index, videoRefs }: VideoCardProps) => {
                             </svg>
                         </div>
                     </div>
+                    
+                    {/* MoreVertical 아이콘 및 드롭다운 메뉴 (오른쪽 상단) */}
+                    {isOwner && (
+                        <div className="absolute top-2 right-2 z-10" ref={menuRef}>
+                            <button 
+                                ref={buttonRef}
+                                onClick={handleMenuToggle} 
+                                className="p-1 text-white bg-transparent rounded-full hover:bg-black/50 transition-colors"
+                                aria-expanded={isMenuOpen}
+                                aria-label="비디오 옵션"
+                            >
+                                <MoreVertical className="w-5 h-5" />
+                            </button>
+                            
+                            {isMenuOpen && (
+                                <div className="absolute right-0 mt-2 w-32 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                        <button 
+                                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                navigate(ROUTE.VIDEO_EDIT);
+                                            }} 
+                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" 
+                                            role="menuitem"
+                                        >
+                                            영상 수정
+                                        </button>
+                                        <button 
+                                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                onShowModal();
+                                            }} 
+                                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700" 
+                                            role="menuitem"
+                                        >
+                                            영상 삭제
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </Link>
 

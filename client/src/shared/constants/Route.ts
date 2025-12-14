@@ -51,6 +51,8 @@ export const ROUTE = {
      */
     PROFILE_SWIPE_VIDEO: (mention: string, videoLoc: string) => `/@${mention}/swipe/video/${videoLoc}`,
 
+    VIDEO_EDIT: "/studio/edit",
+
     /** 
      * 스튜디오 업로드 페이지 경로 (영상 업로드)
      * @example "/studio/upload"

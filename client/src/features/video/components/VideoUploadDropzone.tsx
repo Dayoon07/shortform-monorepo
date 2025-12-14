@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UploadIcon } from '../../../widgets/icon/icon';
+import { UploadIcon } from '../../../shared/utils/icon/icon';
 
 interface VideoUploadDropzoneProps {
     onFileSelect: (file: File) => void,

@@ -9,7 +9,7 @@ interface ModalProps {
 
 export default function Modal({ onClose, title, children }: ModalProps) {
     const modalCn = "fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 w-full";
-    const modalItemCn = "w-full max-w-md bg-white rounded-2xl shadow-2xl mx-4 p-8";
+    const modalItemCn = "w-full max-w-md bg-white rounded-xl shadow-2xl mx-4 p-8";
     const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) onClose();
     };

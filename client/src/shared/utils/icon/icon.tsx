@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { 
     IconProps, 
     ButtonIconProps
-} from "../../shared/components/icon/IconProps";
+} from "../../components/icon/IconProps";
 
 /**
  * HomePageIcon             |   홈페이지 아이콘 (SideBar, BottomNavBar)
@@ -172,10 +172,13 @@ export const CancelIcon = (): JSX.Element => (
 
 export function SearchModalBackButton({ onClick }: ButtonIconProps): JSX.Element {
     return (
-        <svg onClick={onClick} className="w-8 h-8 text-white cursor-pointer mr-2 hover:opacity-70"
-            fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 20 20">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
+        <svg onClick={onClick} 
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+            stroke-linejoin="round" className="w-10 h-10 text-black cursor-pointer mr-2 hover:opacity-70 
+                lucide lucide-arrow-left-icon lucide-arrow-left">
+                <path d="m12 19-7-7 7-7"/>
+                <path d="M19 12H5"/>
         </svg>
     );
 }

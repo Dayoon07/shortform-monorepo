@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { User } from "../../../../entities/user/model/User";
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
-import { CommunityPageIcon, LikePageIcon, UploadPageIcon } from "../../../../widgets/icon/icon";
+import { CommunityPageIcon, LikePageIcon, UploadPageIcon } from "../../../../shared/utils/icon/icon";
 import { LogOut } from "lucide-react";
 import { Image } from "../../../../shared/components/common/custom/Image";
 import { useSession } from "../../../../shared/hooks/user/useSession";

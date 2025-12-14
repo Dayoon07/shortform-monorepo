@@ -7,7 +7,7 @@ import {
     HomePageIcon, 
     LikePageIcon, 
     UploadPageIcon
-} from "../../widgets/icon/icon";
+} from "../utils/icon/icon";
 
 export interface NavItem {
     to: string;

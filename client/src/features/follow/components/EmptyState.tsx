@@ -1,4 +1,4 @@
-import { FollowingUserEmptyStateIcon } from "../../../widgets/icon/icon";
+import { FollowingUserEmptyStateIcon } from "../../../shared/utils/icon/icon";
 
 const DIV1 = "max-sm:w-[200px] mx-auto mt-32 text-center";
 const DIV2 = "w-24 h-24 mx-auto bg-gray-200 rounded-full flex items-center justify-center mb-8";

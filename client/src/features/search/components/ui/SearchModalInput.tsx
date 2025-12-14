@@ -1,4 +1,4 @@
-import { SearchIcon } from "../../../../widgets/icon/icon";
+import { SearchIcon } from "../../../../shared/utils/icon/icon";
 
 interface SearchModalInputProps {
     value: string,
@@ -6,29 +6,30 @@ interface SearchModalInputProps {
 }
 
 export function SearchModalInput({ value, setValue }: SearchModalInputProps) {
-    const iptcn = `w-full pl-10 pr-3 py-2 rounded-full bg-white/20 backdrop-blur-sm 
-        border border-white/30 text-white placeholder-white/70 focus:outline-none 
-        focus:ring-2 focus:ring-white/50 focus:bg-white/25`;
     return (
-        <>
-            <button 
-                type="submit" 
-                className="absolute top-2.5 left-2.5 p-0 
-                    bg-transparent border-none cursor-pointer"
-                aria-label="검색"
-            >
-                <SearchIcon />
-            </button>
-            <input
-                type="text"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                placeholder="검색"
-                maxLength={100}
-                autoFocus
-                aria-label="검색어 입력"
-                className={iptcn}
-            />
-        </>
+        <div className="w-full max-w-sm min-w-[200px]">
+            <div className="relative flex items-center">
+                <input 
+                    type="text"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder="FlipFlop 검색"
+                    maxLength={100}
+                    autoFocus 
+                    aria-label="검색어 입력"
+                    className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-md border border-slate-200 
+                        rounded-md pl-3 pr-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 
+                        hover:border-slate-300 shadow-sm focus:shadow"
+                />
+                
+                <button 
+                    type="submit"
+                    aria-label="검색"
+                    className="rounded-md bg-black py-2 px-4 text-center text-md text-white transition-all ml-2"
+                >
+                    <SearchIcon />
+                </button> 
+            </div>
+        </div>
     );
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useSession } from "../../hooks/user/useSession";
 import { FloatingInput } from "./ui/FloatingInput";
 import Modal from "../common/Modal";
-import { GoogleIcon } from "../../../widgets/icon/icon";
+import { GoogleIcon } from "../../utils/icon/icon";
 import { API_LIST, REST_API_SERVER } from "../../constants/ApiCollectionList";
 
 export default function LoginModal({ onClose }: { onClose: () => void }) {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
-import { SearchModalBackButton, SearchModalCloseButton } from '../../../widgets/icon/icon';
+import { SearchModalBackButton } from '../../../shared/utils/icon/icon';
 import { useSearchHistory } from '../hooks/useSearchHistory';
 import { Error } from '../../../shared/components/common/Error';
 import { User } from '../../../entities/user/model/User';
@@ -34,23 +34,32 @@ export default function SearchModal({ user, onClose }: SearchModalProps) {
     };
 
     useEffect(() => {
-        const handleEscape = (e: { key: string; }) => e.key === 'Escape' && onClose();
+        window.history.pushState(null, '', window.location.href);
+
+        const handlePopState = () => onClose();
+        const handleEscape = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+
+        window.addEventListener('popstate', handlePopState);
         document.addEventListener('keydown', handleEscape);
-        return () => document.removeEventListener('keydown', handleEscape);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+            document.removeEventListener('keydown', handleEscape);
+        };
     }, [onClose]);
 
     if (error) return <Error message={error} />
 
     return (
         <div 
-            className="fixed inset-0 bg-white/80 z-[100]" 
+            className="fixed inset-0 bg-white z-[100]" 
             onClick={onClose}
             role="dialog"
             aria-modal="true"
             aria-labelledby="search-modal-title"
         >
             <div 
-                className="bg-white/90 border-b border-white/30 px-4 py-3" 
+                className="border px-4 py-3" 
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center py-2">
@@ -61,7 +70,6 @@ export default function SearchModal({ user, onClose }: SearchModalProps) {
                             setValue={setSearchQuery}
                         />
                     </form>
-                    <SearchModalCloseButton onClick={onClose} aria-label="닫기" />
                 </div>
 
                 {user ? (

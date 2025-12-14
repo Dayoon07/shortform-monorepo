@@ -1,4 +1,4 @@
-import { SearchIcon } from "../../../../widgets/icon/icon";
+import { SearchIcon } from "../../../../shared/utils/icon/icon";
 
 export const AppBarSearchButton = ({ 
     onClickChangeState 

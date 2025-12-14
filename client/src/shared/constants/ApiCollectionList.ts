@@ -35,7 +35,7 @@ export const API_LIST = {
     SEARCH: {
         SEARCH: "/api/search",
         WORD_DELETE: "/api/search/list/delete",
-        HISOTRY: (i: number) => `/api/user/search/list?id=${i}`,
+        HISOTRY: (i: number) => `/api/search/list?id=${i}`,
     },
     FOLLOW: {
         FOLLOW: "/api/follow",

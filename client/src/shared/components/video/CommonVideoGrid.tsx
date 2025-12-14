@@ -1,7 +1,9 @@
 import { useLazyHoverVideo } from "../../../features/video/hooks/useLazyHoverVideo";
 import { VideoCard } from "../../../features/video/components/ui/VideoCard";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
-import { RefObject } from "react";
+import { RefObject, useState } from "react";
+import { useUser } from "../../context/UserContext";
+import { DeleteModal } from "./ui/DeleteModal";
 
 interface CommonVideoGridProps {
     videos: VideoGridContent[],
@@ -10,11 +12,12 @@ interface CommonVideoGridProps {
 
 export function CommonVideoGrid({ videos, message = "영상이 없습니다" }: CommonVideoGridProps) {
     const videoRefs: RefObject<HTMLVideoElement[]> = useLazyHoverVideo(videos);
+    const [modelOpenStatus, setModelOpenStatus] = useState<boolean>(false);
+    const { user } = useUser();
     const commonVideoGridClassName = `
         md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
         sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 
-        2xl:grid-cols-6 gap-2 max-md:pb-[200px] p-2
-    `;
+        2xl:grid-cols-6 gap-2 max-md:pb-[200px] p-2`;
 
     if (!videos || videos.length === 0) {
         return <p className="mx-auto text-gray-400 text-lg mt-32 text-center">{message}</p>
@@ -29,9 +32,13 @@ export function CommonVideoGrid({ videos, message = "영상이 없습니다" }: 
                         video={video} 
                         index={index} 
                         videoRefs={videoRefs}
+                        isOwner={(user != null && user.mention !== video.mention) ? false : true}
+                        onShowModal={() => setModelOpenStatus(true)}
                     />
                 );
             })}
+
+            {modelOpenStatus && <DeleteModal onClose={() => setModelOpenStatus(false)} />}
         </div>
     );
 }
