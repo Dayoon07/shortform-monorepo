@@ -7,10 +7,15 @@ import { DeleteModal } from "./ui/DeleteModal";
 
 interface CommonVideoGridProps {
     videos: VideoGridContent[],
-    message?: string
+    message?: string,
+    cardUploaderPublic?: boolean
 }
 
-export function CommonVideoGrid({ videos, message = "영상이 없습니다" }: CommonVideoGridProps) {
+export function CommonVideoGrid({ 
+    videos, 
+    message = "영상이 없습니다",
+    cardUploaderPublic = true
+}: CommonVideoGridProps) {
     const videoRefs: RefObject<HTMLVideoElement[]> = useLazyHoverVideo(videos);
     const [modelOpenStatus, setModelOpenStatus] = useState<boolean>(false);
     const { user } = useUser();
@@ -32,7 +37,8 @@ export function CommonVideoGrid({ videos, message = "영상이 없습니다" }: 
                         video={video} 
                         index={index} 
                         videoRefs={videoRefs}
-                        isOwner={(user != null && user.mention !== video.mention) ? false : true}
+                        uploaderPublic={cardUploaderPublic}
+                        currentUser={(user !== null) ? user : null}
                         onShowModal={() => setModelOpenStatus(true)}
                     />
                 );

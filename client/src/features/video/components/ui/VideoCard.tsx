@@ -4,12 +4,14 @@ import { ROUTE } from "../../../../shared/constants/Route";
 import { VideoGridContent } from "../../../../entities/video/ui/VideoGridContent";
 import { Image } from "../../../../shared/components/common/custom/Image";
 import { MoreVertical } from "lucide-react";
+import { User } from "../../../../entities/user/model/User";
 
 interface VideoCardProps {
     video: VideoGridContent,
     index: number,
     videoRefs: RefObject<(HTMLVideoElement | null)[]>,
-    isOwner?: boolean,
+    uploaderPublic?: boolean,
+    currentUser?: User | null,
     onShowModal: () => void
 }
 
@@ -17,7 +19,8 @@ export const VideoCard = memo(({
     video, 
     index, 
     videoRefs, 
-    isOwner = false,
+    uploaderPublic = true,
+    currentUser,
     onShowModal 
 }: VideoCardProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -82,7 +85,7 @@ export const VideoCard = memo(({
                     </div>
                     
                     {/* MoreVertical 아이콘 및 드롭다운 메뉴 (오른쪽 상단) */}
-                    {isOwner && (
+                    {(currentUser?.id === video.uploaderId) && currentUser && (
                         <div className="absolute top-2 right-2 z-10" ref={menuRef}>
                             <button 
                                 ref={buttonRef}
@@ -128,17 +131,19 @@ export const VideoCard = memo(({
             </Link>
 
             <div className="mt-2 px-1">
-                <Link to={ROUTE.PROFILE(video.mention)} className="block flex items-center space-x-2 mb-1">
-                    <Image 
-                        url={video.profileImgSrc} 
-                        social={video.social} 
-                        alt="VideoCard 컴포넌트 프로필"
-                        className="w-8 h-8 border rounded-full object-cover"
-                    />
-                    <span className="text-md font-bold truncate">
-                        {video.uploaderUsername}
-                    </span>
-                </Link>
+                {uploaderPublic && (
+                    <Link to={ROUTE.PROFILE(video.mention)} className="block flex items-center space-x-2 mb-1">
+                        <Image 
+                            url={video.profileImgSrc} 
+                            social={video.social} 
+                            alt="VideoCard 컴포넌트 프로필"
+                            className="w-8 h-8 border rounded-full object-cover"
+                        />
+                        <span className="text-md font-bold truncate">
+                            {video.uploaderUsername}
+                        </span>
+                    </Link>
+                )}
 
                 <p className="font-bold text-md leading-tight line-clamp-2 mb-1 break-words whitespace-pre-wrap">
                     {video.videoTitle.length > 25

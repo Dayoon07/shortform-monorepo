@@ -1,6 +1,7 @@
 import { Page } from "../../../entities/constants/Page";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { API_LIST, REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
+import { apiClient, ApiResponse } from "../../../shared/utils/ApiClient";
 
 /**
  * 페이징된 비디오 목록을 가져옵니다
@@ -39,15 +40,7 @@ export async function getTagVideoList(tag: string): Promise<VideoGridContent[]> 
     }
 }
 
-export async function myLikeVideoList(mention: string): Promise<VideoGridContent[]> {
-    try {
-        const res = await fetch(`${REST_API_SERVER}${API_LIST.VIDEO_LIKE.MY_LIKE_INFO(mention)}`);
-        if (!res.ok) throw new Error("에러남!!!");
-        const data: VideoGridContent[] = await res.json();
-        console.log(data);
-        return data;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+export async function myLikeVideoList(i: number): Promise<ApiResponse<VideoGridContent[]>> {
+    return await apiClient.get<VideoGridContent[]>(
+        API_LIST.VIDEO.LIKE.MY_VIDEO, false, { "id": i });
 }

@@ -4,18 +4,31 @@ import { toggleVideoLike } from '../api/swipeVideoService';
 import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
 import { VideoLikeButton } from './ui/VideoLikeButton';
 import { VideoActionButton } from './ui/VideoActionButton';
+import { RandomVideoSwipe } from '../../../entities/video/ui/RandomVideoSwipe';
+import { User } from '../../../entities/user/model/User';
 
-export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, onSwipe }) {
-    const [isLiked, setIsLiked] = useState(video.isLiked);
-    const [likeCount, setLikeCount] = useState(video.likeCount);
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+interface VideoActionButtonsProps {
+    video: RandomVideoSwipe,
+    user: User | null,
+    onCommentClick: () => void,
+    onInfoClick: () => void,
+    onSwipe: (a: string) => void
+}
+
+export function VideoActionButtons({ 
+    video, user, onCommentClick, 
+    onInfoClick, onSwipe
+}: VideoActionButtonsProps) {
+    const [isLiked, setIsLiked] = useState<boolean>(video.isLiked);
+    const [likeCount, setLikeCount] = useState<number>(video.likeCnt);
+    const [isAnimating, setIsAnimating] = useState<boolean>(false);
+    const [isMobile, setIsMobile] = useState<boolean>(false);
 
     // video prop이 변경될 때마다 좋아요 상태 및 갯수 동기화
     useEffect(() => {
         setIsLiked(video.isLiked);
-        setLikeCount(video.likeCount);
-    }, [video.id, video.isLiked, video.likeCount]);
+        setLikeCount(video.likeCnt);
+    }, [video.id, video.isLiked, video.likeCnt]);
 
     // 화면 크기 감지 (md: 768px)
     useEffect(() => {
@@ -38,14 +51,15 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
         setTimeout(() => setIsAnimating(false), 600);
 
         try {
-            const data = await toggleVideoLike(video.id); 
-            
-            if (data) {
-                setIsLiked(data.isLiked);
-                if (data.likeCnt !== undefined) { 
-                    setLikeCount(data.data.likeCnt);
-                }
+            const data = await toggleVideoLike(video.video.id);
+
+            if (!data.ok || data.data === undefined) {
+                showErrorToast(data);
+                throw new Error("에러남: " + data);
             }
+
+            setIsLiked(data.data.isLiked);
+            setLikeCount(data.data.totalLikes);
         } catch (error) {
             console.error('좋아요 처리 실패:', error);
             showErrorToast("요청 처리 중 오류가 발생했습니다");
@@ -78,7 +92,7 @@ export function VideoActionButtons({ video, user, onCommentClick, onInfoClick, o
                 onClick={onCommentClick}
                 ariaLabel="댓글"
                 BtnIcon={MessageCircle}
-                text={video.commentCount}
+                text={video.commentCnt}
             />
 
             <VideoActionButton 

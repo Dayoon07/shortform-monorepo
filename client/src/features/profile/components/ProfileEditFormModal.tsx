@@ -114,17 +114,13 @@ export default function ProfileEditFormModal({ profile, isOpen, onClose }: Profi
                         <button
                             onClick={handleSubmit}
                             className="flex-1 px-4 py-2 text-white rounded-md 
-                                bg-gradient-to-r from-pink-500 to-sky-500 
-                                hover:from-pink-600 hover:to-sky-600"
+                                bg-black hover:opacity-80"
                         >
                             저장
                         </button>
                         <button
                             onClick={handleClose}
-                            className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-md 
-                                hover:bg-gray-600 focus:outline-none focus:ring-2 
-                                focus:ring-gray-500"
-                        >
+                            className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md">
                             취소
                         </button>
                     </div>

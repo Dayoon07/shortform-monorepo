@@ -1,4 +1,5 @@
 import { RandomVideoSwipe } from "../../../entities/video/ui/RandomVideoSwipe";
+import { ToggleVideoLikeRes } from "../../../entities/video/ui/ToggleVideoLikeRes";
 import { API_LIST } from "../../../shared/constants/ApiCollectionList";
 import { apiClient, ApiResponse } from "../../../shared/utils/ApiClient";
 
@@ -17,10 +18,7 @@ export async function getFirstSwipeVideo(
         API_LIST.VIDEO.FIRST_SWIPE_VIDEO(videoLoc, mention), false);
 }
 
-export async function toggleVideoLike(videoId: number): Promise<ApiResponse<any>> {
-    const res = await apiClient.post<any>(API_LIST.VIDEO_LIKE.TOGGLE, true, {
-        "videoId": videoId
-    });
-    console.log(res.data);
-    return res.data;
+export async function toggleVideoLike(i: number): Promise<ApiResponse<ToggleVideoLikeRes>> {
+    return await apiClient.post<ToggleVideoLikeRes>(
+        API_LIST.VIDEO.LIKE.TOGGLE(i), true);
 }

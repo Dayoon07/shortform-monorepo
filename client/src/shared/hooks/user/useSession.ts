@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { login, logout } from "../../../features/user/api/userService";
-import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import { showErrorToast, showToast } from "../../utils/toast";
 import { ROUTE } from "../../constants/Route";
 import { useUser } from "../../context/UserContext";
 import { useState } from "react";
@@ -17,7 +17,12 @@ export const useSession = () => {
     const logoutHook = async (): Promise<void> => {
         const data = await logout();
         setUser(null);
-        showSuccessToast(data.message);
+        showToast(data.message, {
+            duration: 3000,
+            position: "top",
+            success: true,
+            cn: "max-md:text-sm md:text-md"
+        });
         navigate(ROUTE.HOMEPAGE);
     };
 
@@ -37,15 +42,17 @@ export const useSession = () => {
             
             if (data && data.success) {
                 setUser(data.user);
-                showSuccessToast(data.message);
+                showToast(data.message, {
+                    duration: 3000,
+                    position: "top",
+                    success: true,
+                    cn: "max-md:text-sm md:text-md"
+                });
                 
-                if (onSuccess) {
+                if (onSuccess) 
                     onSuccess(); // 모달 닫기 콜백 실행
-                }
                 
-                setTimeout(() => {
-                    navigate(ROUTE.HOMEPAGE);
-                }, 100);
+                setTimeout(() => navigate(ROUTE.HOMEPAGE), 100);
             } else {
                 setError(data?.message || "로그인에 실패했습니다");
                 showErrorToast(data?.message || "로그인에 실패했습니다");

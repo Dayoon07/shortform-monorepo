@@ -53,7 +53,10 @@ export default function ProfilePage() {
             </div>
 
             {tab === TabTitle.VIDEO && (videos.length > 0 ? (
-                    <CommonVideoGrid videos={videos} />
+                    <CommonVideoGrid 
+                        cardUploaderPublic={false}
+                        videos={videos} 
+                    />
                 ) : (
                     <div className="text-center py-20">
                         <p className="text-gray-400">동영상이 없습니다</p>

@@ -2,6 +2,7 @@ type ToastOptions = {
     success?: boolean;
     duration?: number;
     position?: 'top' | 'center' | 'bottom';
+    cn?: string | null;
 };
 
 /**
@@ -11,12 +12,14 @@ type ToastOptions = {
  * @param {boolean} options.success - 성공 여부 (true: 초록색, false: 빨간색)
  * @param {number} options.duration - 표시 시간 (ms)
  * @param {string} options.position - 위치 ('top', 'bottom', 'center')
+ * @param {string} options.cn - 클래스 네임 (커스텀해야 될 경우가 있을 때 이거 사용)
  */
 export function showToast(message: string, options: ToastOptions = {}) {
     const {
         success = true,
         duration = 3000,
-        position = 'top'
+        position = 'top',
+        cn = ""
     } = options;
 
     // 기존 토스트 제거
@@ -27,7 +30,7 @@ export function showToast(message: string, options: ToastOptions = {}) {
 
     const toast = document.createElement('div');
     toast.innerHTML = message;
-    toast.className = 'custom-toast text-white sm:px-10 max-sm:px-5 py-2 rounded shadow-md z-50 text-center transition-all duration-300';
+    toast.className = `custom-toast text-white sm:px-10 max-sm:px-5 py-2 rounded shadow-md z-50 text-center transition-all duration-300 ${cn}`;
     
     // 배경색 설정  rgb(107, 114, 128) 회색은 나중에 사용할 일이 있으면 그때 수정
     toast.style.backgroundColor = success ? 'rgb(22, 163, 74)' : 'rgb(239, 68, 68)';
