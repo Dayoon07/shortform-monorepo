@@ -3,82 +3,58 @@ import { insertComment, popularCommentList, recentCommentList } from "../api/com
 import { Comment } from "../../../entities/comment/ui/Comment";
 import { showErrorToast } from "../../../shared/utils/toast";
 
-export const useComment = (videoId: number) => {
+export const useComment = (vid: number) => {
     const [commentList, setCommentList] = useState<Comment[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    /**
-     * @param id 댓글을 작성할 영상의 id
-     * @param comment 댓글
-     * @param m 댓글을 작성할 사용자의 멘션
-     */
-    const commentWrite = async (id: number, comment: string, m: string) => {
-        try {
-            const formData = new FormData();
-            formData.append('commentVideoId', id.toString());
-            formData.append('commentText', comment);
-            formData.append('resUserMention', m);
-
-            const data = await insertComment(formData);
-            return data;
-        } catch (error) {
-            setErrorMessage(error as string);
-            console.error(error);
-            throw error;
+    const commentWrite = async (id: number, comment: string) => {
+        const formData = new FormData();
+        formData.append('commentVideoId', id.toString());
+        formData.append('commentText', comment);
+        const data = await insertComment(formData);
+        
+        if (!data.ok || data.data === undefined) {
+            setErrorMessage(data.data);
+            console.log(data.data);
+            return;
         }
+
+        return data.data;
     }
 
     const getPopularCommentList = async (): Promise<void> => {
-        try {
-            const data = await popularCommentList(videoId);
-            if (data.data === undefined) {
-                showErrorToast("댓글을 찾거나 가져올 수 없습니다");
-                return;
-            }
-            console.log(data);
-            setCommentList(data.data);
-        } catch (error) {
-            setErrorMessage(error as string);
-            console.error(error);
-            throw error;
+        const data = await popularCommentList(vid);
+        if (!data.ok || data.data === undefined) {
+            showErrorToast("댓글을 찾거나 가져올 수 없습니다");
+            return;
         }
+        console.log(data);
+        setCommentList(data.data);
     }
 
     const getRecentCommentList = async (): Promise<void> => {
-        try {
-            const data = await recentCommentList(videoId);
-            if (data.data === undefined) {
+        const data = await recentCommentList(vid);
+        if (!data.ok || data.data === undefined) {
+            showErrorToast("댓글을 찾거나 가져올 수 없습니다");
+            return;
+        }
+        console.log(data);
+        setCommentList(data.data);
+    }
+
+    useEffect(() => {
+        const init = async (): Promise<void> => {
+            const data = await popularCommentList(vid);
+            if (!data.ok || data.data === undefined) {
                 showErrorToast("댓글을 찾거나 가져올 수 없습니다");
                 return;
             }
             console.log(data);
             setCommentList(data.data);
-        } catch (error) {
-            setErrorMessage(error as string);
-            console.error(error);
-            throw error;
-        }
-    }
-
-    useEffect(() => {
-        const getPopularCommentListBootLoaderVer = async (): Promise<void> => {
-            try {
-                const data = await popularCommentList(videoId);
-                if (data.data === undefined) {
-                    showErrorToast("댓글을 찾거나 가져올 수 없습니다");
-                    return;
-                }
-                console.log(data);
-                setCommentList(data.data);
-            } catch (error) {
-                setErrorMessage(error as string);
-                console.error(error);
-                throw error;
-            }
         }
 
-        getPopularCommentListBootLoaderVer();
-    }, [videoId]);
+        init();
+    }, [vid]);
 
     return {
         commentWrite,

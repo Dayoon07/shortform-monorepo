@@ -3,6 +3,7 @@ import { ROUTE } from "../../../shared/constants/Route";
 import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { LikePageIcon } from "../../../shared/utils/icon/icon";
 import { Comment } from "../../../entities/comment/ui/Comment";
+import { Image } from "../../../shared/components/common/custom/Image";
 
 interface CommentListProps {
     commentList: Comment[]
@@ -14,7 +15,12 @@ export function CommentList({ commentList }: CommentListProps) {
             {commentList !== null ? (
                 commentList.map((c) => (
                     <div className="flex" key={c.mention}>
-                        <img src={REST_API_SERVER + c.profileImgSrc} alt={`${c.username}님의 프로필`} className="w-8 h-8 rounded-full" />
+                        <Image
+                            url={c.profileImgSrc}
+                            alt={`${c.username}님의 프로필`}
+                            social={c.social}
+                            className="w-8 h-8 rounded-full"
+                        />
                         <div className="ml-4">
                             <div className="flex items-center space-x-2">
                                 <Link to={ROUTE.PROFILE(c.mention)} className="font-semibold text-md text-white">
@@ -31,7 +37,7 @@ export function CommentList({ commentList }: CommentListProps) {
                                     <span>{c.likeCount}</span>
                                 </button>
                                 <button className="text-md text-gray-400 hover:text-white">답글</button>
-                                <button className="text-md text-gray-400 hover:text-white">보기</button>
+                                <button className="text-md text-gray-400 hover:text-white">보기 {'답글 개수'}</button>
                             </div>
                         </div>
                     </div>

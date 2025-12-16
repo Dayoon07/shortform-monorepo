@@ -14,6 +14,11 @@ interface CommentModalWidgetProps {
     videoId: number
 }
 
+enum SortType {
+    POPULAR = "popular",
+    RECENT = "recent"
+}
+
 export function CommentModal({ 
     open, 
     onClose, 
@@ -22,7 +27,7 @@ export function CommentModal({
     videoId
 }: CommentModalWidgetProps) {
     const [commentText, setCommentText] = useState<string>("");
-    const [sortType, setSortType] = useState<string>("popular");
+    const [sortType, setSortType] = useState<string>(SortType.POPULAR);
     const { 
         commentWrite,
         commentList
@@ -30,24 +35,22 @@ export function CommentModal({
 
     const c = async () => {
         if (user !== null) 
-            showSuccessToast(await commentWrite(videoId, commentText, user.mention));
+            showSuccessToast(await commentWrite(videoId, commentText));
     };
 
     if (!open) return null;
 
     return (
         <div onClick={onClose} className="fixed inset-0 bg-black bg-opacity-75 
-            backdrop-blur-sm z-50 flex items-center justify-center p-4" 
-        >
+            backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl 
-                w-full max-w-2xl h-3/4 flex flex-col shadow-2xl"
-            >
+                w-full max-w-2xl h-3/4 flex flex-col shadow-2xl">
                 <div className="flex items-center justify-between p-4">
                     <h2 className="text-xl font-bold">댓글 {videoCommentSize}개</h2>
 
                     <div className="flex items-center space-x-4">
                         <div className="flex space-x-2">
-                            <button onClick={() => setSortType("popular")}
+                            <button onClick={() => setSortType(SortType.POPULAR)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                                     sortType === "popular"
                                         ? "bg-gradient-to-r from-pink-500 to-blue-500 text-white"
@@ -57,7 +60,7 @@ export function CommentModal({
                                 인기순
                             </button>
 
-                            <button onClick={() => setSortType("recent")}
+                            <button onClick={() => setSortType(SortType.RECENT)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                                     sortType === "recent"
                                         ? "bg-gradient-to-r from-pink-500 to-blue-500 text-white"

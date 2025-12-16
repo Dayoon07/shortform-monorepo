@@ -25,7 +25,6 @@ export function useSwipeVideo(initialVideo: RandomVideoSwipe | null, user: User 
 
     // 비디오 데이터 정규화 (백엔드 응답 구조에 맞게 수정)
     const normalizeVideoData = (responseData: RandomVideoSwipe) => {
-        const video = responseData.video;
         return {
             id: responseData.id,
             commentCnt: responseData.commentCnt || 0,
@@ -33,7 +32,7 @@ export function useSwipeVideo(initialVideo: RandomVideoSwipe | null, user: User 
             isFollowing: responseData.isFollowing || false,
             isLiked: responseData.isLiked || false,
             hasMore: responseData.hasMore,
-            video: video
+            video: responseData.video
         }
     }
 

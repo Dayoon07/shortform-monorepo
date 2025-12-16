@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { LoginResponse } from "../../../../entities/user/ui/LoginRes";
+import { LoginRes } from "../../../../entities/user/ui/LoginRes";
 import { login } from "../../../user/api/userService";
 import { showErrorToast, showSuccessToast } from "../../../../shared/utils/toast";
 import { ROUTE } from "../../../../shared/constants/Route";
@@ -19,7 +19,7 @@ export function useSideBarLoginModal(username: string, password: string, onClose
         }
         setIsLoading(true);
         try {
-            const data: LoginResponse | null = await login(username, password);
+            const data: LoginRes | null = await login(username, password);
             
             if (data?.success === false || data == null) {
                 showErrorToast(`로그인 실패: ${data?.message || "사용자명 또는 <br className='md:hidden'/> 비밀번호가 올바르지 않습니다"}`, 5000);

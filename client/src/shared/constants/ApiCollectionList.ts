@@ -3,9 +3,12 @@ export const REST_API_SERVER: string = "http://localhost:9005";
 // 웬만하면 RequestParam으로 요청하는 거는 함수처럼 만듬
 export const API_LIST = {
     COMMENT: {
-        INSERT: `/api/video/insert/comment/by/mention`,
+        INSERT: `/api/comment/insert`,
         POPULAR_LIST: (i: number) => `/api/video/find/comment/popular?id=${i}`,
-        RECENT_LIST: (i: number) => `/api/video/find/comment/recent?id=${i}`
+        RECENT_LIST: (i: number) => `/api/video/find/comment/recent?id=${i}`,
+        LIKE: {
+            TOGGLE: "/api/comment/like/by/mention"
+        }
     },
     POST: {
         USER_POST: (m: string) => `/api/community/find?mention=${m}`,

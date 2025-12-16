@@ -27,5 +27,7 @@ export default function LikeVideoList() {
 
     if (!user || user == null) return <ToGoPage errorMessage="로그인이 필요합니다" />
 
-    return <CommonVideoGrid videos={videos} message="좋아요를 누른 영상이 없습니다" />
+    return <CommonVideoGrid 
+        videos={videos} 
+        message="좋아요를 누른 영상이 없습니다" />
 }

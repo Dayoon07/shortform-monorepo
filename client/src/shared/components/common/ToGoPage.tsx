@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../constants/Route";
 
 export default function ToGoPage({
-    errorMessage = "예기치 못한 오류 또는 에러가 발생했습니다",
-    toGoMessage = "홈으로 돌아가기",
-    navigateRoute = ROUTE.HOMEPAGE
+    errorMessage    = "예기치 못한 오류 또는 에러가 발생했습니다",
+    toGoMessage     = "홈으로 돌아가기",
+    navigateRoute   = ROUTE.HOMEPAGE
 }) {
     const navigate = useNavigate();
     return (

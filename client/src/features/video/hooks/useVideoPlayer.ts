@@ -10,7 +10,7 @@ export interface VideoPlayerControls {
 
 export function useVideoPlayer(): VideoPlayerControls {
     const [isPlaying, setIsPlaying] = useState(true);
-    const [progress, setProgress] = useState(0);
+    const [progress, setProgress] = useState<number>(0);
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const togglePlay = () => {

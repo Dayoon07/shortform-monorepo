@@ -7,7 +7,7 @@ export const DeleteModal = ({ onClose }: { onClose: () => void }) => {
 
 
     return (
-        <Modal onClose={onClose} title="영상을 삭제하시겠습니까">
+        <Modal onClose={onClose} title="영상을 삭제하시겠습니까?">
             <div className="flex justify-between items-center space-x-4">
                 <button type="button" onClick={onClose}
                     className={`${baseCn} bg-gray-200 hover:bg-gray-300`}

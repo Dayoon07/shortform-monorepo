@@ -8,9 +8,7 @@ import { Image } from "../../../shared/components/common/custom/Image";
 export default function BottomNavBar() {
     const { user } = useUser();
     const loc = useLocation();
-
-    /** 현재 경로가 활성 상태인지 확인 */
-    const isActive = (p: string): boolean => 
+    const activate = (p: string): boolean => 
         p === ROUTE.HOMEPAGE ? loc.pathname === p : loc.pathname.startsWith(p);
 
     return (
@@ -18,7 +16,7 @@ export default function BottomNavBar() {
             <div className="flex justify-around items-center">
                 {NAVITEM.map((item) => {
                     const Icon = item.icon;
-                    const active = isActive(item.to);
+                    const active = activate(item.to);
 
                     return (
                         <Link 
@@ -39,13 +37,13 @@ export default function BottomNavBar() {
                     <Link
                         to={ROUTE.PROFILE(user.mention)} 
                         aria-label="프로필" 
-                        aria-current={isActive(ROUTE.PROFILE(user.mention)) ? 'page' : undefined}
+                        aria-current={activate(ROUTE.PROFILE(user.mention)) ? 'page' : undefined}
                         className={`nav-item p-3 flex flex-col items-center gap-1 transition-colors ${
-                            isActive(ROUTE.PROFILE(user.mention)) ? 'text-black' : 'text-gray-400'
+                            activate(ROUTE.PROFILE(user.mention)) ? 'text-black' : 'text-gray-400'
                         }`}
                     >
                         <div className={`w-6 h-6 rounded-full overflow-hidden ${
-                            isActive(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-black' : ''
+                            activate(ROUTE.PROFILE(user.mention)) ? 'ring-2 ring-black' : ''
                         }`}>
                             <Image
                                 url={user.profileImgSrc}
@@ -60,7 +58,7 @@ export default function BottomNavBar() {
                         to={ROUTE.LOGINPLZ}
                         aria-label="로그인"
                         className={`nav-item p-3 transition-colors ${
-                            isActive(ROUTE.LOGINPLZ) ? 'text-black' : 'text-gray-400'
+                            activate(ROUTE.LOGINPLZ) ? 'text-black' : 'text-gray-400'
                         }`}
                     >
                         <LogIn className="w-6 h-6" />

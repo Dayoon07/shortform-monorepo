@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
-import { Search } from "lucide-react"; // lucide-react의 Search 아이콘을 사용하는 것이 모던한 느낌을 줍니다.
+import { Search } from "lucide-react";
 
 export default function SearchBar({ initialValue = "" }: { initialValue?: string }) {
     const [searchQuery, setSearchQuery] = useState<string>(initialValue);
@@ -9,10 +9,7 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
     const btnCn = `absolute top-1/2 left-3 -translate-y-1/2 p-1 
         text-gray-500 hover:text-blue-500 transition-colors`;
 
-    const SearchFunc = (query: string): void => {
-        if (query.trim()) navigate(ROUTE.SEARCH_V2(encodeURIComponent(query)));
-    };
-
+    const SearchFunc = (q: string) => { if (q.trim()) navigate(ROUTE.SEARCH_V2(q)); };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         SearchFunc(searchQuery);

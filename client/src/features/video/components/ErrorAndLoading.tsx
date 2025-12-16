@@ -1,3 +1,4 @@
+import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import React from "react";
 
 interface ErrorAndLoadingProps {
@@ -38,16 +39,13 @@ export const ErrorAndLoading: React.FC<ErrorAndLoadingProps> = ({
                                 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd"
                             />
                         </svg>
+                        <ArrowBigUp className="w-6 h-6" />
                         <span>위로 스와이프</span>
                     </div>
                 )}
                 <div className="flex items-center space-x-1">
                     <span>아래로 스와이프</span>
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 
-                            1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"
-                        />
-                    </svg>
+                    <ArrowBigDown className="w-6 h-6" />
                 </div>
             </div>
         </>
