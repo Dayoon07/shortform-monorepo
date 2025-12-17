@@ -27,34 +27,38 @@ export async function getProfileVideos(mention: string) {
 export async function editUserProfile(
     formData: { username: string, mail: string, mention: string, bio: string },
     profileImg: File | null,
-    currentProfileImgSrc: string, // 기존 이미지 경로
-) {
-    try {
-        const form = new FormData();
-        // 1. DTO에 해당하는 필드를 JSON 문자열로 변환하여 'req'라는 이름으로 FormData에 추가
-        // 참고: Long id는 서버의 AuthUserReqDto에서 가져오므로 여기서 DTO에 포함하지 않아도 됩니다.
-        const profileDto = {
-            username: formData.username,
-            mail: formData.mail,
-            mention: formData.mention,
-            bio: formData.bio,
-            // profileImg, profileImgSrc 필드는 DTO에서 제거하거나 사용하지 않습니다.
-        };
-        form.append("req", JSON.stringify(profileDto));
+    currentProfileImgSrc: string,
+): Promise<ProfileEditRes> {
+    const token = localStorage.getItem("accessTkn");
+    const form = new FormData();
 
-        // 2. 파일 추가 (서버의 @RequestPart(value = "profileImg")와 매칭)
-        // 3. 기존 이미지 경로 추가 (서버의 @RequestPart(value = "currentProfileImgSrc")와 매칭)
-        if (profileImg) form.append("profileImg", profileImg);
-        if (currentProfileImgSrc) form.append("currentProfileImgSrc", currentProfileImgSrc);
+    // 1. DTO 데이터를 JSON Blob으로 추가 (서버의 @RequestPart와 매칭)
+    const profileDto = {
+        username: formData.username,
+        mail: formData.mail,
+        mention: formData.mention,
+        bio: formData.bio,
+    };
+    form.append("req", new Blob([JSON.stringify(profileDto)], { type: 'application/json' }));
 
-        const res = await apiClient.post<ProfileEditRes>(API_LIST.USER.EDIT, true, { form });
-        if (!res.ok) throw new Error("서버 응답 오류: " + res);
-        if (!res.data === undefined) throw new Error("값이 없음: " + res);
+    // 2. 파일 및 추가 파라미터
+    if (profileImg) form.append("profileImg", profileImg);
+    if (currentProfileImgSrc) form.append("currentProfileImgSrc", currentProfileImgSrc);
 
-        console.log("프로필 수정 성공:", res.data);
-        return res.data;
-    } catch (error) {
-        console.error("프로필 수정 실패:", error);
-        throw error;
+    // 3. fetch 직접 호출
+    const response = await fetch(`${REST_API_SERVER}${API_LIST.USER.EDIT}`, {
+        method: 'POST',
+        headers: {
+            // 중요: Content-Type은 안 적어도 됩니다. 브라우저가 바운더리를 포함해 자동으로 설정합니다.
+            'Authorization': `Bearer ${token}`
+        },
+        body: form
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "프로필 수정 실패");
     }
+
+    return await response.json();
 }

@@ -9,10 +9,7 @@ export const useComment = (vid: number) => {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     const commentWrite = async (id: number, comment: string): Promise<CommentCreateRes | undefined> => {
-        const formData = new FormData();
-        formData.append('commentVideoId', id.toString());
-        formData.append('commentText', comment);
-        const data = await insertComment(formData);
+        const data = await insertComment(id, comment);
         
         if (!data.ok || data.data === undefined) {
             setErrorMessage(data?.error || "예상치 못한 에러 발생");

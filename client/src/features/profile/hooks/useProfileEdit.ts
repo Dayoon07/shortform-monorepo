@@ -2,13 +2,14 @@ import { useState } from "react";
 import { editUserProfile } from "../api/profileService";
 import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { showSuccessToast, showErrorToast } from "../../../shared/utils/toast";
+import { showSuccessToast } from "../../../shared/utils/toast";
 import { ProfileUserInfo } from "../../../entities/profile/ui/ProfileUserInfo";
 import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { ROUTE } from "../../../shared/constants/Route";
 
 export function useProfileEdit(profile: ProfileUserInfo, onClose: () => void) {
-    const [previewImg, setPreviewImg] = useState<ProfileUserInfo | string>(profile?.profileImgSrc || "");
+    const a: string = profile?.social ? profile?.profileImgSrc : REST_API_SERVER + profile.profileImgSrc;
+    const [previewImg, setPreviewImg] = useState<string>(a);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const navigate = useNavigate();
     const { setUser } = useUser();
@@ -59,7 +60,7 @@ export function useProfileEdit(profile: ProfileUserInfo, onClose: () => void) {
             onClose();
         } catch (error) {
             console.error("업데이트 실패:", error);
-            showErrorToast("프로필 수정 중 오류가 발생했습니다");
+            // showErrorToast("프로필 수정 중 오류가 발생했습니다");
         }
     };
 
