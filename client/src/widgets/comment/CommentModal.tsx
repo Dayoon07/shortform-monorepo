@@ -5,6 +5,7 @@ import { CommentList } from "../../features/comment/components/CommentList";
 import { User } from "../../entities/user/model/User";
 import { X } from "lucide-react";
 import { Image } from "../../shared/components/common/custom/Image";
+import { CommentCreateRes } from "../../entities/comment/ui/CommentCreateRes";
 
 interface CommentModalWidgetProps {
     open: boolean,
@@ -26,6 +27,7 @@ export function CommentModal({
     user, 
     videoId
 }: CommentModalWidgetProps) {
+    const [commentWriteText, setCommentWriteText] = useState<CommentCreateRes | (undefined | null)>(null);
     const [commentText, setCommentText] = useState<string>("");
     const [sortType, setSortType] = useState<string>(SortType.POPULAR);
     const { 
@@ -34,8 +36,11 @@ export function CommentModal({
     } = useComment(videoId);
 
     const c = async () => {
-        if (user !== null) 
-            showSuccessToast(await commentWrite(videoId, commentText));
+        if (user !== null) {
+            const res = await commentWrite(videoId, commentText);
+            showSuccessToast(res);
+            setCommentWriteText(res);
+        }
     };
 
     if (!open) return null;
@@ -79,7 +84,10 @@ export function CommentModal({
                     </div>
                 </div>
 
-                <CommentList commentList={commentList} />
+                <CommentList 
+                    commentList={commentList} 
+                    cc={commentWriteText} 
+                />
 
                 {user && (
                     <div className="p-4">

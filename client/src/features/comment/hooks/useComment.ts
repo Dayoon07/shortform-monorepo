@@ -2,20 +2,21 @@ import { useEffect, useState } from "react";
 import { insertComment, popularCommentList, recentCommentList } from "../api/commentService";
 import { Comment } from "../../../entities/comment/ui/Comment";
 import { showErrorToast } from "../../../shared/utils/toast";
+import { CommentCreateRes } from "../../../entities/comment/ui/CommentCreateRes";
 
 export const useComment = (vid: number) => {
     const [commentList, setCommentList] = useState<Comment[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const commentWrite = async (id: number, comment: string) => {
+    const commentWrite = async (id: number, comment: string): Promise<CommentCreateRes | undefined> => {
         const formData = new FormData();
         formData.append('commentVideoId', id.toString());
         formData.append('commentText', comment);
         const data = await insertComment(formData);
         
         if (!data.ok || data.data === undefined) {
-            setErrorMessage(data.data);
-            console.log(data.data);
+            setErrorMessage(data?.error || "예상치 못한 에러 발생");
+            console.log(data);
             return;
         }
 
