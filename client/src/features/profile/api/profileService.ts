@@ -3,11 +3,9 @@ import { apiClient } from "../../../shared/utils/ApiClient";
 import { ProfileEditRes } from "../../../entities/profile/ui/ProfileEditRes";
 import { ProfileUserData } from "../../../entities/profile/ui/ProfileUserData";
 
-export async function getProfileByMention(mention: string): Promise<ProfileUserData> {
+export async function getProfileByMention(mention: string): Promise<ProfileUserData | undefined> {
     const res = await apiClient.get<ProfileUserData>(API_LIST.USER.INFO(mention), false);
-    if (!res.ok || res.data === undefined) 
-        throw new Error("멘션에 해당하는 프로필 사용자를 찾지 못했습니다: " + res);
-    // console.log(res.data);
+    if (!res.ok || res.data === undefined) throw new Error("에러가 발생했지만 무슨 에러인지는 모르겠다. " + res);
     return res.data;
 }
 

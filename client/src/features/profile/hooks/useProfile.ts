@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { getFollowStatus, getFollowerList, getFollowingList } from "../../follow/api/followService";
-import { showErrorToast } from "../../../shared/utils/toast";
 import { getProfileByMention } from "../api/profileService";
 import { getUserPosts } from "../../post/api/postService";
 import { User } from "../../../entities/user/model/User";
@@ -18,20 +17,6 @@ export const useProfile = (mention: string | undefined, currentUser: User | null
     const cleanMention: string | undefined = mention?.replace('@', '');
     const isOwnProfile: boolean = currentUser?.mention === cleanMention;
 
-    // const handleToggleFollow = async () => {
-    //     if (!cleanMention) return;
-        
-    //     try {
-    //         const data = await toggleFollow(cleanMention);
-    //         setIsFollowing(prev => !prev);
-    //         showSuccessToast(data);
-    //         return data;
-    //     } catch (error) {
-    //         showErrorToast(isFollowing ? '언팔로우에 실패했습니다.' : '팔로우에 실패했습니다.');
-    //         console.error(error);
-    //     }
-    // };
-
     const getFollowerListHook = async (): Promise<User[]> => {
         if (!profile) throw new Error("로그인이 필요한 기능입니다");
         const res = await getFollowerList(profile.id);
@@ -48,42 +33,30 @@ export const useProfile = (mention: string | undefined, currentUser: User | null
 
     const fetchProfilePosts = async (): Promise<void> => {
         if (!cleanMention) return;
-        
-        try {
-            const userPosts = await getUserPosts(cleanMention);
-            setPosts(userPosts || []);
-        } catch (error) {
-            console.error('게시글 불러오기 실패:', error);
-        }
+        const userPosts = await getUserPosts(cleanMention);
+        setPosts(userPosts || []);
     };
-
 
     const setupLoadData = useCallback(async (): Promise<void> => {
         if (!cleanMention) return;
         setLoading(true);
 
-        try {
-            const [profileData, postData] = await Promise.all([
-                getProfileByMention(cleanMention),
-                getUserPosts(cleanMention)
-            ]);
-            
-            if (!profileData) throw new Error("프로필 데이터를 불러올 수 없습니다.");
-            
-            setProfile(profileData.profileInfo);
-            setVideos(profileData.profileVideosInfo);
-            setPosts(postData);
+        const [profileData, postData] = await Promise.all([
+            getProfileByMention(cleanMention),
+            getUserPosts(cleanMention)
+        ]);
+        
+        if (!profileData) throw new Error("프로필 데이터를 불러올 수 없습니다.");
+        
+        setProfile(profileData.profileInfo);
+        setVideos(profileData.profileVideosInfo);
+        setPosts(postData);
 
-            if (currentUser && !isOwnProfile) {
-                const a = await getFollowStatus(currentUser.mention, `@${cleanMention}`);
-                setIsFollowing(a.data);
-            }
-        } catch (error) {
-            console.error('프로필 불러오기 실패:', error);
-            showErrorToast('프로필을 불러오는데 실패했습니다.');
-        } finally {
-            setLoading(false);
+        if (currentUser != null && !isOwnProfile) {
+            const a = await getFollowStatus(currentUser.mention, `@${cleanMention}`);
+            setIsFollowing(a.data);
         }
+        setLoading(false);
     }, [cleanMention, currentUser, isOwnProfile]);
 
     useEffect(() => {
@@ -97,7 +70,6 @@ export const useProfile = (mention: string | undefined, currentUser: User | null
         loading, 
         isFollowing,
         isOwnProfile,
-        // handleToggleFollow,
         fetchProfilePosts,
         getFollowerListHook,
         getFollowingListHook
