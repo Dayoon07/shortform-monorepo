@@ -9,6 +9,10 @@ export async function getUserPosts(mention: string): Promise<Post[]> {
     return res.data;
 }
 
+export async function getPostDetail(communityUuid: string): Promise<ApiResponse<any>> {
+    return await apiClient.get<any>(API_LIST.POST.GET_POST(communityUuid), false);
+}
+
 export async function createPost(formData: FormData): Promise<ApiResponse<WritePostRes>> {
     return await apiClient.post<WritePostRes>(
         API_LIST.POST.WRITE, true, formData);

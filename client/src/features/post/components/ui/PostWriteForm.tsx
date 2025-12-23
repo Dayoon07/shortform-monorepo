@@ -3,7 +3,7 @@ import { usePost } from "../../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../../shared/context/UserContext";
 import { Camera, X } from "lucide-react";
-import { AvailabilityStatus } from "../../../../shared/constants/enums/AvailabilityStatuc";
+import { AvailabilityStatus } from "../../../../shared/constants/enums/AvailabilityStatus";
 
 // 함수는 웬만하면 hook으로 분리할 예정
 export function PostWriteForm() {
