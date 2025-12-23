@@ -4,18 +4,15 @@ import { showSuccessToast, showErrorToast } from '../../../shared/utils/toast';
 import { User } from '../../../entities/user/model/User';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../../shared/constants/Route';
-import { AvailabilityStatus } from '../../../shared/constants/enums/AvailabilityStatuc';
+import { AvailabilityStatus } from '../../../shared/constants/enums/AvailabilityStatus';
 
 export function usePost(user: User | null) {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    // const [posts, setPosts] = useState<any>([]);
-
     const [content, setContent] = useState<string>("");
     const [uploadedImages, setUploadedImages] = useState<Blob[]>([]);
     const [visibility, setVisibility] = useState<string>(AvailabilityStatus.PUBLIC);
     const [dragOver, setDragOver] = useState<boolean>(false);
     const [validationMessage, setValidationMessage] = useState<string>("");
-
     const imageInputRef = useRef<HTMLInputElement>(null);
     const maxImages = 5;
     const maxFileSize = 5 * 1024 * 1024; // 5MB
@@ -47,17 +44,6 @@ export function usePost(user: User | null) {
             setIsSubmitting(false);
         }
     };
-
-    // const getPosts = async (mention: string) => {
-    //     try {
-    //         const data = await getUserPosts(mention);
-    //         console.log(`게시글: ${data}`);
-    //         setPosts(data);
-    //     } catch (error) {
-    //         console.error(error);
-    //         throw error;
-    //     }
-    // }
 
     /** 폼 검증 */
     const validateForm = () => {
@@ -134,7 +120,8 @@ export function usePost(user: User | null) {
     };
 
     // 이미지 삭제
-    const removeImage = (index: number) => setUploadedImages(prev => prev.filter((_, i) => i !== index));
+    const removeImage = (index: number) => 
+        setUploadedImages(prev => prev.filter((_, i) => i !== index));
 
     // 드래그 앤 드롭
     const handleDragOver = (e: React.DragEvent) => {

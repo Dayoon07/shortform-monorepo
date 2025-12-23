@@ -4,6 +4,7 @@ import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { RefObject, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { DeleteModal } from "./ui/DeleteModal";
+import { ReportModal } from "../report/ReportModal";
 
 interface CommonVideoGridProps {
     videos: VideoGridContent[],
@@ -16,8 +17,9 @@ export function CommonVideoGrid({
     message = "영상이 없습니다",
     cardUploaderPublic = true
 }: CommonVideoGridProps) {
-    const videoRefs: RefObject<HTMLVideoElement[]> = useLazyHoverVideo(videos);
     const [modelOpenStatus, setModelOpenStatus] = useState<boolean>(false);
+    const [modelOpenStatus2, setModelOpenStatus2] = useState<boolean>(false);
+    const videoRefs: RefObject<HTMLVideoElement[]> = useLazyHoverVideo(videos);
     const { user } = useUser();
     const commonVideoGridClassName = `
         md:max-w-6xl md:mx-auto grid md:min-[480px] grid-cols-2 
@@ -40,11 +42,13 @@ export function CommonVideoGrid({
                         uploaderPublic={cardUploaderPublic}
                         currentUser={(user !== null) ? user : null}
                         onShowModal={() => setModelOpenStatus(true)}
+                        onShowModal2={() => setModelOpenStatus2(true)}
                     />
                 );
             })}
 
             {modelOpenStatus && <DeleteModal onClose={() => setModelOpenStatus(false)} />}
+            {modelOpenStatus2 && <ReportModal onClose={() => setModelOpenStatus2(false)} />}
         </div>
     );
 }

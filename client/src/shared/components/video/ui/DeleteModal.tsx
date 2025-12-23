@@ -3,9 +3,6 @@ import Modal from "../../common/Modal";
 
 export const DeleteModal = ({ onClose }: { onClose: () => void }) => {
     const baseCn = `w-full duration-300 font-bold text-lg py-4 rounded-xl`;
-
-
-
     return (
         <Modal onClose={onClose} title="영상을 삭제하시겠습니까?">
             <div className="flex justify-between items-center space-x-4">

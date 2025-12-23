@@ -5,6 +5,7 @@ import { VideoGridContent } from "../../../../entities/video/ui/VideoGridContent
 import { Image } from "../../../../shared/components/common/custom/Image";
 import { MoreVertical } from "lucide-react";
 import { User } from "../../../../entities/user/model/User";
+import { DropdownMenuBtn } from "../../../../shared/components/video/ui/DropdownMenuBtn";
 
 interface VideoCardProps {
     video: VideoGridContent,
@@ -12,7 +13,8 @@ interface VideoCardProps {
     videoRefs: RefObject<(HTMLVideoElement | null)[]>,
     uploaderPublic?: boolean,
     currentUser?: User | null,
-    onShowModal: () => void
+    onShowModal?: () => void,
+    onShowModal2?: () => void
 }
 
 export const VideoCard = memo(({
@@ -21,7 +23,8 @@ export const VideoCard = memo(({
     videoRefs, 
     uploaderPublic = true,
     currentUser,
-    onShowModal 
+    onShowModal,
+    onShowModal2 
 }: VideoCardProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -97,34 +100,24 @@ export const VideoCard = memo(({
                                 <MoreVertical className="w-5 h-5" />
                             </button>
                             
-                            {isMenuOpen && (
-                                <div className="absolute right-0 mt-2 w-32 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="absolute right-0 mt-2 w-32 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                {isMenuOpen && (
                                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                        <button 
-                                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                navigate(ROUTE.VIDEO_EDIT);
-                                            }} 
-                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" 
-                                            role="menuitem"
-                                        >
-                                            영상 수정
-                                        </button>
-                                        <button 
-                                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                onShowModal();
-                                            }} 
-                                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700" 
-                                            role="menuitem"
-                                        >
-                                            영상 삭제
-                                        </button>
+                                        <DropdownMenuBtn 
+                                            text="영상 수정하기"
+                                            onClickEventFunc={() => navigate(ROUTE.VIDEO_EDIT)}
+                                        />
+                                        <DropdownMenuBtn 
+                                            text="영상 삭제하기"
+                                            onClickEventFunc={() => onShowModal?.()}
+                                        />
                                     </div>
-                                </div>
-                            )}
+                                )}
+                                <DropdownMenuBtn 
+                                    text="신고하기"
+                                    onClickEventFunc={() => onShowModal2?.()}
+                                />
+                            </div>
                         </div>
                     )}
                 </div>

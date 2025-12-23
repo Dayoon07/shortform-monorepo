@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useUser } from "../../../shared/context/UserContext";
-import { AvailabilityStatus } from '../../../shared/constants/enums/AvailabilityStatuc';
+import { AvailabilityStatus } from '../../../shared/constants/enums/AvailabilityStatus';
 
 export default function VideoMetadataForm({ onSubmit, isSubmitting, previewUrl }) {
     const { user } = useUser();

@@ -12,6 +12,7 @@ export const API_LIST = {
     },
     POST: {
         USER_POST: (m: string) => `/api/community/find?mention=${m}`,
+        GET_POST: (cuuid: string) => `/api/community/detail/find?communityUuid=${cuuid}`,
         WRITE: "/api/community/write",
         TOGGLE_LIKE: (i: string) => `/api/community/like?communityUuid=${i}`
     },
