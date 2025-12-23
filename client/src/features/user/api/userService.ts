@@ -28,8 +28,8 @@ export async function signup(formData: FormData): Promise<{ data: string }> {
 
 export async function login(username: string, password: string): Promise<LoginRes | null> {
     const response = await apiClient.post<LoginRes>(API_LIST.USER.LOGIN, false, {
-        "username": username,
-        "password": password
+        username: username,
+        password: password
     });
 
     if (!response.ok || response.data === undefined || !response.data.success) {

@@ -27,7 +27,7 @@ export function CommentModal({
     user, 
     videoId
 }: CommentModalWidgetProps) {
-    const [commentWriteText, setCommentWriteText] = useState<CommentCreateRes | (undefined | null)>(null);
+    const [commentWriteText, setCommentWriteText] = useState<CommentCreateRes | null>(null);
     const [commentText, setCommentText] = useState<string>("");
     const [sortType, setSortType] = useState<string>(SortType.POPULAR);
     const { 

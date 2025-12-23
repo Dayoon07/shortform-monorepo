@@ -8,13 +8,13 @@ export const useComment = (vid: number) => {
     const [commentList, setCommentList] = useState<Comment[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const commentWrite = async (id: number, comment: string): Promise<CommentCreateRes | undefined> => {
+    const commentWrite = async (id: number, comment: string): Promise<CommentCreateRes> => {
         const data = await insertComment(id, comment);
         
         if (!data.ok || data.data === undefined) {
             setErrorMessage(data?.error || "예상치 못한 에러 발생");
             console.log(data);
-            return;
+            throw new Error(data?.error);
         }
 
         return data.data;

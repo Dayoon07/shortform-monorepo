@@ -4,11 +4,18 @@ import { API_LIST } from "../../../shared/constants/ApiCollectionList";
 import { apiClient, ApiResponse } from "../../../shared/utils/ApiClient";
 
 export async function insertComment(id: number, comment: string): Promise<ApiResponse<CommentCreateRes>> {
-    return await apiClient.post<CommentCreateRes>(
+    const res = await apiClient.post<CommentCreateRes>(
         API_LIST.COMMENT.INSERT, true, {
             commentVideoId: id,
             commentText: comment
         });
+    
+    if (!res.ok || res.data === undefined) {
+        console.log(res);
+        throw new Error("뭐가 에러인지는 모르겠지만 에러: " + res);
+    }
+
+    return res;
 }
 
 export async function popularCommentList(videoId: number): Promise<ApiResponse<Comment[]>> {
