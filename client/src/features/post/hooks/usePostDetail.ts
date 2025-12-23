@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { getPostDetail } from "../api/postService";
-import { Post } from "../../../entities/post/ui/Post";
 
 export const usePostDetail = (communityUuid: string) => {
     const [post, setPost] = useState<any | null>(null);    

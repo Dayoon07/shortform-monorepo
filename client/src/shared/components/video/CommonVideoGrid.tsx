@@ -5,6 +5,7 @@ import { RefObject, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { DeleteModal } from "./ui/DeleteModal";
 import { ReportModal } from "../report/ReportModal";
+import { ReportTargetType } from "../../constants/enums/ReportTargetType";
 
 interface CommonVideoGridProps {
     videos: VideoGridContent[],
@@ -48,7 +49,9 @@ export function CommonVideoGrid({
             })}
 
             {modelOpenStatus && <DeleteModal onClose={() => setModelOpenStatus(false)} />}
-            {modelOpenStatus2 && <ReportModal onClose={() => setModelOpenStatus2(false)} />}
+            {modelOpenStatus2 && <ReportModal 
+                targetType={ReportTargetType.VIDEO}
+                onClose={() => setModelOpenStatus2(false)} />}
         </div>
     );
 }

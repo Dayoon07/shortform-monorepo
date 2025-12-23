@@ -5,7 +5,7 @@ interface ModalProps {
     onClose: () => void,
     title: string,
     titleAlign?: "left" | "center" | "right",
-    children: ReactNode
+    children: ReactNode | any
 }
 
 export default function Modal({
@@ -30,14 +30,14 @@ export default function Modal({
                 {titleAlign === "center" ? (
                     <div className="flex justify-between items-center mb-6">
                         <div className="w-12 h-6"></div>
-                        <h3 className="text-2xl font-bold text-center">{title}</h3>
+                        <h3 className="md:text-2xl max-md:text-xl font-bold text-center">{title}</h3>
                         <button onClick={onClose} aria-label="모달 닫기" className="p-2 rounded-full hover:bg-gray-200">
                             <X className="w-6 h-6 text-gray-400 transition-colors" />
                         </button>
                     </div>
                 ) : (
                     <div className="flex justify-between items-center mb-6">
-                        <h3 className={`text-2xl font-bold text-${titleAlign}`}>{title}</h3>
+                        <h3 className={`md:text-2xl max-md:text-xl font-bold text-${titleAlign}`}>{title}</h3>
                         <button onClick={onClose} aria-label="모달 닫기" className="p-2 rounded-full hover:bg-gray-200">
                             <X className="w-6 h-6 text-gray-400 transition-colors" />
                         </button>

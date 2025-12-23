@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { ThumbsUp, MessageCircle, Share2, MoreVertical } from "lucide-react";
 import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
 import { ROUTE } from "../../../shared/constants/Route";
-import { defaultFormatDate } from "../../../shared/utils/formatUtil";
 import { Post } from "../../../entities/post/ui/Post";
 import { Image } from "../../../shared/components/common/custom/Image";
+import { defaultFormatDate } from "../../../shared/utils/formatUtil";
 
 interface PostCardProps {
     post: Post,
@@ -49,7 +49,7 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                 <div className="flex-grow">
                     <div className="flex items-center">
                         <p className="font-bold mr-4">{post.username}</p>
-                        <p className="text-xs text-gray-500">{formatDate(post.createAt)}</p>
+                        <p className="text-xs text-gray-500">{defaultFormatDate(post.createAt)}</p>
                     </div>
                     <div className="mt-1">
                         {post.communityText && (

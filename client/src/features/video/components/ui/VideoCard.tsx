@@ -88,12 +88,12 @@ export const VideoCard = memo(({
                     </div>
                     
                     {/* MoreVertical 아이콘 및 드롭다운 메뉴 (오른쪽 상단) */}
-                    {(currentUser?.id === video.uploaderId) && currentUser && (
+                    {currentUser != null && (
                         <div className="absolute top-2 right-2 z-10" ref={menuRef}>
                             <button 
                                 ref={buttonRef}
                                 onClick={handleMenuToggle} 
-                                className="p-1 text-white bg-transparent rounded-full hover:bg-black/50 transition-colors"
+                                className="p-1 text-white bg-black/50 rounded-full transition-colors"
                                 aria-expanded={isMenuOpen}
                                 aria-label="비디오 옵션"
                             >
@@ -102,21 +102,27 @@ export const VideoCard = memo(({
                             
                             <div className="absolute right-0 mt-2 w-32 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 {isMenuOpen && (
-                                    <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                        <DropdownMenuBtn 
-                                            text="영상 수정하기"
-                                            onClickEventFunc={() => navigate(ROUTE.VIDEO_EDIT)}
-                                        />
-                                        <DropdownMenuBtn 
-                                            text="영상 삭제하기"
-                                            onClickEventFunc={() => onShowModal?.()}
-                                        />
+                                    <div className="py-1">
+                                        {currentUser?.id === video.uploaderId && (
+                                            <>
+                                                <DropdownMenuBtn
+                                                    text="영상 수정하기"
+                                                    onClickEventFunc={() => navigate(ROUTE.VIDEO_EDIT)}
+                                                />
+                                                <DropdownMenuBtn
+                                                    text="영상 삭제하기"
+                                                    onClickEventFunc={() => onShowModal?.()}
+                                                />
+                                            </>
+                                        )}
+                                        {currentUser?.id !== video.uploaderId && (
+                                            <DropdownMenuBtn
+                                                text="신고하기"
+                                                onClickEventFunc={() => onShowModal2?.()}
+                                            />
+                                        )}
                                     </div>
                                 )}
-                                <DropdownMenuBtn 
-                                    text="신고하기"
-                                    onClickEventFunc={() => onShowModal2?.()}
-                                />
                             </div>
                         </div>
                     )}

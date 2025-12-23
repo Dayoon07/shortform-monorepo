@@ -2,8 +2,8 @@
 export enum ReportType {
 
     INAPPROPRIATE   = "INAPPROPRIATE",  // 부적절한 영상
-    SEXUAL          = "SEXUAL",         // 선정적
-    VIOLENCE        = "VIOLENCE",       // 폭행
+    SEXUAL          = "SEXUAL",         // 성적인
+    VIOLENCE        = "VIOLENCE",       // 폭력적 or 혐오스러운
     HATE_SPEECH     = "HATE_SPEECH",    // 욕설
     SPAM            = "SPAM",           // 스팸
     COPYRIGHT       = "COPYRIGHT",      // 저작권

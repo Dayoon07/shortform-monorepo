@@ -24,7 +24,8 @@ export const API_LIST = {
         TOGGLE_UPG_VER: "/api/follow/toggle/upgrade"
     },
     REPORT: {
-        ALL: "/api/report/all"
+        ALL: "/api/report/all",
+        REPORT_REGISTER: "/api/report/register"
     },
     SEARCH: {
         SEARCH: "/api/search",

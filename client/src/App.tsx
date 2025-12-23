@@ -33,21 +33,21 @@ export default function App() {
                         <div className="md:flex md:pl-64">
                             <SideBar />
                             <Routes>
-                                <Route path={ROUTE.HOMEPAGE}                        element={<HomePage />} />
-                                <Route path={ROUTE.LOGINPLZ}                        element={<LoginPlzPage />} />
-                                <Route path={ROUTE.SEARCH}                          element={<SearchPage />} />
-                                <Route path={ROUTE.FOLLOWING}                       element={<FollowingPage />} />
-                                <Route path={ROUTE.EXPLORE}                         element={<ExplorePage />} />
-                                <Route path={PATTERN_ROUTE.HASHTAG}                 element={<TagVideoPage />} />
-                                <Route path={ROUTE.STUDIO_UPLOAD}                   element={<UploadPage />} />
-                                <Route path={ROUTE.STUDIO_POST_WRITE}               element={<PostWritePage />} />
-                                <Route path={ROUTE.LIKES}                           element={<LikesPage />} />
-                                <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO}     element={<SwipeVideoPage />} />
-                                <Route path={ROUTE.VIDEO_EDIT}                      element={<EditPage />}/>
-                                <Route path={PATTERN_ROUTE.PROFILE}                 element={<ProfilePage />} />
-                                <Route path={PATTERN_ROUTE.PROFILE_POST_DETAIL}     element={<ProfilePostDetailPage />} />
-                                <Route path={ROUTE.OAUTH_CALLBACK}                  element={<OAuthCallbackPage />} />
-                                <Route path={PATTERN_ROUTE.WILD_CARD}               element={<NotFoundWhat />} />
+                                <Route path={ROUTE.HOMEPAGE}                        element={<HomePage                  />} />
+                                <Route path={ROUTE.LOGINPLZ}                        element={<LoginPlzPage              />} />
+                                <Route path={ROUTE.SEARCH}                          element={<SearchPage                />} />
+                                <Route path={ROUTE.FOLLOWING}                       element={<FollowingPage             />} />
+                                <Route path={ROUTE.EXPLORE}                         element={<ExplorePage               />} />
+                                <Route path={PATTERN_ROUTE.HASHTAG}                 element={<TagVideoPage              />} />
+                                <Route path={ROUTE.STUDIO_UPLOAD}                   element={<UploadPage                />} />
+                                <Route path={ROUTE.STUDIO_POST_WRITE}               element={<PostWritePage             />} />
+                                <Route path={ROUTE.LIKES}                           element={<LikesPage                 />} />
+                                <Route path={PATTERN_ROUTE.PROFILE_SWIPE_VIDEO}     element={<SwipeVideoPage            />} />
+                                <Route path={ROUTE.VIDEO_EDIT}                      element={<EditPage                  />} />
+                                <Route path={PATTERN_ROUTE.PROFILE}                 element={<ProfilePage               />} />
+                                <Route path={PATTERN_ROUTE.PROFILE_POST_DETAIL}     element={<ProfilePostDetailPage     />} />
+                                <Route path={ROUTE.OAUTH_CALLBACK}                  element={<OAuthCallbackPage         />} />
+                                <Route path={PATTERN_ROUTE.WILD_CARD}               element={<NotFoundWhat              />} />
                             </Routes>
                         </div>
                         <BottomNavBar />
