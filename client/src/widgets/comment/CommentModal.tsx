@@ -30,6 +30,7 @@ export function CommentModal({
     const [commentWriteText, setCommentWriteText] = useState<CommentCreateRes | null>(null);
     const [commentText, setCommentText] = useState<string>("");
     const [sortType, setSortType] = useState<string>(SortType.POPULAR);
+    const [vdoCommentSize, setVdoCommentSize] = useState<number>(videoCommentSize);
     const { 
         commentWrite,
         commentList
@@ -39,6 +40,7 @@ export function CommentModal({
         if (user !== null) {
             const res = await commentWrite(videoId, commentText);
             showSuccessToast(res);
+            setVdoCommentSize(videoCommentSize += 1);
             setCommentWriteText(res);
         }
     };
@@ -51,34 +53,28 @@ export function CommentModal({
             <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl 
                 w-full max-w-2xl h-3/4 flex flex-col shadow-2xl">
                 <div className="flex items-center justify-between p-4">
-                    <h2 className="text-xl font-bold">댓글 {videoCommentSize}개</h2>
+                    <h2 className="text-xl font-bold">댓글 {vdoCommentSize}개</h2>
 
                     <div className="flex items-center space-x-4">
                         <div className="flex space-x-2">
-                            <button onClick={() => setSortType(SortType.POPULAR)}
+                            <button type="button" onClick={() => setSortType(SortType.POPULAR)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                                    sortType === "popular"
-                                        ? "bg-gradient-to-r from-pink-500 to-blue-500 text-white"
-                                        : "bg-gray-700 hover:bg-gray-600 text-white"
+                                    sortType === SortType.POPULAR ? "text-white bg-black" : "text-black bg-gray-200 hover:bg-gray-300"
                                 }`}
                             >
                                 인기순
                             </button>
 
-                            <button onClick={() => setSortType(SortType.RECENT)}
+                            <button type="button" onClick={() => setSortType(SortType.RECENT)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                                    sortType === "recent"
-                                        ? "bg-gradient-to-r from-pink-500 to-blue-500 text-white"
-                                        : "bg-gray-700 hover:bg-gray-600 text-white"
+                                    sortType === SortType.RECENT ? "text-white bg-black" : "text-black bg-gray-200 hover:bg-gray-300"
                                 }`}
                             >
                                 최신순
                             </button>
                         </div>
 
-                        <button className="text-gray-400 hover:text-black transition-colors duration-200"
-                            onClick={onClose}
-                        >
+                        <button type="button" onClick={onClose} className="text-gray-400 hover:text-black duration-200">
                             <X className="w-6 h-6" />
                         </button>
                     </div>

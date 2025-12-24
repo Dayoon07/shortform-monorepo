@@ -16,7 +16,6 @@ interface VideoInfoOverlayProps {
 export function VideoInfoOverlay({ 
     video, user, isFollowing, onFollowChange
 }: VideoInfoOverlayProps) {
-    const baseCn = "md:text-black max-md:text-white";
     const truncate = (t: string, l: number) => 
         t.length > l ? t.substring(0, l) + "..." : t;
 
@@ -35,12 +34,12 @@ export function VideoInfoOverlay({
                 
                 <div style={{ maxWidth: '128px' }}>
                     <Link to={ROUTE.PROFILE(video.video.uploader.mention)} className="block truncate">
-                        <span className={`text-sm md:text-lg font-semibold hover:underline transition-colors ${baseCn}`}>
+                        <span className="text-sm md:text-lg font-semibold hover:underline transition-colors">
                             {truncate(video.video.uploader.username, 10)}
                         </span>
                     </Link>
                     <Link to={ROUTE.PROFILE(video.video.uploader.mention)} className="block">
-                        <span className={`text-xs text-gray-400 hover:text-gray-600 transition-colors ${baseCn}`}>
+                        <span className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
                             {truncate(`@${video.video.uploader.mention}`, 10)}
                         </span>
                     </Link>
@@ -54,7 +53,7 @@ export function VideoInfoOverlay({
                 )}
             </div>
 
-            <h1 className={`text-sm md:text-base font-medium line-clamp-2 ${baseCn}`}>
+            <h1 className="text-sm md:text-base font-medium line-clamp-2">
                 {video.video.videoTitle}
             </h1>
 
@@ -73,7 +72,7 @@ export function VideoInfoOverlay({
                 </div>
             )}
 
-            <p className={`text-xs md:text-sm text-gray-400 line-clamp-2 ${baseCn}`}>
+            <p className="text-xs md:text-sm text-gray-400 line-clamp-2">
                 {video.video.videoDescription}
             </p>
         </div>

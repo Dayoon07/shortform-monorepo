@@ -16,8 +16,8 @@ export default function SideBar() {
     const { user } = useUser();
     const { logoutHook } = useSession();
 
-    const side = `max-md:hidden w-64 border-r flex 
-        flex-col px-4 space-y-4 fixed h-full left-0 top-0`;
+    const side = `max-md:hidden w-64 flex flex-col px-4 
+        space-y-4 fixed h-full left-0 top-0`;
 
     return (
         <div>
