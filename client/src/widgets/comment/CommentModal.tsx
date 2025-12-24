@@ -85,7 +85,7 @@ export function CommentModal({
                 </div>
 
                 <CommentList 
-                    commentList={commentList} 
+                    cList={commentList} 
                     cc={commentWriteText} 
                 />
 

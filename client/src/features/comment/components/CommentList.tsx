@@ -7,19 +7,19 @@ import { CommentCreateRes } from "../../../entities/comment/ui/CommentCreateRes"
 
 // cc = createdComment
 interface CommentListProps {
-    commentList: Comment[],
+    cList: Comment[],
     cc: CommentCreateRes | (undefined | null)
 }
 
-export function CommentList({ commentList, cc }: CommentListProps) {
+export function CommentList({ cList, cc }: CommentListProps) {
     return (
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {cc !== null && cc !== undefined && (
                 <CommentCreateResItem c={cc} />
             )}
 
-            {commentList !== null ? (
-                commentList.map((c) => <CommentItem c={c} />)
+            {cList !== null ? (
+                cList.map((c) => <CommentItem c={c} />)
             ) : (
                 <p className="text-gray-400 text-center">댓글이 없습니다.</p>
             )}
@@ -73,7 +73,7 @@ const CommentCreateResItem = ({ c }: { c: CommentCreateRes }) => {
                     <Link to={ROUTE.PROFILE(c.userObj.mention)} className="font-semibold text-md">
                         {c.userObj.username}
                     </Link>
-                    <span className="text-sm text-gray-400">{c.userObj.createAt}</span>
+                    <span className="text-sm text-gray-400">{c.userObj.createAt || '방금 전'}</span>
                 </div>
                 <pre className="whitespace-pre-wrap [font-family:inherit]">
                     {c.commentText}
