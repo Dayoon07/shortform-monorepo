@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ROUTE, PATTERN_ROUTE } from "./shared/constants/Route";
 import { UserProvider } from "./shared/context/UserContext";
 

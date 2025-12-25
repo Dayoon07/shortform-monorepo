@@ -1,4 +1,4 @@
-export const REST_API_SERVER: string = "https://kdy-server.me";
+export const REST_API_SERVER: string = "http://localhost:9005";
 
 // 웬만하면 RequestParam으로 요청하는 거는 함수처럼 만듬
 export const API_LIST = {
@@ -12,7 +12,7 @@ export const API_LIST = {
     },
     POST: {
         USER_POST: (m: string) => `/api/community/find?mention=${m}`,
-        GET_POST: (cuuid: string) => `/api/community/detail/find?communityUuid=${cuuid}`,
+        GET_DETAIL: (cuuid: string) => `/api/community/find/detail?communityUuid=${cuuid}`,
         WRITE: "/api/community/write",
         TOGGLE_LIKE: (i: string) => `/api/community/like?communityUuid=${i}`
     },

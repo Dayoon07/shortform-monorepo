@@ -1,8 +1,11 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom";
 import { Post } from "../../widgets/post/Post";
 
 export default function ProfilePostDetailPage() {
-    const w = new URLSearchParams(useLocation().pathname).get("communityUuid") ?? "";
-    console.log("communityUuid: " + w);
-    return <Post cuuid={w} />
+    const { mention } = useParams();
+    const p = new URLSearchParams(useLocation().search).get("p") ?? "";
+    console.log("mention:", mention);
+    console.log("p (communityUuid):", p);
+
+    return <Post cuuid={p} />;
 }
