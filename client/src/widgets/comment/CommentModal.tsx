@@ -3,7 +3,7 @@ import { useComment } from "../../features/comment/hooks/useComment";
 import { showSuccessToast } from "../../shared/utils/toast";
 import { CommentList } from "../../features/comment/components/CommentList";
 import { User } from "../../entities/user/model/User";
-import { X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { Image } from "../../shared/components/common/custom/Image";
 import { CommentCreateRes } from "../../entities/comment/ui/CommentCreateRes";
 
@@ -15,10 +15,7 @@ interface CommentModalWidgetProps {
     videoId: number
 }
 
-enum SortType {
-    POPULAR = "popular",
-    RECENT = "recent"
-}
+enum SortType { POPULAR = "popular", RECENT = "recent" }
 
 export function CommentModal({ 
     open, 
@@ -55,34 +52,28 @@ export function CommentModal({
                 <div className="flex items-center justify-between p-4">
                     <h2 className="text-xl font-bold">댓글 {vdoCommentSize}개</h2>
 
-                    <div className="flex items-center space-x-4">
-                        <div className="flex space-x-2">
-                            <button type="button" onClick={() => setSortType(SortType.POPULAR)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                                    sortType === SortType.POPULAR ? "text-white bg-black" : "text-black bg-gray-200 hover:bg-gray-300"
-                                }`}
+                    <div className="flex items-center space-x-3">
+                        <div className="relative group">
+                            <select value={sortType} onChange={(e) => setSortType(e.target.value)}
+                                className="appearance-none bg-gray-100 hover:bg-gray-200 text-sm font-medium 
+                                    pl-4 pr-10 py-2 rounded-lg cursor-pointer transition-colors duration-200 
+                                    focus:outline-none focus:ring-2 focus:ring-gray-300"
                             >
-                                인기순
-                            </button>
-
-                            <button type="button" onClick={() => setSortType(SortType.RECENT)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                                    sortType === SortType.RECENT ? "text-white bg-black" : "text-black bg-gray-200 hover:bg-gray-300"
-                                }`}
-                            >
-                                최신순
-                            </button>
+                                <option value={SortType.POPULAR}>인기순</option>
+                                <option value={SortType.RECENT}>최신순</option>
+                            </select>
+                            <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500" />
                         </div>
 
-                        <button type="button" onClick={onClose} className="text-gray-400 hover:text-black duration-200">
-                            <X className="w-6 h-6" />
+                        <button type="button" onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                            <X className="w-6 h-6 text-gray-500" />
                         </button>
                     </div>
                 </div>
 
                 <CommentList 
-                    cList={commentList} 
-                    cc={commentWriteText} 
+                    commentList={commentList} 
+                    createdComment={commentWriteText} 
                 />
 
                 {user && (

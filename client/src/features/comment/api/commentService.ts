@@ -27,3 +27,7 @@ export async function recentCommentList(videoId: number): Promise<ApiResponse<Co
     return await apiClient.get<any>(
         API_LIST.COMMENT.RECENT_LIST(videoId), false);
 }
+
+export async function commentLikeToggle(commentId: number): Promise<ApiResponse<any>> {
+    return await apiClient.post<any>(API_LIST.COMMENT.LIKE.TOGGLE(commentId), true);
+}

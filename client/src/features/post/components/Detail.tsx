@@ -6,6 +6,7 @@ import { Image } from "../../../shared/components/common/custom/Image";
 import ImageGrid from "../../../shared/components/post/ImageGrid";
 import { defaultFormatDate } from "../../../shared/utils/formatUtil";
 import { Clipboard } from "lucide-react";
+import { DetailPostCommentList } from "./ui/DetailPostCommentList";
 
 interface PostDetailProps {
     cuuid: string
@@ -96,6 +97,10 @@ export const Detail: React.FC<PostDetailProps> = ({ cuuid }) => {
                             </div>
                         </div>
                     </div>
+                    <DetailPostCommentList
+                        comment={0}
+                        onProfileClick={() => console.log("")}
+                    />
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-10 text-gray-400">

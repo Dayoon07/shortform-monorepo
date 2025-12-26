@@ -7,7 +7,7 @@ export const API_LIST = {
         POPULAR_LIST: (i: number) => `/api/video/find/comment/popular?id=${i}`,
         RECENT_LIST: (i: number) => `/api/video/find/comment/recent?id=${i}`,
         LIKE: {
-            TOGGLE: "/api/comment/like/by/mention"
+            TOGGLE: (cid: number) => `/api/comment/like?commentId=${cid}`
         }
     },
     POST: {
