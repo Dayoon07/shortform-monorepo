@@ -41,7 +41,7 @@ export default function SwipeVideoPage() {
 
     // 초기 비디오 로드
     useEffect(() => {
-        const fetchInitialVideo = async () => {
+        const init = async () => {
             if (hasFetched.current) return; // 이미 호출했으면 중단
             
             if (!videoLoc || !mention) {
@@ -62,7 +62,7 @@ export default function SwipeVideoPage() {
             setIsFollowing(data.data.isFollowing || false);
         };
 
-        if (user !== null) fetchInitialVideo();
+        init();
     }, [mention, videoLoc, user, navigate]);
 
     useEffect(() => {   // URL 업데이트 (뒤로가기 지원)
@@ -107,6 +107,7 @@ export default function SwipeVideoPage() {
                 onCommentClick={() => setShowCommentModal(true)}
                 onInfoClick={() => setShowVideoInfoModal(true)}
                 onSwipe={handleSwipe}
+                showCommentModalState={showCommentModal}
             />
 
             <ErrorAndLoading 

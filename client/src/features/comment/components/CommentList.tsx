@@ -4,41 +4,63 @@ import { CommentCreateRes } from "../../../entities/comment/ui/CommentCreateRes"
 import { useNavigate } from "react-router-dom";
 import { useCommentList } from "../hooks/useCommentList";
 import { CommentCreateResItem, CommentItem } from "./ui/CommentListItem";
+import { useState } from "react";
 
 interface CommentListProps {
     commentList: Comment[];
-    createdComment?: CommentCreateRes | null;
+    createdComments?: CommentCreateRes[]; // 배열로 변경
 }
 
-export function CommentList({ commentList, createdComment }: CommentListProps) {
-    const navi = useNavigate();
+export function CommentList({ commentList, createdComments = [] }: CommentListProps) {
+const navi = useNavigate();
+    const [actReplyId, setActReplyId] = useState<number | null>(null); // 현재 열린 답글 입력창의 댓글 ID
     const handleProfileClick = (mention: string) => navi(ROUTE.PROFILE(mention));
     const { 
-        commentLikeYn, 
+        likeStates, 
         commentLikeToggleHook
     } = useCommentList();
 
+    // 답글 버튼 클릭 핸들러
+    const handleReplyClick = (cid: number) => {
+        actReplyId === cid ? setActReplyId(null) : setActReplyId(cid);
+    };
+
+    // 답글 닫기 핸들러
+    const handleReplyClose = () => {
+        setActReplyId(null);
+    };
+
+    const commentLikeToggleHookHandler = (cid: number) => {
+        commentLikeToggleHook(cid);
+    }
+
     return (
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {createdComment && (
+            {createdComments.map((comment, index) => (
                 <CommentCreateResItem 
-                    comment={createdComment} 
-                    onProfileClick={() => handleProfileClick(createdComment.userObj.mention)}
+                    key={`created-${index}-${Date.now()}`}
+                    comment={comment} 
+                    onProfileClick={() => handleProfileClick(comment.userObj.mention)}
                 />
-            )}
+            ))}
 
             {commentList.length > 0 ? (
                 commentList.map((comment) => (
                     <CommentItem 
-                        key={comment.mention}
+                        key={comment.id}
                         comment={comment} 
                         onProfileClick={() => handleProfileClick(comment.mention)} 
-                        onLike={() => commentLikeToggleHook}
-                        likeYn={commentLikeYn}
+                        onLike={commentLikeToggleHookHandler}
+                        likeYn={!!likeStates[comment.id]}
+                        isReplyOpen={actReplyId === comment.id}             // 답글 열림 상태 전달
+                        onReplyClick={() => handleReplyClick(comment.id)}   // 답글 버튼 클릭 핸들러
+                        onReplyClose={handleReplyClose}                     // 답글 닫기 핸들러
                     />
                 ))
             ) : (
-                <p className="text-gray-400 text-center">댓글이 없습니다.</p>
+                createdComments.length === 0 && (
+                    <p className="text-gray-400 text-center">댓글이 없습니다.</p>
+                )
             )}
         </div>
     );

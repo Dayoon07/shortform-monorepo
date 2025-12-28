@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Info, MessageCircle, Share2, ChevronUp, ChevronDown } from 'lucide-react';
+import { Info, Share2, ChevronUp, ChevronDown, MessageSquareText } from 'lucide-react';
 import { toggleVideoLike } from '../api/swipeVideoService';
 import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
 import { VideoLikeButton } from './ui/VideoLikeButton';
@@ -91,7 +91,7 @@ export function VideoActionButtons({
             <VideoActionButton 
                 onClick={onCommentClick}
                 ariaLabel="댓글"
-                BtnIcon={MessageCircle}
+                BtnIcon={MessageSquareText}
                 text={video.commentCnt}
             />
 

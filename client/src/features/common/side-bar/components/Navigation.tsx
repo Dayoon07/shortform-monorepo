@@ -27,7 +27,7 @@ export default function Navigation({ user }: { user?: User | null }) {
                         activate(ROUTE.PROFILE(user.mention)) 
                             ? 'bg-black text-white' 
                             : 'text-black bg-whtie hover:bg-gray-300/50'
-                        } nav-btn flex items-center space-x-3 p-2 
+                        } nav-btn flex items-center space-x-4 p-2 
                         rounded-lg transition-colors group`
                     }
                 >

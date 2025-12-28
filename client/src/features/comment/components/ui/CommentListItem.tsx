@@ -6,12 +6,16 @@ import { defaultFormatDate } from "../../../../shared/utils/formatUtil";
 import { LikePageIcon } from "../../../../shared/utils/icon/icon";
 import React, { useState } from "react";
 import { CommentCreateRes } from "../../../../entities/comment/ui/CommentCreateRes";
+import { useUser } from "../../../../shared/context/UserContext";
 
 interface CommentItemProps {
     comment: Comment;
     onProfileClick: () => void;
-    onLike: () => void;
-    likeYn: boolean | null
+    onLike: (cid: number) => void;
+    likeYn: boolean | null;
+    isReplyOpen: boolean; // 부모로부터 받은 답글 열림 상태
+    onReplyClick: () => void; // 답글 버튼 클릭 핸들러
+    onReplyClose: () => void; // 답글 닫기 핸들러
 }
 
 interface CommentCreateResItemProps {
@@ -19,60 +23,112 @@ interface CommentCreateResItemProps {
     onProfileClick: () => void;
 }
 
-const COMMENT_BUTTON_CLASS = "text-md text-gray-400 hover:text-black duration-200";
-
 export const CommentItem: React.FC<CommentItemProps> = ({ 
-    comment, onProfileClick, onLike, likeYn
+    comment, onProfileClick, onLike, likeYn,
+    isReplyOpen, onReplyClick, onReplyClose
 }) => {
-    const [commentReply, setCommentReply] = useState<boolean>(false);
+    const [replyText, setReplyText] = useState<string>("");
+    const { user } = useUser();
+
+    const handleReplySubmit = () => {
+        if (replyText.trim()) {
+            console.log("답글 작성:", replyText);
+            setReplyText("");
+            onReplyClose();
+        }
+    };
+
     return (
-        <>
+        <div className="flex flex-col w-full mb-4">
             <div className="flex">
                 <Image
                     url={comment.profileImgSrc}
                     alt={`${comment.username}님의 프로필`}
                     social={comment.social}
-                    className="w-8 h-8 rounded-full object-cover cursor-pointer"
+                    className="w-10 h-10 rounded-full object-cover cursor-pointer mt-1"
                     onClick={onProfileClick}
                 />
-                <div className="ml-4">
-                    <div className="flex items-center space-x-2">
-                        <Link to={ROUTE.PROFILE(comment.mention)} className="font-semibold text-md">
+                <div className="ml-4 flex-1">
+                    <div className="flex items-center space-x-2 mb-1">
+                        <Link to={ROUTE.PROFILE(comment.mention)} className="font-bold">
                             {comment.username}
                         </Link>
-                        <span className="text-sm text-gray-400">
+                        <span className="text-[12px] text-gray-500">
                             {defaultFormatDate(comment.createAt)}
                         </span>
                     </div>
-                    <pre className="whitespace-pre-wrap [font-family:inherit]">
+                    <div className="text-[14px] leading-relaxed mb-2">
                         {comment.commentText}
-                    </pre>
-                    <div className="flex items-center space-x-4 mt-2">
-                        <button type="button" className={`${COMMENT_BUTTON_CLASS} flex items-center space-x-1`} 
-                            onClick={onLike}
-                        >
-                            <LikePageIcon className={likeYn ? "bg-red-400" : ""} />
-                            <span>{comment.likeCount}</span>
-                        </button>
-                        <button type="button" className={COMMENT_BUTTON_CLASS} onClick={() => setCommentReply(true)}>
-                            답글
-                        </button>
-                        <button type="button" className={COMMENT_BUTTON_CLASS}>
-                            답글 보기 {/* TODO: 답글 개수 표시 */}
-                        </button>
                     </div>
+                    
+                    <div className="flex items-center space-x-3">
+                        <button type="button" className="flex items-center gap-1 hover:bg-gray-100 p-1.5 rounded-full duration-200" onClick={() => {
+                            onLike(comment.id)
+                        }}>
+                            <LikePageIcon className={likeYn ? "fill-red-500 stroke-red-500" : "stroke-gray-600"} />
+                            <span className={`text-xs ${likeYn ? "text-red-500 font-medium" : "text-gray-600"}`}>
+                                {likeYn ? comment.likeCount + 1 : comment.likeCount} 
+                            </span>
+                        </button>
+                        {user != null && (
+                            <button 
+                                type="button" 
+                                className="text-[12px] font-bold hover:bg-gray-100 px-3 py-1.5 rounded-full"
+                                onClick={onReplyClick}
+                            >
+                                답글
+                            </button>
+                        )}
+                    </div>
+
+                    {/* 유튜브 스타일 답글 입력창 */}
+                    {user != null && isReplyOpen && (
+                        <div className="mt-3 flex gap-3">
+                            <Image 
+                                url={user.profileImgSrc}
+                                alt={user.username}
+                                social={user.social}
+                                className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+                            />
+                            <div className="flex-1 group">
+                                <textarea 
+                                    placeholder="답글 추가..." 
+                                    value={replyText} 
+                                    onChange={(e) => setReplyText(e.target.value)}
+                                    className="w-full text-sm border-b border-gray-300 focus:border-black outline-none transition-all duration-300 resize-none py-1 bg-transparent overflow-hidden"
+                                    autoFocus
+                                    rows={1}
+                                    onInput={(e) => {
+                                        const target = e.target as HTMLTextAreaElement;
+                                        target.style.height = 'auto';
+                                        target.style.height = `${target.scrollHeight}px`;
+                                    }}
+                                />
+                                <div className="flex justify-end gap-2 mt-2">
+                                    <button className="px-4 py-2 text-sm font-bold hover:bg-gray-200 rounded-full"
+                                        onClick={() => { 
+                                            setReplyText(""); 
+                                            onReplyClose(); 
+                                        }}
+                                    >
+                                        취소
+                                    </button>
+                                    <button 
+                                        onClick={handleReplySubmit}
+                                        disabled={!replyText.trim()}
+                                        className={`px-4 py-2 text-sm font-bold rounded-full transition-colors ${
+                                            replyText.trim() ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-400"
+                                        }`}
+                                    >
+                                        답글
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
-            {commentReply && (
-                <>
-                    <input type="text" placeholder="답글 입력" />
-                    <div className="flex">
-                        <button type="reset" onClick={() => setCommentReply(false)}>취소</button>
-                        <button type="button">작성</button>
-                    </div>
-                </>
-            )}
-        </>
+        </div>
     );
 };
 
@@ -80,34 +136,31 @@ export const CommentCreateResItem: React.FC<CommentCreateResItemProps> = ({
     comment, onProfileClick
 }) => {
     return (
-        <div className="flex">
+        <div className="flex w-full mb-4">
             <Image
                 url={comment.userObj.profileImgSrc}
                 alt={`${comment.userObj.username}님의 프로필`}
                 social={comment.userObj.social}
-                className="w-8 h-8 rounded-full object-cover cursor-pointer"
+                className="w-10 h-10 rounded-full object-cover cursor-pointer mt-1"
                 onClick={onProfileClick}
             />
-            <div className="ml-4">
-                <div className="flex items-center space-x-2">
-                    <Link to={ROUTE.PROFILE(comment.userObj.mention)} className="font-semibold text-md">
-                        {comment.userObj.username}
+            <div className="ml-4 flex-1">
+                <div className="flex items-center space-x-2 mb-1">
+                    <Link to={ROUTE.PROFILE(comment.userObj.mention)} className="font-bold text-[13px] hover:underline">
+                        @{comment.userObj.username}
                     </Link>
-                    <span className="text-sm text-gray-400">방금 전</span>
+                    <span className="text-[12px] text-gray-500">방금 전</span>
                 </div>
-                <pre className="whitespace-pre-wrap [font-family:inherit]">
+                <div className="text-[14px] leading-relaxed mb-2">
                     {comment.commentText}
-                </pre>
-                <div className="flex items-center space-x-4 mt-2">
-                    <button type="button" className={`${COMMENT_BUTTON_CLASS} flex items-center space-x-1`}>
-                        <LikePageIcon />
-                        <span>0</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                    <button type="button" className="flex items-center gap-1 hover:bg-gray-100 p-1.5 rounded-full duration-200">
+                        <LikePageIcon className="stroke-gray-600" />
+                        <span className="text-xs text-gray-600">0</span>
                     </button>
-                    <button type="button" className={COMMENT_BUTTON_CLASS}>
+                    <button type="button" className="text-[12px] font-bold hover:bg-gray-100 px-3 py-1.5 rounded-full">
                         답글
-                    </button>
-                    <button type="button" className={COMMENT_BUTTON_CLASS}>
-                        답글 보기 {/* TODO: 답글 개수 표시 */}
                     </button>
                 </div>
             </div>

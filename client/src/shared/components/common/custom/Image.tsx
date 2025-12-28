@@ -14,7 +14,7 @@ interface ImageProps {
  * 컴포넌트 사용 시 주의사항
  * 
  * 해당 컴포넌트는 social 여부를 가지고 주소를 가지므로  
- * 외부 이미지 사용 시 social 값은 하드코딩으로 true 값을 넣고 사용
+ * 외부 이미지 사용 시 social 값은 true 값을 넣고 사용
  */
 export const Image = ({
     url, alt, social, style, className, onClick

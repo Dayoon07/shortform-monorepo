@@ -1,11 +1,14 @@
-export const REST_API_SERVER: string = "http://localhost:9005";
+const PROTOCOL = "http";
+const URL = "localhost";
+const PORT = "9005";
+export const REST_API_SERVER: string = `${PROTOCOL}://${URL}:${PORT}`;
 
 // 웬만하면 RequestParam으로 요청하는 거는 함수처럼 만듬
 export const API_LIST = {
     COMMENT: {
         INSERT: `/api/comment/insert`,
-        POPULAR_LIST: (i: number) => `/api/video/find/comment/popular?id=${i}`,
-        RECENT_LIST: (i: number) => `/api/video/find/comment/recent?id=${i}`,
+        POPULAR_LIST: (i: number) => `/api/comment/popular?id=${i}`,
+        RECENT_LIST: (i: number) => `/api/comment/recent?id=${i}`,
         LIKE: {
             TOGGLE: (cid: number) => `/api/comment/like?commentId=${cid}`
         }

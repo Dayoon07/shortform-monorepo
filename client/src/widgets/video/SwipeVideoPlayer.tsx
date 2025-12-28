@@ -12,7 +12,8 @@ interface SwipeVideoPlayerProps {
     onFollowChange: Dispatch<SetStateAction<boolean>>,
     onCommentClick: () => void,
     onInfoClick: () => void,
-    onSwipe: (a: string) => void
+    onSwipe: (a: string) => void,
+    showCommentModalState: boolean
 }
 
 export default function SwipeVideoPlayer({ 
@@ -22,7 +23,8 @@ export default function SwipeVideoPlayer({
     onFollowChange,
     onCommentClick,
     onInfoClick,
-    onSwipe 
+    onSwipe,
+    showCommentModalState
 }: SwipeVideoPlayerProps) {
     console.log(video);
     const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -54,8 +56,7 @@ export default function SwipeVideoPlayer({
             if (e.deltaY < -50) onSwipe('prev');
         };
 
-        // 모바일: 터치만 활성화
-        if (isMobile) {
+        if (isMobile) { // 모바일: 터치만 활성화
             window.addEventListener('touchstart', handleTouchStart);
             window.addEventListener('touchend', handleTouchEnd);
 
@@ -63,16 +64,14 @@ export default function SwipeVideoPlayer({
                 window.removeEventListener('touchstart', handleTouchStart);
                 window.removeEventListener('touchend', handleTouchEnd);
             };
-        }
-        // PC: 휠만 활성화
-        else {
+        } else {    // PC: 휠만 활성화
             window.addEventListener('wheel', handleWheel);
 
             return () => {
                 window.removeEventListener('wheel', handleWheel);
             };
         }
-    }, [onSwipe, isMobile]);
+    }, [onSwipe, isMobile, showCommentModalState]);
 
     return (
         <div className="relative w-full h-full flex items-center justify-center">

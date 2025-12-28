@@ -24,7 +24,7 @@ export function CommentModal({
     user, 
     videoId
 }: CommentModalWidgetProps) {
-    const [commentWriteText, setCommentWriteText] = useState<CommentCreateRes | null>(null);
+    const [createdComments, setCreatedComments] = useState<CommentCreateRes[]>([]);
     const [commentText, setCommentText] = useState<string>("");
     const [sortType, setSortType] = useState<string>(SortType.POPULAR);
     const [vdoCommentSize, setVdoCommentSize] = useState<number>(videoCommentSize);
@@ -33,31 +33,36 @@ export function CommentModal({
         commentList
     } = useComment(videoId);
 
-    const c = async () => {
-        if (user !== null) {
+    const handleCommentSubmit = async () => {
+        if (user !== null && commentText.trim()) {
             const res = await commentWrite(videoId, commentText);
-            showSuccessToast(res);
-            setVdoCommentSize(videoCommentSize += 1);
-            setCommentWriteText(res);
+            showSuccessToast("댓글이 작성되었습니다");
+            setVdoCommentSize(prev => prev + 1);
+            setCreatedComments(prev => [res, ...prev]); // 새 댓글을 맨 앞에 추가
+            setCommentText(""); // 입력창 초기화
         }
     };
 
     if (!open) return null;
 
     return (
-        <div onClick={onClose} className="fixed inset-0 bg-black bg-opacity-75 
-            backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl 
-                w-full max-w-2xl h-3/4 flex flex-col shadow-2xl">
+        <div 
+            onClick={onClose} 
+            className="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        >
+            <div 
+                onClick={(e) => e.stopPropagation()} 
+                onWheel={(e) => e.stopPropagation()} // 휠 이벤트 전파 차단 - 문제 1 해결
+                className="bg-white rounded-2xl w-full max-w-2xl h-3/4 flex flex-col shadow-2xl"
+            >
                 <div className="flex items-center justify-between p-4">
                     <h2 className="text-xl font-bold">댓글 {vdoCommentSize}개</h2>
 
                     <div className="flex items-center space-x-3">
                         <div className="relative group">
                             <select value={sortType} onChange={(e) => setSortType(e.target.value)}
-                                className="appearance-none bg-gray-100 hover:bg-gray-200 text-sm font-medium 
-                                    pl-4 pr-10 py-2 rounded-lg cursor-pointer transition-colors duration-200 
-                                    focus:outline-none focus:ring-2 focus:ring-gray-300"
+                                className="appearance-none focus:outline-none bg-gray-100 hover:bg-gray-200 text-sm font-medium 
+                                    pl-4 pr-10 py-2 rounded-lg cursor-pointer transition-colors duration-200"
                             >
                                 <option value={SortType.POPULAR}>인기순</option>
                                 <option value={SortType.RECENT}>최신순</option>
@@ -73,7 +78,7 @@ export function CommentModal({
 
                 <CommentList 
                     commentList={commentList} 
-                    createdComment={commentWriteText} 
+                    createdComments={createdComments}
                 />
 
                 {user && (
@@ -95,12 +100,10 @@ export function CommentModal({
                                     placeholder="댓글을 입력하세요..."
                                 ></textarea>
 
-                                <button className="px-4 py-2 rounded-full text-sm bg-black text-white transition-all duration-200 transform hover:scale-105"
-                                    onClick={() => {
-                                        if (commentText.trim() === "") return;
-                                        c()
-                                        setCommentText("");
-                                    }}
+                                <button 
+                                    className="px-4 py-2 rounded-full text-sm bg-black text-white transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
+                                    onClick={handleCommentSubmit}
+                                    disabled={!commentText.trim()}
                                 >
                                     전송
                                 </button>
