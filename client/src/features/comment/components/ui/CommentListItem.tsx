@@ -12,10 +12,12 @@ interface CommentItemProps {
     comment: Comment;
     onProfileClick: () => void;
     onLike: (cid: number) => void;
+    onReplySubmit: (commentId: number, replyText: string) => Promise<void>;
     likeYn: boolean | null;
-    isReplyOpen: boolean; // 부모로부터 받은 답글 열림 상태
-    onReplyClick: () => void; // 답글 버튼 클릭 핸들러
-    onReplyClose: () => void; // 답글 닫기 핸들러
+    isReplyOpen: boolean;
+    onReplyClick: () => void;
+    onReplyClose: () => void;
+    onReplyCommentReq: (id: number) => void;
 }
 
 interface CommentCreateResItemProps {
@@ -24,17 +26,33 @@ interface CommentCreateResItemProps {
 }
 
 export const CommentItem: React.FC<CommentItemProps> = ({ 
-    comment, onProfileClick, onLike, likeYn,
-    isReplyOpen, onReplyClick, onReplyClose
+    comment, 
+    onProfileClick, 
+    onLike, 
+    onReplySubmit,
+    likeYn,
+    isReplyOpen, 
+    onReplyClick, 
+    onReplyClose,
+    onReplyCommentReq
 }) => {
     const [replyText, setReplyText] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { user } = useUser();
+    const btnCn = "flex items-center gap-1 hover:bg-gray-100 p-1.5 rounded-full duration-200";
 
-    const handleReplySubmit = () => {
-        if (replyText.trim()) {
-            console.log("답글 작성:", replyText);
+    const handleReplySubmit = async () => {
+        if (!replyText.trim()) return;
+        
+        setIsSubmitting(true);
+        try {
+            await onReplySubmit(comment.id, replyText);
             setReplyText("");
             onReplyClose();
+        } catch (error) {
+            console.error("답글 작성 실패:", error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -62,26 +80,26 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                     </div>
                     
                     <div className="flex items-center space-x-3">
-                        <button type="button" className="flex items-center gap-1 hover:bg-gray-100 p-1.5 rounded-full duration-200" onClick={() => {
-                            onLike(comment.id)
-                        }}>
+                        <button type="button" className={btnCn} onClick={() => onLike(comment.id)}>
                             <LikePageIcon className={likeYn ? "fill-red-500 stroke-red-500" : "stroke-gray-600"} />
                             <span className={`text-xs ${likeYn ? "text-red-500 font-medium" : "text-gray-600"}`}>
                                 {likeYn ? comment.likeCount + 1 : comment.likeCount} 
                             </span>
                         </button>
                         {user != null && (
-                            <button 
-                                type="button" 
+                            <button type="button" onClick={onReplyClick}
                                 className="text-[12px] font-bold hover:bg-gray-100 px-3 py-1.5 rounded-full"
-                                onClick={onReplyClick}
                             >
                                 답글
                             </button>
                         )}
+                        {comment.replyCount !== null && comment.replyCount !== 0 && (
+                            <button type="button" className={btnCn} onClick={() => onReplyCommentReq(comment.id)}>
+                                <span className="text-xs font-medium">답글 {comment.replyCount}개</span>
+                            </button>
+                        )}
                     </div>
 
-                    {/* 유튜브 스타일 답글 입력창 */}
                     {user != null && isReplyOpen && (
                         <div className="mt-3 flex gap-3">
                             <Image 
@@ -95,7 +113,9 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                                     placeholder="답글 추가..." 
                                     value={replyText} 
                                     onChange={(e) => setReplyText(e.target.value)}
-                                    className="w-full text-sm border-b border-gray-300 focus:border-black outline-none transition-all duration-300 resize-none py-1 bg-transparent overflow-hidden"
+                                    disabled={isSubmitting}
+                                    className="w-full text-sm border-b border-gray-300 focus:border-black outline-none transition-all 
+                                        duration-300 resize-none py-1 bg-transparent overflow-hidden"
                                     autoFocus
                                     rows={1}
                                     onInput={(e) => {
@@ -105,22 +125,26 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                                     }}
                                 />
                                 <div className="flex justify-end gap-2 mt-2">
-                                    <button className="px-4 py-2 text-sm font-bold hover:bg-gray-200 rounded-full"
+                                    <button 
+                                        className="px-4 py-2 text-sm font-bold hover:bg-gray-200 rounded-full"
                                         onClick={() => { 
                                             setReplyText(""); 
                                             onReplyClose(); 
                                         }}
+                                        disabled={isSubmitting}
                                     >
                                         취소
                                     </button>
                                     <button 
                                         onClick={handleReplySubmit}
-                                        disabled={!replyText.trim()}
+                                        disabled={!replyText.trim() || isSubmitting}
                                         className={`px-4 py-2 text-sm font-bold rounded-full transition-colors ${
-                                            replyText.trim() ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-400"
+                                            replyText.trim() && !isSubmitting
+                                                ? "bg-blue-600 text-white hover:bg-blue-700" 
+                                                : "bg-gray-100 text-gray-400"
                                         }`}
                                     >
-                                        답글
+                                        {isSubmitting ? "전송 중..." : "답글"}
                                     </button>
                                 </div>
                             </div>

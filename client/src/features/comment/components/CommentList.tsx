@@ -12,26 +12,38 @@ interface CommentListProps {
 }
 
 export function CommentList({ commentList, createdComments = [] }: CommentListProps) {
-const navi = useNavigate();
-    const [actReplyId, setActReplyId] = useState<number | null>(null); // 현재 열린 답글 입력창의 댓글 ID
-    const handleProfileClick = (mention: string) => navi(ROUTE.PROFILE(mention));
+    const navigate = useNavigate();
+    const [actReplyId, setActReplyId] = useState<number | null>(null);
+    const handleProfileClick = (mention: string) => navigate(ROUTE.PROFILE(mention));
+    
     const { 
         likeStates, 
-        commentLikeToggleHook
-    } = useCommentList();
+        commentLikeToggleHook,
+        commentReplySubmitHook,
+        onReplyCommentReqHook,
+        replyContent
+    } = useCommentList(commentList); // commentList 전달
 
-    // 답글 버튼 클릭 핸들러
     const handleReplyClick = (cid: number) => {
         actReplyId === cid ? setActReplyId(null) : setActReplyId(cid);
     };
 
-    // 답글 닫기 핸들러
     const handleReplyClose = () => {
         setActReplyId(null);
     };
 
-    const commentLikeToggleHookHandler = (cid: number) => {
+    const commentLikeToggleHandler = (cid: number) => {
         commentLikeToggleHook(cid);
+    }
+
+    const commentReplySubmitHandler = async (commentId: number, replyText: string) => {
+        await commentReplySubmitHook(commentId, replyText);
+        handleReplyClose();
+    }
+
+    const onReplyCommentReq = async (id: number) => {
+        await onReplyCommentReqHook(id);
+        console.log(replyContent);
     }
 
     return (
@@ -50,11 +62,13 @@ const navi = useNavigate();
                         key={comment.id}
                         comment={comment} 
                         onProfileClick={() => handleProfileClick(comment.mention)} 
-                        onLike={commentLikeToggleHookHandler}
+                        onLike={commentLikeToggleHandler}
+                        onReplySubmit={commentReplySubmitHandler}
                         likeYn={!!likeStates[comment.id]}
-                        isReplyOpen={actReplyId === comment.id}             // 답글 열림 상태 전달
-                        onReplyClick={() => handleReplyClick(comment.id)}   // 답글 버튼 클릭 핸들러
-                        onReplyClose={handleReplyClose}                     // 답글 닫기 핸들러
+                        isReplyOpen={actReplyId === comment.id}
+                        onReplyClick={() => handleReplyClick(comment.id)}
+                        onReplyClose={handleReplyClose}
+                        onReplyCommentReq={(id: number) => onReplyCommentReq(comment.id)}
                     />
                 ))
             ) : (

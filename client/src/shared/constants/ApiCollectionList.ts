@@ -11,6 +11,10 @@ export const API_LIST = {
         RECENT_LIST: (i: number) => `/api/comment/recent?id=${i}`,
         LIKE: {
             TOGGLE: (cid: number) => `/api/comment/like?commentId=${cid}`
+        },
+        REPLY: {
+            INSERT: `/api/comment/reply/insert`,
+            LIST: (commentId: number) => `/api/comment/reply/find/content?commentId=${commentId}`,
         }
     },
     POST: {

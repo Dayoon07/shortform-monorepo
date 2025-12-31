@@ -10,6 +10,8 @@ interface ShowModalProps {
 }
 
 export function VideoInfoModal({ open, onClose, v }: ShowModalProps) {
+    const lcd = (d: string, n1: number, n2: number) => d.split("T")[0].substring(n1, n2);
+    const fsb = "font-semibold md:text-xl text-lg", t = "font-light text-sm text-gray-400";
     if (!open) return null;
 
     return (
@@ -19,21 +21,19 @@ export function VideoInfoModal({ open, onClose, v }: ShowModalProps) {
 
                 <div className="flex justify-center items-center text-center py-4">
                     <div>
-                        <span className="font-semibold text-xl">{v.likeCnt || '없음'}</span><br />
-                        <span className="font-light text-sm text-gray-400">좋아요</span>
+                        <span className={fsb}>{v.likeCnt || '없음'}</span><br />
+                        <span className={t}>좋아요</span>
                     </div>
                     <div className="mx-20">
-                        <span className="font-semibold text-xl">{v.video.videoViews || '없음'}</span><br />
-                        <span className="font-light text-sm text-gray-400">조회수</span>
+                        <span className={fsb}>{v.video.videoViews || '없음'}</span><br />
+                        <span className={t}>조회수</span>
                     </div>
                     <div>
-                        <span className="font-semibold text-xl">
-                            {v.video.uploadAt.split("T")[0].substring(5, 7) + '월'} {' '}
-                            {v.video.uploadAt.split("T")[0].substring(8, 10) + '일'}
+                        <span className={fsb}>
+                            {lcd(v.video.uploadAt, 5, 7) + '월'} {' '}
+                            {lcd(v.video.uploadAt, 8, 10) + '일'}
                         </span><br />
-                        <span className="font-light text-sm text-gray-400">
-                            {v.video.uploadAt.split("T")[0].substring(0, 4)}년
-                        </span>
+                        <span className={t}>{lcd(v.video.uploadAt, 0, 4)}년</span>
                     </div>
                 </div>
 

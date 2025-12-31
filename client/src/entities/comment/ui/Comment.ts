@@ -1,13 +1,14 @@
 export interface Comment {
-    id: number,
-    username: string,
-    mention: string,
-    social: boolean,
-    provider: string,
-    profileImgSrc: string,
-    commentText: string,
-    commentUserId: number,
-    commentVideoId: number,
-    likeCount: number,
-    createAt: string
+    id: number;
+    commentText: string;
+    commentUserId: number;
+    commentVideoId: number;
+    likeCount: number;
+    replyCount: number;
+    createAt: string;
+    username: string;
+    mention: string;
+    profileImgSrc: string;
+    social: boolean;
+    provider: string;
 }

@@ -1,9 +1,13 @@
 import { Comment } from "../../../entities/comment/ui/Comment";
 import { CommentCreateRes } from "../../../entities/comment/ui/CommentCreateRes";
+import { CommentLikeToggleRes } from "../../../entities/comment/ui/CommentLikeToggleRes";
+import { CommentReplyCreateReq } from "../../../entities/comment/ui/CommentReplyCreateReq";
 import { API_LIST } from "../../../shared/constants/ApiCollectionList";
 import { apiClient, ApiResponse } from "../../../shared/utils/ApiClient";
 
-export async function insertComment(id: number, comment: string): Promise<ApiResponse<CommentCreateRes>> {
+export async function insertComment(
+    id: number, comment: string
+): Promise<ApiResponse<CommentCreateRes>> {
     const res = await apiClient.post<CommentCreateRes>(
         API_LIST.COMMENT.INSERT, true, {
             commentVideoId: id,
@@ -24,10 +28,23 @@ export async function popularCommentList(videoId: number): Promise<ApiResponse<C
 }
 
 export async function recentCommentList(videoId: number): Promise<ApiResponse<Comment[]>> {
-    return await apiClient.get<any>(
+    return await apiClient.get<Comment[]>(
         API_LIST.COMMENT.RECENT_LIST(videoId), false);
 }
 
-export async function commentLikeToggle(commentId: number): Promise<ApiResponse<any>> {
-    return await apiClient.post<any>(API_LIST.COMMENT.LIKE.TOGGLE(commentId), true);
+export async function commentLikeToggle(commentId: number): Promise<ApiResponse<CommentLikeToggleRes>> {
+    return await apiClient.post<CommentLikeToggleRes>(
+        API_LIST.COMMENT.LIKE.TOGGLE(commentId), true);
 }
+
+export async function insertCommentReply(req: CommentReplyCreateReq): Promise<ApiResponse<any>> {
+    return await apiClient.post<any>(
+        API_LIST.COMMENT.REPLY.INSERT, true, req);
+}
+
+export async function replyCommentReq(commentId: number): Promise<ApiResponse<Comment[]>> {
+    return await apiClient.get<Comment[]>(API_LIST.COMMENT.REPLY.LIST(commentId), false);
+}
+
+
+
