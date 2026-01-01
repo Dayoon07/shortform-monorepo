@@ -23,28 +23,22 @@ export async function insertComment(
 }
 
 export async function popularCommentList(videoId: number): Promise<ApiResponse<Comment[]>> {
-    return await apiClient.get<Comment[]>(
-        API_LIST.COMMENT.POPULAR_LIST(videoId), false);
+    return await apiClient.get<Comment[]>(API_LIST.COMMENT.POPULAR_LIST(videoId), false);
 }
 
 export async function recentCommentList(videoId: number): Promise<ApiResponse<Comment[]>> {
-    return await apiClient.get<Comment[]>(
-        API_LIST.COMMENT.RECENT_LIST(videoId), false);
+    return await apiClient.get<Comment[]>(API_LIST.COMMENT.RECENT_LIST(videoId), false);
 }
 
 export async function commentLikeToggle(commentId: number): Promise<ApiResponse<CommentLikeToggleRes>> {
-    return await apiClient.post<CommentLikeToggleRes>(
-        API_LIST.COMMENT.LIKE.TOGGLE(commentId), true);
+    return await apiClient.post<CommentLikeToggleRes>(API_LIST.COMMENT.LIKE.TOGGLE(commentId), true);
 }
 
 export async function insertCommentReply(req: CommentReplyCreateReq): Promise<ApiResponse<any>> {
-    return await apiClient.post<any>(
-        API_LIST.COMMENT.REPLY.INSERT, true, req);
+    return await apiClient.post<any>(API_LIST.COMMENT.REPLY.INSERT, true, req);
 }
 
 export async function replyCommentReq(commentId: number): Promise<ApiResponse<Comment[]>> {
     return await apiClient.get<Comment[]>(API_LIST.COMMENT.REPLY.LIST(commentId), false);
 }
-
-
 

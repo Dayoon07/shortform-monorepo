@@ -17,7 +17,8 @@ interface CommentItemProps {
     isReplyOpen: boolean;
     onReplyClick: () => void;
     onReplyClose: () => void;
-    onReplyCommentReq: (id: number) => void;
+    onReplyCommentReq: () => void;
+    replies: Comment[];
 }
 
 interface CommentCreateResItemProps {
@@ -94,7 +95,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                             </button>
                         )}
                         {comment.replyCount !== null && comment.replyCount !== 0 && (
-                            <button type="button" className={btnCn} onClick={() => onReplyCommentReq(comment.id)}>
+                            <button type="button" className={btnCn} onClick={onReplyCommentReq}>
                                 <span className="text-xs font-medium">답글 {comment.replyCount}개</span>
                             </button>
                         )}

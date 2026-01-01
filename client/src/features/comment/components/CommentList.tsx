@@ -41,9 +41,9 @@ export function CommentList({ commentList, createdComments = [] }: CommentListPr
         handleReplyClose();
     }
 
-    const onReplyCommentReq = async (id: number) => {
-        await onReplyCommentReqHook(id);
-        console.log(replyContent);
+    const onReplyCommentReq = async (commentId: number) => {
+        await onReplyCommentReqHook(commentId);
+        console.log(replyContent[commentId] || []);
     }
 
     return (
@@ -68,7 +68,8 @@ export function CommentList({ commentList, createdComments = [] }: CommentListPr
                         isReplyOpen={actReplyId === comment.id}
                         onReplyClick={() => handleReplyClick(comment.id)}
                         onReplyClose={handleReplyClose}
-                        onReplyCommentReq={(id: number) => onReplyCommentReq(comment.id)}
+                        onReplyCommentReq={() => onReplyCommentReq(comment.id)}
+                        replies={replyContent[comment.id] || []}
                     />
                 ))
             ) : (

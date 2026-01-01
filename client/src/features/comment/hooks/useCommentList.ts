@@ -5,15 +5,14 @@ import { CommentReplyCreateReq } from "../../../entities/comment/ui/CommentReply
 import { Comment } from "../../../entities/comment/ui/Comment";
 
 export const useCommentList = (initialComments: Comment[]) => {
-    // 초기 좋아요 상태를 서버에서 가져온 데이터로 설정하고
     const [likeStates, setLikeStates] = useState<Record<number, boolean>>(() => {
         const initial: Record<number, boolean> = {};
         initialComments.forEach(comment => {
-            initial[comment.id] = false; // 기본값은 false, 서버에서 isLiked 정보 받으면 true
+            initial[comment.id] = false;
         });
         return initial;
     });
-    const [replyContent, setReplyContent] = useState<Comment[]>([]);
+    const [replyContent, setReplyContent] = useState<Record<number, Comment[]>>({});
 
     const commentLikeToggleHook = async (commentId: number): Promise<void> => {
         const res = await commentLikeToggle(commentId);
@@ -49,16 +48,19 @@ export const useCommentList = (initialComments: Comment[]) => {
 
         showSuccessToast("답글이 작성되었습니다");
     }
-
-    const onReplyCommentReqHook = async (id: number) => {
-        const res = await replyCommentReq(id);
+    const onReplyCommentReqHook = async (commentId: number) => {
+        const res = await replyCommentReq(commentId);
 
         if (!res.ok || res.data === undefined) {
             showErrorToast(res.error);
             throw new Error(res.error || "답글 데이터를 가져올 수 없습니다");
         }
 
-        setReplyContent(res.data);
+        // 각 댓글별로 답글 저장
+        setReplyContent(prev => ({
+            ...prev,
+            [commentId]: res.data!
+        }));
     }
 
     return {
