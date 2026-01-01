@@ -34,12 +34,13 @@ export default function ToggleFollowButton({
     if (isFollowing === null) 
         return null; // <--- 이 부분이 핵심 수정입니다.
 
-    return ( 
-        followReqUser && <button
-            onClick={handleClick}
-            disabled={loading}
-            className={`${baseClass} ${isFollowing ? following : follow}`}>
-            {isFollowing ? "팔로우 취소" : "팔로우"}
+    return followReqUser && 
+        <button 
+            onClick={handleClick} 
+            disabled={loading} 
+            className={`${baseClass} ${
+                isFollowing ? following : follow
+            }`}>
+                {isFollowing ? "팔로우 취소" : "팔로우"}
         </button>
-    );
 }

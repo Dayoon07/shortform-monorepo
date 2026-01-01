@@ -8,23 +8,6 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
     const [messageData, setMessageData] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
-    // 초기 팔로우 상태 가져오기
-    useEffect(() => {
-        const fetchFollowStatus = async (): Promise<void> => {
-            if (!followReqUser?.mention || !followResUser?.mention) return;
-            
-            try {
-                const r = await getFollowStatus(followReqUser.mention, followResUser.mention);
-                if (!r.ok || r.data === undefined) throw new Error("에러: " + r);
-                setIsFollowing(r.data.isFollowing || false);
-            } catch (error) {
-                console.error("팔로우 상태 조회 실패:", error);
-            }
-        };
-
-        fetchFollowStatus();
-    }, [followReqUser?.mention, followResUser?.mention]);
-
     const upgradeToggleFollowHook = async (): Promise<boolean> => {
         if (!followReqUser?.mention || !followResUser?.mention) {
             setMessageData("사용자 정보가 올바르지 않습니다");
@@ -56,6 +39,18 @@ export const useToggleFollow = (followReqUser: User | null, followResUser: User)
             console.log(messageData);
         }
     };
+
+    // 초기 팔로우 상태 가져오기
+    useEffect(() => {
+        const init = async (): Promise<void> => {
+            if (!followReqUser?.mention || !followResUser?.mention) return;
+            const r = await getFollowStatus(followReqUser.mention, followResUser.mention);
+            if (!r.ok || r.data === undefined) throw new Error("에러: " + r);
+            setIsFollowing(r.data.isFollowing || false);
+        };
+
+        init();
+    }, [followReqUser?.mention, followResUser?.mention]);
 
     return {
         isFollowing,

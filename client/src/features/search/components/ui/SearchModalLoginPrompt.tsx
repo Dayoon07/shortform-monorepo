@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { ROUTE } from "../../../../shared/constants/Route";
+import React from "react";
 
-export const SearchModalLoginPrompt = ({ onClose }: { onClose: () => void }) => {
+export const SearchModalLoginPrompt: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const c = `inline-block px-6 py-2 rounded-full 
         font-semibold hover:opacity-80 transition-opacity`;
     return (

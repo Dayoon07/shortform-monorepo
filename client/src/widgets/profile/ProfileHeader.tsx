@@ -8,6 +8,7 @@ import ToggleFollowButton from "../../features/follow/components/ui/ToggleFollow
 import ProfileEditFormModal from "../../features/profile/components/ProfileEditFormModal";
 import { ProfileUserInfo } from "../../entities/profile/ui/ProfileUserInfo";
 import { User } from "../../entities/user/model/User";
+import { Image } from "../../shared/components/common/custom/Image";
 
 interface ProfileHeaderProps {
     profile: ProfileUserInfo,
@@ -21,7 +22,6 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }: Profi
     const [followModalOpen, setFollowModalOpen] = useState<boolean>(false);
     const [followModalTitle, setFollowModalTitle] = useState<string>("");
     const [followModalData, setFollowModalData] = useState<User[]>([]);
-
     const { mention } = useParams();
     const { user } = useUser();
 
@@ -57,8 +57,11 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }: Profi
         <>
             <div className="flex flex-col sm:max-w-6xl sm:mx-auto sm:flex-row sm:space-x-6 mb-4 p-6 sm:items-center">
                 <div className="max-sm:flex max-sm:justify-center mb-4 sm:mb-0">
-                    <img src={profile.social ? `${profile.profileImgSrc}` : `${REST_API_SERVER}${profile.profileImgSrc}`} alt="프로필" 
-                        className="w-32 h-32 md:w-44 md:h-44 rounded-full object-cover p-1 bg-gradient-to-r from-pink-500 to-sky-500" 
+                    <Image 
+                        url={profile.profileImgSrc}
+                        alt={`${profile.username}의 프로필`}
+                        social={profile.social}
+                        className="w-32 h-32 md:w-44 md:h-44 rounded-full object-cover p-1 bg-gradient-to-r from-pink-500 to-sky-500"
                     />
                 </div>
                 

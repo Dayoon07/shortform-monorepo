@@ -19,7 +19,22 @@ interface ImageProps {
 export const Image = ({
     url, alt, social, style, className, onClick
 }: ImageProps) => {
-    const p = social ? url : REST_API_SERVER + url;
+    // 외부 이미지인지 확인 (구글, 네이버 등)
+    const isExternalImage = (url: string): boolean => {
+        if (!url) return false;
+        
+        const externalDomains = [
+            'googleusercontent.com',  // 구글
+            'pstatic.net',           // 네이버
+            'kakaocdn.net',          // 카카오
+            // 필요한 다른 소셜 도메인 추가
+        ];
+        
+        return externalDomains.some(domain => url.includes(domain));
+    };
+    
+    // 외부 이미지면 그대로, 아니면 서버 주소 추가
+    const p = isExternalImage(url) ? url : REST_API_SERVER + url;
     return (
         <img 
             src={p}

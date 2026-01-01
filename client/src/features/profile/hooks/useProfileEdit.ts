@@ -43,10 +43,16 @@ export function useProfileEdit(profile: ProfileUserInfo, onClose: () => void) {
     const handleSubmit = async () => {
         try {
             console.log(profile?.id);
+            
+            // 구글 계정의 경우 원본 URL 유지
+            const currentImgSrc = profile?.social 
+                ? profile.profileImgSrc  // 외부 URL 그대로
+                : REST_API_SERVER + profile?.profileImgSrc; // 로컬 경로에 서버 주소 추가
+            
             const data = await editUserProfile(
-                formData, // DTO에 들어갈 모든 필드가 담긴 객체
-                selectedFile, // MultipartFile
-                profile?.social ? profile.profileImgSrc : REST_API_SERVER + profile?.profileImgSrc, // currentProfileImgSrc
+                formData,
+                selectedFile,
+                currentImgSrc  // 수정된 부분
             );
             
             if (data === undefined) throw new Error("값이 없음: " + data);
@@ -60,7 +66,6 @@ export function useProfileEdit(profile: ProfileUserInfo, onClose: () => void) {
             onClose();
         } catch (error) {
             console.error("업데이트 실패:", error);
-            // showErrorToast("프로필 수정 중 오류가 발생했습니다");
         }
     };
 
