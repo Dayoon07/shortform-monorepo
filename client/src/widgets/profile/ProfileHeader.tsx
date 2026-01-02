@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { REST_API_SERVER } from "../../shared/constants/ApiCollectionList";
 import { useUser } from "../../shared/context/UserContext";
 import { useProfile } from "../../features/profile/hooks/useProfile";
 import { FollowRelationModal } from "../../features/profile/components/ui/FollowRelationModal";

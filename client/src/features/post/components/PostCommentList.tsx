@@ -1,18 +1,15 @@
 import React from "react";
-import { Image } from "../../../../shared/components/common/custom/Image";
+import { Image } from "../../../shared/components/common/custom/Image";
 import { Link } from "react-router-dom";
-import { ROUTE } from "../../../../shared/constants/Route";
-import { defaultFormatDate } from "../../../../shared/utils/formatUtil";
-import { LikePageIcon } from "../../../../shared/utils/icon/icon";
-
-interface DetailPostCommentListProps {
-    comment: any;
-    onProfileClick: () => void;
-}
+import { ROUTE } from "../../../shared/constants/Route";
+import { defaultFormatDate } from "../../../shared/utils/formatUtil";
+import { LikePageIcon } from "../../../shared/utils/icon/icon";
 
 const COMMENT_BUTTON_CLASS = "text-md text-gray-400 hover:text-black duration-200";
 
-export const DetailPostCommentList: React.FC<DetailPostCommentListProps> = ({
+export const PostCommentList: React.FC<{
+    comment: any; onProfileClick: () => void;
+}> = ({
     comment, onProfileClick
 }) => {
     return (

@@ -44,3 +44,7 @@ export async function myLikeVideoList(i: number): Promise<ApiResponse<VideoGridC
     return await apiClient.get<VideoGridContent[]>(
         API_LIST.VIDEO.LIKE.MY_VIDEO, false, { "id": i });
 }
+
+export const deleteVideo = async (vid: number): Promise<ApiResponse<any>> => 
+    await apiClient.post<any>(API_LIST.VIDEO.DELETE(vid), true);
+

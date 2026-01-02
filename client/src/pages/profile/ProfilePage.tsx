@@ -11,6 +11,9 @@ import ProfilePostList from "../../widgets/profile/ProfilePostList";
 
 enum TabTitle { VIDEO = "video", POST = "post" }
 
+const Message = ({ t }: { t: string }) => 
+    <div className="text-center py-20"><p className="text-gray-400">{t}</p></div>
+
 export default function ProfilePage() {
     const btcl = "px-12 py-3 font-semibold border-b-2 transition max-md:w-full";    // buttonTabClassName = btcl
     const activeTabStyle = "border-black text-black"; // 활성화 시
@@ -52,26 +55,15 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-            {tab === TabTitle.VIDEO && (videos.length > 0 ? (
-                    <CommonVideoGrid 
-                        cardUploaderPublic={false}
-                        videos={videos} 
-                    />
-                ) : (
-                    <div className="text-center py-20">
-                        <p className="text-gray-400">동영상이 없습니다</p>
-                    </div>
-                )
+            {tab === TabTitle.VIDEO && (videos.length > 0 ? 
+                <CommonVideoGrid 
+                    cardUploaderPublic={false}
+                    videos={videos} 
+                /> : <Message t="동영상이 없습니다" />
             )}
 
-            {tab === TabTitle.POST && (
-                posts.length > 0 ? (
-                    <ProfilePostList posts={posts} />
-                ) : (
-                    <div className="text-center py-20">
-                        <p className="text-gray-400">게시물이 없습니다</p>
-                    </div>
-                )
+            {tab === TabTitle.POST && (posts.length > 0 ? 
+                <ProfilePostList posts={posts} /> : <Message t="게시물이 없습니다" />
             )}
 
             <ProfileInfoModal 
@@ -83,3 +75,5 @@ export default function ProfilePage() {
         </main>
     );
 }
+
+

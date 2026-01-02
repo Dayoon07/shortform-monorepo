@@ -9,18 +9,38 @@ export async function getUserPosts(mention: string): Promise<Post[]> {
     return res.data;
 }
 
-export async function getPostDetail(communityUuid: string): Promise<ApiResponse<Post>> {
-    return await apiClient.get<Post>(API_LIST.POST.GET_DETAIL(communityUuid), false);
-}
+export const getPostDetail = async (communityUuid: string): Promise<ApiResponse<Post>> => 
+    await apiClient.get<Post>(API_LIST.POST.GET_DETAIL(communityUuid), false);
 
-export async function createPost(formData: FormData): Promise<ApiResponse<WritePostRes>> {
-    return await apiClient.post<WritePostRes>(
-        API_LIST.POST.WRITE, true, formData);
-}
+export const createPost = async (formData: FormData): Promise<ApiResponse<WritePostRes>> => 
+    await apiClient.post<WritePostRes>(API_LIST.POST.WRITE, true, formData);
 
 export async function togglePostLike(communityUuid: string) {
-    const res = await apiClient.post<any>(API_LIST.POST.TOGGLE_LIKE(communityUuid), true);
+    const res = await apiClient.post<any>(API_LIST.POST.LIKE.TOGGLE(communityUuid), true);
     if (!res.ok || res.data === undefined) throw new Error("에러 남: " + res);
     return res.data;
 }
+
+export const deletePost = async (commentUuid: string): Promise<ApiResponse<any>> => 
+    await apiClient.post<any>(API_LIST.POST.DELETE(commentUuid), true);
+
+export const insertPostComment = async (communityUuid: string): Promise<ApiResponse<any>> => 
+    await apiClient.post<any>(API_LIST.POST.COMMENT.INSERT, false, {
+        "communityUuid": communityUuid});
+
+export const insertPostCommentReply = async (communityUuid: string): Promise<ApiResponse<any>> => 
+    await apiClient.post<any>(API_LIST.POST.COMMENT.REPLY.INSERT, false, {
+        "communityUuid": communityUuid});
+
+export const togglePostCommentLike = async (postCommentId: number): Promise<ApiResponse<any>> => 
+    await apiClient.post<any>(API_LIST.POST.COMMENT.LIKE.TOGGLE, false, {
+        "postCommentId": postCommentId});
+
+
+
+
+
+
+
+
 

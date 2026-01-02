@@ -21,7 +21,19 @@ export const API_LIST = {
         USER_POST: (m: string) => `/api/community/find?mention=${m}`,
         GET_DETAIL: (cuuid: string) => `/api/community/find/detail?communityUuid=${cuuid}`,
         WRITE: "/api/community/write",
-        TOGGLE_LIKE: (i: string) => `/api/community/like?communityUuid=${i}`
+        DELETE: (cuuid: string) => `/api/community/delete?communityUuid=${cuuid}`,
+        LIKE: {
+            TOGGLE: (i: string) => `/api/community/like?communityUuid=${i}`
+        },
+        COMMENT: {
+            INSERT: "/api/community/comment/insert",
+            LIKE: {
+                TOGGLE: "/api/community/comment/toggle/like"
+            },
+            REPLY: {
+                INSERT: "/api/community/comment/reply/insert"
+            }
+        }
     },
     FOLLOW: {
         FOLLOW: "/api/follow",
@@ -59,6 +71,7 @@ export const API_LIST = {
         HASHTAG: (t: string) => `/api/hashtag?videoTag=${t}`,
         USER_VIDEO: (m: string) => `/api/user/info/${m}/video`,
         FIRST_SWIPE_VIDEO: (loc: string, m: string | null) => `/api/video/swipe/find?videoLoc=${loc}&mention=${m}`,
+        DELETE: (vid: number) => `/api/video/delete?videoId=${vid}`,
         LIKE: {
             TOGGLE: (vid: number) => `/api/video/like/by/mention?id=${vid}`,
             MY_VIDEO: "/api/video/find/like",

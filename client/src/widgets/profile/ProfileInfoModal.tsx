@@ -1,6 +1,7 @@
 import { Calendar, Users, Video, Eye, Heart } from "lucide-react";
 import { ProfileUserInfo } from "../../entities/profile/ui/ProfileUserInfo";
 import Modal from "../../shared/components/common/Modal";
+import React from "react";
 
 interface ProfileInfoModalProps {
     profile: ProfileUserInfo,
@@ -9,12 +10,12 @@ interface ProfileInfoModalProps {
     onClose: () => void
 }
 
-export default function ProfileInfoModal({
+const ProfileInfoModal: React.FC<ProfileInfoModalProps> = ({
     profile,
     videoCount,
     isOpen,
     onClose
-}: ProfileInfoModalProps) {
+}) => {
     if (!isOpen) return null;
     
     return (
@@ -22,7 +23,7 @@ export default function ProfileInfoModal({
             {profile.bio && (
                 <div>
                     <h3 className="font-semibold text-lg mb-2">설명</h3>
-                    <p className="whitespace-pre-wrap">{profile.bio}</p>
+                    <pre className="whitespace-pre-wrap">{profile.bio}</pre>
                 </div>
             )}
             
@@ -54,3 +55,5 @@ export default function ProfileInfoModal({
         </Modal>
     );
 }
+
+export default ProfileInfoModal;
