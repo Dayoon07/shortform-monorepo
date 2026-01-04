@@ -41,7 +41,7 @@ export const ROUTE = {
      * @param {string} communityUuid - 커뮤니티 게시물의 고유 식별자(UUID)
      * @example ROUTE.POST_DETAIL("yoon", "abcd-efgh") => "/@yoon/post?p=abcd-efgh"
      */
-    POST_DETAIL: (mention: string, communityUuid: string) => `/@${mention}/post?p=${communityUuid}`,
+    POST_DETAIL: (mention: string, communityUuid: string) => `/@${mention}/post/${communityUuid}`,
 
     /** 
      * 프로필 내 스와이프 비디오 상세 페이지 경로
@@ -138,7 +138,7 @@ export const PATTERN_ROUTE = {
      * @param {string} communityUuid - 게시물 고유 식별자(UUID)
      * @example "/:mention/post/:communityUuid" => "/@yoon/post/abcd-efgh"
      */
-    PROFILE_POST_DETAIL: "/:mention/post",
+    PROFILE_POST_DETAIL: "/:mention/post/:communityUuid",
 
     /** 
      * 프로필 내 스와이프 비디오 상세 페이지 경로 패턴  

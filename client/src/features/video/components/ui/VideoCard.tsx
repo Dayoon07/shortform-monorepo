@@ -14,7 +14,7 @@ interface VideoCardProps {
     uploaderPublic?: boolean,
     currentUser?: User | null,
     onShowModal?: () => void,
-    onShowModal2?: () => void
+    onShowModal2?: (p1: number) => void
 }
 
 export const VideoCard = memo(({
@@ -118,7 +118,7 @@ export const VideoCard = memo(({
                                         {currentUser?.id !== video.uploaderId && (
                                             <DropdownMenuBtn
                                                 text="신고하기"
-                                                onClickEventFunc={() => onShowModal2?.()}
+                                                onClickEventFunc={() => onShowModal2?.(index)}
                                             />
                                         )}
                                     </div>

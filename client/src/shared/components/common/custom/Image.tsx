@@ -33,8 +33,8 @@ export const Image = ({
         return externalDomains.some(domain => url.includes(domain));
     };
     
-    // 외부 이미지면 그대로, 아니면 서버 주소 추가
-    const p = isExternalImage(url) ? url : REST_API_SERVER + url;
+    // 소셜 계정이면서 외부 이미지면 그대로, 아니면 서버 주소 추가
+    const p = social && isExternalImage(url) ? url : REST_API_SERVER + url;
     return (
         <img 
             src={p}

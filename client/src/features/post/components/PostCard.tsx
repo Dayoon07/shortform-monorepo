@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ThumbsUp, MessageCircle, Share2, MoreVertical } from "lucide-react";
+import { ThumbsUp, Share2, MoreVertical, MessageSquareText } from "lucide-react";
 import { ROUTE } from "../../../shared/constants/Route";
-import { Post } from "../../../entities/post/ui/Post";
+import { PostWithProfile } from "../../../entities/post/ui/PostWithProfile";
 import { Image } from "../../../shared/components/common/custom/Image";
 import { defaultFormatDate } from "../../../shared/utils/formatUtil";
 import ImageGrid from "../../../shared/components/post/ImageGrid";
 
 interface PostCardProps {
-    post: Post,
+    post: PostWithProfile,
     onLike: (communityUuid: string) => void,
     onShare: (uuid: string) => void
 }
@@ -20,12 +20,12 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
 
     const handleLike = () => { /* 좋아요 로직 */ };
 
+    /** 이미지 클릭 핸들러 (상세 페이지 이동) */
+    const handleImageClick = () => navigate(ROUTE.POST_DETAIL(post.mention, post.communityUuid));
+
     useEffect(() => {
         setLikeCount(post.likeCnt || 0);
     }, [post]);
-
-    /** 이미지 클릭 핸들러 (상세 페이지 이동) */
-    const handleImageClick = () => navigate(ROUTE.POST_DETAIL(post.mention, post.communityUuid));
 
     return (
         <div className="border rounded overflow-hidden">
@@ -46,12 +46,14 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                         <p className="text-xs text-gray-500">{defaultFormatDate(post.createAt)}</p>
                     </div>
                     <div className="mt-1">
-                        {post.communityText && (
-                            <p className="mb-2 cursor-pointer whitespace-pre-wrap break-words text-sm md:text-base" 
-                                onClick={handleImageClick}>
-                                {post.communityText}
-                            </p>
-                        )}
+                        <p className="mb-2 cursor-pointer whitespace-pre-wrap break-words text-sm md:text-base" 
+                            onClick={handleImageClick}>
+                            {post.communityText !== null ? (
+                                post.communityText
+                            ) : (
+                                <span className="text-sm text-gray-400">게시글 보기</span>
+                            )}
+                        </p>
 
                         <ImageGrid files={post.files} gridType="inline" />
                     </div>
@@ -74,7 +76,7 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                         <span className="text-sm font-medium">{likeCount}</span>
                     </button>
                     <button className="flex items-center space-x-1.5 text-gray-500 hover:text-gray-800">
-                        <MessageCircle className="w-5 h-5" />
+                        <MessageSquareText className="w-5 h-5" />
                         <span className="text-sm font-medium">{post.commentCnt || 0}</span>
                     </button>
                     <button

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Image } from "../../shared/components/common/custom/Image";
 
 export default function NotFoundWhat() {
     const navigate = useNavigate();
@@ -7,10 +6,9 @@ export default function NotFoundWhat() {
         <div className="mx-auto">
             <div className="flex items-center justify-center mt-20">
                 <div className="text-center px-4">
-                    <Image 
-                        url="https://dayoon07.github.io/img/wow404error.png"
+                    <img 
+                        src="https://dayoon07.github.io/img/wow404error.png"
                         alt="Not Found What is?"
-                        social={true}
                         onClick={() => navigate(-1)}
                         className="w-[300px] h-[300px] cursor-pointer object-cover"
                     />

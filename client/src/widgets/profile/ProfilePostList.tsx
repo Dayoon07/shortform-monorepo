@@ -1,10 +1,10 @@
-import { Post } from "../../entities/post/ui/Post";
+import { PostWithProfile } from "../../entities/post/ui/PostWithProfile";
 import { togglePostLike } from "../../features/post/api/postService";
 import PostCard from "../../features/post/components/PostCard";
 import { showSuccessToast, showErrorToast } from "../../shared/utils/toast";
 import { cl } from "../../shared/constants/CurrentLocation";
 
-export default function ProfilePostList({ posts }: { posts: Post[] }) {
+export default function ProfilePostList({ posts }: { posts: PostWithProfile[] }) {
     const handleShare = async (cuuid: string) => {
         const post = posts.find(p => p.communityUuid === cuuid);
         if (!post) return;

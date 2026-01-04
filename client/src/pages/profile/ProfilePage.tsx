@@ -10,9 +10,7 @@ import { CommonVideoGrid } from "../../shared/components/video/CommonVideoGrid";
 import ProfilePostList from "../../widgets/profile/ProfilePostList";
 
 enum TabTitle { VIDEO = "video", POST = "post" }
-
-const Message = ({ t }: { t: string }) => 
-    <div className="text-center py-20"><p className="text-gray-400">{t}</p></div>
+const ErMessage = ({ t }: { t: string }) => <div className="text-center py-20 text-gray-400">{t}</div>
 
 export default function ProfilePage() {
     const btcl = "px-12 py-3 font-semibold border-b-2 transition max-md:w-full";    // buttonTabClassName = btcl
@@ -59,11 +57,11 @@ export default function ProfilePage() {
                 <CommonVideoGrid 
                     cardUploaderPublic={false}
                     videos={videos} 
-                /> : <Message t="동영상이 없습니다" />
+                /> : <ErMessage t="동영상이 없습니다" />
             )}
 
             {tab === TabTitle.POST && (posts.length > 0 ? 
-                <ProfilePostList posts={posts} /> : <Message t="게시물이 없습니다" />
+                <ProfilePostList posts={posts} /> : <ErMessage t="게시물이 없습니다" />
             )}
 
             <ProfileInfoModal 

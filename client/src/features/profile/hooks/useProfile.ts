@@ -3,7 +3,7 @@ import { getFollowStatus, getFollowerList, getFollowingList } from "../../follow
 import { getProfileByMention } from "../api/profileService";
 import { getUserPosts } from "../../post/api/postService";
 import { User } from "../../../entities/user/model/User";
-import { Post } from "../../../entities/post/ui/Post";
+import { Post } from "../../../entities/post/ui/PostWithProfile";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { Profile } from "../../../entities/profile/model/Profile";
 import { FollowStatusRes } from "../../../entities/follow/ui/FollowStatusRes";

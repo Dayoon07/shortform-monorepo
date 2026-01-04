@@ -4,6 +4,7 @@ import { ReportType } from "../../constants/enums/ReportType";
 import { REPORT_TYPE_TEXT_DATA } from "./data/ReportTypeTextData";
 import { useReport } from "../../../features/report/hooks/useReport";
 import { ReportRegisterReq } from "../../../entities/report/ui/ReportRegisterReq";
+import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const REPORT_TYPES = Object.values(ReportType);
 
@@ -21,12 +22,12 @@ export const ReportModal: React.FC<ReportModalProps> = ({
     reportedUserId 
 }) => {
     const [selected, setSelected] = useState<ReportType | null>(null);
-    const [reportReason, setReportReason] = useState("");
+    const [reportReason, setReportReason] = useState<string>("");
     const { submitReport, isLoading, error } = useReport();
 
     const handleSubmit = async () => {
         if (!selected) {
-            alert("신고 사유를 선택해주세요");
+            showErrorToast("신고 사유를 선택해주세요");
             return;
         }
 
@@ -40,10 +41,10 @@ export const ReportModal: React.FC<ReportModalProps> = ({
             };
 
             await submitReport(reportData);
-            alert("신고가 접수되었습니다");
+            showSuccessToast("신고가 접수되었습니다");
             onClose();
         } catch (err) {
-            alert("신고 처리 중 오류가 발생했습니다");
+            showErrorToast("신고 처리 중 오류가 발생했습니다");
         }
     }
 
@@ -55,13 +56,10 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                     const checked = selected === type;
 
                     return (
-                        <label
-                            key={type}
+                        <label key={type} 
                             className={`
-                                flex gap-3 px-4 py-3 rounded-xl cursor-pointer
-                                border transition
-                                ${checked
-                                    ? "border-brand bg-brand-subtle"
+                                flex gap-3 px-4 py-3 rounded-xl cursor-pointer border transition
+                                ${checked ? "border-brand bg-brand-subtle" 
                                     : "border-default-medium hover:bg-neutral-secondary-medium"}
                             `}
                         >
@@ -70,39 +68,32 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                                 name="report-type"
                                 checked={checked}
                                 onChange={() => setSelected(type)}
-                                className="
-                                    mt-1 w-4 h-4 rounded-full
-                                    border-2 border-default
-                                    checked:border-brand checked:bg-brand
-                                "
+                                className="mt-1 w-4 h-4 rounded-full border-2 border-default
+                                    checked:border-brand checked:bg-brand"
                             />
 
                             <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-heading">
-                                    {title}
-                                </span>
-                                <span className="text-xs text-gray-500 leading-tight">
-                                    {desc}
-                                </span>
+                                <span className="text-sm font-semibold text-heading">{title}</span>
+                                <span className="text-xs text-gray-500 leading-tight">{desc}</span>
                             </div>
                         </label>
                     );
                 })}
 
                 {/* 추가 사유 입력 (선택사항) */}
-                {selected && (
-                    <textarea
-                        placeholder="추가 설명을 입력해주세요 (선택사항)"
-                        value={reportReason}
-                        onChange={(e) => setReportReason(e.target.value)}
-                        className="w-full p-3 mt-2 border border-default-medium rounded-xl resize-none"
-                        rows={3}
-                    />
-                )}
+                <div>
+                    {selected && (
+                        <textarea
+                            placeholder="추가 설명을 입력해주세요 (선택사항)"
+                            value={reportReason}
+                            onChange={(e) => setReportReason(e.target.value)}
+                            className="w-full p-3 mt-2 border border-default-medium rounded-xl resize-none"
+                            rows={3}
+                        />
+                    )}
+                </div>
 
-                {error && (
-                    <p className="text-red-500 text-sm mt-2">{error}</p>
-                )}
+                {error && ( <p className="text-red-500 text-sm mt-2">{error}</p> )}
 
                 <button 
                     type="button" 

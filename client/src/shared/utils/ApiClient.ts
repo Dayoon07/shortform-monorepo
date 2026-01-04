@@ -57,7 +57,7 @@ class ApiClient {
                 };
             }
 
-            // --- 응답 본문 처리 로직 개선 시작 ---
+            // === 응답 본문 처리 로직 ===
 
             let data: T | undefined = undefined;
             const contentType = response.headers.get('content-type');
@@ -68,8 +68,7 @@ class ApiClient {
             if (response.status !== 204) {
                 try {
                     if (isJson) {
-                        // JSON 형태일 경우
-                        // 응답 본문이 비어있지 않은지 먼저 확인하는 것이 좋습니다.
+                        // JSON 형태일 경우 응답 본문이 비어있지 않은지 먼저 확인하는 것이 좋습니다.
                         const text = await response.text();
                         if (text) {
                             data = JSON.parse(text) as T;
@@ -95,7 +94,6 @@ class ApiClient {
                 };
             }
 
-            // 성공 응답 반환
             return {
                 ok: response.ok,
                 status: response.status,
@@ -103,7 +101,7 @@ class ApiClient {
                 error: undefined
             };
 
-            // --- 응답 본문 처리 로직 개선 끝 ---
+            // === 응답 본문 처리 로직 개선 끝 ===
 
         } catch (error) {
             showErrorToast(error as Error);
