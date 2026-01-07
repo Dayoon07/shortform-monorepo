@@ -3,7 +3,7 @@ import { getFollowStatus, getFollowerList, getFollowingList } from "../../follow
 import { getProfileByMention } from "../api/profileService";
 import { getUserPosts } from "../../post/api/postService";
 import { User } from "../../../entities/user/model/User";
-import { Post } from "../../../entities/post/ui/PostWithProfile";
+import { PostWithProfile } from "../../../entities/post/ui/PostWithProfile";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 import { Profile } from "../../../entities/profile/model/Profile";
 import { FollowStatusRes } from "../../../entities/follow/ui/FollowStatusRes";
@@ -11,7 +11,7 @@ import { FollowStatusRes } from "../../../entities/follow/ui/FollowStatusRes";
 export const useProfile = (mention: string | undefined, currentUser: User | null) => {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [videos, setVideos] = useState<VideoGridContent[]>([]);
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<PostWithProfile[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [isFollowing, setIsFollowing] = useState<FollowStatusRes | boolean | undefined>(false);
     const cleanMention: string | undefined = mention?.replace('@', '');

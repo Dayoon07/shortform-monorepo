@@ -7,10 +7,14 @@ import { LikePageIcon } from "../../../shared/utils/icon/icon";
 
 const COMMENT_BUTTON_CLASS = "text-md text-gray-400 hover:text-black duration-200";
 
-export const PostCommentList: React.FC<{
-    comment: any; onProfileClick: () => void;
-}> = ({
-    comment, onProfileClick
+interface PostCommentProps {
+    comment: any;
+    onProfileClick: () => void;
+    onCommentReplyWrite: () => void;
+}
+
+export const PostComment: React.FC<PostCommentProps> = ({
+    comment, onProfileClick, onCommentReplyWrite
 }) => {
     return (
         <div className="flex">

@@ -21,12 +21,12 @@ export default function ProfilePostList({ posts }: { posts: PostWithProfile[] })
     };
 
     const handleLike = async (communityUuid: string) => {
-        try {
-            const data = await togglePostLike(communityUuid);
-            console.log(data);
-        } catch (error) {
+        const res = await togglePostLike(communityUuid);
+        if (!res.ok || res.data === undefined) {
             showErrorToast('좋아요 처리에 실패했습니다.');
+            throw new Error("에러 남: " + res);
         }
+        console.log(res.data);
     };
 
     if (!posts || posts.length === 0) {

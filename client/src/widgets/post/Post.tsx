@@ -3,20 +3,35 @@ import { usePostDetail } from "../../features/post/hooks/usePostDetail";
 import { ROUTE } from "../../shared/constants/Route";
 import { Image } from "../../shared/components/common/custom/Image";
 import { defaultFormatDate } from "../../shared/utils/formatUtil";
-import { PostCommentList } from "../../features/post/components/PostCommentList";
+import { PostComment } from "../../features/post/components/PostComment";
 import { Clipboard, MessageSquareText, Share2, ThumbsUp } from "lucide-react";
 import { useUser } from "../../shared/context/UserContext";
 import { useState } from "react";
+import { showSuccessToast } from "../../shared/utils/toast";
 
 export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
     const [communityCommentText, setCommunityCommentText] = useState<string>("");
-    const { post } = usePostDetail(cuuid);
     const { user } = useUser();
-    console.log(post);
+    const { 
+        post, 
+        comment,
+        commentWriteHandler,
+        commentReplyWriteHandler
+    } = usePostDetail(cuuid);
 
-    const communityCommentSubmitHandler = () => {
+    const ccsHandler = async () => {
         console.log("커뮤니티 게시글의 댓글 작성 요청");
+        const data = await commentWriteHandler(cuuid);
+        showSuccessToast(data);
     }
+
+    const crwHandler = async (cid: number) => {
+        console.log("커뮤니티 게시글의 댓글의 답글 작성 요청");
+        const data = await commentReplyWriteHandler(cid);
+        showSuccessToast(data);
+    }
+
+    console.log(post);
 
     return (
         <>
@@ -98,39 +113,42 @@ export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
                         </div>
                     </div>
                     {user && (
-                            <div className="p-4">
-                                <div className="flex space-x-3">
-                                    <Image 
-                                        url={user.profileImgSrc}
-                                        social={user.social}
-                                        alt="profile"
-                                        style={{ background: "linear-gradient(to right, #ec4899, #0ea5e9)" }}
-                                        className="w-10 h-10 p-0.5 rounded-full object-cover"
-                                    />
+                        <div className="p-4">
+                            <div className="flex space-x-3">
+                                <Image 
+                                    url={user.profileImgSrc}
+                                    social={user.social}
+                                    alt="profile"
+                                    style={{ background: "linear-gradient(to right, #ec4899, #0ea5e9)" }}
+                                    className="w-10 h-10 p-0.5 rounded-full object-cover"
+                                />
 
-                                    <div className="flex-1 flex space-x-2 items-center">
-                                        <textarea className="flex-1 bg-gray-200 px-3 py-2 h-[40px] rounded-full text-sm focus:outline-none 
-                                            focus:ring-2 focus:ring-blue-500 resize-none"
-                                            value={communityCommentText}
-                                            onChange={(e) => setCommunityCommentText(e.target.value)}
-                                            placeholder="댓글을 입력하세요..."
-                                        ></textarea>
+                                <div className="flex-1 flex space-x-2 items-center">
+                                    <textarea className="flex-1 bg-gray-200 px-3 py-2 h-[40px] rounded-full text-sm focus:outline-none 
+                                        focus:ring-2 focus:ring-blue-500 resize-none"
+                                        value={communityCommentText}
+                                        onChange={(e) => setCommunityCommentText(e.target.value)}
+                                        placeholder="댓글을 입력하세요..."
+                                    ></textarea>
 
-                                        <button 
-                                            className="px-4 py-2 rounded-full text-sm bg-black text-white transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
-                                            onClick={communityCommentSubmitHandler}
-                                            disabled={!communityCommentText.trim()}
-                                        >
-                                            전송
-                                        </button>
-                                    </div>
+                                    <button 
+                                        className="px-4 py-2 rounded-full text-sm bg-black text-white transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
+                                        onClick={ccsHandler}
+                                        disabled={!communityCommentText.trim()}
+                                    >
+                                        전송
+                                    </button>
                                 </div>
                             </div>
-                        )}
-                    <PostCommentList  
-                        comment={0}
-                        onProfileClick={() => console.log("")}
-                    />
+                        </div>
+                    )}
+                    {comment.map((v) => (
+                        <PostComment 
+                            comment={v}
+                            onProfileClick={() => console.log("")}
+                            onCommentReplyWrite={() => crwHandler(v.id)}
+                        /> 
+                    ))}
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-10 text-gray-400">
