@@ -21,24 +21,25 @@ export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
 
     const ccsHandler = async () => {
         console.log("커뮤니티 게시글의 댓글 작성 요청");
-        const data = await commentWriteHandler(cuuid);
+        if (post?.communityUuid === undefined) throw new Error("댓글을 작성할 수 없는 게시물입니다");
+        const data = await commentWriteHandler(post?.id, communityCommentText);
+        console.log(data);
         showSuccessToast(data);
     }
 
     const crwHandler = async (cid: number) => {
         console.log("커뮤니티 게시글의 댓글의 답글 작성 요청");
         const data = await commentReplyWriteHandler(cid);
+        console.log(data);
         showSuccessToast(data);
     }
-
-    console.log(post);
 
     return (
         <>
             {post != null && post !== undefined ? (
                 <div className="mx-auto p-4 md:pl-4 md:pr-20 md:pb-[300px]">
                     <div className="md:min-w-[768px] mx-auto max-md:w-full mb-6">
-                        <div className="border rounded-lg p-4 hover:bg-gray-750 transition-colors duration-200">
+                        <div className="hover:bg-gray-750 transition-colors duration-200">
                             <div className="flex items-start space-x-3 mb-3">
                                 <div className="flex-shrink-0">
                                     <Link to={ROUTE.PROFILE(post.mention)}>

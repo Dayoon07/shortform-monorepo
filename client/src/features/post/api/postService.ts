@@ -13,8 +13,8 @@ export async function getUserPosts(mention: string): Promise<PostWithProfile[]> 
 export const getPostDetail = async (communityUuid: string): Promise<ApiResponse<DetailPostWithProfile>> => 
     await apiClient.get<DetailPostWithProfile>(API_LIST.POST.GET_DETAIL(communityUuid), false);
 
-export const getPostDetailComments = async (p1: any): Promise<ApiResponse<any[]>> => 
-    await apiClient.get<any>(API_LIST.POST.COMMENT.GET(p1), false);
+export const getPostDetailComments = async (communityId: number): Promise<ApiResponse<any[]>> => 
+    await apiClient.get<any>(API_LIST.POST.COMMENT.GET(communityId), false);
 
 export const createPost = async (formData: FormData): Promise<ApiResponse<WritePostRes>> => 
     await apiClient.post<WritePostRes>(API_LIST.POST.WRITE, true, formData);
@@ -25,9 +25,8 @@ export const togglePostLike = async (communityUuid: string) =>
 export const deletePost = async (commentUuid: string): Promise<ApiResponse<any>> => 
     await apiClient.post<any>(API_LIST.POST.DELETE(commentUuid), true);
 
-export const insertPostComment = async (communityUuid: string | undefined): Promise<ApiResponse<any>> => 
-    await apiClient.post<any>(API_LIST.POST.COMMENT.INSERT, false, {
-        "communityUuid": communityUuid});
+export const insertPostComment = async (communityId: number, comment: string): Promise<ApiResponse<any>> => 
+    await apiClient.post<any>(API_LIST.POST.COMMENT.INSERT(communityId, comment), false);
 
 export const insertPostCommentReply = async (commentId: number): Promise<ApiResponse<any>> => 
     await apiClient.post<any>(API_LIST.POST.COMMENT.REPLY.INSERT, false, {
