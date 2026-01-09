@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* 2줄 말줄임표 */
 .line-clamp-2 {
     display: -webkit-box;
