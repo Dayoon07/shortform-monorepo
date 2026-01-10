@@ -4,8 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/shortform-client/',
-  
+  base: '/shortform-client',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -17,12 +16,10 @@ export default defineConfig({
       '@shared': path.resolve(__dirname, './src/shared')
     }
   },
-  
   server: {
     port: 3000,
     open: true
   },
-  
   build: {
     outDir: 'build',
     sourcemap: true,

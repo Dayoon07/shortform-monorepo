@@ -3,8 +3,10 @@
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "moduleResolution": "bundler", // 수정: node -> bundler
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true // 이거 사용하려면 noEmit 설정을 true로 잡아주어야 함
   },
   "include": ["vite.config.ts"]
 }
