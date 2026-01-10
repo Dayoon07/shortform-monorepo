@@ -7,10 +7,11 @@ import {
 } from "../api/postService";
 import { showErrorToast } from "../../../shared/utils/toast";
 import { DetailPostWithProfile } from "../../../entities/post/ui/DetailPostWithProfile";
+import { PostComment } from "@/entities/post/ui/PostComment";
 
 export const usePostDetail = (communityUuid: string | undefined) => {
     const [post, setPost] = useState<DetailPostWithProfile | null>(null);
-    const [comment, setComment] = useState<any[]>([]);
+    const [comment, setComment] = useState<PostComment[]>([]);
 
     const commentWriteHandler = async (communityId: number, commentText: string) => {
         const res = await insertPostComment(communityId, commentText);
@@ -26,24 +27,33 @@ export const usePostDetail = (communityUuid: string | undefined) => {
 
     useEffect(() => {
         const init = async () => {
-            if (communityUuid === undefined) {
+            if (!communityUuid) {
                 showErrorToast("해당 게시글을 찾을 수 없습니다");
                 return;
             }
+
+            const [postRes, commentRes] = await Promise.all([
+                getPostDetail(communityUuid),
+                getPostDetailComments(communityUuid)
+            ]);
+
+            if (!postRes.ok || !postRes.data) {
+                showErrorToast("해당 게시글을 찾을 수 없습니다");
+                throw new Error("해당 게시글을 찾을 수 없습니다");
+            }
             
-            const res1 = await getPostDetail(communityUuid);
+            if (!commentRes.ok || !commentRes.data) {
+                showErrorToast("게시글에 대한 댓글을 찾을 수 없습니다");
+                throw new Error("게시글에 대한 댓글을 찾을 수 없습니다");
+            }
 
-            if (!res1.ok || res1.data === undefined) 
-                throw new Error("해당 게시글을 찾을 수 없습니다: " + res1.data);
+            console.log(postRes.data);
+            console.log(commentRes.data);
 
-            const res2 = await getPostDetailComments(res1.data?.id);
+            setPost(postRes.data);
+            setComment(commentRes.data);
+        };
 
-            if (!res2 || res2.data === undefined) 
-                throw new Error("게시글에 대한 댓글을 찾을 수 없습니다: " + res2.data);
-
-            setPost(res1.data);
-            setComment(res2.data);
-        }
         init();
     }, [communityUuid]);
 

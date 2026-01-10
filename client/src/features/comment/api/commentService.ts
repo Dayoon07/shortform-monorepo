@@ -5,8 +5,7 @@ import { CommentReplyCreateReq } from "../../../entities/comment/ui/CommentReply
 import { API_LIST } from "../../../shared/constants/ApiCollectionList";
 import { apiClient, ApiResponse } from "../../../shared/utils/ApiClient";
 
-export async function insertComment(
-    id: number, comment: string
+export async function insertComment(id: number, comment: string
 ): Promise<ApiResponse<CommentCreateRes>> {
     const res = await apiClient.post<CommentCreateRes>(
         API_LIST.COMMENT.INSERT, true, {
@@ -22,23 +21,18 @@ export async function insertComment(
     return res;
 }
 
-export async function popularCommentList(videoId: number): Promise<ApiResponse<Comment[]>> {
-    return await apiClient.get<Comment[]>(API_LIST.COMMENT.POPULAR_LIST(videoId), false);
-}
+export const popularCommentList = async (videoId: number): Promise<ApiResponse<Comment[]>> => 
+    await apiClient.get<Comment[]>(API_LIST.COMMENT.POPULAR_LIST(videoId), false);
 
-export async function recentCommentList(videoId: number): Promise<ApiResponse<Comment[]>> {
-    return await apiClient.get<Comment[]>(API_LIST.COMMENT.RECENT_LIST(videoId), false);
-}
+export const recentCommentList = async (videoId: number): Promise<ApiResponse<Comment[]>> => 
+    await apiClient.get<Comment[]>(API_LIST.COMMENT.RECENT_LIST(videoId), false);
 
-export async function commentLikeToggle(commentId: number): Promise<ApiResponse<CommentLikeToggleRes>> {
-    return await apiClient.post<CommentLikeToggleRes>(API_LIST.COMMENT.LIKE.TOGGLE(commentId), true);
-}
+export const commentLikeToggle = async (commentId: number): Promise<ApiResponse<CommentLikeToggleRes>> => 
+    await apiClient.post<CommentLikeToggleRes>(API_LIST.COMMENT.LIKE.TOGGLE(commentId), true);
 
-export async function insertCommentReply(req: CommentReplyCreateReq): Promise<ApiResponse<any>> {
-    return await apiClient.post<any>(API_LIST.COMMENT.REPLY.INSERT, true, req);
-}
+export const insertCommentReply = async (req: CommentReplyCreateReq): Promise<ApiResponse<any>> => 
+    await apiClient.post<any>(API_LIST.COMMENT.REPLY.INSERT, true, req);
 
-export async function replyCommentReq(commentId: number): Promise<ApiResponse<Comment[]>> {
-    return await apiClient.get<Comment[]>(API_LIST.COMMENT.REPLY.LIST(commentId), false);
-}
+export const replyCommentReq = async (commentId: number): Promise<ApiResponse<Comment[]>> => 
+    await apiClient.get<Comment[]>(API_LIST.COMMENT.REPLY.LIST(commentId), false);
 

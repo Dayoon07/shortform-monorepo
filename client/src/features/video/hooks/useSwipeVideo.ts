@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { getRandomVideo } from '../api/swipeVideoService';
+import { getRandomVideo } from '../api/videoService';
 import { RandomVideoSwipe } from '../../../entities/video/ui/RandomVideoSwipe';
 import { User } from '../../../entities/user/model/User';
 

@@ -4,7 +4,7 @@ import { useUser } from '../../shared/context/UserContext';
 import { useSwipeVideo } from '../../features/video/hooks/useSwipeVideo';
 import SwipeVideoPlayer from '../../widgets/video/SwipeVideoPlayer';
 import { Loading } from '../../shared/components/common/Loading';
-import { getFirstSwipeVideo } from '../../features/video/api/swipeVideoService';
+import { getFirstSwipeVideo } from '../../features/video/api/videoService';
 import ToGoPage from "../../shared/components/common/ToGoPage";
 import { CommentModal } from '../../widgets/comment/CommentModal';
 import { VideoInfoModal } from '../../widgets/video/VideoInfoModal';

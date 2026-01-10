@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Info, Share2, ChevronUp, ChevronDown, MessageSquareText } from 'lucide-react';
-import { toggleVideoLike } from '../api/swipeVideoService';
+import { toggleVideoLike } from '../api/videoService';
 import { showErrorToast, showSuccessToast } from '../../../shared/utils/toast';
 import { VideoLikeButton } from './ui/VideoLikeButton';
 import { VideoActionButton } from './ui/VideoActionButton';
 import { RandomVideoSwipe } from '../../../entities/video/ui/RandomVideoSwipe';
 import { User } from '../../../entities/user/model/User';
+import { useShare } from '@/shared/hooks/useShare';
 
 interface VideoActionButtonsProps {
     video: RandomVideoSwipe,
@@ -23,23 +24,7 @@ export function VideoActionButtons({
     const [likeCount, setLikeCount] = useState<number>(video.likeCnt);
     const [isAnimating, setIsAnimating] = useState<boolean>(false);
     const [isMobile, setIsMobile] = useState<boolean>(false);
-
-    // video prop이 변경될 때마다 좋아요 상태 및 갯수 동기화
-    useEffect(() => {
-        setIsLiked(video.isLiked);
-        setLikeCount(video.likeCnt);
-    }, [video.id, video.isLiked, video.likeCnt]);
-
-    // 화면 크기 감지 (md: 768px)
-    useEffect(() => {
-        const checkMobileSize = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        checkMobileSize();
-        window.addEventListener('resize', checkMobileSize);
-        return () => window.removeEventListener('resize', checkMobileSize);
-    }, []);
+    const { shareFunc } = useShare();
 
     const handleLike = async () => {
         if (!user) {
@@ -66,16 +51,22 @@ export function VideoActionButtons({
         }
     };
 
-    const handleShare = async () => {
-        try {
-            // 현재 페이지 URL을 복사
-            await navigator.clipboard.writeText(window.location.href); 
-            showSuccessToast("링크가 복사되었습니다");
-        } catch (err) {
-            console.error('클립보드 복사 실패:', err);
-            showErrorToast("링크 복사에 실패했습니다");
-        }
-    };
+    // video prop이 변경될 때마다 좋아요 상태 및 갯수 동기화
+    useEffect(() => {
+        setIsLiked(video.isLiked);
+        setLikeCount(video.likeCnt);
+    }, [video.id, video.isLiked, video.likeCnt]);
+
+    // 화면 크기 감지 (md: 768px)
+    useEffect(() => {
+        const checkMobileSize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobileSize();
+        window.addEventListener('resize', checkMobileSize);
+        return () => window.removeEventListener('resize', checkMobileSize);
+    }, []);
 
     return (
         <div className="absolute right-2 md:right-6 bottom-20 md:bottom-32 flex flex-col items-center space-y-4 md:space-y-6 z-20">
@@ -96,7 +87,7 @@ export function VideoActionButtons({
             />
 
             <VideoActionButton 
-                onClick={handleShare}
+                onClick={shareFunc}
                 ariaLabel="공유"
                 BtnIcon={Share2}
                 text="공유"

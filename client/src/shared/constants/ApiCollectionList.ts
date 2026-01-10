@@ -26,7 +26,7 @@ export const API_LIST = {
             TOGGLE: (i: string) => `/api/community/like?communityUuid=${i}`
         },
         COMMENT: {
-            GET: (p: any) => `/api/community/comment/list/recent?communityId=${p}`,
+            GET: (p: any) => `/api/community/comment/recent?communityUuid=${p}`,
             INSERT: (p1: number, p2: string) => `/api/community/comment/insert?communityId=${p1}&comment=${p2}`,
             LIKE: {
                 TOGGLE: "/api/community/comment/toggle/like"

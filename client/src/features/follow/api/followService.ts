@@ -28,20 +28,13 @@ export async function upgradeToggleFollow(
     return res.data;
 }
 
-export async function getFollowStatus(
-    reqUserMention: string, resUserMention: string
-): Promise<ApiResponse<FollowStatusRes>> {
-    return await apiClient.get<FollowStatusRes>(
-        API_LIST.FOLLOW.STATUS(reqUserMention, resUserMention), false);
-}
+export const getFollowStatus = async (requm: string, resum: string): Promise<ApiResponse<FollowStatusRes>> => 
+    await apiClient.get<FollowStatusRes>(API_LIST.FOLLOW.STATUS(requm, resum), false);
 
-export async function getFollowerList(id: number): Promise<ApiResponse<FollowingData[]>> {
-    return await apiClient.get<FollowingData[]>(API_LIST.FOLLOW.USER_FOLLOWER_LIST(id), false);
-}
+export const getFollowerList = async (id: number): Promise<ApiResponse<FollowingData[]>> => 
+    await apiClient.get<FollowingData[]>(API_LIST.FOLLOW.USER_FOLLOWER_LIST(id), false);
 
-export async function getFollowingList(id: number): Promise<ApiResponse<FollowingData[]>> {
-    return await apiClient.get<FollowingData[]>(API_LIST.FOLLOW.USER_FOLLOWING_LIST(id), false);
-}
-
+export const getFollowingList = async (id: number): Promise<ApiResponse<FollowingData[]>> => 
+    await apiClient.get<FollowingData[]>(API_LIST.FOLLOW.USER_FOLLOWING_LIST(id), false);
 
 

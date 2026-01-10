@@ -6,22 +6,36 @@ import { PostWithProfile } from "../../../entities/post/ui/PostWithProfile";
 import { Image } from "../../../shared/components/common/custom/Image";
 import { defaultFormatDate } from "../../../shared/utils/formatUtil";
 import ImageGrid from "../../../shared/components/post/ImageGrid";
+import { cl } from "@/shared/constants/CurrentLocation";
+import { showErrorToast } from "@/shared/utils/toast";
+import { togglePostLike } from "../api/postService";
+import { ApiResponse } from "@/shared/utils/ApiClient";
+import { PostLikeReq } from "@/entities/post/ui/PostLikeReq";
+import { useShare } from "@/shared/hooks/useShare";
 
-interface PostCardProps {
-    post: PostWithProfile,
-    onLike: (communityUuid: string) => void,
-    onShare: (uuid: string) => void
-}
-
-export default function PostCard({ post, onLike, onShare }: PostCardProps) {
-    const navigate = useNavigate();
-    const isLiked = false;
+export default function PostCard({ post }: { post: PostWithProfile }) {
+    const [isLiked, setIsLiked] = useState<boolean>(false);
     const [likeCount, setLikeCount] = useState<number>(post.likeCnt || 0);
+    const { shareFunc } = useShare();
+    const navigate = useNavigate();
+    const imageClickHandler = () => navigate(ROUTE.POST_DETAIL(post.mention, post.communityUuid));
+    const shareHandler = async (cuuid: string) => shareFunc(`${cl}/@${post.mention}/post/${cuuid}`);
 
-    const handleLike = () => { /* 좋아요 로직 */ };
+    const likeHandler = async (communityUuid: string) => {
+        const res: ApiResponse<PostLikeReq> = await togglePostLike(communityUuid);
+        if (!res.ok || res.data === undefined) {
+            showErrorToast('좋아요 처리에 실패했습니다.');
+            throw new Error("에러 남: " + res);
+        }
 
-    /** 이미지 클릭 핸들러 (상세 페이지 이동) */
-    const handleImageClick = () => navigate(ROUTE.POST_DETAIL(post.mention, post.communityUuid));
+        if (res.data.like === true) {
+            setIsLiked(res.data.like);
+            setLikeCount(res.data.count);
+        } else {
+            setIsLiked(res.data.like);
+            setLikeCount(res.data.count);
+        }
+    };
 
     useEffect(() => {
         setLikeCount(post.likeCnt || 0);
@@ -48,12 +62,10 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                     </div>
                     <div className="mt-1">
                         <p className="mb-2 cursor-pointer whitespace-pre-wrap break-words text-sm md:text-base" 
-                            onClick={handleImageClick}>
-                            {post.communityText !== null ? (
-                                post.communityText
-                            ) : (
-                                <span className="text-sm text-gray-400">게시글 보기</span>
-                            )}
+                            onClick={imageClickHandler}>
+                            {post.communityText !== null 
+                                ? post.communityText 
+                                : <span className="text-sm text-gray-400">게시글 보기</span>}
                         </p>
 
                         <ImageGrid files={post.files} gridType="inline" />
@@ -68,9 +80,8 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
 
             <div className="px-4 pb-2">
                 <div className="flex space-x-6 items-center">
-                    {/* 좋아요 */}
                     <button
-                        onClick={handleLike}
+                        onClick={() => likeHandler(post.communityUuid)}
                         className="flex items-center gap-1 text-gray-700 hover:text-black active:scale-95 transition"
                     >
                         <div className="p-2 rounded-full hover:bg-gray-200 transition">
@@ -85,7 +96,6 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                         </span>
                     </button>
                     
-                    {/* 댓글 */}
                     <button className="flex items-center gap-1 text-gray-700 hover:text-black active:scale-95 transition">
                         <div className="p-2 rounded-full hover:bg-gray-200 transition">
                             <MessageSquareText className="w-6 h-6" />
@@ -95,9 +105,8 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                         </span>
                     </button>
 
-                    {/* 공유 */}
                     <button
-                        onClick={() => onShare?.(post.communityUuid)}
+                        onClick={() => shareHandler(post.communityUuid)}
                         className="flex items-center gap-1 text-gray-700 hover:text-black active:scale-95 transition"
                     >
                         <div className="p-2 rounded-full hover:bg-gray-200 transition">
