@@ -22,6 +22,7 @@ export const FollowingRow = ({ followingUser, onToggleFollow }: FollowingRowProp
                     url={followingUser.profileImgSrc}
                     alt={followingUser.username}
                     social={followingUser.social}
+                    provider={followingUser.provider}
                     className="w-12 h-12 border-gray-300 border rounded-full object-cover mr-4 flex-shrink-0"
                 />
                 <div className="flex flex-col overflow-hidden">

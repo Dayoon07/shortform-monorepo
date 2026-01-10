@@ -135,6 +135,7 @@ export const VideoCard = memo(({
                         <Image 
                             url={video.profileImgSrc} 
                             social={video.social} 
+                            provider={video.provider}
                             alt="VideoCard 컴포넌트 프로필"
                             className="w-8 h-8 border rounded-full object-cover"
                         />

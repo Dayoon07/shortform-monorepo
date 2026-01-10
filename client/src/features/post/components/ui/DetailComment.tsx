@@ -18,6 +18,7 @@ export const DetailComment: React.FC<DetailCommentProps> = ({
                     <Image 
                         url={user.profileImgSrc}
                         social={user.social}
+                        provider={user.provider}
                         alt="profile"
                         style={{ background: "linear-gradient(to right, #ec4899, #0ea5e9)" }}
                         className="w-10 h-10 p-0.5 rounded-full object-cover"

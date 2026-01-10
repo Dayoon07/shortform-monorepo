@@ -40,6 +40,7 @@ export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
                             url={user.profileImgSrc}
                             alt={user.username + "의 프로필"}
                             social={user.social}
+                            provider={user.provider}
                             className="w-full h-full object-cover rounded-full"
                         />
                     </button>
@@ -57,6 +58,7 @@ export const AppBarProfileDropdown = ({ user }: { user: User | null }) => {
                                     url={user.profileImgSrc}
                                     alt={user.username + "의 프로필"}
                                     social={user.social}
+                                    provider={user.provider}
                                     className="w-[26px] h-[26px] p-0.5 object-cover 
                                         rounded-full mr-2 bg-gradient-to-r from-pink-500 to-sky-500"
                                 />

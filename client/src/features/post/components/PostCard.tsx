@@ -36,6 +36,7 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                             url={post.profileImgSrc}
                             alt={post.username}
                             social={post.social}
+                            provider={post.provider}
                             className="w-10 h-10 rounded-full object-cover"
                         />
                     </Link>
@@ -65,26 +66,46 @@ export default function PostCard({ post, onLike, onShare }: PostCardProps) {
                 </div>
             </div>
 
-            {/* 하단 인터액션 영역 */}
-            <div className="px-4 py-3">
-                <div className="flex items-center space-x-6">
+            <div className="px-4 pb-2">
+                <div className="flex space-x-6 items-center">
+                    {/* 좋아요 */}
                     <button
-                        className={`flex items-center space-x-1.5 ${isLiked ? 'text-red-500' : 'text-gray-500'} hover:text-red-400`}
                         onClick={handleLike}
+                        className="flex items-center gap-1 text-gray-700 hover:text-black active:scale-95 transition"
                     >
-                        <ThumbsUp className={`w-5 h-5 ${isLiked ? 'fill-red-500' : ''}`} />
-                        <span className="text-sm font-medium">{likeCount}</span>
+                        <div className="p-2 rounded-full hover:bg-gray-200 transition">
+                            <ThumbsUp
+                                className={`w-6 h-6 ${
+                                    isLiked ? "fill-red-500 text-red-500" : ""
+                                }`}
+                            />
+                        </div>
+                        <span className="text-xs font-medium">
+                            {likeCount}
+                        </span>
                     </button>
-                    <button className="flex items-center space-x-1.5 text-gray-500 hover:text-gray-800">
-                        <MessageSquareText className="w-5 h-5" />
-                        <span className="text-sm font-medium">{post.commentCnt || 0}</span>
+                    
+                    {/* 댓글 */}
+                    <button className="flex items-center gap-1 text-gray-700 hover:text-black active:scale-95 transition">
+                        <div className="p-2 rounded-full hover:bg-gray-200 transition">
+                            <MessageSquareText className="w-6 h-6" />
+                        </div>
+                        <span className="text-xs font-medium">
+                            {post.commentCnt || 0}
+                        </span>
                     </button>
+
+                    {/* 공유 */}
                     <button
-                        className="flex items-center space-x-1.5 text-gray-500 hover:text-gray-800 ml-auto"
                         onClick={() => onShare?.(post.communityUuid)}
+                        className="flex items-center gap-1 text-gray-700 hover:text-black active:scale-95 transition"
                     >
-                        <Share2 className="w-5 h-5" />
-                        <span className="text-sm font-medium">공유</span>
+                        <div className="p-2 rounded-full hover:bg-gray-200 transition">
+                            <Share2 className="w-6 h-6" />
+                        </div>
+                        <span className="text-xs font-medium">
+                            공유
+                        </span>
                     </button>
                 </div>
             </div>

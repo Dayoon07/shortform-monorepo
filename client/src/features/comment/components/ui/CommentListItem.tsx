@@ -64,6 +64,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                     url={comment.profileImgSrc}
                     alt={`${comment.username}님의 프로필`}
                     social={comment.social}
+                    provider={comment.provider}
                     className="w-10 h-10 rounded-full object-cover cursor-pointer mt-1"
                     onClick={onProfileClick}
                 />
@@ -107,6 +108,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                                 url={user.profileImgSrc}
                                 alt={user.username}
                                 social={user.social}
+                                provider={user.provider}
                                 className="w-6 h-6 rounded-full object-cover flex-shrink-0"
                             />
                             <div className="flex-1 group">
@@ -166,6 +168,7 @@ export const CommentCreateResItem: React.FC<CommentCreateResItemProps> = ({
                 url={comment.userObj.profileImgSrc}
                 alt={`${comment.userObj.username}님의 프로필`}
                 social={comment.userObj.social}
+                provider={comment.userObj.provider}
                 className="w-10 h-10 rounded-full object-cover cursor-pointer mt-1"
                 onClick={onProfileClick}
             />

@@ -49,6 +49,7 @@ export default function BottomNavBar() {
                                 url={user.profileImgSrc}
                                 alt={user.username + "님의 프로필"}
                                 social={user.social}
+                                provider={user.provider}
                                 className="w-full h-full object-cover"
                             />
                         </div>

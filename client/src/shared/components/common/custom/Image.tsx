@@ -2,12 +2,13 @@ import { CSSProperties } from "react";
 import { REST_API_SERVER } from "../../../constants/ApiCollectionList";
 
 interface ImageProps {
-    url: string,
-    alt: string,
-    social: boolean,
-    style?: CSSProperties | undefined,
-    className?: string,
-    onClick?: (p?: any) => void
+    url: string;
+    alt: string;
+    social: boolean;
+    provider?: string;
+    style?: CSSProperties | undefined;
+    className?: string;
+    onClick?: (p?: any) => void;
 }
 
 /**
@@ -17,24 +18,17 @@ interface ImageProps {
  * 외부 이미지 사용 시 social 값은 true 값을 넣고 사용
  */
 export const Image = ({
-    url, alt, social, style, className, onClick
+    url, alt, social, provider, style, className, onClick
 }: ImageProps) => {
-    // 외부 이미지인지 확인 (구글, 네이버 등)
-    const isExternalImage = (url: string): boolean => {
-        if (!url) return false;
-        
-        const externalDomains = [
-            'googleusercontent.com',  // 구글
-            'pstatic.net',           // 네이버
-            'kakaocdn.net',          // 카카오
-            // 필요한 다른 소셜 도메인 추가
-        ];
-        
-        return externalDomains.some(domain => url.includes(domain));
+    // 외부 이미지인지 확인
+    const sFunc = (url: string): boolean => {
+        if (!url || !provider) return false;
+        if (social && provider !== "LOCAL") return true;
+        return false;
     };
     
     // 소셜 계정이면서 외부 이미지면 그대로, 아니면 서버 주소 추가
-    const p = social && isExternalImage(url) ? url : REST_API_SERVER + url;
+    const p = social && sFunc(url) ? url : REST_API_SERVER + url;
     return (
         <img 
             src={p}

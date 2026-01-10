@@ -22,6 +22,7 @@ export const PostComment: React.FC<PostCommentProps> = ({
                 url={comment.profileImgSrc}
                 alt={`${comment.username}님의 프로필`}
                 social={comment.social}
+                provider={comment.provider}
                 className="w-8 h-8 rounded-full object-cover cursor-pointer"
                 onClick={onProfileClick}
             />

@@ -60,6 +60,7 @@ export default function ProfileHeader({ profile, videoCount, onShowInfo }: Profi
                         url={profile.profileImgSrc}
                         alt={`${profile.username}의 프로필`}
                         social={profile.social}
+                        provider={profile.provider}
                         className="w-32 h-32 md:w-44 md:h-44 rounded-full object-cover p-1 bg-gradient-to-r from-pink-500 to-sky-500"
                     />
                 </div>

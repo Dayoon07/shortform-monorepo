@@ -3,17 +3,8 @@ import { routes } from './routes';
 import AppLayout from '../layouts/AppLayout';
 
 const router = createBrowserRouter(
-    [
-        {
-            element: <AppLayout />,
-            children: routes
-        }
-    ],
-    {
-        basename: '/shortform-client'
-    }
+    [{ element: <AppLayout />, children: routes }], 
+    { basename: '/shortform-client' }
 );
 
-export function AppRouter() {
-    return <RouterProvider router={router} />;
-}
+export const AppRouter = () => <RouterProvider router={router} />;

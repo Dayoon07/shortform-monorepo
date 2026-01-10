@@ -25,10 +25,11 @@ export function VideoInfoOverlay({
                 <Link to={ROUTE.PROFILE(video.video.uploader.mention)}>
                     <Image 
                         url={video.video.uploader.profileImgSrc} 
+                        social={video.video.uploader.social}
+                        provider={video.video.uploader.provider}
                         alt='프로필'
                         className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover border-2 border-white 
                             border-opacity-30 transition-transform hover:scale-110"
-                        social={video.video.uploader.social}
                     />
                 </Link>
                 
