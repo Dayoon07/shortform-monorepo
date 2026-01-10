@@ -2,9 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/shortform-client',
+  base: command === 'build' ? '/shortform-client/' : '/', // ✅ 개발: '/', 빌드: '/shortform-client/'
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -32,4 +32,4 @@ export default defineConfig({
       }
     }
   }
-})
+}))

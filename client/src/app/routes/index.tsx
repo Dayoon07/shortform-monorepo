@@ -10,7 +10,7 @@ const router = createBrowserRouter(
         }
     ],
     {
-        basename: '/shortform-client'
+        basename: import.meta.env.PROD ? '/shortform-client' : '/'
     }
 );
 
