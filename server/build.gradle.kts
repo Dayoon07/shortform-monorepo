@@ -64,6 +64,13 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.14.0")
 
     implementation("io.netty:netty-all:4.1.119.Final")
+
+    // AWS SDK v1 (기존 코드 호환용)
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.770") // 최신 v1 버전 권장
+
+    // 유틸리티 (IOUtils 사용을 위해 필요)
+    implementation("commons-io:commons-io:2.16.1")
+    implementation("commons-codec:commons-codec")
 }
 
 tasks.withType<Test> {

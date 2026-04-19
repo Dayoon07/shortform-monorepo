@@ -41,7 +41,7 @@ public class VideoEntity {
     @Column(name = "video_loc", nullable = false, unique = true)
     private String videoLoc;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uploader_user_id", nullable = false,
             foreignKey = @ForeignKey(name = "FK_UPLOADER"))
     private UserEntity uploader;

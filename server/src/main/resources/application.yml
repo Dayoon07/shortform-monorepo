@@ -37,6 +37,12 @@ spring:
     # properties:
     #   hibernate:
     #     dialect: org.hibernate.dialect.OracleDialect
+  cloud:
+    aws:
+      s3:
+        region: ap-northeast-2
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
   security:
     oauth2:
       client:

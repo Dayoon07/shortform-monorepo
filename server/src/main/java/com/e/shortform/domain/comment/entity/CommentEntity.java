@@ -27,12 +27,12 @@ public class CommentEntity {
     @Column(name = "comment_text", nullable = false)
     private String commentText;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_user_id", nullable = false,
             foreignKey = @ForeignKey(name = "FK_COMMENT_USER"))
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_video_id", nullable = false,
             foreignKey = @ForeignKey(name = "FK_COMMENT_VIDEO"))
     private VideoEntity video;
