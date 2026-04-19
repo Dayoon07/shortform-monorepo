@@ -1,0 +1,61 @@
+import { useState, useEffect } from "react";
+import { upgradeToggleFollow, getFollowStatus } from "../api/followService";
+import { showErrorToast, showSuccessToast } from "../../../shared/utils/toast";
+import { User } from "../../../entities/user/model/User";
+
+export const useToggleFollow = (followReqUser: User | null, followResUser: User) => {
+    const [isFollowing, setIsFollowing] = useState<boolean>(false);
+    const [messageData, setMessageData] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const upgradeToggleFollowHook = async (): Promise<boolean> => {
+        if (!followReqUser?.mention || !followResUser?.mention) {
+            setMessageData("사용자 정보가 올바르지 않습니다");
+            showErrorToast("사용자 정보가<br className='md:hidden'/>올바르지 않습니다");
+            return false;
+        }
+
+        setLoading(true);
+        try {
+            const data = await upgradeToggleFollow(followReqUser.mention, followResUser.mention);
+            console.log(data);
+            
+            if (data?.success) {
+                setIsFollowing(prev => !prev);
+                setMessageData(data.message);
+                showSuccessToast(data.message);
+                return data.isFollowing;
+            } else {
+                setMessageData(data?.message || "팔로우 처리에 실패했습니다.");
+                return data.isFollowing;
+            }
+        } catch (error) {
+            console.error(error);
+            setMessageData(`데이터 불러오기 실패: ${(error as Error).message}`);
+            showErrorToast(`데이터 불러오기 실패: ${(error as Error).message}`);
+            throw error;
+        } finally {
+            setLoading(false);
+            console.log(messageData);
+        }
+    };
+
+    // 초기 팔로우 상태 가져오기
+    useEffect(() => {
+        const init = async (): Promise<void> => {
+            if (!followReqUser?.mention || !followResUser?.mention) return;
+            const r = await getFollowStatus(followReqUser.mention, followResUser.mention);
+            if (!r.ok || r.data === undefined) throw new Error("에러: " + r);
+            setIsFollowing(r.data.isFollowing || false);
+        };
+
+        init();
+    }, [followReqUser?.mention, followResUser?.mention]);
+
+    return {
+        isFollowing,
+        messageData,
+        loading,
+        upgradeToggleFollowHook
+    };
+};

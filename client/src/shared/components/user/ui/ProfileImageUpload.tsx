@@ -1,0 +1,95 @@
+import { useState } from "react";
+
+interface ProfileImageUploadProps {
+    previewUrl: string;
+    onImageSelect: (file: File, preview: string) => void;
+    onNext: () => void;
+}
+
+const MAX_FILE_SIZE = 1024 * 1024 * 3; // 3MB
+
+export default function ProfileImageUpload({ 
+    previewUrl, 
+    onImageSelect, 
+    onNext 
+}: ProfileImageUploadProps) {
+    const [isDragging, setIsDragging] = useState<boolean>(false);
+
+    const processFile = (file: File | null) => {
+        if (!file) return;
+
+        if (file.size > MAX_FILE_SIZE) {
+            alert('프로필 이미지 최대 용량은 3MB입니다.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const result = e.target?.result;
+            if (typeof result === 'string') {
+                onImageSelect(file, result);
+            }
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const file = e.target.files?.[0] || null;
+        processFile(file);
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
+        e.preventDefault();
+        setIsDragging(false);
+        const file = e.dataTransfer.files?.[0] || null;
+        processFile(file);
+    };
+
+    return (
+        <div className="space-y-4">
+            <label className="block text-sm mb-2">프로필 이미지</label>
+            <div 
+                onDragOver={handleDragOver} 
+                onDragLeave={handleDragLeave} 
+                onDrop={handleDrop}
+                className={`relative bg-gray-200 rounded px-3 py-6 flex flex-col items-center justify-center transition-all ${
+                    isDragging ? 'ring-2 bg-gray-300' : ''
+                }`}
+            >
+                <input 
+                    type="file" 
+                    onChange={handleFileChange} 
+                    accept="image/*" 
+                    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                />
+                {previewUrl ? (
+                    <img 
+                        src={previewUrl} 
+                        alt="preview-img" 
+                        className="w-28 h-28 object-cover rounded-full" 
+                    />
+                ) : (
+                    <p className="text-sm text-gray-400 text-center">
+                        이미지를 업로드하려면 <br /> 
+                        클릭하거나 <span className="text-black font-semibold">드래그</span> 하세요
+                    </p>
+                )}
+            </div>
+            <button 
+                onClick={onNext} 
+                className="w-full py-3 mt-4 rounded-xl font-semibold bg-gray-200 hover:bg-gray-300 transition-all"
+            >
+                다음
+            </button>
+        </div>
+    );
+}
