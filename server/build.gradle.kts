@@ -62,6 +62,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
     implementation("org.apache.commons:commons-lang3:3.14.0")
+
+    implementation("io.netty:netty-all:4.1.119.Final")
 }
 
 tasks.withType<Test> {
