@@ -16,6 +16,7 @@ import OAuthCallbackPage from       '../../pages/user/OAuthCallbackPage';
 import NotFoundWhat from            '../../pages/what/NotFoundWhat';
 import ProfilePostDetailPage from   '../../pages/profile/ProfilePostDetailPage';
 import EditPage from                '../../pages/video/EditPage';
+import AdminReportsPage from        '../../pages/admin/AdminReportsPage';
 
 export const routes: RouteObject[] = [
     { path: ROUTE.HOMEPAGE,                     element: <HomePage              /> },
@@ -32,5 +33,6 @@ export const routes: RouteObject[] = [
     { path: PATTERN_ROUTE.PROFILE,              element: <ProfilePage           /> },
     { path: PATTERN_ROUTE.PROFILE_POST_DETAIL,  element: <ProfilePostDetailPage /> },
     { path: ROUTE.OAUTH_CALLBACK,               element: <OAuthCallbackPage     /> },
+    { path: ROUTE.ADMIN_REPORTS,                element: <AdminReportsPage      /> },
     { path: PATTERN_ROUTE.WILD_CARD,            element: <NotFoundWhat          /> }
 ];

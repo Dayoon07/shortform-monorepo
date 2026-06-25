@@ -100,7 +100,13 @@ export const ROUTE = {
      * 소셜 로그인 시 다시 돌아오는 경로
      * @example "/oauth/callback"
      */
-    OAUTH_CALLBACK: "/oauth/callback"
+    OAUTH_CALLBACK: "/oauth/callback",
+
+    /**
+     * 관리자 신고 처리 페이지 경로
+     * @example "/admin/reports"
+     */
+    ADMIN_REPORTS: "/admin/reports"
 };
 
 export const PATTERN_ROUTE = {

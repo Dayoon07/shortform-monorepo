@@ -79,4 +79,23 @@ public class RestCommentController {
         return ResponseEntity.ok(commentService.selectByCommentButOrderByIsDesc(id));
     }
 
+    @RequireAuth
+    @PostMapping("/update")
+    public ResponseEntity<?> updateComment(
+            @RequestParam Long commentId,
+            @RequestParam String comment,
+            @AuthenticationPrincipal UserEntity user) {
+        commentService.updateComment(commentId, comment, user);
+        return ResponseEntity.ok(true);
+    }
+
+    @RequireAuth
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteComment(
+            @RequestParam Long commentId,
+            @AuthenticationPrincipal UserEntity user) {
+        commentService.deleteComment(commentId, user);
+        return ResponseEntity.ok(true);
+    }
+
 }

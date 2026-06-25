@@ -33,6 +33,22 @@ export const commentLikeToggle = async (commentId: number): Promise<ApiResponse<
 export const insertCommentReply = async (req: CommentReplyCreateReq): Promise<ApiResponse<any>> => 
     await apiClient.post<any>(API_LIST.COMMENT.REPLY.INSERT, true, req);
 
-export const replyCommentReq = async (commentId: number): Promise<ApiResponse<Comment[]>> => 
+export const replyCommentReq = async (commentId: number): Promise<ApiResponse<Comment[]>> =>
     await apiClient.get<Comment[]>(API_LIST.COMMENT.REPLY.LIST(commentId), false);
+
+// 영상 댓글 수정 (작성자 본인)
+export const updateComment = async (commentId: number, comment: string): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.COMMENT.UPDATE(commentId, encodeURIComponent(comment)), true);
+
+// 영상 댓글 소프트 삭제 (작성자 본인)
+export const deleteComment = async (commentId: number): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.COMMENT.DELETE(commentId), true);
+
+// 영상 답글 수정 (작성자 본인)
+export const updateCommentReply = async (replyId: number, replyText: string): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.COMMENT.REPLY.UPDATE(replyId, encodeURIComponent(replyText)), true);
+
+// 영상 답글 소프트 삭제 (작성자 본인)
+export const deleteCommentReply = async (replyId: number): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.COMMENT.REPLY.DELETE(replyId), true);
 

@@ -73,4 +73,23 @@ public class RestCommentReplyController {
         return ResponseEntity.ok(commentReplyService.selectCommentReply(commentId));
     }
 
+    @RequireAuth
+    @PostMapping("/update")
+    public ResponseEntity<?> updateReply(
+            @RequestParam Long replyId,
+            @RequestParam String replyText,
+            @AuthenticationPrincipal UserEntity user) {
+        commentReplyService.updateReply(replyId, replyText, user);
+        return ResponseEntity.ok(true);
+    }
+
+    @RequireAuth
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteReply(
+            @RequestParam Long replyId,
+            @AuthenticationPrincipal UserEntity user) {
+        commentReplyService.deleteReply(replyId, user);
+        return ResponseEntity.ok(true);
+    }
+
 }

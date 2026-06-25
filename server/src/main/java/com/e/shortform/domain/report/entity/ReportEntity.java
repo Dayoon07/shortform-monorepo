@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class ReportEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false, unique = true)
     private Long id;
 
@@ -55,7 +56,7 @@ public class ReportEntity {
     private String reviewComment;
 
     @Column(name = "REVIEWED_AT")
-    private String reviewedAt;
+    private LocalDateTime reviewedAt;
 
     @CreationTimestamp
     @Column(name = "CREATED_AT", nullable = false)

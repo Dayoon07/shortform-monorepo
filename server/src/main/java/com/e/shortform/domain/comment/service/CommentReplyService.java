@@ -1,5 +1,7 @@
 package com.e.shortform.domain.comment.service;
 
+import com.e.shortform.common.exception.ApiException;
+import com.e.shortform.common.exception.ExceptionCode;
 import com.e.shortform.domain.comment.entity.CommentEntity;
 import com.e.shortform.domain.comment.entity.CommentReplyEntity;
 import com.e.shortform.domain.comment.mapper.CommentReplyMapper;
@@ -12,7 +14,9 @@ import com.e.shortform.domain.user.repository.UserRepo;
 import com.e.shortform.domain.user.req.AuthUserReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -54,5 +58,31 @@ public class CommentReplyService {
         return commentReplyMapper.selectCommentReply(id);
     }
 
+    /** 답글 수정 (작성자 본인만) */
+    @Transactional
+    public void updateReply(Long replyId, String text, UserEntity requester) {
+        CommentReplyEntity reply = commentReplyRepo.findById(replyId)
+                .orElseThrow(() -> new ApiException(ExceptionCode.COMMENT_NOT_FOUND, HttpStatus.NOT_FOUND));
+        checkOwner(reply, requester);
+        reply.setCommentReplyText(text);
+        commentReplyRepo.save(reply);
+    }
+
+    /** 답글 소프트 삭제 (작성자 본인만) */
+    @Transactional
+    public void deleteReply(Long replyId, UserEntity requester) {
+        CommentReplyEntity reply = commentReplyRepo.findById(replyId)
+                .orElseThrow(() -> new ApiException(ExceptionCode.COMMENT_NOT_FOUND, HttpStatus.NOT_FOUND));
+        checkOwner(reply, requester);
+        reply.setDeleteStatus(true);
+        commentReplyRepo.save(reply);
+    }
+
+    private void checkOwner(CommentReplyEntity reply, UserEntity requester) {
+        if (requester == null || reply.getUser() == null
+                || !reply.getUser().getId().equals(requester.getId())) {
+            throw new ApiException(ExceptionCode.FORBIDDEN, HttpStatus.FORBIDDEN);
+        }
+    }
 
 }

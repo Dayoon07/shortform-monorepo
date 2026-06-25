@@ -9,12 +9,16 @@ export const API_LIST = {
         INSERT: `/api/comment/insert`,
         POPULAR_LIST: (i: number) => `/api/comment/popular?id=${i}`,
         RECENT_LIST: (i: number) => `/api/comment/recent?id=${i}`,
+        UPDATE: (commentId: number, comment: string) => `/api/comment/update?commentId=${commentId}&comment=${comment}`,
+        DELETE: (commentId: number) => `/api/comment/delete?commentId=${commentId}`,
         LIKE: {
             TOGGLE: (cid: number) => `/api/comment/like?commentId=${cid}`
         },
         REPLY: {
             INSERT: `/api/comment/reply/insert`,
             LIST: (commentId: number) => `/api/comment/reply/find/content?commentId=${commentId}`,
+            UPDATE: (replyId: number, replyText: string) => `/api/comment/reply/update?replyId=${replyId}&replyText=${replyText}`,
+            DELETE: (replyId: number) => `/api/comment/reply/delete?replyId=${replyId}`,
         }
     },
     POST: {
@@ -52,6 +56,13 @@ export const API_LIST = {
     REPORT: {
         ALL: "/api/report/all",
         REPORT_REGISTER: "/api/report/register"
+    },
+    ADMIN: {
+        REPORT: {
+            CHECK: "/api/admin/reports/check",
+            LIST: (status?: string) => `/api/admin/reports${status ? `?status=${status}` : ""}`,
+            PROCESS: "/api/admin/reports/process",
+        }
     },
     SEARCH: {
         SEARCH: "/api/search",

@@ -3,7 +3,7 @@
 <mapper namespace="com.e.shortform.domain.report.mapper.ReportMapper">
 
     <resultMap id="ReportResultMap" type="com.e.shortform.domain.report.vo.ReportVo">
-        <id column="ID" property="" />
+        <id column="ID" property="id" />
         <result column="TARGET_TYPE" property="targetType" />
         <result column="TARGET_ID" property="targetId" />
         <result column="REPORTER_USER_ID" property="reporterUserId" />
@@ -19,6 +19,35 @@
 
     <select id="getReportAll" resultMap="ReportResultMap">
         SELECT * FROM SHORTFORM_REPORTS
+    </select>
+
+    <!-- 관리자: 신고자/피신고자 이름 포함, status 필터 -->
+    <select id="selectReportsForAdmin" resultType="com.e.shortform.domain.report.res.ReportAdminDto">
+        SELECT
+            R.ID              AS id,
+            R.TARGET_TYPE     AS targetType,
+            R.TARGET_ID       AS targetId,
+            R.REPORTER_USER_ID AS reporterUserId,
+            RU.USERNAME       AS reporterUsername,
+            R.REPORTED_USER_ID AS reportedUserId,
+            DU.USERNAME       AS reportedUsername,
+            R.REPORT_TYPE     AS reportType,
+            R.REPORT_REASON   AS reportReason,
+            R.STATUS          AS status,
+            R.ACTION_TAKEN    AS actionTaken,
+            R.REVIEW_COMMENT  AS reviewComment,
+            R.REVIEWED_AT     AS reviewedAt,
+            R.CREATED_AT      AS createdAt,
+            R.UPDATED_AT      AS updatedAt
+        FROM SHORTFORM_REPORTS R
+        LEFT JOIN SHORTFORM_USERS RU ON R.REPORTER_USER_ID = RU.ID
+        LEFT JOIN SHORTFORM_USERS DU ON R.REPORTED_USER_ID = DU.ID
+        <where>
+            <if test="status != null and status != ''">
+                R.STATUS = #{status}
+            </if>
+        </where>
+        ORDER BY R.CREATED_AT DESC
     </select>
 
 </mapper>

@@ -1,5 +1,7 @@
 package com.e.shortform.domain.comment.service;
 
+import com.e.shortform.common.exception.ApiException;
+import com.e.shortform.common.exception.ExceptionCode;
 import com.e.shortform.domain.comment.entity.CommentEntity;
 import com.e.shortform.domain.comment.mapper.CommentMapper;
 import com.e.shortform.domain.comment.repository.CommentRepo;
@@ -10,7 +12,9 @@ import com.e.shortform.domain.video.entity.VideoEntity;
 import com.e.shortform.domain.video.repository.VideoRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +69,33 @@ public class CommentService {
 
     public long countByVideo(VideoEntity video) {
         return commentRepo.countByVideo(video);
+    }
+
+    /** 댓글 수정 (작성자 본인만) */
+    @Transactional
+    public void updateComment(Long commentId, String text, UserEntity requester) {
+        CommentEntity comment = commentRepo.findById(commentId)
+                .orElseThrow(() -> new ApiException(ExceptionCode.COMMENT_NOT_FOUND, HttpStatus.NOT_FOUND));
+        checkOwner(comment, requester);
+        comment.setCommentText(text);
+        commentRepo.save(comment);
+    }
+
+    /** 댓글 소프트 삭제 (작성자 본인만) */
+    @Transactional
+    public void deleteComment(Long commentId, UserEntity requester) {
+        CommentEntity comment = commentRepo.findById(commentId)
+                .orElseThrow(() -> new ApiException(ExceptionCode.COMMENT_NOT_FOUND, HttpStatus.NOT_FOUND));
+        checkOwner(comment, requester);
+        comment.setDeleteStatus(true);
+        commentRepo.save(comment);
+    }
+
+    private void checkOwner(CommentEntity comment, UserEntity requester) {
+        if (requester == null || comment.getUser() == null
+                || !comment.getUser().getId().equals(requester.getId())) {
+            throw new ApiException(ExceptionCode.FORBIDDEN, HttpStatus.FORBIDDEN);
+        }
     }
 
 }
