@@ -34,8 +34,6 @@ public class FollowService {
             return result;
         }
 
-        System.out.println(user);
-
         UserEntity targetUser = userRepo.findByMention(mention);
         if (targetUser == null) {
             result.put("success", false);

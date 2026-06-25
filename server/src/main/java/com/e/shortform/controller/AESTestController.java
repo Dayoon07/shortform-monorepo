@@ -3,6 +3,7 @@ package com.e.shortform.controller;
 import com.e.shortform.util.AES256Util;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,12 +13,17 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
 public class AESTestController {
 
-    AES256Util aes256Util;
+    private final AES256Util aes256Util;
+
+    public AESTestController(AES256Util aes256Util) {
+        this.aes256Util = aes256Util;
+    }
 
     @PostMapping("/api/v1/aes/enc")
     public String enc(HttpServletRequest request) throws NoSuchPaddingException, InvalidAlgorithmParameterException, IOException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {

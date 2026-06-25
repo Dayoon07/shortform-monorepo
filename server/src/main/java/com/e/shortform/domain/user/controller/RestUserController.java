@@ -68,14 +68,10 @@ public class RestUserController {
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal OAuth2User p) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated())
+        if (authentication == null || !authentication.isAuthenticated()
+                || !(authentication.getPrincipal() instanceof UserEntity user))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-
-        System.out.println("authentication: " + authentication);
-        System.out.println("user: " + user);
-        System.out.println("p: " + p);
         return ResponseEntity.ok(user);
     }
 

@@ -4,11 +4,15 @@ import com.e.shortform.domain.user.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +27,14 @@ public class JwtUtil {
 
     @Value("${jwt.expiration:86400000}") // 24시간 (밀리초)
     private Long expiration;
+
+    /** 서명 키 (HS512). 시크릿은 최소 64바이트여야 한다. */
+    private Key signingKey;
+
+    @PostConstruct
+    void initSigningKey() {
+        this.signingKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
 
     /** JWT 토큰 생성 */
     public String generateToken(UserEntity user) {
@@ -46,7 +58,7 @@ public class JwtUtil {
     /** 토큰에서 사용자 ID 추출 */
     public Long getUserIdFromToken(String token) {
         Claims claims = getAllClaimsFromToken(token);
-        return claims.get("userId", Long.class);
+        return claims.get("id", Long.class);
     }
 
     /** 토큰에서 이메일 추출 */
@@ -74,8 +86,9 @@ public class JwtUtil {
     /** 토큰에서 모든 클레임 추출 */
     private Claims getAllClaimsFromToken(String token) {
         try {
-            return Jwts.parser()
-                    .setSigningKey(secretKey)
+            return Jwts.parserBuilder()
+                    .setSigningKey(signingKey)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
@@ -102,7 +115,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .signWith(signingKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -136,7 +149,7 @@ public class JwtUtil {
 
             return Jwts.builder()
                     .setClaims(claims)
-                    .signWith(SignatureAlgorithm.HS256, secretKey)
+                    .signWith(signingKey, SignatureAlgorithm.HS512)
                     .compact();
         } catch (Exception e) {
             log.error("토큰 갱신 실패: {}", e.getMessage());

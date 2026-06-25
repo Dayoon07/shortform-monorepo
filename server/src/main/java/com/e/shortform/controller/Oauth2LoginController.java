@@ -16,7 +16,6 @@ public class Oauth2LoginController {
             model.addAttribute("email", principal.getAttribute("email"));
             model.addAttribute("picture", principal.getAttribute("picture"));
             model.addAttribute("roleUser", principal);
-            System.out.println(principal);
         }
         return "dashboard/dashboard";
     }

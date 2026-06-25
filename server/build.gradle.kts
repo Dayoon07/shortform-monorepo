@@ -71,6 +71,10 @@ dependencies {
     // 유틸리티 (IOUtils 사용을 위해 필요)
     implementation("commons-io:commons-io:2.16.1")
     implementation("commons-codec:commons-codec")
+
+    // 모니터링 (actuator + Prometheus 지표: HikariCP 풀 대기열 등)
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 }
 
 tasks.withType<Test> {

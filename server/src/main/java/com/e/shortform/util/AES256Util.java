@@ -1,13 +1,12 @@
 package com.e.shortform.util;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -50,7 +49,7 @@ public class AES256Util {
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes("UTF-8")));
 
-        byte[] byteStr = Base64.decodeBase64(Arrays.toString(str.getBytes()));
+        byte[] byteStr = Base64.decodeBase64(str);
 
         return new String(c.doFinal(byteStr),"UTF-8");
     }

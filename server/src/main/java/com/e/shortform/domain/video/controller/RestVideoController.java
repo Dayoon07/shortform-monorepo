@@ -56,7 +56,6 @@ public class RestVideoController {
     @PostMapping("/views/random/update")
     public void videoViewsRandomUpdate() {
         videoService.videoViewsRandomUpdate();
-        System.out.println("변경 완료");
     }
 
     /** 페이징된 비디오 목록 조회 (신규) */

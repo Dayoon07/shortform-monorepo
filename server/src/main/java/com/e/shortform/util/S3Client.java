@@ -6,7 +6,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
-import com.chequer.axboot.core.api.ApiException;
+import com.e.shortform.common.exception.ApiException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;

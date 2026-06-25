@@ -4,27 +4,25 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class ApiException {
+public class ApiException extends RuntimeException {
 
     private final ExceptionCode exceptionCode;
     private final HttpStatus status;
-    private final String message;
 
     public ApiException(ExceptionCode exceptionCode) {
-        super();
-        this.exceptionCode = exceptionCode;
-        this.status = HttpStatus.INTERNAL_SERVER_ERROR;
+        this(exceptionCode, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ApiException(ExceptionCode exceptionCode, HttpStatus status) {
-        super();
+        super(exceptionCode.getMessage());
         this.exceptionCode = exceptionCode;
         this.status = status;
     }
 
     public ApiException(String errorMessage) {
-        super();
-        this.message = errorMessage;
+        super(errorMessage);
+        this.exceptionCode = ExceptionCode.UNKNOWN_EXCEPTION;
+        this.status = HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
 }

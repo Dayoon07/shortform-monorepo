@@ -3,6 +3,7 @@ package com.e.shortform.config.oauth;
 import com.e.shortform.config.JwtUtil;
 import com.e.shortform.domain.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,9 @@ import java.io.IOException;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtUtil jwtUtil;
+
+    @Value("${app.oauth2.success-redirect}")
+    private String successRedirect;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req,
@@ -34,9 +38,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         cookie.setMaxAge(24 * 60 * 60); // 24시간
         res.addCookie(cookie);
 
-        // 프론트엔드로 리다이렉트 (토큰은 쿠키에 있음)
-        String redirectUrl = "http://localhost:3000/shortform-client/oauth/callback";
-        getRedirectStrategy().sendRedirect(req, res, redirectUrl);
+        // 프론트엔드로 리다이렉트 (토큰은 쿠키에 있음). 환경별 URL은 app.oauth2.success-redirect로 주입.
+        getRedirectStrategy().sendRedirect(req, res, successRedirect);
     }
 
 }

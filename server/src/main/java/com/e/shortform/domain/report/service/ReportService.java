@@ -25,10 +25,6 @@ public class ReportService {
     private final ReportRepo reportRepo;
     private final ReportMapper reportMapper;
 
-    public void a() {
-        System.out.println(TargetType.COMMENT_REPLY);
-    }
-
     public List<ReportVo> getReportAll() {
         return reportMapper.getReportAll();
     }

@@ -78,7 +78,6 @@ public class UserService {
 
             File destFile = new File(dir, fileName);
             file.transferTo(destFile);
-            System.out.println(destFile.getAbsolutePath());
 
             UserEntity userEntity = UserEntity.builder()
                     .username(username)
@@ -143,8 +142,6 @@ public class UserService {
                     "isSocial", user.isSocial(),
                     "provider", user.getProvider()
             ));
-
-            System.out.println(getClass().getName() + " - " + response);
 
             if ("mobile".equals(clientType)) {
                 // 모바일/네이티브 앱: JWT 토큰 발행
