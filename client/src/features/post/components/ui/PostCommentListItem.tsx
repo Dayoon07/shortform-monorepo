@@ -6,6 +6,8 @@ import { LikePageIcon } from "../../../../shared/utils/icon/icon";
 import React, { useState } from "react";
 import { useUser } from "../../../../shared/context/UserContext";
 import { PostComment } from "@/entities/post/ui/PostComment";
+import { updatePostComment, deletePostComment, updatePostCommentReply, deletePostCommentReply } from "../../api/postService";
+import { showSuccessToast, showErrorToast } from "../../../../shared/utils/toast";
 
 interface PostCommentItemProps {
     comment: PostComment;
@@ -20,7 +22,110 @@ interface PostCommentItemProps {
     replies: PostComment[];
 }
 
-export const PostCommentItem: React.FC<PostCommentItemProps> = ({ 
+const PostReplyItem: React.FC<{ reply: PostComment }> = ({ reply }) => {
+    const { user } = useUser();
+    const isOwner = user != null && user.id === reply.commentUserId;
+    const [displayText, setDisplayText] = useState<string>(reply.commentText);
+    const [isDeleted, setIsDeleted] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [editText, setEditText] = useState<string>(reply.commentText);
+    const [isMutating, setIsMutating] = useState<boolean>(false);
+
+    const handleUpdate = async () => {
+        const text = editText.trim();
+        if (!text) return;
+        setIsMutating(true);
+        try {
+            const res = await updatePostCommentReply(reply.id, text);
+            if (!res.ok) throw new Error(res.error || "답글 수정 실패");
+            setDisplayText(text);
+            setIsEditing(false);
+            showSuccessToast("답글이 수정되었습니다");
+        } catch (e) {
+            showErrorToast("답글 수정 실패");
+        } finally {
+            setIsMutating(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!window.confirm("답글을 삭제하시겠습니까?")) return;
+        setIsMutating(true);
+        try {
+            const res = await deletePostCommentReply(reply.id);
+            if (!res.ok) throw new Error(res.error || "답글 삭제 실패");
+            setIsDeleted(true);
+            showSuccessToast("답글이 삭제되었습니다");
+        } catch (e) {
+            showErrorToast("답글 삭제 실패");
+        } finally {
+            setIsMutating(false);
+        }
+    };
+
+    if (isDeleted) return null;
+
+    return (
+        <div className="flex mt-3">
+            <Image
+                url={reply.profileImgSrc}
+                alt={`${reply.username}님의 프로필`}
+                social={reply.social}
+                provider={reply.provider}
+                className="w-8 h-8 rounded-full object-cover mt-1"
+            />
+            <div className="ml-3 flex-1">
+                <div className="flex items-center space-x-2 mb-1">
+                    <Link to={ROUTE.PROFILE(reply.mention)} className="font-bold text-[13px]">
+                        {reply.username}
+                    </Link>
+                    <span className="text-[11px] text-gray-500">{defaultFormatDate(reply.createAt)}</span>
+                </div>
+                {isEditing ? (
+                    <div>
+                        <textarea
+                            value={editText}
+                            onChange={(e) => setEditText(e.target.value)}
+                            disabled={isMutating}
+                            rows={2}
+                            className="w-full text-sm border border-gray-300 focus:border-black outline-none rounded-lg p-2 resize-none"
+                            autoFocus
+                        />
+                        <div className="flex justify-end gap-2 mt-1">
+                            <button type="button" className="px-3 py-1 text-sm font-bold hover:bg-gray-200 rounded-full"
+                                onClick={() => { setIsEditing(false); setEditText(displayText); }} disabled={isMutating}>
+                                취소
+                            </button>
+                            <button type="button" onClick={handleUpdate} disabled={!editText.trim() || isMutating}
+                                className={`px-3 py-1 text-sm font-bold rounded-full ${editText.trim() && !isMutating
+                                    ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-400"}`}>
+                                {isMutating ? "저장 중..." : "저장"}
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="text-[13px] leading-relaxed">{displayText}</div>
+                )}
+                {isOwner && !isEditing && (
+                    <div className="flex items-center space-x-2 mt-1">
+                        <button type="button" disabled={isMutating}
+                            className="text-[11px] text-gray-600 font-bold hover:bg-gray-100 px-2 py-1 rounded-full"
+                            onClick={() => { setIsEditing(true); setEditText(displayText); }}>
+                            수정
+                        </button>
+                        <button type="button" disabled={isMutating}
+                            className="text-[11px] text-red-500 font-bold hover:bg-red-50 px-2 py-1 rounded-full"
+                            onClick={handleDelete}>
+                            삭제
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export const PostCommentItem: React.FC<PostCommentItemProps> = ({
     comment, 
     onProfileClick, 
     onLike, 
@@ -29,12 +134,54 @@ export const PostCommentItem: React.FC<PostCommentItemProps> = ({
     isReplyOpen, 
     onReplyClick, 
     onReplyClose,
-    onReplyCommentReq
+    onReplyCommentReq,
+    replies
 }) => {
     const [replyText, setReplyText] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { user } = useUser();
     const btnCn = "flex items-center gap-1 hover:bg-gray-100 p-1.5 rounded-full duration-200";
+
+    const isOwner = user != null && user.id === comment.commentUserId;
+    const [displayText, setDisplayText] = useState<string>(comment.commentText);
+    const [isDeleted, setIsDeleted] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [editText, setEditText] = useState<string>(comment.commentText);
+    const [isMutating, setIsMutating] = useState<boolean>(false);
+
+    const handleUpdate = async () => {
+        const text = editText.trim();
+        if (!text) return;
+        setIsMutating(true);
+        try {
+            const res = await updatePostComment(comment.id, text);
+            if (!res.ok) throw new Error(res.error || "댓글 수정 실패");
+            setDisplayText(text);
+            setIsEditing(false);
+            showSuccessToast("댓글이 수정되었습니다");
+        } catch (e) {
+            showErrorToast("댓글 수정 실패");
+        } finally {
+            setIsMutating(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!window.confirm("댓글을 삭제하시겠습니까?")) return;
+        setIsMutating(true);
+        try {
+            const res = await deletePostComment(comment.id);
+            if (!res.ok) throw new Error(res.error || "댓글 삭제 실패");
+            setIsDeleted(true);
+            showSuccessToast("댓글이 삭제되었습니다");
+        } catch (e) {
+            showErrorToast("댓글 삭제 실패");
+        } finally {
+            setIsMutating(false);
+        }
+    };
+
+    if (isDeleted) return null;
 
     const handleReplySubmit = async () => {
         if (!replyText.trim()) return;
@@ -71,10 +218,34 @@ export const PostCommentItem: React.FC<PostCommentItemProps> = ({
                             {defaultFormatDate(comment.createAt)}
                         </span>
                     </div>
-                    <div className="text-[14px] leading-relaxed mb-2">
-                        {comment.commentText}
-                    </div>
-                    
+                    {isEditing ? (
+                        <div className="mb-2">
+                            <textarea
+                                value={editText}
+                                onChange={(e) => setEditText(e.target.value)}
+                                disabled={isMutating}
+                                className="w-full text-sm border border-gray-300 focus:border-black outline-none rounded-lg p-2 resize-none"
+                                rows={2}
+                                autoFocus
+                            />
+                            <div className="flex justify-end gap-2 mt-1">
+                                <button type="button" className="px-3 py-1 text-sm font-bold hover:bg-gray-200 rounded-full"
+                                    onClick={() => { setIsEditing(false); setEditText(displayText); }} disabled={isMutating}>
+                                    취소
+                                </button>
+                                <button type="button" onClick={handleUpdate} disabled={!editText.trim() || isMutating}
+                                    className={`px-3 py-1 text-sm font-bold rounded-full ${editText.trim() && !isMutating
+                                        ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-400"}`}>
+                                    {isMutating ? "저장 중..." : "저장"}
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-[14px] leading-relaxed mb-2">
+                            {displayText}
+                        </div>
+                    )}
+
                     <div className="flex items-center space-x-3">
                         <button type="button" className={btnCn} onClick={() => onLike(comment.id)}>
                             <LikePageIcon className={likeYn ? "fill-red-500 stroke-red-500" : "stroke-gray-600"} />
@@ -93,6 +264,20 @@ export const PostCommentItem: React.FC<PostCommentItemProps> = ({
                             <button type="button" className={btnCn} onClick={onReplyCommentReq}>
                                 <span className="text-xs font-medium">답글 {comment.replyCount}개</span>
                             </button>
+                        )}
+                        {isOwner && !isEditing && (
+                            <>
+                                <button type="button" disabled={isMutating}
+                                    className="text-[12px] text-gray-600 font-bold hover:bg-gray-100 px-3 py-1.5 rounded-full"
+                                    onClick={() => { setIsEditing(true); setEditText(displayText); }}>
+                                    수정
+                                </button>
+                                <button type="button" disabled={isMutating}
+                                    className="text-[12px] text-red-500 font-bold hover:bg-red-50 px-3 py-1.5 rounded-full"
+                                    onClick={handleDelete}>
+                                    삭제
+                                </button>
+                            </>
                         )}
                     </div>
 
@@ -145,6 +330,14 @@ export const PostCommentItem: React.FC<PostCommentItemProps> = ({
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    )}
+
+                    {replies && replies.length > 0 && (
+                        <div className="mt-2 ml-2 pl-3 border-l-2 border-gray-100">
+                            {replies.map((r) => (
+                                <PostReplyItem key={r.id} reply={r} />
+                            ))}
                         </div>
                     )}
                 </div>

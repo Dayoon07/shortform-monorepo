@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +52,30 @@ public class RestCommunityCommentReplyController {
             @RequestParam Long commentId,
             @AuthenticationPrincipal UserEntity user) {
         communityCommentReplyService.insertCommentReply(commentId, replyText, user);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> getReplies(@RequestParam Long commentId) {
+        return ResponseEntity.ok(communityCommentReplyService.findByCommentId(commentId));
+    }
+
+    @RequireAuth
+    @PostMapping("/update")
+    public ResponseEntity<?> updateReply(
+            @RequestParam Long replyId,
+            @RequestParam String replyText,
+            @AuthenticationPrincipal UserEntity user) {
+        communityCommentReplyService.updateReply(replyId, replyText, user);
+        return ResponseEntity.ok(true);
+    }
+
+    @RequireAuth
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteReply(
+            @RequestParam Long replyId,
+            @AuthenticationPrincipal UserEntity user) {
+        communityCommentReplyService.deleteReply(replyId, user);
         return ResponseEntity.ok(true);
     }
 

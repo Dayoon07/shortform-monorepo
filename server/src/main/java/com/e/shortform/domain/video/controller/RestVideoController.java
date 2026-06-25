@@ -315,9 +315,10 @@ public class RestVideoController {
         return ResponseEntity.ok(videoService.selectExploreVideoListButTag(videoTag));
     }
 
+    @RequireAuth
     @PostMapping("/delete")
-    public ResponseEntity<Boolean> deleteVideo(@RequestParam Long vid) {
-        return ResponseEntity.ok(videoService.changeDeleteStatus(vid));
+    public ResponseEntity<Boolean> deleteVideo(@RequestParam Long vid, @AuthenticationPrincipal UserEntity user) {
+        return ResponseEntity.ok(videoService.changeDeleteStatus(vid, user));
     }
 
 

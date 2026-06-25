@@ -1,5 +1,7 @@
 package com.e.shortform.domain.community.service;
 
+import com.e.shortform.common.exception.ApiException;
+import com.e.shortform.common.exception.ExceptionCode;
 import com.e.shortform.domain.community.res.CommunityDetailDto;
 import com.e.shortform.domain.community.res.CommunityWithUserProfileDto;
 import com.e.shortform.domain.community.entity.CommunityAdditionEntity;
@@ -392,9 +394,13 @@ public class CommunityService {
         return communityMapper.findByCommunityBoardF(communityUuid);
     }
 
-    public boolean changeDeleteStatus(Long communityId)  {
-        communityRepo.findById(communityId)
+    public boolean changeDeleteStatus(Long communityId, UserEntity requester)  {
+        CommunityEntity community = communityRepo.findById(communityId)
                 .orElseThrow(() -> new RuntimeException("찾을 수 없거나 존재하지 않는 글입니다"));
+        // 작성자 본인만 삭제 가능
+        if (requester == null || !community.getUser().getId().equals(requester.getId())) {
+            throw new ApiException(ExceptionCode.FORBIDDEN, HttpStatus.FORBIDDEN);
+        }
         return communityMapper.changeDeleteStatus(communityId);
     }
 

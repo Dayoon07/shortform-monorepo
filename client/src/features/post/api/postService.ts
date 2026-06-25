@@ -27,12 +27,34 @@ export const togglePostLike = async (communityUuid: string): Promise<ApiResponse
 export const deletePost = async (commentUuid: string): Promise<ApiResponse<any>> => 
     await apiClient.post<any>(API_LIST.POST.DELETE(commentUuid), true);
 
-export const insertPostComment = async (communityId: number, comment: string): Promise<ApiResponse<any>> => 
+export const insertPostComment = async (communityId: number, comment: string): Promise<ApiResponse<any>> =>
     await apiClient.post<any>(API_LIST.POST.COMMENT.INSERT(communityId, comment), true);
 
-export const insertPostCommentReply = async (commentId: number): Promise<ApiResponse<any>> => 
+export const updatePostComment = async (commentId: number, comment: string): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.POST.COMMENT.UPDATE(commentId, encodeURIComponent(comment)), true);
+
+export const deletePostComment = async (commentId: number): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.POST.COMMENT.DELETE(commentId), true);
+
+export const insertPostCommentReply = async (commentId: number): Promise<ApiResponse<any>> =>
     await apiClient.post<any>(API_LIST.POST.COMMENT.REPLY.INSERT, true, {
         "commentId": commentId});
+
+// 답글 작성 (텍스트 포함, 백엔드 @RequestParam 형식에 맞춤)
+export const submitPostCommentReply = async (commentId: number, replyText: string): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.POST.COMMENT.REPLY.SUBMIT(commentId, encodeURIComponent(replyText)), true);
+
+// 특정 댓글의 답글 목록
+export const getPostCommentReplies = async (commentId: number): Promise<ApiResponse<PostComment[]>> =>
+    await apiClient.get<PostComment[]>(API_LIST.POST.COMMENT.REPLY.LIST(commentId), false);
+
+// 답글 수정 (작성자 본인)
+export const updatePostCommentReply = async (replyId: number, replyText: string): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.POST.COMMENT.REPLY.UPDATE(replyId, encodeURIComponent(replyText)), true);
+
+// 답글 소프트 삭제 (작성자 본인)
+export const deletePostCommentReply = async (replyId: number): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.POST.COMMENT.REPLY.DELETE(replyId), true);
 
 export const togglePostCommentLike = async (postCommentId: number): Promise<ApiResponse<any>> => 
     await apiClient.post<any>(API_LIST.POST.COMMENT.LIKE.TOGGLE, true, {

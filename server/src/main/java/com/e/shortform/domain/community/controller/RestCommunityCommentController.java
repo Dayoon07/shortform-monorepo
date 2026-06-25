@@ -61,4 +61,23 @@ public class RestCommunityCommentController {
         return ResponseEntity.ok(communityCommentService.findByCommunityIdOrderByDesc(communityUuid));
     }
 
+    @RequireAuth
+    @PostMapping("/update")
+    public ResponseEntity<?> updateComment(
+            @RequestParam Long commentId,
+            @RequestParam String comment,
+            @AuthenticationPrincipal UserEntity user) {
+        communityCommentService.updateComment(commentId, comment, user);
+        return ResponseEntity.ok(true);
+    }
+
+    @RequireAuth
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteComment(
+            @RequestParam Long commentId,
+            @AuthenticationPrincipal UserEntity user) {
+        communityCommentService.deleteComment(commentId, user);
+        return ResponseEntity.ok(true);
+    }
+
 }

@@ -11,4 +11,39 @@
         <result property="deleteStatus" column="DELETE_STATUS" />
     </resultMap>
 
+    <resultMap id="communityCommentReplyWithUserResultMap" type="com.e.shortform.domain.community.res.CommunityCommentReplyWithUserDto">
+        <id property="id" column="ID"/>
+        <result property="commentText" column="REPLY_TEXT"/>
+        <result property="commentUserId" column="REPLY_USER_ID"/>
+        <result property="commentId" column="COMMENT_ID"/>
+        <result property="createAt" column="CREATE_AT"/>
+        <result property="username" column="USERNAME"/>
+        <result property="profileImgSrc" column="PROFILE_IMG_SRC"/>
+        <result property="mention" column="MENTION"/>
+        <result property="social" column="IS_SOCIAL"/>
+        <result property="provider" column="PROVIDER"/>
+        <result property="likeCount" column="LIKE_COUNT"/>
+    </resultMap>
+
+    <!-- 특정 댓글의 답글 목록 (작성자 + 좋아요 수, 삭제 제외) -->
+    <select id="selectByCommentId" parameterType="Long" resultMap="communityCommentReplyWithUserResultMap">
+        SELECT
+            R.ID,
+            R.REPLY_TEXT,
+            R.REPLY_USER_ID,
+            R.COMMENT_ID,
+            R.CREATE_AT,
+            U.USERNAME,
+            U.PROFILE_IMG_SRC,
+            U.MENTION,
+            U.IS_SOCIAL,
+            U.PROVIDER,
+            (SELECT COUNT(*) FROM SHORTFORM_COMMUNITY_COMMENT_REPLY_LIKES RL WHERE RL.REPLY_ID = R.ID) AS LIKE_COUNT
+        FROM SHORTFORM_COMMUNITY_COMMENT_REPLYS R
+                 JOIN SHORTFORM_USERS U ON R.REPLY_USER_ID = U.ID
+        WHERE R.COMMENT_ID = #{commentId}
+          AND R.DELETE_STATUS = 0
+        ORDER BY R.CREATE_AT ASC
+    </select>
+
 </mapper>

@@ -81,8 +81,8 @@ public class RestCommunityController {
 
     @RequireAuth
     @PostMapping("/delete")
-    public ResponseEntity<Boolean> communityDelete(@RequestParam Long id) {
-        return ResponseEntity.ok(communityService.changeDeleteStatus(id));
+    public ResponseEntity<Boolean> communityDelete(@RequestParam Long id, @AuthenticationPrincipal UserEntity user) {
+        return ResponseEntity.ok(communityService.changeDeleteStatus(id, user));
     }
 
 

@@ -1,5 +1,7 @@
 package com.e.shortform.domain.video.service;
 
+import com.e.shortform.common.exception.ApiException;
+import com.e.shortform.common.exception.ExceptionCode;
 import com.e.shortform.domain.user.entity.UserEntity;
 import com.e.shortform.domain.user.repository.UserRepo;
 import com.e.shortform.domain.video.entity.VideoEntity;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -308,9 +311,13 @@ public class VideoService {
         return response;
     }
 
-    public boolean changeDeleteStatus(Long id) {
-        videoRepo.findById(id).orElseThrow(
+    public boolean changeDeleteStatus(Long id, UserEntity requester) {
+        VideoEntity video = videoRepo.findById(id).orElseThrow(
                 () -> new RuntimeException("영상을 찾을 수 없거나 존재하지 않습니다"));
+        // 작성자(업로더) 본인만 삭제 가능
+        if (requester == null || !video.getUploader().getId().equals(requester.getId())) {
+            throw new ApiException(ExceptionCode.FORBIDDEN, HttpStatus.FORBIDDEN);
+        }
         return videoMapper.changeDeleteStatus(id);
     }
 

@@ -28,11 +28,17 @@ export const API_LIST = {
         COMMENT: {
             GET: (p: any) => `/api/community/comment/recent?communityUuid=${p}`,
             INSERT: (p1: number, p2: string) => `/api/community/comment/insert?communityId=${p1}&comment=${p2}`,
+            UPDATE: (commentId: number, comment: string) => `/api/community/comment/update?commentId=${commentId}&comment=${comment}`,
+            DELETE: (commentId: number) => `/api/community/comment/delete?commentId=${commentId}`,
             LIKE: {
                 TOGGLE: "/api/community/comment/toggle/like"
             },
             REPLY: {
-                INSERT: "/api/community/comment/reply/insert"
+                INSERT: "/api/community/comment/reply/insert",
+                SUBMIT: (commentId: number, replyText: string) => `/api/community/comment/reply/insert?commentId=${commentId}&replyText=${replyText}`,
+                LIST: (commentId: number) => `/api/community/comment/reply/list?commentId=${commentId}`,
+                UPDATE: (replyId: number, replyText: string) => `/api/community/comment/reply/update?replyId=${replyId}&replyText=${replyText}`,
+                DELETE: (replyId: number) => `/api/community/comment/reply/delete?replyId=${replyId}`,
             }
         }
     },
