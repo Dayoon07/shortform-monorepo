@@ -1,0 +1,16 @@
+# 로컬 개발 프로파일 (SPRING_PROFILES_ACTIVE 미지정 시 기본 활성)
+# 공통값은 application.yml에 있고, 여기엔 개발 편의 설정만 둔다.
+# (ddl-auto=update, storage=local, rabbitmq=false, swagger=on 등은 application.yml 기본값 그대로)
+spring:
+  jpa:
+    show-sql: true   # 개발 중 SQL 확인
+
+# S3를 쓸 경우(STORAGE_TYPE=s3) 버킷 내 local/ 폴더에 저장
+app:
+  storage:
+    s3:
+      base-prefix: ${S3_PREFIX:local}
+
+logging:
+  level:
+    com.e.shortform: debug
