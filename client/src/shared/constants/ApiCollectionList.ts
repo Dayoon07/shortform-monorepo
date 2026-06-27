@@ -5,6 +5,11 @@ export const REST_API_SERVER: string = `${PROTOCOL}://${URL}:${PORT}`;
 
 // 웬만하면 RequestParam으로 요청하는 거는 함수처럼 만듬
 export const API_LIST = {
+    NOTIFICATION: {
+        LIST: "/api/notifications",
+        UNREAD_COUNT: "/api/notifications/unread-count",
+        READ_ALL: "/api/notifications/read-all",
+    },
     COMMENT: {
         INSERT: `/api/comment/insert`,
         POPULAR_LIST: (i: number) => `/api/comment/popular?id=${i}`,
@@ -25,7 +30,7 @@ export const API_LIST = {
         USER_POST: (m: string) => `/api/community/find?mention=${m}`,
         GET_DETAIL: (cuuid: string) => `/api/community/find/detail?communityUuid=${cuuid}`,
         WRITE: "/api/community/write",
-        DELETE: (cuuid: string) => `/api/community/delete?communityUuid=${cuuid}`,
+        DELETE: (id: number) => `/api/community/delete?id=${id}`,
         LIKE: {
             TOGGLE: (i: string) => `/api/community/like?communityUuid=${i}`
         },
@@ -83,13 +88,16 @@ export const API_LIST = {
     VIDEO: {
         ALL: "/api/video/all",                  // 페이징된 비디오 목록 (기본)
         ALL_LEGACY: "/api/video/all/legacy",    // 전체 비디오 목록 (레거시)
+        EXPLORE: "/api/video/explore",          // 추천 피드
+        EDIT_INFO: (videoLoc: string) => `/api/video/edit/info?videoLoc=${videoLoc}`, // 수정 화면용 현재 정보
+        EDIT: "/api/video/edit",                // 영상 수정 (메타데이터 + 선택적 파일 교체, multipart)
         UPLOAD: "/api/video/upload",
         RANDOM: (e: number[], m: string | null) => `/api/video/random/v2?excludeIds=${e}&mention=${m}`,
         SEARCH: (q: string) => `/api/video/search?q=${q}`,
         HASHTAG: (t: string) => `/api/hashtag?videoTag=${t}`,
         USER_VIDEO: (m: string) => `/api/user/info/${m}/video`,
         FIRST_SWIPE_VIDEO: (loc: string, m: string | null) => `/api/video/swipe/find?videoLoc=${loc}&mention=${m}`,
-        DELETE: (vid: number) => `/api/video/delete?videoId=${vid}`,
+        DELETE: (vid: number) => `/api/video/delete?vid=${vid}`,
         LIKE: {
             TOGGLE: (vid: number) => `/api/video/like/by/mention?id=${vid}`,
             MY_VIDEO: "/api/video/find/like",

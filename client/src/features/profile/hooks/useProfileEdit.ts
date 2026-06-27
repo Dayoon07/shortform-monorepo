@@ -4,11 +4,11 @@ import { useUser } from "../../../shared/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccessToast } from "../../../shared/utils/toast";
 import { ProfileUserInfo } from "../../../entities/profile/ui/ProfileUserInfo";
-import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
+import { mediaUrl } from "../../../shared/utils/mediaUrl";
 import { ROUTE } from "../../../shared/constants/Route";
 
 export function useProfileEdit(profile: ProfileUserInfo, onClose: () => void) {
-    const a: string = profile?.social ? profile?.profileImgSrc : REST_API_SERVER + profile.profileImgSrc;
+    const a: string = mediaUrl(profile?.profileImgSrc);
     const [previewImg, setPreviewImg] = useState<string>(a);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const navigate = useNavigate();
@@ -44,10 +44,8 @@ export function useProfileEdit(profile: ProfileUserInfo, onClose: () => void) {
         try {
             console.log(profile?.id);
             
-            // 구글 계정의 경우 원본 URL 유지
-            const currentImgSrc = profile?.social 
-                ? profile.profileImgSrc  // 외부 URL 그대로
-                : REST_API_SERVER + profile?.profileImgSrc; // 로컬 경로에 서버 주소 추가
+            // 절대 URL(소셜/S3)은 그대로, 상대경로는 서버 주소 추가 (이미 절대면 중복 안 붙음)
+            const currentImgSrc = mediaUrl(profile?.profileImgSrc);
             
             const data = await editUserProfile(
                 formData,

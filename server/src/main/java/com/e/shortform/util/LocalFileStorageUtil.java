@@ -47,4 +47,13 @@ public class LocalFileStorageUtil {
         file.transferTo(new File(dir, fileName));
         return fileName;
     }
+
+    /** subDir 아래의 파일을 best-effort로 삭제한다(없거나 실패해도 무시). 파일 교체 시 옛 파일 정리용. */
+    public void deleteQuietly(String subDir, String fileName) {
+        if (fileName == null || fileName.isBlank()) return;
+        try {
+            new File(BASE_DIR + "/" + subDir + "/" + fileName).delete();
+        } catch (Exception ignored) {
+        }
+    }
 }

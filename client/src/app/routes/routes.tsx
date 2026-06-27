@@ -17,6 +17,7 @@ import NotFoundWhat from            '../../pages/what/NotFoundWhat';
 import ProfilePostDetailPage from   '../../pages/profile/ProfilePostDetailPage';
 import EditPage from                '../../pages/video/EditPage';
 import AdminReportsPage from        '../../pages/admin/AdminReportsPage';
+import NotificationPage from        '../../pages/notification/NotificationPage';
 
 export const routes: RouteObject[] = [
     { path: ROUTE.HOMEPAGE,                     element: <HomePage              /> },
@@ -29,7 +30,7 @@ export const routes: RouteObject[] = [
     { path: ROUTE.STUDIO_POST_WRITE,            element: <PostWritePage         /> },
     { path: ROUTE.LIKES,                        element: <LikesPage             /> },
     { path: PATTERN_ROUTE.PROFILE_SWIPE_VIDEO,  element: <SwipeVideoPage        /> },
-    { path: ROUTE.VIDEO_EDIT,                   element: <EditPage              /> },
+    { path: PATTERN_ROUTE.VIDEO_EDIT,           element: <EditPage              /> },
     { path: PATTERN_ROUTE.PROFILE,              element: <ProfilePage           /> },
     { path: PATTERN_ROUTE.PROFILE_POST_DETAIL,  element: <ProfilePostDetailPage /> },
     { path: ROUTE.OAUTH_CALLBACK,               element: <OAuthCallbackPage     /> },

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { REST_API_SERVER } from "../../constants/ApiCollectionList";
+import { mediaUrl } from "../../utils/mediaUrl";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 enum GridType {
@@ -54,24 +54,24 @@ const ImageGrid: React.FC<ImageGridProps> = ({
         <div className="grid gap-0.5">
             {total === 1 && (
                 <div className="w-full aspect-video">
-                    <img src={`${REST_API_SERVER}${images[0]}`} alt="img" className={imgStyle} onClick={() => openLightbox(0)} />
+                    <img src={mediaUrl(images[0])} alt="img" className={imgStyle} onClick={() => openLightbox(0)} />
                 </div>
             )}
 
             {total === 2 && (
                 <div className="grid grid-cols-2 gap-0.5 h-64 md:h-80">
                     {images.map((img, i) => (
-                        <img key={i} src={`${REST_API_SERVER}${img}`} alt="img" className={imgStyle} onClick={() => openLightbox(i)} />
+                        <img key={i} src={mediaUrl(img)} alt="img" className={imgStyle} onClick={() => openLightbox(i)} />
                     ))}
                 </div>
             )}
 
             {total === 3 && (
                 <div className="grid grid-cols-2 gap-0.5 h-64 md:h-80">
-                    <img src={`${REST_API_SERVER}${images[0]}`} alt="img" className={imgStyle} onClick={() => openLightbox(0)} />
+                    <img src={mediaUrl(images[0])} alt="img" className={imgStyle} onClick={() => openLightbox(0)} />
                     <div className="grid grid-rows-2 gap-0.5">
-                        <img src={`${REST_API_SERVER}${images[1]}`} alt="img" className={imgStyle} onClick={() => openLightbox(1)} />
-                        <img src={`${REST_API_SERVER}${images[2]}`} alt="img" className={imgStyle} onClick={() => openLightbox(2)} />
+                        <img src={mediaUrl(images[1])} alt="img" className={imgStyle} onClick={() => openLightbox(1)} />
+                        <img src={mediaUrl(images[2])} alt="img" className={imgStyle} onClick={() => openLightbox(2)} />
                     </div>
                 </div>
             )}
@@ -79,10 +79,10 @@ const ImageGrid: React.FC<ImageGridProps> = ({
             {total >= 4 && (
                 <div className="grid grid-cols-2 gap-0.5 h-64 md:h-80">
                     {images.slice(0, 3).map((img, i) => (
-                        <img key={i} src={`${REST_API_SERVER}${img}`} alt="img" className={imgStyle} onClick={() => openLightbox(i)} />
+                        <img key={i} src={mediaUrl(img)} alt="img" className={imgStyle} onClick={() => openLightbox(i)} />
                     ))}
                     <div className="relative h-full" onClick={() => openLightbox(3)}>
-                        <img src={`${REST_API_SERVER}${images[3]}`} alt="img" className={imgStyle} />
+                        <img src={mediaUrl(images[3])} alt="img" className={imgStyle} />
                         {total > 4 && (
                             <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center cursor-pointer hover:bg-black/60 transition-colors">
                                 <span className="text-white text-3xl font-bold">+{total - 4}</span>
@@ -105,7 +105,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
                         onClick={() => openLightbox(i)}
                     >
                         <img 
-                            src={`${REST_API_SERVER}${img}`} 
+                            src={mediaUrl(img)} 
                             alt={`img-${i}`} 
                             className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
                         />
@@ -125,7 +125,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
                     onClick={() => openLightbox(i)}
                 >
                     <img 
-                        src={`${REST_API_SERVER}${img}`} 
+                        src={mediaUrl(img)} 
                         alt={`img-${i}`} 
                         className="w-full h-full object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
                     />
@@ -163,7 +163,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
                     {/* 이미지 슬라이드 */}
                     <div className="max-w-[90vw] max-h-[85vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
                         <img 
-                            src={`${REST_API_SERVER}${images[currentIndex]}`} 
+                            src={mediaUrl(images[currentIndex])} 
                             alt="Zoomed"
                             className="max-w-full max-h-[85vh] object-contain shadow-2xl"
                         />

@@ -11,7 +11,7 @@ import com.e.shortform.domain.follow.service.FollowService;
 import com.e.shortform.domain.report.req.ReportReqDto;
 import com.e.shortform.domain.report.service.ReportService;
 import com.e.shortform.domain.search.service.SearchListService;
-import com.e.shortform.domain.user.req.AuthUserReqDto;
+import com.e.shortform.domain.user.entity.UserEntity;
 import com.e.shortform.domain.user.service.UserService;
 import com.e.shortform.domain.video.service.VideoLikeService;
 import com.e.shortform.domain.video.service.VideoService;
@@ -56,7 +56,7 @@ public class RestReportController {
     @PostMapping("/register")
     public String postReport(
             @RequestBody ReportReqDto req,
-            @AuthenticationPrincipal AuthUserReqDto user) {
+            @AuthenticationPrincipal UserEntity user) {
         reportService.saveReport(req, user);
         return "접수가 완료 되었습니다";
     }

@@ -12,13 +12,19 @@ import com.e.shortform.domain.video.res.VideoWithUserDto;
 import com.e.shortform.domain.video.vo.VideoVo;
 import com.e.shortform.domain.viewstory.entity.ViewStoryEntity;
 import com.e.shortform.domain.viewstory.repository.ViewStoryRepo;
+import com.e.shortform.common.messaging.ViewEvent;
+import com.e.shortform.common.messaging.ViewEventPublisher;
+import com.e.shortform.util.storage.FileStorageService;
+import com.e.shortform.util.storage.StoredFile;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.ObjectProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -34,6 +40,9 @@ public class VideoService {
     private final VideoRepo videoRepo;
     private final VideoMapper videoMapper;
     private final ViewStoryRepo viewStoryRepo;
+    private final FileStorageService fileStorageService;
+    // RabbitMQ 비활성 시 빈이 없으므로 ObjectProvider로 옵셔널 주입
+    private final ObjectProvider<ViewEventPublisher> viewEventPublisher;
 
     public Map<String, Object> uploadVideo(
             MultipartFile file,
@@ -47,39 +56,19 @@ public class VideoService {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            String uploadPath = System.getProperty("user.home").replace("\\", "/")
-                    + "/Desktop/shortform-server/shortform-user-video/";
-            String previewImgUploadPath = System.getProperty("user.home").replace("\\", "/")
-                    + "/Desktop/shortform-server/shortform-user-video-preview-img/";
+            // 1. 비디오 저장 (스토리지 추상화 - 로컬/S3)
+            StoredFile storedVideo = fileStorageService.store(file, "shortform-user-video");
+            String savedVideoName = storedVideo.fileName();
+            String savedVideoSrc = storedVideo.url();
+            log.info("비디오 저장 완료: {}", savedVideoSrc);
 
-            // 1. 디렉토리 생성
-            File uploadDir = new File(uploadPath);
-            File previewImgUploadDir = new File(previewImgUploadPath);
-
-            if (!uploadDir.exists()) uploadDir.mkdirs();
-            if (!previewImgUploadDir.exists()) previewImgUploadDir.mkdirs();
-
-            // 2. 비디오 저장
-            String videoExt = getFileExtension(Objects.requireNonNull(file.getOriginalFilename()));
-            String savedVideoName = UUID.randomUUID().toString() + videoExt;
-            String videoFilePath = uploadPath + savedVideoName;
-
-            File destinationVideo = new File(videoFilePath);
-            file.transferTo(destinationVideo);
-
-            log.info("비디오 저장 완료: {}", videoFilePath);
-
-            // 3. 썸네일 저장
+            // 2. 썸네일 저장
             String thumbnailSavedName = null;
+            String thumbnailSrc = null;
             if (thumbnail != null && !thumbnail.isEmpty()) {
-                String thumbExt = getFileExtension(Objects.requireNonNull(thumbnail.getOriginalFilename()));
-                thumbnailSavedName = UUID.randomUUID().toString() + thumbExt;
-
-                String thumbnailFilePath = previewImgUploadPath + thumbnailSavedName;
-                File thumbnailFile = new File(thumbnailFilePath);
-
-                thumbnail.transferTo(thumbnailFile);
-                log.info("썸네일 저장 완료: {}", thumbnailFilePath);
+                StoredFile storedThumb = fileStorageService.store(thumbnail, "shortform-user-video-preview-img");
+                thumbnailSavedName = storedThumb.fileName();
+                thumbnailSrc = storedThumb.url();
             } else {
                 log.warn("썸네일 파일이 비어있습니다.");
             }
@@ -93,16 +82,14 @@ public class VideoService {
                     .videoTitle(title)
                     .videoDescription(description)
                     .videoName(savedVideoName)
-                    .videoSrc("/resources/shortform-user-video/" + savedVideoName)
+                    .videoSrc(savedVideoSrc)
                     .videoTag(hashtags)
                     .videoViews(0L)
                     .videoLoc(UUID.randomUUID().toString())
                     .uploader(uploader)
                     .videoWatchAvailability(visibility)
                     .commentAvailability(commentsAllowed)
-                    .previewImg(thumbnailSavedName != null
-                            ? "/resources/shortform-user-video-preview-img/" + thumbnailSavedName
-                            : null)
+                    .previewImg(thumbnailSrc)
                     .deleteStatus(false)
                     .build();
 
@@ -128,10 +115,6 @@ public class VideoService {
         }
 
         return response;
-    }
-
-    private String getFileExtension(String filename) {
-        return filename.substring(filename.lastIndexOf("."));
     }
 
     public List<VideoEntity> findAllOrderByCreateAtDesc() {
@@ -183,36 +166,39 @@ public class VideoService {
         return video;
     }
 
+    /**
+     * 조회 발생 시 호출. RabbitMQ가 켜져 있으면 비동기로 발행(핫패스에서 DB 쓰기 제거),
+     * 브로커가 없거나 발행 실패 시 동기로 폴백한다.
+     */
     public void incrementVideoViews(String videoLoc, String currentUserMention) {
-        log.info("=== incrementVideoViews 호출 ===");
-        log.info("videoLoc: {}, mention: {}", videoLoc, currentUserMention);
+        ViewEventPublisher publisher = viewEventPublisher.getIfAvailable();
+        if (publisher != null) {
+            try {
+                publisher.publish(new ViewEvent(videoLoc, currentUserMention));
+                return;
+            } catch (Exception e) {
+                log.warn("조회 이벤트 발행 실패, 동기 처리로 폴백: {}", e.getMessage());
+            }
+        }
+        processView(videoLoc, currentUserMention);
+    }
 
+    /** 조회 처리 핵심 로직(동기). RabbitMQ 소비자 또는 폴백 경로에서 호출된다. */
+    @Transactional
+    public void processView(String videoLoc, String currentUserMention) {
         UserEntity user = userRepo.findByMention(currentUserMention);
         VideoEntity video = videoRepo.findByVideoLoc(videoLoc);
+        if (user == null || video == null) return;
 
-        log.info("user: {}, video: {}", user != null ? user.getId() : "null",
-                video != null ? video.getId() : "null");
+        // 처음 보는 영상일 때만 조회수 +1 및 시청기록 저장
+        if (!viewStoryRepo.existsByUserAndVideo(user, video)) {
+            video.setVideoViews(video.getVideoViews() + 1);
+            videoRepo.save(video);
 
-        if (user != null && video != null) {
-            boolean alreadyViewed = viewStoryRepo.existsByUserAndVideo(user, video);
-            log.info("이미 본 영상? {}", alreadyViewed);
-
-            if (!alreadyViewed) {
-                video.setVideoViews(video.getVideoViews() + 1);
-                videoRepo.save(video);
-                log.info("✅ 조회수 증가: 비디오 ID={}, 조회수={}", video.getId(), video.getVideoViews());
-
-                // 시청 기록 저장
-                ViewStoryEntity viewStory = new ViewStoryEntity();
-                viewStory.setUser(user);
-                viewStory.setVideo(video);
-                viewStoryRepo.save(viewStory);
-                log.info("✅ 시청 기록 저장 완료");
-            } else {
-                log.info("⚠️ 이미 본 영상이므로 조회수 증가 안 함");
-            }
-        } else {
-            log.warn("❌ user 또는 video가 null입니다!");
+            ViewStoryEntity viewStory = new ViewStoryEntity();
+            viewStory.setUser(user);
+            viewStory.setVideo(video);
+            viewStoryRepo.save(viewStory);
         }
     }
 
@@ -236,7 +222,8 @@ public class VideoService {
         }
 
         // VideoVo의 ID를 사용해서 VideoEntity를 조회
-        Optional<VideoEntity> entity = videoRepo.findById(vo.getId()); // uploaderUserId가 아니라 video의 ID를 사용
+        // 업로더(LAZY)까지 함께 로딩 — 직렬화 시 LazyInitializationException 방지
+        Optional<VideoEntity> entity = videoRepo.findByIdWithUploader(vo.getId());
 
         return entity.orElse(null);
     }
@@ -246,7 +233,8 @@ public class VideoService {
         if (vo == null) {
             return null;
         }
-        Optional<VideoEntity> entity = videoRepo.findById(vo.getId()); // uploaderUserId가 아니라 video의 ID를 사용
+        // 업로더(LAZY)까지 함께 로딩 — 직렬화 시 LazyInitializationException 방지
+        Optional<VideoEntity> entity = videoRepo.findByIdWithUploader(vo.getId());
 
         return entity.orElse(null);
     }
@@ -257,6 +245,65 @@ public class VideoService {
 
     public List<IndexPageAllVideosDto> myLikeVideos(Long id) {
         return videoMapper.myLikeVideos(id);
+    }
+
+    /** 추천(explore) 피드 - 인기+최신 점수순 */
+    public List<IndexPageAllVideosDto> exploreFeed() {
+        return videoMapper.selectExploreFeed();
+    }
+
+    /** 영상 수정 화면용 현재 정보 (LAZY uploader 직렬화 회피 위해 스칼라만) */
+    public Map<String, Object> getEditInfo(String videoLoc) {
+        VideoEntity v = videoRepo.findByVideoLoc(videoLoc);
+        if (v == null) throw new ApiException(ExceptionCode.VIDEO_NOT_FOUND, HttpStatus.NOT_FOUND);
+        Map<String, Object> m = new HashMap<>();
+        m.put("videoLoc", v.getVideoLoc());
+        m.put("videoSrc", v.getVideoSrc());
+        m.put("previewImg", v.getPreviewImg());
+        m.put("videoTitle", v.getVideoTitle());
+        m.put("videoDescription", v.getVideoDescription());
+        m.put("videoTag", v.getVideoTag());
+        m.put("videoWatchAvailability", v.getVideoWatchAvailability());
+        m.put("commentAvailability", v.getCommentAvailability());
+        return m;
+    }
+
+    /**
+     * 영상 수정 (작성자 본인만). 메타데이터를 갱신하고, 새 영상/썸네일이 오면 파일도 교체한다.
+     * 파일 교체 시 기존 파일은 best-effort로 삭제한다.
+     */
+    @Transactional
+    public void editVideo(String videoLoc, String title, String description, String tag,
+                          String watchAvailability, String commentAvailability,
+                          MultipartFile newVideo, MultipartFile newThumbnail, UserEntity requester) throws IOException {
+        VideoEntity video = videoRepo.findByVideoLoc(videoLoc);
+        if (video == null) throw new ApiException(ExceptionCode.VIDEO_NOT_FOUND, HttpStatus.NOT_FOUND);
+        if (requester == null || !video.getUploader().getId().equals(requester.getId())) {
+            throw new ApiException(ExceptionCode.FORBIDDEN, HttpStatus.FORBIDDEN);
+        }
+
+        video.setVideoTitle(title);
+        video.setVideoDescription(description);
+        video.setVideoTag(tag);
+        video.setVideoWatchAvailability(watchAvailability);
+        video.setCommentAvailability(commentAvailability);
+
+        // 영상 파일 교체 (선택)
+        if (newVideo != null && !newVideo.isEmpty()) {
+            String oldName = video.getVideoName();
+            StoredFile stored = fileStorageService.store(newVideo, "shortform-user-video");
+            video.setVideoName(stored.fileName());
+            video.setVideoSrc(stored.url());
+            fileStorageService.deleteQuietly("shortform-user-video", oldName);
+        }
+
+        // 썸네일 교체 (선택)
+        if (newThumbnail != null && !newThumbnail.isEmpty()) {
+            StoredFile stored = fileStorageService.store(newThumbnail, "shortform-user-video-preview-img");
+            video.setPreviewImg(stored.url());
+        }
+
+        videoRepo.save(video);
     }
 
     public List<IndexPageAllVideosDto> selectExploreVideoListButTag(String hashtag) {

@@ -6,6 +6,7 @@ import com.e.shortform.domain.comment.entity.CommentEntity;
 import com.e.shortform.domain.comment.mapper.CommentMapper;
 import com.e.shortform.domain.comment.repository.CommentRepo;
 import com.e.shortform.domain.comment.res.CommentButVideoRes;
+import com.e.shortform.domain.notification.service.NotificationService;
 import com.e.shortform.domain.user.entity.UserEntity;
 import com.e.shortform.domain.user.repository.UserRepo;
 import com.e.shortform.domain.video.entity.VideoEntity;
@@ -30,10 +31,11 @@ public class CommentService {
     private final VideoRepo videoRepo;
 
     private final CommentMapper commentMapper;
+    private final NotificationService notificationService;
 
     public Map<String, Object> videoInsertComment(String commentText, Long commentUserId, Long commentVideoId) {
         UserEntity user = userRepo.findById(commentUserId).orElse(null);
-        VideoEntity video = videoRepo.findById(commentVideoId).orElse(null);
+        VideoEntity video = videoRepo.findByIdWithUploader(commentVideoId).orElse(null);
         Map<String, Object> map = new HashMap<>();
 
         try {
@@ -45,6 +47,14 @@ public class CommentService {
                     .build();
 
             commentRepo.save(commentEntity);
+
+            // 영상 업로더에게 댓글 알림
+            if (video != null && video.getUploader() != null) {
+                notificationService.notify(
+                        video.getUploader().getId(), user,
+                        "VIDEO_COMMENT", "VIDEO", video.getVideoLoc(),
+                        (user != null ? user.getUsername() : "누군가") + "님이 회원님의 영상에 댓글을 남겼습니다");
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
             e.printStackTrace();

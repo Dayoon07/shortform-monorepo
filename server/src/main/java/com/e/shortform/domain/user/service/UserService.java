@@ -9,7 +9,8 @@ import com.e.shortform.domain.user.repository.UserRepo;
 import com.e.shortform.domain.user.res.UserProfileDto;
 import com.e.shortform.domain.user.res.UserProfileUpdateDto;
 import com.e.shortform.domain.user.vo.UserVo;
-import com.e.shortform.util.LocalFileStorageUtil;
+import com.e.shortform.util.storage.FileStorageService;
+import com.e.shortform.util.storage.StoredFile;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -44,7 +45,7 @@ public class UserService {
     private final UserRepo userRepo;
     private final JwtUtil jwtUtil;
     private final TokenBlacklistService tokenBlacklistService;
-    private final LocalFileStorageUtil localFileStorageUtil;
+    private final FileStorageService fileStorageService;
 
     public List<UserVo> selectAll() {
         return userMapper.selectAll();
@@ -64,15 +65,15 @@ public class UserService {
 
     public String signup(String username, String password, String mail, MultipartFile file) {
         try {
-            String fileName = localFileStorageUtil.store(file, "shortform-user-profile-img");
+            StoredFile sf = fileStorageService.store(file, "shortform-user-profile-img");
             String mentionUuid = "user-" + UUID.randomUUID().toString().substring(0, 28);
 
             UserEntity userEntity = UserEntity.builder()
                     .username(username)
                     .password(passwordEncoder.encode(password))
                     .mail(mail)
-                    .profileImg(fileName)
-                    .profileImgSrc("/resources/shortform-user-profile-img/" + fileName)
+                    .profileImg(sf.fileName())
+                    .profileImgSrc(sf.url())
                     .mention(mentionUuid)
                     .social(false)
                     .provider(SocialProviderStatus.LOCAL.getValue())

@@ -6,20 +6,44 @@ import { defaultFormatDate } from "../../shared/utils/formatUtil";
 import { PostCommentList } from "../../features/post/components/PostCommentList";
 import { Clipboard, MessageSquareText, Share2, ThumbsUp } from "lucide-react";
 import { useUser } from "../../shared/context/UserContext";
-import { useState } from "react";
-import { showSuccessToast } from "../../shared/utils/toast";
+import { useState, useEffect } from "react";
+import { showSuccessToast, showErrorToast } from "../../shared/utils/toast";
 import { useShare } from "@/shared/hooks/useShare";
+import { ReportModal } from "../../shared/components/report/ReportModal";
+import { ReportTargetType } from "../../shared/constants/enums/ReportTargetType";
+import { togglePostLike } from "../../features/post/api/postService";
+import { cl } from "@/shared/constants/CurrentLocation";
+import { ApiResponse } from "@/shared/utils/ApiClient";
+import { PostLikeReq } from "@/entities/post/ui/PostLikeReq";
 
 export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
     const [communityCommentText, setCommunityCommentText] = useState<string>("");
+    const [showReport, setShowReport] = useState<boolean>(false);
+    const [isLiked, setIsLiked] = useState<boolean>(false);
+    const [likeCount, setLikeCount] = useState<number>(0);
     const { user } = useUser();
     const { shareFunc } = useShare();
-    const { 
-        post, 
+    const {
+        post,
         comment,
         commentWriteHandler,
         commentReplyWriteHandler
     } = usePostDetail(cuuid);
+
+    useEffect(() => {
+        if (post) setLikeCount(post.likeCnt || 0);
+    }, [post]);
+
+    const likeHandler = async () => {
+        if (!post) return;
+        const res: ApiResponse<PostLikeReq> = await togglePostLike(post.communityUuid);
+        if (!res.ok || res.data === undefined) {
+            showErrorToast("좋아요 처리에 실패했습니다.");
+            return;
+        }
+        setIsLiked(res.data.like);
+        setLikeCount(res.data.count);
+    };
 
     const ccsHandler = async () => {
         console.log("커뮤니티 게시글의 댓글 작성 요청");
@@ -59,11 +83,15 @@ export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
                             </div>
 
                             <div className="flex-shrink-0">
-                                <button type="button" className="text-gray-400 p-2 rounded-full hover:bg-gray-200 transition-colors">
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-                                    </svg>
-                                </button>
+                                {user && user.id !== post.communityWriterId && (
+                                    <button type="button" onClick={() => setShowReport(true)}
+                                        aria-label="게시글 신고"
+                                        className="text-gray-400 p-2 rounded-full hover:bg-gray-200 transition-colors">
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                        </svg>
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -86,11 +114,11 @@ export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
                         ))}
 
                         <div className="flex items-center space-x-6 pt-3">
-                            <button className="flex items-center space-x-1 transition-colors group">
+                            <button onClick={likeHandler} className="flex items-center space-x-1 transition-colors group">
                                 <div className="p-2 rounded-full group-hover:bg-gray-200 transition-colors">
-                                    <ThumbsUp />
+                                    <ThumbsUp className={isLiked ? "fill-red-500 text-red-500" : ""} />
                                 </div>
-                                <span className="text-sm max-md:hidden">{post.likeCnt}</span>
+                                <span className="text-sm max-md:hidden">{likeCount}</span>
                             </button>
 
                             <button className="flex items-center space-x-1 transition-colors group">
@@ -100,7 +128,8 @@ export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
                                 <span className="text-sm max-md:hidden">{post.commentCnt}</span>
                             </button>
 
-                            <button className="flex items-center space-x-1 transition-colors group" onClick={() => shareFunc}>
+                            <button className="flex items-center space-x-1 transition-colors group"
+                                onClick={() => shareFunc(`${cl}/@${post.mention}/post/${post.communityUuid}`)}>
                                 <div className="p-2 rounded-full group-hover:bg-gray-200 transition-colors">
                                     <Share2 />
                                 </div>
@@ -137,7 +166,17 @@ export const Post: React.FC<{ cuuid: string | undefined }> = ({ cuuid }) => {
                             </div>
                         </div>
                     )}
-                    <PostCommentList commentList={comment} f1={commentReplyWriteHandler} /> 
+                    <PostCommentList commentList={comment} f1={commentReplyWriteHandler} />
+
+                    {showReport && user && (
+                        <ReportModal
+                            onClose={() => setShowReport(false)}
+                            targetType={ReportTargetType.COMMUNITY}
+                            targetId={post.id}
+                            reportedUserId={post.communityWriterId}
+                            title="게시글 신고하기"
+                        />
+                    )}
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-10 text-gray-400">

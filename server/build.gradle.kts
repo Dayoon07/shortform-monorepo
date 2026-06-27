@@ -75,6 +75,9 @@ dependencies {
     // 모니터링 (actuator + Prometheus 지표: HikariCP 풀 대기열 등)
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")
+
+    // 비동기 메시지 큐 (조회수/시청기록 비동기 처리). 브로커 미설치 시 app.rabbitmq.enabled=false로 비활성.
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
 }
 
 tasks.withType<Test> {

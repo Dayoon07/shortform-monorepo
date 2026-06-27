@@ -153,6 +153,17 @@
         ORDER BY v.UPLOAD_AT DESC
     </select>
 
+    <!--
+      추천(explore) 피드: 인기도(조회수 + 좋아요*3)를 업로드 후 경과일로 감쇠시킨 점수순.
+      (views + 3*likes) / (age_days + 2)^1.5  →  인기 있으면서 최신인 영상이 상위로.
+    -->
+    <select id="selectExploreFeed" resultMap="IndexPageAllVideosResultMap">
+        <include refid="videoSelectColumns"/>
+        ORDER BY (NVL(v.VIDEO_VIEWS, 0) + COALESCE(like_counts.LIKE_COUNT, 0) * 3)
+                 / POWER((SYSDATE - CAST(v.UPLOAD_AT AS DATE)) + 2, 1.5) DESC
+        FETCH FIRST 60 ROWS ONLY
+    </select>
+
     <!-- 페이징된 비디오 목록 조회 (Oracle 12c+ 문법) -->
     <select id="selectIndexPageAllVideosPaginated" resultMap="IndexPageAllVideosResultMap">
         <include refid="videoSelectColumns"/>

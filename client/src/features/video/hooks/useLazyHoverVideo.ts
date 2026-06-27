@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useRef } from "react";
-import { REST_API_SERVER } from "../../../shared/constants/ApiCollectionList";
+import { mediaUrl } from "../../../shared/utils/mediaUrl";
 import { VideoGridContent } from "../../../entities/video/ui/VideoGridContent";
 
 // 비디오 언로드 지연 시간 (5초)
@@ -49,7 +49,7 @@ export function useLazyHoverVideo(videos: VideoGridContent[]): RefObject<HTMLVid
             
             // src가 설정되어 있지 않다면 설정하고 로드 (Hover 시점)
             if (!video.src && video.dataset.src) {
-                video.src = `${REST_API_SERVER}${video.dataset.src}`;
+                video.src = mediaUrl(video.dataset.src);
                 // video.load()는 src가 설정되었을 때 메타데이터를 로드합니다.
                 // 이미 IntersectionObserver에서 poster를 설정했으므로 여기서 load를 호출하여 비디오 파일 준비 시작
                 video.load();
@@ -95,7 +95,7 @@ export function useLazyHoverVideo(videos: VideoGridContent[]): RefObject<HTMLVid
 
                         // 포스터만 설정하고 load는 호출하지 않음 (최소 메모리 사용)
                         if (video.dataset.previewImg) {
-                            video.poster = `${REST_API_SERVER}${video.dataset.previewImg}`;
+                            video.poster = mediaUrl(video.dataset.previewImg);
                             // video.load(); // <-- 제거: 메타데이터 로딩 방지
                         }
 

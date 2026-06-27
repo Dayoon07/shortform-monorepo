@@ -19,6 +19,8 @@ public interface VideoMapper {
     List<IndexPageAllVideosDto> myLikeVideos(Long id);
     List<IndexPageAllVideosDto> selectExploreVideoListByTags(String hashtag);
     List<IndexPageAllVideosDto> selectExploreVideoListByTagsButVideoViewsDescFuck(String hashtag);
+    /** 추천(explore) 피드 - 인기(조회수+좋아요)와 최신성을 결합한 점수순 */
+    List<IndexPageAllVideosDto> selectExploreFeed();
     /** 페이징된 비디오 목록 조회 (신규) */
     List<IndexPageAllVideosDto> selectIndexPageAllVideosPaginated(@Param("offset") int offset, @Param("size") int size);
     /** public 비디오 총 개수 조회 (신규) */

@@ -1,6 +1,9 @@
 spring:
   application:
     name: shortform
+  # 활성 프로파일 (미지정 시 local). 운영: SPRING_PROFILES_ACTIVE=prod
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
   devtools:
     restart:
       enabled: false
@@ -79,6 +82,11 @@ spring:
           max-idle: 8
           min-idle: 0
           max-wait: -1ms
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
 
 server:
   port: 9005
@@ -124,6 +132,21 @@ app:
   admin:
     # 관리자 이메일 화이트리스트(콤마 구분). 신고 처리 등 관리자 기능 접근 권한.
     emails: ${ADMIN_EMAILS:gangd0642@gmail.com}
+  rabbitmq:
+    # true로 켜면 조회수/시청기록을 RabbitMQ로 비동기 처리(브로커 필요). false면 동기 폴백.
+    enabled: ${RABBITMQ_ENABLED:false}
+  storage:
+    # local = 디스크(WebConfig /resources 서빙), s3 = S3 업로드 후 URL 서빙
+    type: ${STORAGE_TYPE:local}
+    s3:
+      bucket: ${S3_BUCKET:}
+      region: ${S3_REGION:ap-northeast-2}
+      access-key: ${AWS_ACCESS_KEY:}
+      secret-key: ${AWS_SECRET_KEY:}
+      # CloudFront/커스텀 도메인이 있으면 지정(예: https://cdn.example.com). 없으면 S3 기본 도메인 사용.
+      public-base-url: ${S3_PUBLIC_BASE_URL:}
+      # 버킷 내 최상위 폴더. 프로파일별로 분리(local→local/, prod→production/). application-{profile}.yml에서 지정.
+      base-prefix: ${S3_PREFIX:}
 
 management:
   # actuator를 앱(9005)과 분리된 내부 포트로 노출한다. 리버스 프록시/서브도메인은

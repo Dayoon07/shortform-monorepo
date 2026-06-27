@@ -54,10 +54,10 @@ export const CommonVideoGrid: React.FC<CommonVideoGridProps> = ({
 
             {modelOpenStatus && <DeleteModal onClose={() => setModelOpenStatus(false)} />}
             {modelOpenStatus2 && (
-                <ReportModal 
-                    onClose={() => setModelOpenStatus2(false)} 
-                    targetType={ReportTargetType.VIDEO} 
-                    targetId={currentIdx}
+                <ReportModal
+                    onClose={() => setModelOpenStatus2(false)}
+                    targetType={ReportTargetType.VIDEO}
+                    targetId={videos[currentIdx].videoId}
                     reportedUserId={videos[currentIdx].uploaderId}
                 />
             )}

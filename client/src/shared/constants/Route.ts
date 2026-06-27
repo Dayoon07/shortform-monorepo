@@ -51,7 +51,8 @@ export const ROUTE = {
      */
     PROFILE_SWIPE_VIDEO: (mention: string, videoLoc: string) => `/@${mention}/swipe/video/${videoLoc}`,
 
-    VIDEO_EDIT: "/studio/edit",
+    /** 영상 수정 페이지 경로 (영상 식별자 포함) */
+    VIDEO_EDIT: (videoLoc: string) => `/studio/edit/${videoLoc}`,
 
     /** 
      * 스튜디오 업로드 페이지 경로 (영상 업로드)
@@ -101,6 +102,12 @@ export const ROUTE = {
      * @example "/oauth/callback"
      */
     OAUTH_CALLBACK: "/oauth/callback",
+
+    /**
+     * 알림 목록 페이지 경로
+     * @example "/notifications"
+     */
+    NOTIFICATIONS: "/notifications",
 
     /**
      * 관리자 신고 처리 페이지 경로
@@ -162,4 +169,7 @@ export const PATTERN_ROUTE = {
      * @example "/hashtag/:videoTag" => "/hashtag/funny"
      */
     HASHTAG: "/hashtag/:videoTag",
+
+    /** 영상 수정 페이지 경로 패턴 */
+    VIDEO_EDIT: "/studio/edit/:videoLoc",
 };

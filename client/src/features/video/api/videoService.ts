@@ -47,8 +47,34 @@ export async function myLikeVideoList(i: number): Promise<ApiResponse<VideoGridC
         API_LIST.VIDEO.LIKE.MY_VIDEO, false, { "id": i });
 }
 
-export const deleteVideo = async (vid: number): Promise<ApiResponse<any>> => 
+export const deleteVideo = async (vid: number): Promise<ApiResponse<any>> =>
     await apiClient.post<any>(API_LIST.VIDEO.DELETE(vid), true);
+
+// 추천(explore) 피드
+export const getExploreVideos = async (): Promise<ApiResponse<VideoGridContent[]>> =>
+    await apiClient.get<VideoGridContent[]>(API_LIST.VIDEO.EXPLORE, false);
+
+// 영상 수정 화면용 현재 정보
+export const getVideoEditInfo = async (videoLoc: string): Promise<ApiResponse<any>> =>
+    await apiClient.get<any>(API_LIST.VIDEO.EDIT_INFO(videoLoc), false);
+
+// 영상 수정 (작성자 본인). 메타데이터 + 선택적 영상/썸네일 교체 → multipart
+export const editVideo = async (p: {
+    videoLoc: string; title: string; description: string; tag: string;
+    watchAvailability: string; commentAvailability: string;
+    video?: File | null; thumbnail?: File | Blob | null;
+}): Promise<ApiResponse<any>> => {
+    const fd = new FormData();
+    fd.append("videoLoc", p.videoLoc);
+    fd.append("title", p.title);
+    fd.append("description", p.description ?? "");
+    fd.append("tag", p.tag ?? "");
+    fd.append("watchAvailability", p.watchAvailability);
+    fd.append("commentAvailability", p.commentAvailability);
+    if (p.video) fd.append("video", p.video);
+    if (p.thumbnail) fd.append("thumbnail", p.thumbnail, "thumbnail.jpg");
+    return await apiClient.post<any>(API_LIST.VIDEO.EDIT, true, fd);
+};
 
 export async function getRandomVideo(
     mention: string | null, excludeIds: number[] = []
@@ -66,6 +92,5 @@ export async function getFirstSwipeVideo(
 }
 
 export async function toggleVideoLike(i: number): Promise<ApiResponse<ToggleVideoLikeRes>> {
-    return await apiClient.post<ToggleVideoLikeRes>(
-        API_LIST.VIDEO.LIKE.TOGGLE(i), true);
+    return await apiClient.post<ToggleVideoLikeRes>(API_LIST.VIDEO.LIKE.TOGGLE(i), true);
 }

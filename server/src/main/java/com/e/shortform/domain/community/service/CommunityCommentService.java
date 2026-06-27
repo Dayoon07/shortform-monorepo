@@ -8,6 +8,7 @@ import com.e.shortform.domain.community.mapper.CommunityCommentMapper;
 import com.e.shortform.domain.community.repository.CommunityCommentRepo;
 import com.e.shortform.domain.community.repository.CommunityRepo;
 import com.e.shortform.domain.community.res.CommunityCommentWithUserDto;
+import com.e.shortform.domain.notification.service.NotificationService;
 import com.e.shortform.domain.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,13 @@ public class CommunityCommentService {
     private final CommunityCommentRepo communityCommentRepo;
 
     private final CommunityCommentMapper communityCommentMapper;
+    private final NotificationService notificationService;
 
     public List<CommunityCommentEntity> findByCommunity(CommunityEntity community) {
         return communityCommentRepo.findByCommunity(community);
     }
 
+    @Transactional
     public void insertComment(Long id, String comment, UserEntity user) {
         CommunityEntity b = communityRepo.findById(id).orElseThrow();
         CommunityCommentEntity a = CommunityCommentEntity.builder()
@@ -40,6 +43,14 @@ public class CommunityCommentService {
                 .deleteStatus(false)
                 .build();
         communityCommentRepo.save(a);
+
+        // 게시글 작성자에게 댓글 알림 (트랜잭션 내라 lazy 로딩 안전)
+        if (b.getUser() != null) {
+            notificationService.notify(
+                    b.getUser().getId(), user,
+                    "COMMUNITY_COMMENT", "COMMUNITY", b.getCommunityUuid(),
+                    (user != null ? user.getUsername() : "누군가") + "님이 회원님의 게시글에 댓글을 남겼습니다");
+        }
     }
 
     public List<CommunityCommentWithUserDto> findByCommunityIdWithReplyCounts(Long communityId) {

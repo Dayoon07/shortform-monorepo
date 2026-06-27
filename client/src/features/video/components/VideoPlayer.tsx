@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Play, Pause } from 'lucide-react';
-import { REST_API_SERVER } from '../../../shared/constants/ApiCollectionList';
+import { mediaUrl } from '../../../shared/utils/mediaUrl';
 import { useVideoPlayer, VideoPlayerControls } from '../hooks/useVideoPlayer';
 import { RandomVideoSwipe } from '../../../entities/video/ui/RandomVideoSwipe';
 
@@ -25,7 +25,7 @@ export const VideoPlayer = ({ video }: { video: RandomVideoSwipe }) => {
         <div className="relative aspect-[9/16] h-[90vh] w-auto max-w-[90vw]">
             <video
                 ref={videoRef}
-                src={`${REST_API_SERVER}${video.video.videoSrc}`}
+                src={mediaUrl(video.video.videoSrc)}
                 className="max-w-full max-h-full object-contain mx-auto my-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 autoPlay
                 loop

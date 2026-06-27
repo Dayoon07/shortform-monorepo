@@ -12,7 +12,6 @@ import com.e.shortform.domain.report.res.ReportAdminDto;
 import com.e.shortform.domain.report.vo.ReportVo;
 import com.e.shortform.domain.user.entity.UserEntity;
 import com.e.shortform.domain.user.repository.UserRepo;
-import com.e.shortform.domain.user.req.AuthUserReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,10 @@ public class ReportService {
         return reportRepo.findAll();
     }
 
-    public void saveReport(ReportReqDto reqDto, AuthUserReqDto user) {
+    public void saveReport(ReportReqDto reqDto, UserEntity user) {
+        if (user == null) {
+            throw new ApiException(ExceptionCode.UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
         UserEntity reporterUser = userRepo.findById(user.getId())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다"));
         UserEntity reportedUser = userRepo.findById(reqDto.getReportedUser())

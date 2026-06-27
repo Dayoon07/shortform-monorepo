@@ -1,6 +1,7 @@
 package com.e.shortform.domain.follow.service;
 
 import com.e.shortform.domain.follow.entity.FollowEntity;
+import com.e.shortform.domain.notification.service.NotificationService;
 import com.e.shortform.domain.user.entity.UserEntity;
 import com.e.shortform.domain.follow.mapper.FollowMapper;
 import com.e.shortform.domain.follow.repository.FollowRepo;
@@ -24,6 +25,7 @@ public class FollowService {
     private final FollowRepo followRepo;
 
     private final UserRepo userRepo;
+    private final NotificationService notificationService;
 
     public Map<String, Object> follow(String mention, UserEntity user) {
         Map<String, Object> result = new HashMap<>();
@@ -52,6 +54,12 @@ public class FollowService {
                 .followedUser(targetUser)
                 .build();
         followRepo.save(followEntity);
+
+        // 팔로우 대상에게 알림 (이동 대상은 팔로워 프로필)
+        notificationService.notify(
+                targetUser.getId(), user,
+                "FOLLOW", "USER", user.getMention(),
+                user.getUsername() + "님이 회원님을 팔로우했습니다");
 
         result.put("success", true);
         result.put("message", "팔로우 성공");
@@ -196,6 +204,10 @@ public class FollowService {
                 // 팔로우
                 boolean followSuccess = createFollowSafely(currentUser, targetUser);
                 if (followSuccess) {
+                    notificationService.notify(
+                            targetUser.getId(), currentUser,
+                            "FOLLOW", "USER", currentUser.getMention(),
+                            currentUser.getUsername() + "님이 회원님을 팔로우했습니다");
                     return new FollowToggleResDto(true, true, targetUser.getUsername() + "님을 팔로우했습니다");
                 } else {
                     // 이미 팔로우된 상태 (동시 요청으로 인한)

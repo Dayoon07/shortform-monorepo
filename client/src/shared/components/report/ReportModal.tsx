@@ -10,16 +10,18 @@ const REPORT_TYPES = Object.values(ReportType);
 
 interface ReportModalProps {
     onClose: () => void;
-    targetType: string; // "VIDEO", "COMMENT" 등
+    targetType: string; // "VIDEO", "COMMENT", "COMMUNITY" 등
     targetId: number;
     reportedUserId: number;
+    title?: string;
 }
 
-export const ReportModal: React.FC<ReportModalProps> = ({ 
-    onClose, 
-    targetType, 
-    targetId, 
-    reportedUserId 
+export const ReportModal: React.FC<ReportModalProps> = ({
+    onClose,
+    targetType,
+    targetId,
+    reportedUserId,
+    title = "신고하기"
 }) => {
     const [selected, setSelected] = useState<ReportType | null>(null);
     const [reportReason, setReportReason] = useState<string>("");
@@ -49,7 +51,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
     }
 
     return (
-        <Modal onClose={onClose} title="영상 신고하기" titleAlign="left">
+        <Modal onClose={onClose} title={title} titleAlign="left">
             <div className="flex flex-col gap-2 h-96 overflow-y-auto">
                 {REPORT_TYPES.map((type) => {
                     const { title, desc } = REPORT_TYPE_TEXT_DATA[type];

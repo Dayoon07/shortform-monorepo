@@ -1,5 +1,6 @@
 package com.e.shortform.domain.video.service;
 
+import com.e.shortform.domain.notification.service.NotificationService;
 import com.e.shortform.domain.user.entity.UserEntity;
 import com.e.shortform.domain.user.repository.UserRepo;
 import com.e.shortform.domain.video.entity.VideoEntity;
@@ -22,6 +23,7 @@ public class VideoLikeService {
     private final VideoLikeMapper videoLikeMapper;
     private final VideoRepo videoRepo;
     private final UserRepo userRepo;
+    private final NotificationService notificationService;
 
     /** 좋아요 토글 (MyBatis 방식) - 더 빠른 성능 */
     public VideoLikeToggleDto toggleLikeWithMyBatis(Long videoId, Long userId) {
@@ -37,6 +39,18 @@ public class VideoLikeService {
 
             if (result == 0) throw new RuntimeException("좋아요 처리에 실패했습니다");
             int totalLikes = videoLikeMapper.countLikesByVideoId(videoId);  // 현재 총 좋아요 수 조회
+
+            // 새로 좋아요를 누른 경우에만 영상 업로더에게 알림
+            if (!wasLiked) {
+                VideoEntity video = videoRepo.findByIdWithUploader(videoId).orElse(null);
+                UserEntity actor = userRepo.findById(userId).orElse(null);
+                if (video != null && video.getUploader() != null) {
+                    notificationService.notify(
+                            video.getUploader().getId(), actor,
+                            "VIDEO_LIKE", "VIDEO", video.getVideoLoc(),
+                            (actor != null ? actor.getUsername() : "누군가") + "님이 회원님의 영상을 좋아합니다");
+                }
+            }
 
             return VideoLikeToggleDto.builder()
                     .success(true)

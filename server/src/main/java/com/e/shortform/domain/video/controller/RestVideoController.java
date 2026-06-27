@@ -116,7 +116,7 @@ public class RestVideoController {
                         .toList();
             }
 
-            log.info("제외할 영상 ID 개수: {}", excludeIds.size());
+            log.debug("제외할 영상 ID 개수: {}", excludeIds.size());
 
             Set<Long> excludeIdSet = new HashSet<>(excludeIds);
             VideoEntity randomVideo = videoService.selectRandomVideo(new ArrayList<>(excludeIdSet));
@@ -152,7 +152,7 @@ public class RestVideoController {
             boolean isLiked = user != null && videoLikeService.existsByVideoAndUser(randomVideo, user);
             boolean isFollowing = user != null && followService.existsByFollowUserAndFollowedUser(user, randomVideo.getUploader());
 
-            log.info("반환된 영상: ID={}, 제목={}", randomVideo.getId(), randomVideo.getVideoTitle());
+            log.debug("반환된 영상: ID={}, 제목={}", randomVideo.getId(), randomVideo.getVideoTitle());
 
             if (user != null) {
                 // viewStoryService.userViewstoryInsert(user.getId(), randomVideo.getId());
@@ -213,7 +213,7 @@ public class RestVideoController {
             response.put("hasMore", true);
             response.put("id", randomVideo.getId());
 
-            log.info("반환된 영상: ID={}, 제목={}", randomVideo.getId(), randomVideo.getVideoTitle());
+            log.debug("반환된 영상: ID={}, 제목={}", randomVideo.getId(), randomVideo.getVideoTitle());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("영상 로딩 중 오류 발생", e);
@@ -238,7 +238,7 @@ public class RestVideoController {
                         .toList();
             }
 
-            log.info("제외할 영상 ID 개수: {}", list.size());
+            log.debug("제외할 영상 ID 개수: {}", list.size());
 
             Set<Long> excludeIdSet = new HashSet<>(list);
             VideoEntity randomVideo = videoService.selectRandomVideo(new ArrayList<>(excludeIdSet));
@@ -274,7 +274,7 @@ public class RestVideoController {
             boolean isLiked = user != null && videoLikeService.existsByVideoAndUser(randomVideo, user);
             boolean isFollowing = user != null && followService.existsByFollowUserAndFollowedUser(user, randomVideo.getUploader());
 
-            log.info("반환된 영상: ID={}, 제목={}", randomVideo.getId(), randomVideo.getVideoTitle());
+            log.debug("반환된 영상: ID={}, 제목={}", randomVideo.getId(), randomVideo.getVideoTitle());
 
             if (user != null) {
                 // viewStoryService.userViewstoryInsert(user.getId(), randomVideo.getId());
@@ -303,6 +303,35 @@ public class RestVideoController {
     @PostMapping("/explore/hashtag")
     public ResponseEntity<List<?>> exploreVideoList(@RequestParam String hashtag) {
         return ResponseEntity.ok(videoService.selectExploreVideoListButTag(hashtag));
+    }
+
+    /** 추천(explore) 피드 - 인기+최신 점수순 */
+    @GetMapping("/explore")
+    public ResponseEntity<List<IndexPageAllVideosDto>> exploreFeed() {
+        return ResponseEntity.ok(videoService.exploreFeed());
+    }
+
+    /** 영상 수정 화면용 현재 정보 */
+    @GetMapping("/edit/info")
+    public ResponseEntity<?> editInfo(@RequestParam String videoLoc) {
+        return ResponseEntity.ok(videoService.getEditInfo(videoLoc));
+    }
+
+    /** 영상 수정 (작성자 본인만) — 메타데이터 + 선택적 영상/썸네일 교체 (multipart) */
+    @RequireAuth
+    @PostMapping("/edit")
+    public ResponseEntity<?> editVideo(
+            @RequestParam String videoLoc,
+            @RequestParam String title,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String tag,
+            @RequestParam String watchAvailability,
+            @RequestParam String commentAvailability,
+            @RequestParam(value = "video", required = false) MultipartFile video,
+            @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+            @AuthenticationPrincipal UserEntity user) throws java.io.IOException {
+        videoService.editVideo(videoLoc, title, description, tag, watchAvailability, commentAvailability, video, thumbnail, user);
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping("/find/like")

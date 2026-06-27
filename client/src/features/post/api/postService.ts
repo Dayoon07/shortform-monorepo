@@ -24,8 +24,8 @@ export const createPost = async (formData: FormData): Promise<ApiResponse<WriteP
 export const togglePostLike = async (communityUuid: string): Promise<ApiResponse<PostLikeReq>> => 
     await apiClient.post<PostLikeReq>(API_LIST.POST.LIKE.TOGGLE(communityUuid), true);
 
-export const deletePost = async (commentUuid: string): Promise<ApiResponse<any>> => 
-    await apiClient.post<any>(API_LIST.POST.DELETE(commentUuid), true);
+export const deletePost = async (id: number): Promise<ApiResponse<any>> =>
+    await apiClient.post<any>(API_LIST.POST.DELETE(id), true);
 
 export const insertPostComment = async (communityId: number, comment: string): Promise<ApiResponse<any>> =>
     await apiClient.post<any>(API_LIST.POST.COMMENT.INSERT(communityId, comment), true);

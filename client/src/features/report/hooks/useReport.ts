@@ -11,14 +11,7 @@ export const useReport = () => {
         setError(null);
         
         try {
-            const fd = new FormData();
-            fd.append("targetType", reportData.targetType);
-            fd.append("targetId", reportData.targetId.toString());
-            fd.append("reportedUser", reportData.reportedUser.toString());
-            fd.append("reportType", reportData.reportType);
-            fd.append("reportReason", reportData.reportReason);
-            
-            const res = await reportRegister(fd);
+            const res = await reportRegister(reportData);
             setIsLoading(false);
             return res;
         } catch (err) {

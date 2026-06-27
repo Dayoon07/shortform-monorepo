@@ -107,7 +107,7 @@ export const VideoCard = memo(({
                                             <>
                                                 <DropdownMenuBtn
                                                     text="영상 수정하기"
-                                                    onClickEventFunc={() => navigate(ROUTE.VIDEO_EDIT)}
+                                                    onClickEventFunc={() => navigate(ROUTE.VIDEO_EDIT(video.videoLoc))}
                                                 />
                                                 <DropdownMenuBtn
                                                     text="영상 삭제하기"

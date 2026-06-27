@@ -23,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import com.e.shortform.util.storage.FileStorageService;
+import com.e.shortform.util.storage.StoredFile;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -39,6 +42,7 @@ public class CommunityService {
     private final UserRepo userRepo;
     private final CommunityRepo communityRepo;
     private final CommunityAdditionRepo communityAdditionRepo;
+    private final FileStorageService fileStorageService;
 
     // 업로드 설정 상수들
     private static final String UPLOAD_DIRECTORY =
@@ -307,8 +311,6 @@ public class CommunityService {
     /** 이미지들을 처리 */
     private void processImages(List<MultipartFile> images, CommunityEntity post) {
         try {
-            createUploadDirectory();    // 업로드 디렉토리 생성
-
             for (int i = 0; i < images.size(); i++) {
                 MultipartFile image = images.get(i);
                 if (!image.isEmpty()) {
@@ -332,13 +334,10 @@ public class CommunityService {
 
     /** 이미지 파일을 저장 */
     private void saveImageFile(MultipartFile image, CommunityEntity post, int index) throws IOException {
-        String fileName = generateFileName(image.getOriginalFilename());
-        Path filePath = Paths.get(UPLOAD_DIRECTORY, fileName);
-
-        // 파일 저장
-        Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        saveCommunityAddition(fileName, post);  // DB에 파일 정보 저장
-        log.debug("이미지 파일 저장 완료 - 파일명: {}, 게시글 ID: {}", fileName, post.getId());
+        // 스토리지 추상화(로컬/S3)로 저장하고, 접근 URL을 그대로 FILE_SRC에 기록
+        StoredFile stored = fileStorageService.store(image, "shortform-community-post-img");
+        saveCommunityAddition(stored.url(), post);
+        log.debug("이미지 파일 저장 완료 - {}, 게시글 ID: {}", stored.url(), post.getId());
     }
 
     /** 고유한 파일명을 생성 */
@@ -356,10 +355,10 @@ public class CommunityService {
         return filename.substring(filename.lastIndexOf(".")).toLowerCase();
     }
 
-    /** CommunityAdditionEntity를 저장합니다 */
-    private void saveCommunityAddition(String fileName, CommunityEntity post) {
+    /** CommunityAdditionEntity를 저장합니다 (fileSrc = 접근 URL) */
+    private void saveCommunityAddition(String fileSrc, CommunityEntity post) {
         CommunityAdditionEntity additionEntity = CommunityAdditionEntity.builder()
-                .fileSrc(BASE_URL + "/" + fileName)
+                .fileSrc(fileSrc)
                 .community(post)
                 .build();
 

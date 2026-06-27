@@ -29,6 +29,12 @@ export const HomePageIcon = ({ className = "" }: IconProps): JSX.Element => (
     </svg>
 );
 
+export const NotificationPageIcon = ({ className = "" }: IconProps): JSX.Element => (
+    <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2Z" />
+    </svg>
+);
+
 export const ExplorePageIcon = ({ className = "" }: IconProps): JSX.Element => (
     <svg className={`w-6 h-6 ${className}`} fill="currentColor" viewBox="0 0 24 24">
         <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
